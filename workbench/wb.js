@@ -24,7 +24,8 @@
       { title: 'System Management', href: 'screens/system-management.html', ext: true, icon: 'open_in_new' },
       { title: 'WDS — Algorithm Library', href: 'screens/wds-algorithm-library.html', ext: true, icon: 'open_in_new' },
       { title: 'WDS — Add Algorithm', href: 'screens/wds-add-algorithm.html', ext: true, icon: 'open_in_new' },
-      { title: 'Manage Conditions', href: 'screens/manage-conditions.html', ext: true, icon: 'open_in_new' }
+      { title: 'Manage Conditions', href: 'screens/manage-conditions.html', ext: true, icon: 'open_in_new' },
+      { title: 'Merge Patients', href: 'screens/merge-patients.html', ext: true, icon: 'open_in_new' }
     ]}
   ];
 

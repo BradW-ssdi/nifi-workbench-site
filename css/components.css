@@ -164,7 +164,7 @@ a.ds-btn { text-decoration: none; }
   font-size: var(--ds-type-secnav-size); padding: 9px 16px 9px 56px; border-radius: 8px;
 }
 .ds-nav-sub a:hover { background: var(--ds-nav-hover-overlay); }
-.ds-nav-sub a[aria-current="page"] { background: var(--ds-nav-active-overlay); font-weight: 600; }
+.ds-nav-sub a[aria-current="page"] { background: #1F4853; font-weight: 600; } /* teal + 30% black, opaque: white text 8.5:1, no compositing ambiguity */
 .ds-nav-sub a:focus-visible { background: var(--ds-nav-focus-overlay); outline: 2px solid #fff; outline-offset: -2px; box-shadow: none; }
 
 /* ----------------------------- secondary nav ----------------------------- */
@@ -390,6 +390,21 @@ th[aria-sort] .ds-sort-btn { color: var(--ds-primary-hover); font-weight: 700; }
 .ds-footer-modal { display: flex; justify-content: flex-end; gap: 16px; background: var(--ds-surface-secondary); padding: 13px 16px; }
 .ds-bulkbar { display: inline-flex; align-items: center; gap: 20px; flex-wrap: wrap; background: var(--bulkbar-bg); color: #fff; border-radius: var(--ds-radius-card); padding: 12px 20px; box-shadow: 0 8px 20px rgba(0,0,0,.3); font-size: 15px; font-weight: 600; }
 .ds-bulkbar button { background: transparent; border: 0; color: #fff; font: inherit; cursor: pointer; padding: 6px 10px; }
+.ds-bulkbar .ds-btn { padding: 0 14px; min-height: 36px; }
+/* Floating variant: appears once rows are selected. The page keeps
+   scroll-padding equal to the bar height so a tabbed-to row is never hidden
+   under it (WCAG 2.4.11). */
+.ds-bulkbar.is-floating { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 20; }
+.ds-bulkbar.is-floating[hidden] { display: none; }
+.ds-has-bulkbar { scroll-padding-bottom: 96px; }
+
+/* Selection tables: checkbox / radio columns. The header checkbox selects
+   all (indeterminate when partial); a one-of-many column uses RADIOS, never
+   checkboxes with scripted exclusivity. */
+.ds-table .ds-select-col { width: 1%; text-align: center; white-space: nowrap; }
+.ds-table .ds-select-col input { width: 18px; height: 18px; accent-color: var(--ds-primary); margin: 0; vertical-align: middle; }
+.ds-table .ds-select-col input:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 1px; box-shadow: none; }
+.ds-table tbody tr.is-selected > td { background: var(--teal-100); }
 
 /* ============================================================================
    Accessibility layer — Section 508 / WCAG 2.1 AA (+ selected AAA)
