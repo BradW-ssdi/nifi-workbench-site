@@ -31,12 +31,29 @@
 <div class="layout">
   <!-- DEV: rail is the shared navbar fragment. hrefs must be real routes;
        set aria-current="page" (server-side) on the current section only. -->
-  <nav class="rail ds-nav-rail is-expanded" aria-label="Main navigation">
-    <div style="padding:18px 22px;color:#fff"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></div>
-    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg>Home</a>
-    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg>Data Entry</a>
-    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#person"/></svg>Patient</a>
-    <a class="ds-nav-item is-active" href="#" aria-current="page"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg>System Management</a>
+  <nav class="rail ds-nav-rail is-expanded" aria-label="Main navigation" id="railNav">
+    <button class="ds-btn-icon" id="railToggle" aria-label="Collapse navigation" aria-expanded="true" aria-controls="railNav" style="margin:12px 14px;background:transparent"><svg class="ds-nav-icon" aria-hidden="true" style="fill:#fff"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a href="#">Patient</a></li>
+      <li><a href="#">Organization</a></li>
+      <li><a href="#">Provider</a></li>
+      <li><a href="#">Place</a></li>
+      <li><a href="#">Lab Report</a></li>
+      <li><a href="#">Morbidity Report</a></li>
+      <li><a href="#">Summary Report</a></li>
+      <li><a href="#">Bulk Data</a></li>
+    </ul>
+    <button class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a href="#">Manual Search</a></li>
+      <li><a href="#">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" href="#" aria-current="page"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
   </nav>
   <div class="content">
     <header class="ds-header">
@@ -246,6 +263,30 @@
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
 })();
+
+/* Rail submenu toggle (shared navbar fragment contract) */
+document.querySelectorAll('.ds-nav-group').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var open = b.getAttribute('aria-expanded') === 'true';
+    b.setAttribute('aria-expanded', String(!open));
+    document.getElementById(b.getAttribute('aria-controls')).hidden = open;
+  });
+});
+/* Hamburger: collapse the rail to icons (open groups close so nothing is
+   reachable-but-invisible); expand restores labels. */
+var railToggle = document.getElementById('railToggle');
+railToggle.addEventListener('click', function () {
+  var rail = document.getElementById('railNav');
+  var expanded = rail.classList.toggle('is-expanded');
+  railToggle.setAttribute('aria-expanded', String(expanded));
+  railToggle.setAttribute('aria-label', expanded ? 'Collapse navigation' : 'Expand navigation');
+  if (!expanded) {
+    rail.querySelectorAll('.ds-nav-group[aria-expanded="true"]').forEach(function (g) {
+      g.setAttribute('aria-expanded', 'false');
+      document.getElementById(g.getAttribute('aria-controls')).hidden = true;
+    });
+  }
+});
 </script>
 </body>
 </html>

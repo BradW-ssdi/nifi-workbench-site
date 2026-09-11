@@ -27,12 +27,29 @@
 <body class="ds">
 <a class="ds-skip-link" href="#main">Skip to main content</a>
 <div class="layout">
-  <nav class="rail ds-nav-rail is-expanded" aria-label="Main navigation">
-    <div style="padding:18px 22px;color:#fff"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></div>
-    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg>Home</a>
-    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg>Data Entry</a>
-    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#person"/></svg>Patient</a>
-    <a class="ds-nav-item is-active" href="#" aria-current="page"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg>System Management</a>
+  <nav class="rail ds-nav-rail is-expanded" aria-label="Main navigation" id="railNav">
+    <button class="ds-btn-icon" id="railToggle" aria-label="Collapse navigation" aria-expanded="true" aria-controls="railNav" style="margin:12px 14px;background:transparent"><svg class="ds-nav-icon" aria-hidden="true" style="fill:#fff"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a href="#">Patient</a></li>
+      <li><a href="#">Organization</a></li>
+      <li><a href="#">Provider</a></li>
+      <li><a href="#">Place</a></li>
+      <li><a href="#">Lab Report</a></li>
+      <li><a href="#">Morbidity Report</a></li>
+      <li><a href="#">Summary Report</a></li>
+      <li><a href="#">Bulk Data</a></li>
+    </ul>
+    <button class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a href="#">Manual Search</a></li>
+      <li><a href="#">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" href="#" aria-current="page"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
   </nav>
   <div class="content">
     <header class="ds-header">
@@ -43,44 +60,56 @@
     </header>
     <main id="main" tabindex="-1">
     <div class="ds-page-header">
-      <h1 class="ds-type-display">System Management</h1>
+      <h1 class="ds-type-display">System Management Main Menu</h1>
+      <p class="ds-type-body" style="margin:8px 0 0">Select an option to manage system settings.</p>
     </div>
     <div class="grid">
       <div class="ds-card">
         <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#account_tree"/></svg><h2 class="ds-card-title">Decision Support Management</h2></div>
-        <div class="ds-card-body"><ul><li><a class="ds-link" href="wds-algorithm-library.html">Manage Workflow Decision Support</a></li></ul></div>
+        <div class="ds-card-body"><ul>
+          <li><a class="ds-link" href="#">Manage Alerts</a></li>
+          <li><a class="ds-link" href="#">Manage User Email</a></li>
+          <li><a class="ds-link" href="wds-algorithm-library.html">Manage Workflow Decision Support</a></li>
+        </ul></div>
+      </div>
+      <div class="ds-card">
+        <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><h2 class="ds-card-title">Epi-Link (Lot Number) Management</h2></div>
+        <div class="ds-card-body"><ul>
+          <li><a class="ds-link" href="#">Manage Epi-link ID</a></li>
+          <li><a class="ds-link" href="#">Manage Epi-link ID Activity Log</a></li>
+        </ul></div>
+      </div>
+      <div class="ds-card">
+        <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#science"/></svg><h2 class="ds-card-title">Case Report and Laboratory Management</h2></div>
+        <div class="ds-card-body"><ul>
+          <li><a class="ds-link" href="#">Manage Trigger Codes for Case Reporting</a></li>
+          <li><a class="ds-link" href="#">Manage Laboratories</a></li>
+          <li><a class="ds-link" href="#">Manage Lab Results</a>
+            <ul>
+              <li><a class="ds-link" href="#">Manage Local Results</a></li>
+              <li><a class="ds-link" href="#">Manage SNOMEDs</a></li>
+              <li><a class="ds-link" href="#">Manage Link between Lab Results and SNOMED</a></li>
+              <li><a class="ds-link" href="#">Manage Link between SNOMED and Condition</a></li>
+            </ul>
+          </li>
+          <li><a class="ds-link" href="#">Manage Lab Tests</a>
+            <ul>
+              <li><a class="ds-link" href="#">Manage Local Lab Tests</a></li>
+              <li><a class="ds-link" href="#">Manage LOINCs</a></li>
+              <li><a class="ds-link" href="#">Manage Link between Lab Tests and LOINC</a></li>
+              <li><a class="ds-link" href="#">Manage Link between LOINC and Condition</a></li>
+            </ul>
+          </li>
+          <li><a class="ds-link" href="#">Reset Lab Mapping Cache</a></li>
+        </ul></div>
       </div>
       <div class="ds-card">
         <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#mail"/></svg><h2 class="ds-card-title">Messaging Management</h2></div>
         <div class="ds-card-body"><ul>
           <li><a class="ds-link" href="#">Manage ELR Activity Log</a></li>
-          <li><a class="ds-link" href="#">Manage PHCR Activity Log</a></li>
+          <li><a class="ds-link" href="#">Manage PHDC Activity Log</a></li>
           <li><a class="ds-link" href="#">Manage Sending and Receiving Systems</a></li>
-        </ul></div>
-      </div>
-      <div class="ds-card">
-        <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#admin_panel_settings"/></svg><h2 class="ds-card-title">Security Management</h2></div>
-        <div class="ds-card-body"><ul>
-          <li><a class="ds-link" href="#">Manage Permission Sets</a></li>
-          <li><a class="ds-link" href="#">Manage Users</a></li>
-        </ul></div>
-      </div>
-      <div class="ds-card wide">
-        <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#science"/></svg><h2 class="ds-card-title">Case Report and Laboratory Management</h2></div>
-        <div class="ds-card-body"><ul class="two-col">
-          <li><a class="ds-link" href="#">Manage Trigger Codes for Case Reporting</a></li>
-          <li><a class="ds-link" href="#">Manage Laboratories</a></li>
-          <li><a class="ds-link" href="#">Manage Lab Results</a></li>
-          <li><a class="ds-link" href="#">Manage Local Results</a></li>
-          <li><a class="ds-link" href="#">Manage SNOMEDs</a></li>
-          <li><a class="ds-link" href="#">Manage Link between Lab Results and SNOMED</a></li>
-          <li><a class="ds-link" href="#">Manage Link between SNOMED and Condition</a></li>
-          <li><a class="ds-link" href="#">Manage Lab Tests</a></li>
-          <li><a class="ds-link" href="#">Manage Local Lab Tests</a></li>
-          <li><a class="ds-link" href="#">Manage LOINCs</a></li>
-          <li><a class="ds-link" href="#">Manage Link between Lab Tests and LOINC</a></li>
-          <li><a class="ds-link" href="#">Manage Link between LOINC and Condition</a></li>
-          <li><a class="ds-link" href="#">Reset Lab Mapping Cache</a></li>
+          <li><a class="ds-link" href="#">Manage HIV Partner Services File</a></li>
         </ul></div>
       </div>
       <div class="ds-card">
@@ -89,7 +118,6 @@
           <li><a class="ds-link" href="#">Manage Bulk Import Templates</a></li>
           <li><a class="ds-link" href="manage-conditions.html">Manage Conditions</a></li>
           <li><a class="ds-link" href="#">Manage Pages</a></li>
-          <li><a class="ds-link" href="#">Manage Notices</a></li>
           <li><a class="ds-link" href="#">Manage Questions</a></li>
           <li><a class="ds-link" href="#">Manage Templates</a></li>
           <li><a class="ds-link" href="#">Manage Value Sets</a></li>
@@ -104,6 +132,13 @@
         </ul></div>
       </div>
       <div class="ds-card">
+        <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#admin_panel_settings"/></svg><h2 class="ds-card-title">Security Management</h2></div>
+        <div class="ds-card-body"><ul>
+          <li><a class="ds-link" href="#">Manage Permission Sets</a></li>
+          <li><a class="ds-link" href="#">Manage Users</a></li>
+        </ul></div>
+      </div>
+      <div class="ds-card">
         <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#open_in_new"/></svg><h2 class="ds-card-title">External Applications</h2></div>
         <div class="ds-card-body"><ul>
           <li><a class="ds-link" href="#">Questionnaire Authoring</a></li>
@@ -114,5 +149,29 @@
     </main>
   </div>
 </div>
+<script>
+document.querySelectorAll('.ds-nav-group').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var open = b.getAttribute('aria-expanded') === 'true';
+    b.setAttribute('aria-expanded', String(!open));
+    document.getElementById(b.getAttribute('aria-controls')).hidden = open;
+  });
+});
+/* Hamburger: collapse the rail to icons (open groups close so nothing is
+   reachable-but-invisible); expand restores labels. */
+var railToggle = document.getElementById('railToggle');
+railToggle.addEventListener('click', function () {
+  var rail = document.getElementById('railNav');
+  var expanded = rail.classList.toggle('is-expanded');
+  railToggle.setAttribute('aria-expanded', String(expanded));
+  railToggle.setAttribute('aria-label', expanded ? 'Collapse navigation' : 'Expand navigation');
+  if (!expanded) {
+    rail.querySelectorAll('.ds-nav-group[aria-expanded="true"]').forEach(function (g) {
+      g.setAttribute('aria-expanded', 'false');
+      document.getElementById(g.getAttribute('aria-controls')).hidden = true;
+    });
+  }
+});
+</script>
 </body>
 </html>

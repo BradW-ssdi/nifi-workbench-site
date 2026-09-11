@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home — NEDSS</title>
+<link rel="stylesheet" href="../../tokens/tokens.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .layout { display: flex; min-height: 100vh; }
+  .rail { flex: none; }
+  .content { flex: 1; min-width: 0; }
+  .page-body { padding: 24px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 24px; align-items: start; }
+  .col { display: grid; gap: 24px; min-width: 0; }
+  .search-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+  .search-grid .ds-field { max-width: none; }
+  .queue-list { list-style: none; margin: 0; padding: 0; }
+  .queue-list a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 4px; color: var(--ds-link); text-decoration: none; border-bottom: 1px solid var(--ds-border); }
+  .queue-list li:last-child a { border-bottom: 0; }
+  .queue-list a:hover { text-decoration: underline; }
+  .queue-count { flex: none; background: var(--ds-surface-secondary); color: var(--ds-text); border-radius: 999px; font: 600 12px/1 var(--ds-font-family); padding: 5px 10px; }
+  .notice-list { list-style: none; margin: 0; padding: 0; }
+  .notice-list li { padding: 9px 0; border-bottom: 1px solid var(--ds-border); font-size: var(--ds-type-body-size); }
+  .notice-list li:last-child { border-bottom: 0; }
+  .notice-date { color: var(--ds-text-secondary); font-size: var(--ds-type-caption-size); display: block; margin-top: 2px; }
+  @media (max-width: 1000px) { .page-body { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 820px) {
+    .layout { flex-direction: column; }
+    .rail.ds-nav-rail.is-expanded { width: 100%; display: flex; flex-wrap: wrap; align-items: center; min-height: 0; }
+    .page-body { padding: 16px; }
+  }
+</style>
+</head>
+<body class="ds">
+<a class="ds-skip-link" href="#main">Skip to main content</a>
+<div class="layout">
+  <nav class="rail ds-nav-rail is-expanded" aria-label="Main navigation" id="railNav">
+    <button class="ds-btn-icon" id="railToggle" aria-label="Collapse navigation" aria-expanded="true" aria-controls="railNav" style="margin:12px 14px;background:transparent"><svg class="ds-nav-icon" aria-hidden="true" style="fill:#fff"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item is-active" href="home.html" aria-current="page"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a href="#">Patient</a></li>
+      <li><a href="#">Organization</a></li>
+      <li><a href="#">Provider</a></li>
+      <li><a href="#">Place</a></li>
+      <li><a href="#">Lab Report</a></li>
+      <li><a href="#">Morbidity Report</a></li>
+      <li><a href="#">Summary Report</a></li>
+      <li><a href="#">Bulk Data</a></li>
+    </ul>
+    <button class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a href="#">Manual Search</a></li>
+      <li><a href="#">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <div class="content">
+    <header class="ds-header">
+      <span class="ds-logo"><img src="../assets/texas-logo-main.png" alt="Texas Health and Human Services"></span>
+      <span class="ds-header-spacer"></span>
+      <button class="ds-btn-icon" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></button>
+      <button class="ds-profile-btn" aria-haspopup="menu" aria-expanded="false" style="padding:0"><span class="ds-avatar" aria-hidden="true">PP</span><span class="ds-sr-only">Account menu — P. Preparer</span></button>
+    </header>
+    <main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <h1 class="ds-type-display">Home</h1>
+      </div>
+      <div class="page-body">
+        <div class="col">
+          <!-- Patient Search widget — the dashboard's primary action. -->
+          <div class="ds-card ds-card-plainhead">
+            <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><h2 class="ds-card-title">Patient Search</h2></div>
+            <div class="ds-card-body">
+              <div class="ds-tabs" role="tablist" aria-label="Search type" style="margin-bottom:16px">
+                <button class="ds-tab" role="tab" aria-selected="true" id="tabBasicSearch" aria-controls="panelBasicSearch">Basic</button>
+                <button class="ds-tab" role="tab" aria-selected="false" id="tabAdvSearch" aria-controls="panelAdvSearch" tabindex="-1">Advanced</button>
+              </div>
+              <div id="panelBasicSearch" role="tabpanel" aria-labelledby="tabBasicSearch">
+                <form novalidate>
+                  <div class="search-grid">
+                    <div class="ds-field"><label for="hsLast">Last Name</label><input class="ds-input" id="hsLast" type="text" autocomplete="off"></div>
+                    <div class="ds-field"><label for="hsFirst">First Name</label><input class="ds-input" id="hsFirst" type="text" autocomplete="off"></div>
+                    <div class="ds-field">
+                      <label for="hsDob">Date of Birth</label>
+                      <div class="ds-datefield"><input class="ds-input" id="hsDob" type="text" inputmode="numeric" aria-describedby="hsDobFmt" style="width:100%"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div>
+                      <span class="ds-help-text" id="hsDobFmt">Format: MM/DD/YYYY</span>
+                    </div>
+                    <div class="ds-field"><label for="hsSex">Current Sex</label><select class="ds-select" id="hsSex"><option value="">Any</option><option>Female</option><option>Male</option><option>Unknown</option></select></div>
+                    <div class="ds-field"><label for="hsId">ID</label><input class="ds-input" id="hsId" type="text" aria-describedby="hsIdHelp" autocomplete="off"><span class="ds-help-text" id="hsIdHelp">Patient, event, or accession ID.</span></div>
+                  </div>
+                  <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap">
+                    <button class="ds-btn ds-btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
+                    <button class="ds-btn ds-btn-outline" type="reset">Clear</button>
+                  </div>
+                </form>
+              </div>
+              <div id="panelAdvSearch" role="tabpanel" aria-labelledby="tabAdvSearch" hidden>
+                <p class="ds-type-body" style="margin:0">Advanced search opens the full criteria form — address, race and ethnicity, identifiers, and event filters.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- My Queues: Default / Private / Public tabs, counts announced as text. -->
+          <div class="ds-card ds-card-plainhead">
+            <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><h2 class="ds-card-title">My Queues</h2></div>
+            <div class="ds-card-body">
+              <div class="ds-tabs" role="tablist" aria-label="My queues" style="margin-bottom:8px">
+                <button class="ds-tab" role="tab" aria-selected="true" id="tabQDefault" aria-controls="panelQDefault">Default</button>
+                <button class="ds-tab" role="tab" aria-selected="false" id="tabQPrivate" aria-controls="panelQPrivate" tabindex="-1">Private</button>
+                <button class="ds-tab" role="tab" aria-selected="false" id="tabQPublic" aria-controls="panelQPublic" tabindex="-1">Public</button>
+              </div>
+              <div id="panelQDefault" role="tabpanel" aria-labelledby="tabQDefault">
+                <ul class="queue-list">
+                  <li><a href="wds-algorithm-library.html">Open Investigations <span class="queue-count">128<span class="ds-sr-only"> items</span></span></a></li>
+                  <li><a href="#">Documents Requiring Review <span class="queue-count">42<span class="ds-sr-only"> items</span></span></a></li>
+                  <li><a href="#">Documents Requiring Security Assignment <span class="queue-count">7<span class="ds-sr-only"> items</span></span></a></li>
+                  <li><a href="#">Approval Queue for Initial Notifications <span class="queue-count">15<span class="ds-sr-only"> items</span></span></a></li>
+                  <li><a href="#">Updated Notifications <span class="queue-count">31<span class="ds-sr-only"> items</span></span></a></li>
+                  <li><a href="#">Rejected Notifications <span class="queue-count">3<span class="ds-sr-only"> items</span></span></a></li>
+                </ul>
+              </div>
+              <div id="panelQPrivate" role="tabpanel" aria-labelledby="tabQPrivate" hidden>
+                <ul class="queue-list">
+                  <li><a href="#">My TB Follow-ups <span class="queue-count">9<span class="ds-sr-only"> items</span></span></a></li>
+                  <li><a href="#">Region 7 Hepatitis Review <span class="queue-count">14<span class="ds-sr-only"> items</span></span></a></li>
+                </ul>
+              </div>
+              <div id="panelQPublic" role="tabpanel" aria-labelledby="tabQPublic" hidden>
+                <ul class="queue-list">
+                  <li><a href="#">Statewide COVID-19 Backlog <span class="queue-count">203<span class="ds-sr-only"> items</span></span></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <!-- Notices keep the warning-tinted header from the app. -->
+          <div class="ds-card ds-card-warnhead">
+            <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#error"/></svg><h2 class="ds-card-title">Notices</h2></div>
+            <div class="ds-card-body">
+              <ul class="notice-list">
+                <li>Scheduled maintenance Saturday 09/13, 6:00–8:00 AM. The system will be unavailable.<span class="notice-date">Posted 09/10/2026</span></li>
+                <li>New TB 2020 RVCT page published — verify open investigations transferred correctly.<span class="notice-date">Posted 09/08/2026</span></li>
+                <li>Reminder: annual security attestation due 09/30.<span class="notice-date">Posted 09/02/2026</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- My Reports: compact table, same semantics as every DS table. -->
+          <div class="ds-card ds-card-plainhead">
+            <div class="ds-card-header"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><h2 class="ds-card-title">My Reports</h2></div>
+            <div class="ds-card-body" style="padding:0">
+              <div class="ds-table-scroll" tabindex="0" role="group" aria-label="My reports table, scrolls horizontally when zoomed">
+                <table class="ds-table">
+                  <caption class="ds-sr-only">My saved reports</caption>
+                  <thead><tr><th scope="col">Report</th><th scope="col">Type</th><th scope="col">Last Run</th></tr></thead>
+                  <tbody>
+                    <tr><td><a class="ds-link" href="#">Weekly Morbidity Summary</a></td><td>Private</td><td>09/09/2026</td></tr>
+                    <tr><td><a class="ds-link" href="#">Region 7 Case Counts</a></td><td>Private</td><td>09/05/2026</td></tr>
+                    <tr><td><a class="ds-link" href="#">Statewide Lab Volume</a></td><td>Public</td><td>09/01/2026</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+/* Working reference implementations — same contracts as the other templates. */
+(function () {
+  /* Tabs (both tablists): WAI-ARIA pattern with roving tabindex. */
+  document.querySelectorAll('[role="tablist"]').forEach(function (tablist) {
+    var tabs = Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));
+    function selectTab(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      tab.focus();
+    }
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { selectTab(t); });
+      t.addEventListener('keydown', function (e) {
+        var i = tabs.indexOf(t);
+        if (e.key === 'ArrowRight') selectTab(tabs[(i + 1) % tabs.length]);
+        if (e.key === 'ArrowLeft') selectTab(tabs[(i - 1 + tabs.length) % tabs.length]);
+      });
+    });
+  });
+
+  document.querySelectorAll('.ds-nav-group').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.getAttribute('aria-expanded') === 'true';
+      b.setAttribute('aria-expanded', String(!open));
+      document.getElementById(b.getAttribute('aria-controls')).hidden = open;
+    });
+  });
+  /* Hamburger: collapse the rail to icons (open groups close so nothing is
+     reachable-but-invisible); expand restores labels. */
+  var railToggle = document.getElementById('railToggle');
+  railToggle.addEventListener('click', function () {
+    var rail = document.getElementById('railNav');
+    var expanded = rail.classList.toggle('is-expanded');
+    railToggle.setAttribute('aria-expanded', String(expanded));
+    railToggle.setAttribute('aria-label', expanded ? 'Collapse navigation' : 'Expand navigation');
+    if (!expanded) {
+      rail.querySelectorAll('.ds-nav-group[aria-expanded="true"]').forEach(function (g) {
+        g.setAttribute('aria-expanded', 'false');
+        document.getElementById(g.getAttribute('aria-controls')).hidden = true;
+      });
+    }
+  });
+})();
+</script>
+</body>
+</html>

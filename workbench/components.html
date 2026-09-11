@@ -415,6 +415,28 @@
         </div>
       </div>
     </div>
+    <div class="wb-example" data-js="wbNavGroupJs">
+      <h3>Primary rail — expandable group (Data Entry)</h3>
+      <div class="wb-canvas on-teal">
+        <div class="ds-nav-rail is-expanded" style="width:240px;border-radius:8px;padding:8px 0">
+          <button class="ds-nav-item ds-nav-group" aria-expanded="true" aria-controls="wbNavSub"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#edit"/></svg>Data Entry<svg class="ds-nav-chevron" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
+          <ul class="ds-nav-sub" id="wbNavSub">
+            <li><a href="#">Patient</a></li>
+            <li><a href="#">Organization</a></li>
+            <li><a href="#">Provider</a></li>
+            <li><a href="#">Lab Report</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script type="text/plain" id="wbNavGroupJs">
+      // Rail group toggle — mirrors the app's toggleSubMenu contract.
+      btn.addEventListener('click', () => {
+        const open = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!open));
+        document.getElementById(btn.getAttribute('aria-controls')).hidden = open;
+      });
+    </script>
     <div class="wb-example">
       <h3>Secondary navigation (316px)</h3>
       <div class="wb-canvas">
@@ -458,6 +480,7 @@
     </div>
     <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
       <li>The rail is a <code>&lt;nav aria-label="Main navigation"&gt;</code> landmark; the current screen carries <code>aria-current="page"</code> (drives the active visual too).</li>
+      <li>Expandable groups (Data Entry, Merge Patients) are <code>&lt;button aria-expanded aria-controls&gt;</code>; collapsed sub-lists use the <code>hidden</code> attribute so their items leave the Tab order. In the app this is ONE shared fragment (<code>layout/navbar.html</code>) — reskin once, every screen inherits it.</li>
       <li>Rail focus is a white inset ring on the teal surface — visible on the dark background where the standard teal ring would vanish.</li>
       <li>Secondary-nav group headers are buttons with <code>aria-expanded</code>/<code>aria-controls</code>; collapse chevrons are <code>aria-hidden</code>.</li>
       <li>The incomplete-sections state says so in words ("Required — 2 sections incomplete"), not just a red tint (1.4.1).</li>

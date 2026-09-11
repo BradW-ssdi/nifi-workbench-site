@@ -131,6 +131,17 @@ a.ds-btn { text-decoration: none; }
 /* ------------------------------ primary rail ----------------------------- */
 .ds-nav-rail { background: var(--ds-nav-bg); width: var(--ds-sidebar-collapsed); min-height: 100%; }
 .ds-nav-rail.is-expanded { width: 240px; }
+/* Collapsed (icon-only) rail — the default in the design mock. Labels and
+   chevrons hide, open groups close, icons center; every control keeps its
+   accessible name because labels are real text, not tooltips alone. */
+.ds-nav-rail:not(.is-expanded) .ds-nav-label {
+  /* sr-only style hiding: the label stays as the control's accessible name */
+  position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap;
+}
+.ds-nav-rail:not(.is-expanded) .ds-nav-chevron,
+.ds-nav-rail:not(.is-expanded) .ds-nav-sub { display: none; }
+.ds-nav-rail:not(.is-expanded) .ds-nav-item { justify-content: center; padding: 12px 0; margin: 2px 8px; gap: 0; }
 .ds-nav-item {
   display: flex; align-items: center; gap: 14px;
   color: #fff; text-decoration: none;
@@ -141,6 +152,20 @@ a.ds-btn { text-decoration: none; }
 .ds-nav-item.is-active { background: var(--ds-nav-active-overlay); }
 .ds-nav-item:focus-visible, .ds-nav-item.is-focus { background: var(--ds-nav-focus-overlay); outline: 2px solid #fff; outline-offset: -2px; box-shadow: none; }
 .ds-nav-icon { width: 22px; height: 22px; fill: currentColor; flex: none; }
+/* Expandable rail group (Data Entry, Merge Patients): a BUTTON with
+   aria-expanded + aria-controls; the chevron flips, the sub-list toggles
+   with the hidden attribute. Mirrors the app's toggleSubMenu contract. */
+.ds-nav-group { width: calc(100% - 16px); border: 0; background: transparent; text-align: left; cursor: pointer; font-family: inherit; }
+.ds-nav-group .ds-nav-chevron { margin-left: auto; width: 20px; height: 20px; fill: currentColor; transition: transform .15s; }
+.ds-nav-group[aria-expanded="true"] .ds-nav-chevron { transform: rotate(180deg); }
+.ds-nav-sub { list-style: none; margin: 0 8px 4px 8px; padding: 0; }
+.ds-nav-sub a {
+  display: flex; align-items: center; color: #fff; text-decoration: none;
+  font-size: var(--ds-type-secnav-size); padding: 9px 16px 9px 56px; border-radius: 8px;
+}
+.ds-nav-sub a:hover { background: var(--ds-nav-hover-overlay); }
+.ds-nav-sub a[aria-current="page"] { background: var(--ds-nav-active-overlay); font-weight: 600; }
+.ds-nav-sub a:focus-visible { background: var(--ds-nav-focus-overlay); outline: 2px solid #fff; outline-offset: -2px; box-shadow: none; }
 
 /* ----------------------------- secondary nav ----------------------------- */
 .ds-secnav { width: var(--ds-secondary-nav-width); background: var(--ds-body-bg); font-size: var(--ds-type-secnav-size); padding: 12px; box-sizing: border-box; }
@@ -177,6 +202,10 @@ a.ds-btn { text-decoration: none; }
 .ds-card-body { padding: 12px 16px; }
 .ds-card-body ul { list-style: none; margin: 0; padding: 0; }
 .ds-card-body li a { display: inline-block; padding: 5px 0; }
+/* Nested menu groups (e.g. Lab Results / Lab Tests under Case Report &
+   Laboratory Management): real nested lists, indented — structure stays
+   in the markup, so screen readers announce the hierarchy. */
+.ds-card-body ul ul { padding-left: 24px; }
 
 /* --------------------------------- tables -------------------------------- */
 .ds-table { width: 100%; border-collapse: collapse; background: var(--ds-body-bg); font-size: var(--ds-type-body-size); }
