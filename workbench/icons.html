@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIFI DS — Icons</title>
+<link rel="stylesheet" href="../tokens/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="wb.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  
+  h1 { font-size: var(--ds-type-display-size); font-weight: var(--ds-type-display-weight); }
+  p.lead { max-width: 70ch; }
+  .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 24px; }
+  .icon-cell { display: flex; flex-direction: column; align-items: center; gap: 10px; background: var(--ds-surface-section); border: 1px solid var(--ds-border); border-radius: var(--ds-radius-card); padding: 18px 8px 12px; }
+  .icon-cell svg { width: 28px; height: 28px; fill: var(--ds-text); }
+  .icon-cell code { font-size: 12px; color: var(--ds-text-muted, #5a5f66); }
+  .swatch-row { display: flex; gap: 16px; align-items: center; margin-top: 28px; flex-wrap: wrap; }
+  .swatch-row .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: var(--ds-radius); }
+  .chip.on-primary { background: var(--ds-primary); color: #fff; }
+  .chip.on-primary svg { fill: #fff; }
+  .chip.plain svg { fill: var(--ds-text); }
+  .chip.link { color: var(--ds-link); }
+  .chip.link svg { fill: var(--ds-link); }
+</style>
+<script src="wb.js"></script>
+</head>
+<body class="ds wb">
+<main class="wb-main">
+<section class="wb-section" id="icons" style="margin-top:0">
+<h1 class="ds-type-display">Icons</h1>
+<p class="lead">Material Symbols Rounded, 24px grid, delivered as an inline SVG sprite (<code>icons/sprite.svg</code>).
+Fill inherits <code>currentColor</code>, so icons pick up the text color of their context. The set below is ranked from
+actual usage in the application (error, add, info and print are the heaviest hitters).</p>
+
+<div class="swatch-row">
+  <span class="chip on-primary"><svg class="ds-icon"><use href="../icons/sprite.svg#account_tree"/></svg> on primary</span>
+  <span class="chip plain"><svg class="ds-icon"><use href="../icons/sprite.svg#settings"/></svg> on surface</span>
+  <span class="chip link"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg> in links</span>
+</div>
+
+<div class="icon-grid" id="grid"></div>
+</section>
+<script>
+const names = ["error","add","info","print","account_tree","mail","admin_panel_settings","science","article","monitoring","open_in_new","search","edit","delete","save","close","check_circle","help","menu","home","person","settings","arrow_back","chevron_left","chevron_right","expand_more","keyboard_arrow_up","calendar_today","content_paste_search","description","download","upload_file","merge_type","more_horiz","tune","visibility"];
+document.getElementById('grid').innerHTML = names.map(n =>
+  `<div class="icon-cell"><svg aria-hidden="true"><use href="../icons/sprite.svg#${n}"/></svg><code>${n}</code></div>`
+).join('');
+</script>
+</main>
+</body>
+</html>

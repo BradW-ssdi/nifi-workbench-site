@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIFI DS — Provenance</title>
+<link rel="stylesheet" href="../tokens/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="wb.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  h1 { font-size: var(--ds-type-display-size); font-weight: var(--ds-type-display-weight); }
+  p.lead { max-width: 78ch; }
+  .prov-table { width: 100%; border-collapse: collapse; margin: 16px 0 8px; font-size: 14px; }
+  .prov-table th { text-align: left; font-weight: 600; padding: 8px 12px; background: var(--ds-surface-section); border-bottom: 2px solid var(--ds-border); }
+  .prov-table td { padding: 8px 12px; border-bottom: 1px solid var(--ds-border); vertical-align: top; }
+  .prov-table td:first-child { font-weight: 500; }
+  .prov-table code { font-size: 12.5px; background: var(--ds-surface-section); padding: 1px 5px; border-radius: 4px; word-break: break-all; }
+  .prov-table td { overflow-wrap: anywhere; }
+  .prov-table { table-layout: fixed; }
+  .prov-table th:first-child { width: 170px; }
+  .dup-hot { color: var(--ds-danger, #D40032); font-weight: 600; }
+  .dup-ok { color: var(--ds-success, #1E9E77); font-weight: 600; }
+  .prov-note { max-width: 78ch; color: var(--ds-text-muted, #5a5f66); font-size: 14px; }
+</style>
+<script src="wb.js"></script>
+</head>
+<body class="ds wb">
+<main class="wb-main">
+
+<section class="wb-section" id="about" style="margin-top:0">
+<h1 class="ds-type-display">Provenance</h1>
+<p class="lead">Where each design-system pattern is produced in the application codebase today. Paths are relative to
+<code>src/main/resources/</code> in the app repo. The <strong>Duplicates</strong> column is the consolidation backlog:
+every parallel copy listed there can collapse into one shared fragment or component. The same data lives in the
+variant catalogue's Provenance Map sheet and in <code>docs/provenance.md</code>.</p>
+<p class="prov-note">Three producer shapes exist in the app: <strong>shared fragments</strong> (breadcrumbs, main nav,
+global toast — already consolidated), <strong>parallel copies</strong> (same markup pasted per screen or entity — the
+cheapest wins), and <strong>inline-by-class</strong> (consolidated only by Bootstrap class — replaced screen-by-screen
+as pages are touched).</p>
+</section>
+
+<section class="wb-section" id="buttons">
+<h2 class="ds-type-h2">Buttons</h2>
+<table class="prov-table">
+<tr><th>Pattern</th><th>Producers</th><th>Duplicates</th></tr>
+<tr><td>Button Primary</td><td><code>templates/home/home.html</code> (dashboard widgets)</td><td><span class="dup-hot">90+ templates</span> declare <code>.btn-primary</code> inline — no shared button fragment</td></tr>
+<tr><td>Button Outline</td><td><code>templates/home/home.html</code></td><td><span class="dup-hot">60+ templates</span> use <code>.btn-outline-dark</code> inline</td></tr>
+<tr><td>Icon Button</td><td><code>templates/layout/header.html</code> + each queue/view template; some injected by <code>static/js/queues.js</code></td><td><span class="dup-hot">100+ files</span> — the largest duplicate set in the app</td></tr>
+<tr><td>Approve / Reject</td><td><code>approvalnotifications/approvalNotificationsFragments.html</code> (HTMX row fragment)</td><td><span class="dup-ok">none</span></td></tr>
+<tr><td>Filter Chip</td><td><code>queues/queueFilterChips.html</code> + <code>static/js/chip.js</code></td><td><code>contactrecords/contactSearchResultsContent.html</code> carries its own copy</td></tr>
+<tr><td>Secondary-Nav Toggle</td><td>each View/Edit page shell + <code>sec-nav-collapse.js</code></td><td><span class="dup-hot">14+ shells</span>, no shared fragment</td></tr>
+<tr><td>Close</td><td>per-modal <code>.btn-close</code></td><td><span class="dup-hot">90+ modal templates</span></td></tr>
+<tr><td>Add Row Pill</td><td>PBP body fragment + org add/edit + labreports fragments; rows via <code>batch-entry-utils.js</code></td><td>12+ templates, 3 JS files</td></tr>
+<tr><td>Jumper Link</td><td><code>pagedataentry/fragments/addEditPageDynamicElementsJumperLinks.html</code></td><td><span class="dup-hot">4 parallel fragments</span> (addEdit / compare / merge / view)</td></tr>
+<tr><td>Profile Button</td><td><code>templates/layout/header.html</code> + <code>nav.css</code></td><td>second copy in <code>layout/mainHeader.html</code></td></tr>
+</table>
+</section>
+
+<section class="wb-section" id="forms">
+<h2 class="ds-type-h2">Forms</h2>
+<table class="prov-table">
+<tr><th>Pattern</th><th>Producers</th><th>Duplicates</th></tr>
+<tr><td>Input Text</td><td><code>home.html</code> widgets + PBP emitter <code>addEditPageDynamicElementsBody.html</code></td><td>PBP body emitter ×3 modes; ad-hoc <code>form-control</code> in most modals</td></tr>
+<tr><td>Select</td><td><code>fragments/dropdownOptions.html</code> + <code>dropdownOptionsTomSelect.html</code>; host selects inline</td><td><span class="dup-hot">45+ templates</span> declare <code>form-select</code> inline</td></tr>
+<tr><td>Multi-Select</td><td>Tom Select vendor runtime markup; init in <code>components/dropdowns.js</code>, <code>new-page-specific.js</code></td><td><span class="dup-ok">none</span> — never exists in a template</td></tr>
+<tr><td>Datepicker</td><td><code>home.html</code> + PBP body fragments; behavior in <code>new-page-specific.js</code></td><td>3 templates</td></tr>
+<tr><td>Checkbox</td><td><code>home.html</code>, <code>fragments/checkboxList.html</code>, search/report filter fragments</td><td>inline repeats; only <code>checkboxList.html</code> is shared</td></tr>
+<tr><td>Text Area</td><td>PBP body fragment (+ HTMX)</td><td>compare/merge/view copies + <code>codelookup.html</code>, <code>interview.js</code></td></tr>
+</table>
+</section>
+
+<section class="wb-section" id="tables">
+<h2 class="ds-type-h2">Tables &amp; queues</h2>
+<table class="prov-table">
+<tr><th>Pattern</th><th>Producers</th><th>Duplicates</th></tr>
+<tr><td>Queue Table</td><td>queue page templates (approvalnotifications, outbreaks, rejectednotifications, <code>queues/dynamicQueue*.html</code>)</td><td><span class="dup-hot">20+ templates</span> duplicate the <code>section-table</code> wrapper; only custom queues share <code>dynamicQueue*</code></td></tr>
+<tr><td>Selection Table</td><td>openInvestigations, drrq, drsaq, updatedNotifications, investigationsSearchResults</td><td>each selection queue re-implements the checkbox column</td></tr>
+<tr><td>Repeating Block</td><td>PBP body fragment + <code>fragments/batchEntry{EditTable,Row,ViewTable}.html</code> + <code>batch-entry-utils.js</code></td><td><code>table-css</code> in 30+ templates</td></tr>
+<tr><td>Floating Bulk Bar</td><td><code>openinvestigations/openInvestigationsFloatingBar.html</code> + <code>floatingBar.css</code></td><td><span class="dup-hot">5 near-identical fragments</span> (OI, DRRQ, DRSAQ, Updated Notifications, Lab Reports) — prime consolidation target</td></tr>
+</table>
+</section>
+
+<section class="wb-section" id="modals">
+<h2 class="ds-type-h2">Modals</h2>
+<table class="prov-table">
+<tr><th>Pattern</th><th>Producers</th><th>Duplicates</th></tr>
+<tr><td>Patient Search</td><td><code>patients/advancedSearchModal.html</code> + <code>searchmodal/formFragment.html</code> + <code>advanced-search.js</code></td><td>launched from navbar and home</td></tr>
+<tr><td>Find (entity search)</td><td><code>organizations/modalContentOrgSearchForm.html</code>, provider and place equivalents</td><td><span class="dup-hot">3 parallel implementations</span>, one per entity</td></tr>
+<tr><td>Search Results</td><td><code>modalContentOrgSearchResults.html</code> / provider / place equivalents</td><td>~6 parallel producers across entities</td></tr>
+<tr><td>Add Entity</td><td><code>modalContentAddOrganization.html</code> / provider / <code>places/addPlace.html</code></td><td>one per entity + duplicated cancel-confirmation modals</td></tr>
+<tr><td>Manage Associations</td><td><code>manageContactAssociationsModal.html</code> + <code>manage-contact-associations.js</code></td><td>parallel treatment copy (<code>manageTreatmentAssociationsModal.html</code>)</td></tr>
+<tr><td>Small (notes / files)</td><td>inline in <code>viewInvestigation.html</code> (+ <code>addNotesTableRow.html</code> HTMX response)</td><td>similar inline modals in viewOutbreak, viewContactRecord, bulkImport, bulkTransfer</td></tr>
+</table>
+</section>
+
+<section class="wb-section" id="chrome">
+<h2 class="ds-type-h2">Chrome &amp; feedback</h2>
+<table class="prov-table">
+<tr><th>Pattern</th><th>Producers</th><th>Duplicates</th></tr>
+<tr><td>Main Nav</td><td><code>templates/layout/navbar.html</code> (+ <code>navbarContent.html</code>) + <code>nav.css</code></td><td><span class="dup-ok">none — properly shared</span></td></tr>
+<tr><td>Secondary Nav</td><td>per View/Edit shell <code>#secondaryNav</code> + <code>sec-nav-collapse.js</code></td><td><span class="dup-hot">14+ shells</span>; fed by the 4 jumper-link fragments</td></tr>
+<tr><td>Tabs</td><td><code>home.html</code>, <code>advancedSearchModal.html</code>, <code>searchContactModal.html</code></td><td>5 live producers</td></tr>
+<tr><td>Breadcrumbs</td><td><code>templates/fragments/breadcrumbs.html</code></td><td><span class="dup-ok">shared</span> — one stale copy in <code>manageAssociations_Ori.html</code></td></tr>
+<tr><td>Page Header</td><td>per-page <code>h1.display-6</code></td><td><span class="dup-hot">52 templates</span>, duplicated by design</td></tr>
+<tr><td>Cards</td><td><code>home.html</code> (dashboard, notices); <code>.card.summary</code> per View/Edit shell</td><td>summary card re-declared in <span class="dup-hot">25+ templates</span></td></tr>
+<tr><td>Toast</td><td><code>templates/fragments/globalToast.html</code>, triggered from 10+ JS files</td><td>per-queue fragment copies (drrqFragments, drsaqFragments)</td></tr>
+<tr><td>Info Banner</td><td>inline alert divs</td><td>18 templates, no shared fragment</td></tr>
+<tr><td>Danger Banner</td><td>org add/edit + PBP fragments (<code>batchEntryErrorMsg</code>), injected by <code>validations.js</code> / <code>batch-entry-utils.js</code></td><td>12 templates + 8 JS producers; <code>errorFragment.html</code> unevenly used</td></tr>
+</table>
+</section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,155 @@
+/* ============================================================================
+   NIFI Design System — Design Tokens (POC)
+   Source of truth: extracted from the live app's styles.css (origin/main),
+   verified 2026-09-08. Values marked [PROPOSED] are improvements introduced by
+   the design system and do not yet exist in the app.
+   Layers: primitive → semantic. Screens must reference semantic tokens only.
+   ============================================================================ */
+
+:root {
+  /* ------------------------------ primitives ----------------------------- */
+  --teal-700: #2C6777;   /* brand primary */
+  --teal-800: #1F4D5A;   /* primary hover */
+  --teal-900: #17404B;   /* primary pressed [PROPOSED] */
+  --teal-100: #e6f2f5;   /* summary bg / outline-btn hover */
+  --teal-150: #d4e7ec;   /* outline-btn pressed [PROPOSED] */
+  --teal-400: #52AB99;   /* form valid */
+
+  --green-700: #147A5C;  --green-600: #188665;  --green-500: #1E9E77;  /* green-700: success TEXT on subtle surfaces (4.7:1 on --success-bg-subtle) */
+  --blue-600: #0078b4;   --blue-700: #00639c;
+  --link-600: #0070C0;   --link-800: #104E8B;
+  --gold-700: #996b00;   --gold-800: #814f00;
+  --red-600: #D40032;    --red-700: #C00000;   --red-800: #9d0023;
+  --red-650: #A80028;    /* danger hover [PROPOSED - unification] */
+  --red-750: #8C0021;    /* danger pressed [PROPOSED - unification] */
+  --purple-700: #7014a5;
+  --bluegray-600: #546E7A; /* closed badge (NIFI-29207) */
+
+  --gray-900: #111111; --gray-800: #212121; --gray-700: #333333;
+  --gray-600: #5a5f66; --gray-400: #999999; --gray-300: #CCCCCC;
+  --gray-250: #d0d5d7; --gray-225: #e0e0e0; --gray-200: #e9ecef;
+  --gray-150: #f1f3f5; --gray-100: #F0F1F4; --gray-75: #f6f8fc;
+  --gray-50: #f8f9fa;  --white: #ffffff;
+
+  --summary-border: #c3d7e6;
+  --bulkbar-bg: #555555;
+
+  /* subtle status surfaces */
+  --success-bg-subtle: #E8F5E9; --success-border-subtle: #a0c8c0;
+  --info-bg-subtle: #d4e8f7;    --info-border-subtle: #9fc3df;
+  --warning-bg-subtle: #FFF3E0; --warning-border-subtle: #cebf9c;
+  --danger-bg-subtle: #FFD9D9;  --danger-border-subtle: #DBA4A4;
+
+  /* ------------------------------- semantic ------------------------------ */
+  --ds-primary: var(--teal-700);
+  --ds-primary-hover: var(--teal-800);
+  --ds-primary-pressed: var(--teal-900);       /* [PROPOSED] app has no pressed state */
+  --ds-secondary: var(--gray-600);
+  --ds-success: var(--green-600);
+  --ds-info: var(--blue-600);
+  --ds-warning: var(--gold-700);
+  --ds-danger: var(--red-600);                 /* NOTE: app .btn-danger still renders
+                                                  Bootstrap stock #dc3545 — DS unifies on
+                                                  the token. Code fix tracked in decisions. */
+  --ds-danger-hover: var(--red-650);           /* [PROPOSED] */
+  --ds-danger-pressed: var(--red-750);         /* [PROPOSED] */
+  --ds-pending: var(--purple-700);
+  --ds-status-closed: var(--bluegray-600);
+
+  --ds-body-bg: var(--white);
+  --ds-body-bg-alt: var(--gray-75);
+  --ds-text: var(--gray-700);
+  --ds-text-secondary: var(--gray-600);
+  --ds-text-emphasis: var(--gray-900);
+  --ds-border: var(--gray-250);
+  --ds-surface-section: var(--gray-100);
+  --ds-surface-secondary: var(--gray-150);
+
+  --ds-link: var(--link-600);
+  --ds-link-hover: var(--link-800);
+  --ds-focus-ring: var(--link-600);
+  --ds-focus-halo: var(--white);
+
+  --ds-invalid: var(--red-700);
+  --ds-valid: var(--teal-400);
+
+  --ds-nav-bg: var(--teal-700);
+  --ds-nav-hover-overlay: rgba(0, 0, 0, 0.15);
+  --ds-nav-active-overlay: rgba(0, 0, 0, 0.3);
+  --ds-nav-focus-overlay: rgba(0, 0, 0, 0.15); /* dark overlay: white label stays >=4.5:1 (the white ring carries the focus signal) */
+  --ds-secnav-item-hover: var(--gray-225);
+  --ds-secnav-item-pressed: #d5d5d5;           /* [PROPOSED] */
+
+  --ds-table-header-bg: var(--gray-300);
+  --ds-table-outline: var(--gray-400);
+
+  /* ------------------------------ typography -----------------------------
+     Improved ramp. Sizes anchored to what ships today (28/24/20/16/14/12);
+     weights and line-heights rationalized — see docs/type-system.md.       */
+  --ds-font-family: "Inter", sans-serif;
+  --ds-font-icons: "Material Symbols Rounded";
+
+  --ds-type-display-size: 1.75rem;   /* 28 — page title */
+  --ds-type-display-weight: 500;
+  --ds-type-display-lh: 1.2;
+  --ds-type-h1-size: 1.5rem;         /* 24 — section head */
+  --ds-type-h1-weight: 600;          /* [PROPOSED] .head ships unweighted */
+  --ds-type-h1-lh: 1.25;
+  --ds-type-h2-size: 1.25rem;        /* 20 — card / subsection */
+  --ds-type-h2-weight: 600;          /* [PROPOSED] resolves h2:400 vs card-title:600 */
+  --ds-type-h2-lh: 1.3;
+  --ds-type-h3-size: 1rem;           /* 16 — group label */
+  --ds-type-h3-weight: 600;          /* [PROPOSED] separates from body by weight */
+  --ds-type-h3-lh: 1.4;
+  --ds-type-subtitle-size: 1.125rem; /* 18 [PROPOSED] rationalized from 1.1rem/17.6 */
+  --ds-type-subtitle-weight: 600;
+  --ds-type-body-lg-size: 1rem;      /* 16 */
+  --ds-type-body-size: 0.875rem;     /* 14 — dominant */
+  --ds-type-body-lh: 1.5;
+  --ds-type-label-size: 0.875rem;    /* 14 form labels */
+  --ds-type-label-weight: 500;       /* [PROPOSED] labels ship at 400 */
+  --ds-type-caption-size: 0.75rem;   /* 12 */
+  --ds-type-caption-lh: 1.4;
+  --ds-type-overline-size: 0.75rem;  /* 12 [PROPOSED] nav group headers */
+  --ds-type-overline-weight: 600;
+  --ds-type-overline-tracking: 0.04em;
+  --ds-type-button-size: 0.875rem;   /* 14 */
+  --ds-type-button-weight: 500;
+  --ds-type-nav-rail-size: 1rem;     /* 16 primary sidebar items */
+  --ds-type-nav-rail-weight: 500;
+  --ds-type-secnav-size: 0.875rem;   /* 14 secondary nav items */
+  --ds-type-secnav-weight: 600;
+
+  /* ------------------------------- layout -------------------------------- */
+  --ds-radius: 4px;
+  --ds-radius-card: 8px;
+  --ds-space-1: 4px; --ds-space-2: 8px; --ds-space-3: 12px;
+  --ds-space-4: 16px; --ds-space-5: 24px; --ds-space-6: 32px;
+  --ds-sidebar-collapsed: 64px;
+  --ds-secondary-nav-width: 316px;
+  --ds-header-height: 120px;
+  --ds-header-height-compact: 56px;
+  --ds-control-min-height: 38px;
+  --ds-target-min: 44px;
+}
+
+/* Dark theme — values shipped in the app today under data-bs-theme="dark". */
+[data-bs-theme="dark"] {
+  --ds-primary: #47bad9;
+  --ds-secondary: #7A8086;
+  --ds-success: #2AA585;
+  --ds-info: #3BB1F0;
+  --ds-warning: #E1A23A;
+  --ds-danger: #FF4D6D;
+  --ds-body-bg: #000000;
+  --ds-text: #E6E8EA;
+  --ds-text-emphasis: #FFFFFF;
+  --ds-text-secondary: #B9BFC3;
+  --ds-border: #2A363C;
+  --ds-surface-secondary: #303030;
+  --ds-surface-section: #414141;
+  --ds-link: #7CC4FF;
+  --ds-link-hover: #A7D8FF;
+  --ds-valid: #6FD1BF;
+  --ds-invalid: #FF6B7D;
+}

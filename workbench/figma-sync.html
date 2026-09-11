@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIFI DS — Figma sync sheet (Wave 2+3)</title>
+<link rel="stylesheet" href="../tokens/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Build sheet for the DOM-to-SVG extractor. Each [data-fig] subtree becomes a
+     named group in the exported SVG, which Figma turns into a named layer. */
+  body { margin: 0; padding: 40px; background: #fff; display: grid; gap: 36px; justify-items: start; }
+</style>
+</head>
+<body class="ds">
+
+<div data-fig="Icon Button/Default"><button class="ds-btn-icon" aria-label="Print"><svg class="ds-icon"><use href="../icons/sprite.svg#print"/></svg></button></div>
+<div data-fig="Icon Button/Hover"><button class="ds-btn-icon is-hover" aria-label="Download"><svg class="ds-icon"><use href="../icons/sprite.svg#download"/></svg></button></div>
+<div data-fig="Icon Button/Pressed"><button class="ds-btn-icon is-pressed" aria-label="Settings"><svg class="ds-icon"><use href="../icons/sprite.svg#settings"/></svg></button></div>
+<div data-fig="Close Button"><button class="ds-btn-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button></div>
+<div data-fig="Filter Chip/Default"><button class="ds-chip">Current sex <svg class="ds-icon"><use href="../icons/sprite.svg#expand_more"/></svg></button></div>
+<div data-fig="Filter Chip/Hover"><button class="ds-chip is-hover">Condition <svg class="ds-icon"><use href="../icons/sprite.svg#expand_more"/></svg></button></div>
+<div data-fig="Filter Chip/Filtered"><button class="ds-chip is-filtered">Female <svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button></div>
+<div data-fig="Add Row Pill"><button class="ds-btn-pill"><svg class="ds-icon"><use href="../icons/sprite.svg#add"/></svg>Add row</button></div>
+
+<div data-fig="Multi-Select" style="width:420px">
+  <div class="ds-multiselect" role="listbox" aria-label="Conditions">
+    <span class="item">LEAD <a href="#" aria-label="Remove LEAD">×</a></span>
+    <span class="item">TB <a href="#" aria-label="Remove TB">×</a></span>
+    <span class="item">COVID-19 <a href="#" aria-label="Remove COVID-19">×</a></span>
+  </div>
+</div>
+
+<div data-fig="Datepicker">
+  <div class="ds-datefield">
+    <input class="ds-input" type="text" placeholder="MM/DD/YYYY" aria-label="Date" style="width:220px">
+    <svg class="ds-icon"><use href="../icons/sprite.svg#calendar_today"/></svg>
+  </div>
+</div>
+
+<div data-fig="Accordion/Expanded" style="width:560px">
+  <div class="ds-accordion">
+    <button class="ds-accordion-header" aria-expanded="true">Summary
+      <svg class="ds-icon"><use href="../icons/sprite.svg#expand_more"/></svg>
+    </button>
+    <div class="ds-accordion-body ds-type-body">Case summary content renders here.</div>
+  </div>
+</div>
+
+<div data-fig="Toast/Success">
+  <div class="ds-toast" role="status">
+    <svg class="ds-icon"><use href="../icons/sprite.svg#check_circle"/></svg>
+    Investigation saved. The record is now available in the queue.
+    <button class="ds-btn-close" aria-label="Dismiss"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
+  </div>
+</div>
+
+<div data-fig="Card/Dashboard" style="width:480px">
+  <div class="ds-card ds-card-plainhead">
+    <div class="ds-card-header"><svg class="ds-card-icon"><use href="../icons/sprite.svg#search"/></svg><h2 class="ds-card-title">Patient Search</h2></div>
+    <div class="ds-card-body ds-type-body">Dashboard cards carry a plain header with a primary icon.</div>
+  </div>
+</div>
+
+<div data-fig="Card/Notices" style="width:480px">
+  <div class="ds-card ds-card-warnhead">
+    <div class="ds-card-header"><svg class="ds-card-icon"><use href="../icons/sprite.svg#error"/></svg><h2 class="ds-card-title">Notices</h2></div>
+    <div class="ds-card-body ds-type-body">The notices card keeps its warning-tinted header.</div>
+  </div>
+</div>
+
+<div data-fig="Card/Summary" style="width:480px">
+  <div class="ds-summary">
+    <div class="row1">Hepatitis B, acute · 10100 · Open</div>
+    <div class="row2">Investigator: P. Preparer · Started 03/05/2026 · Jurisdiction: Region 7</div>
+  </div>
+</div>
+
+<div data-fig="Modal/Find" style="width:560px">
+  <div class="ds-modal">
+    <div class="ds-modal-header">
+      <h2>Find Organization</h2>
+      <button class="ds-modal-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
+    </div>
+    <div class="ds-modal-body" style="display:grid;gap:14px">
+      <div class="ds-field"><label for="fs-name">Organization name</label><input class="ds-input" id="fs-name" type="text"></div>
+      <div class="ds-field"><label for="fs-juris">Jurisdiction</label><select class="ds-select" id="fs-juris"><option>All jurisdictions</option></select></div>
+    </div>
+    <div class="ds-form-footer">
+      <button class="ds-btn ds-btn-outline">Clear</button>
+      <button class="ds-btn ds-btn-primary">Search</button>
+    </div>
+  </div>
+</div>
+
+<div data-fig="Modal/Search Results" style="width:700px">
+  <div class="ds-modal" style="width:100%">
+    <div class="ds-modal-header">
+      <h2>Organization Search Results</h2>
+      <button class="ds-modal-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
+    </div>
+    <div class="ds-modal-body" style="padding:0">
+      <table class="ds-table">
+        <thead><tr><th>Name</th><th>Address</th><th>Jurisdiction</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Austin Public Health Lab</td><td>7201 Levander Loop</td><td>Travis</td><td><a class="ds-link" href="#">Select</a></td></tr>
+          <tr><td>Dallas County Health Dept</td><td>2377 N Stemmons Fwy</td><td>Dallas</td><td><a class="ds-link" href="#">Select</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ds-form-footer">
+      <button class="ds-btn ds-btn-outline">Back to search</button>
+      <button class="ds-btn ds-btn-primary">Select</button>
+    </div>
+  </div>
+</div>
+
+<div data-fig="Modal/Small" style="width:420px">
+  <div class="ds-modal" style="width:100%">
+    <div class="ds-modal-header">
+      <h2>Add Note</h2>
+      <button class="ds-modal-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
+    </div>
+    <div class="ds-modal-body">
+      <div class="ds-field" style="max-width:none"><label for="fs-note" class="ds-required">Note</label><textarea class="ds-input" id="fs-note" rows="3"></textarea></div>
+    </div>
+    <div class="ds-form-footer">
+      <button class="ds-btn ds-btn-outline">Cancel</button>
+      <button class="ds-btn ds-btn-primary">Add</button>
+    </div>
+  </div>
+</div>
+
+<div data-fig="Repeating Block Table" style="width:640px">
+  <div style="border:1px solid var(--ds-border);border-radius:var(--ds-radius-card);overflow:hidden">
+    <table class="ds-table">
+      <thead><tr><th>Test</th><th>Result</th><th>Date</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>SARS-CoV-2 RNA Pnl</td><td>Detected</td><td>03/02/2026</td><td class="ds-row-actions"><a href="#" aria-label="Edit"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a><a href="#" aria-label="Delete"><svg class="ds-icon"><use href="../icons/sprite.svg#delete"/></svg></a></td></tr>
+        <tr><td>Hepatitis B virus DNA</td><td>Not detected</td><td>03/04/2026</td><td class="ds-row-actions"><a href="#" aria-label="Edit"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a><a href="#" aria-label="Delete"><svg class="ds-icon"><use href="../icons/sprite.svg#delete"/></svg></a></td></tr>
+      </tbody>
+    </table>
+    <div class="ds-table-addrow"><button class="ds-btn-pill"><svg class="ds-icon"><use href="../icons/sprite.svg#add"/></svg>Add row</button></div>
+  </div>
+</div>
+
+<div data-fig="Jumper Link/Default"><a class="ds-jumper-item" href="#" style="display:inline-flex;align-items:center;border:1px solid var(--ds-border);border-radius:var(--ds-radius);color:var(--ds-text);text-decoration:none;font:500 13px/1 var(--ds-font-family);padding:7px 12px">Case Info</a></div>
+<div data-fig="Jumper Link/Active"><a class="ds-jumper-item" href="#" style="display:inline-flex;align-items:center;border:1px solid var(--ds-primary);border-radius:var(--ds-radius);background:var(--ds-primary);color:#fff;text-decoration:none;font:500 13px/1 var(--ds-font-family);padding:7px 12px">Patient</a></div>
+
+<div data-fig="Profile Button">
+  <button class="ds-profile-btn">
+    <span class="ds-avatar">PP</span>
+    P. Preparer
+    <svg class="ds-icon"><use href="../icons/sprite.svg#expand_more"/></svg>
+  </button>
+</div>
+
+</body>
+</html>

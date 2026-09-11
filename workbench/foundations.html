@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIFI DS — Foundations</title>
+<link rel="stylesheet" href="../tokens/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="wb.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-top: 16px; }
+  .swatch { border: 1px solid var(--ds-border); border-radius: 6px; overflow: hidden; }
+  .swatch .chip { height: 56px; }
+  .swatch .meta { padding: 8px 10px; }
+  .ramp-row { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--ds-border); }
+  @media (max-width: 700px) { .ramp-row { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
+  .proposed { color: var(--ds-primary); font-weight: 600; }
+</style>
+<script src="wb.js"></script>
+</head>
+<body class="ds wb">
+<main class="wb-main">
+  <p class="ds-type-overline">NIFI Design System — POC</p>
+  <h1 class="ds-type-display">Foundations</h1>
+  <p class="ds-type-body">Tokens extracted from the live Texas app CSS (origin/main). Items tagged <span class="proposed">proposed</span> are improvements the system introduces — everything else ships today.</p>
+
+  <section class="wb-section" id="type">
+    <h2>Type system</h2>
+    <p class="ds-type-body">Inter everywhere. Sizes are anchored to the app's real scale (28/24/20/18/16/14/12); weights and line-heights are rationalized so hierarchy comes from weight, not just size.</p>
+    <div>
+      <div class="ramp-row"><div class="ds-type-caption">Display · 28 / 500 · lh 1.2 — page titles (.display-6)</div><div class="ds-type-display">System Management</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Heading 1 · 24 / 600 · lh 1.25 — section heads <span class="proposed">weight proposed</span></div><div class="ds-type-h1">Investigation summary</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Heading 2 · 20 / 600 · lh 1.3 — cards &amp; subsections <span class="proposed">resolves h2 400/600 split</span></div><div class="ds-type-h2">Decision Support Management</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Heading 3 · 16 / 600 · lh 1.4 — group labels <span class="proposed">weight proposed</span></div><div class="ds-type-h3">Search Demographics</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Subtitle · 18 / 600 <span class="proposed">rationalized from 17.6px</span></div><div class="ds-type-subtitle">Patient record details</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Body Large · 16 / 400 · lh 1.5</div><div class="ds-type-body-lg">Body text at one rem for less dense reading contexts.</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Body · 14 / 400 · lh 1.5 — the dominant size</div><div class="ds-type-body">The dominant paragraph, table, and control size across the application.</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Body Strong · 14 / 600</div><div class="ds-type-body-strong">Emphasized inline content and table headers.</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Label · 14 / 500 <span class="proposed">weight proposed</span></div><div class="ds-type-label">Last Name:</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Caption · 12 / 400 · lh 1.4 — help text, metadata</div><div class="ds-type-caption">As it appears on the patient record.</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Overline · 12 / 600 · +4% tracking, uppercase <span class="proposed">new — nav group headers</span></div><div class="ds-type-overline">Messaging Management</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Button · 14 / 500</div><div style="font-size:var(--ds-type-button-size);font-weight:var(--ds-type-button-weight)">Save changes</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Nav (rail) · 16 / 500 · white on teal</div><div style="font-size:1rem;font-weight:500">Data Entry</div></div>
+      <div class="ramp-row"><div class="ds-type-caption">Nav (secondary) · 14 / 600</div><div style="font-weight:600">Associations</div></div>
+    </div>
+  </section>
+
+  <section class="wb-section" id="color">
+    <h2>Color</h2>
+    <div id="swatches" class="swatches"></div>
+  </section>
+
+  <section class="wb-section" id="dark" data-bs-theme="dark" style="background:#000;border-radius:8px;padding:24px;">
+    <h2 style="color:#E6E8EA">Dark theme (ships in the app today)</h2>
+    <div id="swatches-dark" class="swatches"></div>
+  </section>
+</main>
+<script>
+const light = [
+  ['--ds-primary','Primary'],['--ds-primary-hover','Primary hover'],['--ds-primary-pressed','Primary pressed (proposed)'],
+  ['--ds-secondary','Secondary'],['--ds-success','Success'],['--green-700','Success ink'],['--ds-info','Info'],['--ds-warning','Warning'],
+  ['--ds-danger','Danger'],['--ds-danger-hover','Danger hover (proposed)'],['--ds-danger-pressed','Danger pressed (proposed)'],
+  ['--ds-pending','Pending'],['--ds-status-closed','Status: Closed'],
+  ['--ds-link','Link + focus ring'],['--ds-link-hover','Link hover'],
+  ['--ds-text','Body text'],['--ds-text-secondary','Secondary text'],['--ds-border','Border'],
+  ['--ds-surface-section','Section surface'],['--ds-surface-secondary','Secondary surface'],
+  ['--ds-invalid','Form invalid'],['--ds-valid','Form valid'],
+  ['--info-bg-subtle','Info subtle'],['--success-bg-subtle','Success subtle'],['--warning-bg-subtle','Warning subtle'],['--danger-bg-subtle','Danger subtle'],
+];
+const dark = [
+  ['--ds-primary','Primary'],['--ds-success','Success'],['--ds-info','Info'],['--ds-warning','Warning'],['--ds-danger','Danger'],
+  ['--ds-link','Link'],['--ds-link-hover','Link hover'],['--ds-text','Body text'],['--ds-border','Border'],
+  ['--ds-surface-secondary','Secondary surface'],['--ds-valid','Form valid'],['--ds-invalid','Form invalid'],
+];
+function render(id, list, scopeEl) {
+  const host = document.getElementById(id);
+  const cs = getComputedStyle(scopeEl);
+  for (const [tok, label] of list) {
+    const v = cs.getPropertyValue(tok).trim();
+    const d = document.createElement('div');
+    d.className = 'swatch';
+    d.innerHTML = `<div class="chip" style="background:${v}"></div><div class="meta" style="${id.includes('dark') ? 'color:#E6E8EA;' : ''}"><div class="ds-type-body-strong" style="${id.includes('dark') ? 'color:#E6E8EA;' : ''}">${label}</div><div class="ds-type-caption">${tok} · ${v.toUpperCase()}</div></div>`;
+    host.appendChild(d);
+  }
+}
+render('swatches', light, document.documentElement);
+render('swatches-dark', dark, document.querySelector('[data-bs-theme="dark"]'));
+</script>
+</body>
+</html>

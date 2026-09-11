@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIFI DS — Components</title>
+<link rel="stylesheet" href="../tokens/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="wb.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="wb.js"></script>
+</head>
+<body class="ds wb">
+<main class="wb-main">
+  <p class="ds-type-overline">NIFI Design System — POC</p>
+  <h1 class="ds-type-display">Components</h1>
+  <p class="ds-type-body">Every specimen is real CSS driven by tokens — the same files the app will consume.
+  The first specimen in each state row is <b>live</b> (hover it, tab to it, press it); the rest are forced
+  states via <code>.is-*</code> hooks for side-by-side review. <b>Show code</b> reveals the exact HTML of the
+  example and the system CSS behind it.</p>
+
+  <section class="wb-section" id="buttons">
+    <h2>Buttons</h2>
+    <p class="wb-desc">Primary for the single main action, outline for secondary actions, danger for destructive
+    ones. Pressed values are proposed — the app today silences <code>:active</code> entirely.</p>
+
+    <div class="wb-example">
+      <h3>Primary — state matrix</h3>
+      <div class="wb-canvas">
+        <div class="wb-matrix">
+          <div class="cell"><button class="ds-btn ds-btn-primary">Save</button><span class="ds-type-caption">Live — try me</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-primary is-hover">Save</button><span class="ds-type-caption">Hover · #1F4D5A</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-primary is-focus">Save</button><span class="ds-type-caption">Focus · white gap + 3px ring</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-primary is-pressed">Save</button><span class="ds-type-caption">Pressed · #17404B (proposed)</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-primary" disabled>Save</button><span class="ds-type-caption">Disabled · 65% opacity</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wb-example">
+      <h3>Outline — state matrix</h3>
+      <div class="wb-canvas">
+        <div class="wb-matrix">
+          <div class="cell"><button class="ds-btn ds-btn-outline">Cancel</button><span class="ds-type-caption">Live</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-outline is-hover">Cancel</button><span class="ds-type-caption">Hover · #E6F2F5</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-outline is-focus">Cancel</button><span class="ds-type-caption">Focus</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-outline is-pressed">Cancel</button><span class="ds-type-caption">Pressed · #D4E7EC (proposed)</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-outline" disabled>Cancel</button><span class="ds-type-caption">Disabled</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wb-example">
+      <h3>Danger — state matrix</h3>
+      <div class="wb-canvas">
+        <p class="ds-alert ds-alert-danger" style="margin-top:0">App code today: <code>.btn-danger</code> is never
+        overridden and renders Bootstrap stock #DC3545. The system unifies on the danger token #D40032 with a
+        proper hover/pressed ladder — tracked in docs/decisions.md (D-002).</p>
+        <div class="wb-matrix">
+          <div class="cell"><button class="ds-btn ds-btn-danger">Delete</button><span class="ds-type-caption">Live · #D40032 (token)</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-danger is-hover">Delete</button><span class="ds-type-caption">Hover · #A80028 (proposed)</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-danger is-focus">Delete</button><span class="ds-type-caption">Focus</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-danger is-pressed">Delete</button><span class="ds-type-caption">Pressed · #8C0021 (proposed)</span></div>
+          <div class="cell"><button class="ds-btn ds-btn-danger" disabled>Delete</button><span class="ds-type-caption">Disabled</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wb-example">
+      <h3>Button with icon</h3>
+      <div class="wb-canvas">
+        <div class="ds-toolbar">
+          <button class="ds-btn ds-btn-primary"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Add New</button>
+          <button class="ds-btn ds-btn-outline"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#upload_file"/></svg>Import</button>
+          <button class="ds-btn ds-btn-outline"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#print"/></svg>Print</button>
+          <button class="ds-btn ds-btn-outline"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#download"/></svg>Download</button>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>Use a real <code>&lt;button&gt;</code> — never a styled <code>&lt;a&gt;</code> or <code>&lt;div&gt;</code> with a click handler.</li>
+      <li>Icons inside labeled buttons carry <code>aria-hidden="true"</code>; the visible text is the accessible name.</li>
+      <li>Disable with the <code>disabled</code> attribute, not a class — it removes the control from the tab order correctly.</li>
+      <li>Focus is a 3px ring with a white gap (never removed); contrast: white on #2C6777 = 7.0:1, on #D40032 = 6.3:1 — both pass AA and the primary passes AAA.</li>
+      <li>Min target 40px tall (2.5.8 AA is 24px — met with margin). Reflows without clipping at 320px width (400% zoom).</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="links">
+    <h2>Links</h2>
+    <div class="wb-example">
+      <h3>Inline link — state matrix</h3>
+      <div class="wb-canvas">
+        <div class="wb-matrix">
+          <div class="cell"><a href="#" class="ds-link">Manage Users</a><span class="ds-type-caption">Live</span></div>
+          <div class="cell"><a href="#" class="ds-link is-hover">Manage Users</a><span class="ds-type-caption">Hover · #104E8B</span></div>
+          <div class="cell"><a href="#" class="ds-link is-focus">Manage Users</a><span class="ds-type-caption">Focus · 2px ring, offset 2</span></div>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>Links stay underlined — color is never the only distinction from body text (1.4.1). #0070C0 on white = 5.2:1.</li>
+      <li>Links navigate; anything that only triggers behavior is a <code>&lt;button&gt;</code>, even when styled as a link.</li>
+      <li>Link text is meaningful out of context ("Manage Users", never "click here") — screen-reader users browse links as a list (2.4.4).</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="inputs">
+    <h2>Inputs</h2>
+    <p class="wb-desc">Focus recolors the border in place — no outer ring floating outside the field.</p>
+    <div class="wb-example">
+      <h3>Text input — state matrix</h3>
+      <div class="wb-canvas">
+        <div class="wb-matrix">
+          <div class="cell"><input class="ds-input" aria-label="Sample input"><span class="ds-type-caption">Live — click in</span></div>
+          <div class="cell"><input class="ds-input is-focus" aria-label="Focused input"><span class="ds-type-caption">Focus · border recolors in place</span></div>
+          <div class="cell"><input class="ds-input is-invalid" aria-label="Invalid input"><span class="ds-type-caption">Invalid · #C00000</span></div>
+          <div class="cell"><input class="ds-input" value="Weaver" aria-label="Filled input"><span class="ds-type-caption">Filled</span></div>
+          <div class="cell"><input class="ds-input" disabled aria-label="Disabled input"><span class="ds-type-caption">Disabled · #E9ECEF</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="wb-example">
+      <h3>Select · checkbox · radio</h3>
+      <div class="wb-canvas">
+        <div class="wb-matrix">
+          <div class="cell"><select class="ds-select" aria-label="Sample select"><option>Select one</option><option>Cholera</option></select><span class="ds-type-caption">Select — live</span></div>
+          <div class="cell"><label class="ds-check"><input type="checkbox"> Include closed</label><span class="ds-type-caption">Checkbox — live</span></div>
+          <div class="cell"><label class="ds-check"><input type="checkbox" checked> Include closed</label><span class="ds-type-caption">Checked · #2C6777</span></div>
+          <div class="cell"><label class="ds-check"><input type="radio" name="r" checked> Patient</label><span class="ds-type-caption">Radio checked</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="wb-example">
+      <h3>Field with label, help and error text</h3>
+      <div class="wb-canvas">
+        <div style="display:grid;gap:24px;max-width:480px">
+          <div class="ds-field">
+            <label class="ds-required" for="wbAlg">Algorithm Name</label>
+            <input class="ds-input" id="wbAlg" type="text" required aria-describedby="wbAlgHelp">
+            <span class="ds-help-text" id="wbAlgHelp">Shown in the algorithm library.</span>
+          </div>
+          <div class="ds-field">
+            <label class="ds-required" for="wbAlg2">Algorithm Name</label>
+            <input class="ds-input" id="wbAlg2" type="text" required aria-invalid="true" aria-describedby="wbAlg2Err">
+            <span class="ds-error-text" id="wbAlg2Err">Algorithm Name is required.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>Every control has a programmatic label: a <code>&lt;label for&gt;</code>, or <code>aria-label</code> when no visible label exists. Placeholder text is never the label.</li>
+      <li>Required fields carry the <code>required</code> attribute; the red asterisk is presentation only.</li>
+      <li>Errors set <code>aria-invalid="true"</code> and tie the message with <code>aria-describedby</code>; the message names the field and the fix (3.3.1, 3.3.3). Help text is tied the same way.</li>
+      <li>Invalid state is a 2px border <em>plus</em> the text message — never color alone (1.4.1).</li>
+      <li>Focus recolors the border in place (2px #2C6777) — no outer ring floating outside the field.</li>
+      <li>Checkbox/radio: the whole label is clickable; native inputs keep native keyboard behavior.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="badges">
+    <h2>Badges &amp; Alerts</h2>
+    <div class="wb-example">
+      <h3>Status badges</h3>
+      <div class="wb-canvas">
+        <div class="wb-matrix">
+          <div class="cell"><span class="ds-badge ds-badge-open">Open</span><span class="ds-type-caption">Open · info</span></div>
+          <div class="cell"><span class="ds-badge ds-badge-closed">Closed</span><span class="ds-type-caption">Closed · #546E7A</span></div>
+          <div class="cell"><span class="ds-badge ds-badge-pending">Pending</span><span class="ds-type-caption">Pending · #7014A5</span></div>
+          <div class="cell"><span class="ds-badge ds-badge-active">Active</span><span class="ds-type-caption">Active · success</span></div>
+          <div class="cell"><span class="ds-badge ds-badge-inactive">Inactive</span><span class="ds-type-caption">Inactive</span></div>
+          <div class="cell"><span class="ds-badge ds-badge-warning">Needs publish</span><span class="ds-type-caption">Warning · #996B00</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="wb-example">
+      <h3>Alerts</h3>
+      <div class="wb-canvas">
+        <div style="display:grid;gap:12px;max-width:640px">
+          <div class="ds-alert ds-alert-info">Informational guidance for this screen.</div>
+          <div class="ds-alert ds-alert-success" role="status">Changes saved successfully.</div>
+          <div class="ds-alert ds-alert-success" role="status">Condition created. <a href="#">Open the Add Page screen</a> to build its investigation page.</div>
+          <div class="ds-alert ds-alert-warning">Review before continuing.</div>
+          <div class="ds-alert ds-alert-danger" role="alert">Something needs attention.</div>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>Badges convey status with text, never color alone; all five pass 4.5:1 (Open 4.7, Closed 5.3, Pending 8.0, Active 4.7, Danger 6.3).</li>
+      <li>An alert <em>injected after load</em> gets <code>role="alert"</code> (danger/blocking) or <code>role="status"</code> (confirmation) so screen readers announce it. Alerts present at page load need no live role.</li>
+      <li>Links inside alerts inherit the alert ink (<code>.ds-alert a</code>) — every ink already passes 4.5:1 on its tint; weight + underline mark them as links.</li>
+      <li>Every alert tint pairs the color with an explicit message; icons inside are <code>aria-hidden</code>.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="tables">
+    <h2>Data table</h2>
+    <p class="wb-desc">Sortable headers, view/edit row actions, zebra rows, hover highlight and status badges —
+    the pattern behind the WDS Algorithm Library.</p>
+    <div class="wb-example">
+      <h3>Table with row actions and pagination</h3>
+      <div class="wb-canvas">
+        <div style="border:1px solid var(--ds-border);border-radius:8px;overflow:hidden">
+          <div class="ds-table-scroll">
+          <table class="ds-table">
+            <caption class="ds-sr-only">Decision support algorithms, sorted by algorithm name ascending</caption>
+            <thead>
+              <tr>
+                <th scope="col">Actions</th>
+                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn">Algorithm Name <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View"><svg class="ds-icon"><use href="../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a></td>
+                <td>000_A_HepB_CI</td><td>03/05/2026</td>
+                <td><span class="ds-badge ds-badge-inactive">Inactive</span></td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View"><svg class="ds-icon"><use href="../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a></td>
+                <td>000_B_HepB_MAR</td><td>03/05/2026</td>
+                <td><span class="ds-badge ds-badge-active">Active</span></td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View"><svg class="ds-icon"><use href="../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a></td>
+                <td>1_TB_Neg_CulNAAT_MR_AssociateTB</td><td>09/24/2024</td>
+                <td><span class="ds-badge ds-badge-active">Active</span></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="ds-footer-pagination">
+            <span class="ds-page-summary">Results 1–20 of 35</span>
+            <span class="ds-toolbar-spacer"></span>
+            <nav class="ds-pagination" aria-label="Pagination">
+              <button class="ds-page-btn" aria-label="Previous page"><svg class="ds-icon"><use href="../icons/sprite.svg#chevron_left"/></svg></button>
+              <button class="ds-page-btn is-active" aria-current="page">1</button>
+              <button class="ds-page-btn">2</button>
+              <button class="ds-page-btn" aria-label="Next page"><svg class="ds-icon"><use href="../icons/sprite.svg#chevron_right"/></svg></button>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>Real <code>&lt;table&gt;</code> semantics: <code>&lt;th scope="col"&gt;</code> on every header and a <code>&lt;caption&gt;</code> (visually hidden is fine) naming the table.</li>
+      <li>Sorting is an action — the header control is a <code>&lt;button class="ds-sort-btn"&gt;</code>, never a link. The sorted column (and only it) carries <code>aria-sort="ascending|descending"</code>, and each re-sort is announced through the page's live region.</li>
+      <li>Icon-only row actions each carry an <code>aria-label</code> that names the row ("Edit 000_A_HepB_CI"), not just "Edit".</li>
+      <li>Row hover highlight is enhancement only — no information lives in hover.</li>
+      <li>A flagged row (<code>tr.is-flagged</code>, warning tint + inset bar) always pairs with a visible <code>ds-badge-warning</code> in a cell — the tint alone is never the message (1.4.1). See the Manage Conditions view.</li>
+      <li>Wide tables scroll inside <code>.ds-table-scroll</code> so the page itself never scrolls two ways at 400% zoom (1.4.10); the wrapper is keyboard-scrollable when it clips.</li>
+      <li>Pagination is a <code>&lt;nav aria-label="Pagination"&gt;</code>; the current page carries <code>aria-current="page"</code>; prev/next are labeled buttons.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="tabs">
+    <h2>Tabs</h2>
+    <div class="wb-example">
+      <h3>Tab bar</h3>
+      <div class="wb-canvas">
+        <div class="ds-tabs" role="tablist" aria-label="Algorithm sections">
+          <button class="ds-tab" role="tab" aria-selected="true" id="wbTab1" aria-controls="wbPanel1">Basic Criteria</button>
+          <button class="ds-tab" role="tab" aria-selected="false" tabindex="-1">Action</button>
+          <button class="ds-tab is-hover" role="tab" aria-selected="false" tabindex="-1">History</button>
+        </div>
+        <div role="tabpanel" id="wbPanel1" aria-labelledby="wbTab1" class="ds-type-body" style="padding:14px 4px">Basic criteria fields render here.</div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>The bar is <code>role="tablist"</code> with an <code>aria-label</code>; each tab is a <code>&lt;button role="tab"&gt;</code> with <code>aria-selected</code> and <code>aria-controls</code> pointing at its <code>role="tabpanel"</code>.</li>
+      <li>Roving tabindex: only the selected tab is in the Tab order (<code>tabindex="-1"</code> on the rest); Left/Right arrows move between tabs.</li>
+      <li>Selection is shown by the 3px underline <em>plus</em> weight change — not color alone. <code>aria-selected="true"</code> drives the same visual via CSS.</li>
+      <li>Tabs wrap to a second row at narrow widths instead of clipping (1.4.10).</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="breadcrumb">
+    <h2>Breadcrumb</h2>
+    <div class="wb-example">
+      <h3>Two and three levels</h3>
+      <div class="wb-canvas">
+        <div style="display:grid;gap:16px">
+          <nav class="ds-breadcrumb" aria-label="Breadcrumb, two levels">
+            <a href="#">System Management</a>
+            <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#chevron_right"/></svg>
+            <span class="is-current" aria-current="page">Manage Workflow Decision Support</span>
+          </nav>
+          <nav class="ds-breadcrumb" aria-label="Breadcrumb, three levels">
+            <a href="#">System Management</a>
+            <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#chevron_right"/></svg>
+            <a href="#">Manage Workflow Decision Support</a>
+            <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#chevron_right"/></svg>
+            <span class="is-current" aria-current="page">Add Algorithm</span>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li><code>&lt;nav aria-label="Breadcrumb"&gt;</code> landmark; the current page is a non-link with <code>aria-current="page"</code>.</li>
+      <li>Separator chevrons are <code>aria-hidden</code> — they are decoration, not content.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="modal">
+    <h2>Modal</h2>
+    <p class="wb-desc">Replaces the legacy inline blocks that disabled the whole page (e.g. the WDS import panel).</p>
+    <div class="wb-example" data-js="wbModalJs">
+      <h3>Dialog with form footer</h3>
+      <div class="wb-canvas" style="position:relative;min-height:340px;background:#8a8f94">
+        <div class="ds-modal-backdrop" style="position:absolute">
+          <div class="ds-modal" role="dialog" aria-modal="true" aria-labelledby="wbImportTitle">
+            <div class="ds-modal-header">
+              <h2 id="wbImportTitle">Import Algorithm</h2>
+              <button class="ds-modal-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
+            </div>
+            <div class="ds-modal-body">
+              <p class="ds-type-body" style="margin-top:0">Browse to the Decision Support Algorithm export you would like to import.</p>
+              <div class="ds-field">
+                <label for="wbImportFile" class="ds-required">Algorithm file</label>
+                <input class="ds-input" type="file" id="wbImportFile">
+              </div>
+            </div>
+            <div class="ds-form-footer">
+              <button class="ds-btn ds-btn-outline">Cancel</button>
+              <button class="ds-btn ds-btn-primary">Import</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/plain" id="wbModalJs">
+      // Opening: un-hide the backdrop; the [hidden] attribute keeps it closed by default.
+      // Focus management is part of the contract, not an extra:
+      openBtn.addEventListener('click', () => {
+        modal.hidden = false;
+        modal.querySelector('.ds-modal').focus();     // move focus IN (dialog has tabindex="-1")
+      });
+      closeBtn.addEventListener('click', () => {
+        modal.hidden = true;
+        openBtn.focus();                              // return focus to the opener
+      });
+      // Esc closes; Tab is trapped inside while open.
+    </script>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li><code>role="dialog" aria-modal="true"</code> with <code>aria-labelledby</code> pointing at the visible title.</li>
+      <li>Focus moves into the dialog on open, is trapped inside while open, and returns to the trigger on close (2.4.3). Esc closes it.</li>
+      <li>The close button is labeled; everything behind the backdrop is inert to keyboard and screen reader while open.</li>
+      <li>At 400% zoom the dialog goes full-width and its body scrolls internally — footer buttons stay reachable (1.4.10).</li>
+      <li>This shell replaces the legacy inline import panel that disabled the page without telling assistive tech.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="forms">
+    <h2>Form sections</h2>
+    <div class="wb-example">
+      <h3>Grouped form with footer actions</h3>
+      <div class="wb-canvas">
+        <div style="max-width:720px">
+          <section class="ds-form-section">
+            <h3>Basic Criteria</h3>
+            <div class="ds-form-body">
+              <div class="ds-field">
+                <label class="ds-required" for="wbFa">Algorithm Name</label>
+                <input class="ds-input" id="wbFa" type="text">
+              </div>
+              <div class="ds-field">
+                <label class="ds-required" for="wbFb">Event Type</label>
+                <select class="ds-select" id="wbFb"><option value="">Select event type</option><option>Laboratory Report</option></select>
+              </div>
+            </div>
+          </section>
+          <div class="ds-form-footer" style="border:1px solid var(--ds-border);border-radius:8px">
+            <button class="ds-btn ds-btn-outline">Cancel</button>
+            <button class="ds-btn ds-btn-primary"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#save"/></svg>Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wb-example">
+      <h3>Error summary</h3>
+      <div class="wb-canvas">
+        <div class="ds-error-summary" role="alert" style="max-width:640px">
+          <h2>There is a problem</h2>
+          <ul>
+            <li><a href="#wbFa">Enter an algorithm name</a></li>
+            <li><a href="#wbFb">Select an event type</a></li>
+          </ul>
+        </div>
+        <p class="ds-type-caption" style="margin:12px 0 0">Rendered above the form after a failed submit and focused
+        programmatically (<code>tabindex="-1"</code>). Each entry is a link that moves focus to its field. The working
+        wiring ships in the Add Algorithm screen template.</p>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>Each group is a <code>&lt;section&gt;</code> (or <code>&lt;fieldset&gt;</code> for radio/checkbox groups) whose heading names it — headings form the page outline (1.3.1, 2.4.6).</li>
+      <li>Fields stack in one column; nothing depends on side-by-side placement, so the form reads the same at 400% zoom.</li>
+      <li>On submit with errors: focus moves to the first invalid field and an error summary names each problem as a link.</li>
+      <li>Footer actions wrap at narrow widths; the primary action is last in DOM and Tab order.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="nav">
+    <h2>Navigation</h2>
+    <div class="wb-example">
+      <h3>Primary rail — item states (on teal)</h3>
+      <div class="wb-canvas on-teal">
+        <div class="wb-matrix on-teal" style="grid-template-columns: repeat(auto-fill, 240px);background:transparent;padding:0">
+          <div class="cell"><a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#content_paste_search"/></svg>Queues</a><span class="ds-type-caption">Live — hover / tab</span></div>
+          <div class="cell"><a class="ds-nav-item is-hover" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#content_paste_search"/></svg>Queues</a><span class="ds-type-caption">Hover · black 15%</span></div>
+          <div class="cell"><a class="ds-nav-item is-active" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#content_paste_search"/></svg>Queues</a><span class="ds-type-caption">Active · black 30%</span></div>
+          <div class="cell"><a class="ds-nav-item is-focus" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#content_paste_search"/></svg>Queues</a><span class="ds-type-caption">Focus · white ring inset</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="wb-example">
+      <h3>Secondary navigation (316px)</h3>
+      <div class="wb-canvas">
+        <div style="display:flex;gap:40px;flex-wrap:wrap">
+          <nav class="ds-secnav" aria-label="Section navigation" style="border:1px solid var(--ds-border);border-radius:8px">
+            <p class="ds-type-overline" style="padding:4px 12px 8px">Associations</p>
+            <button class="ds-secnav-group-title" aria-expanded="true" aria-controls="wbSecInv">Investigations <span aria-hidden="true">▾</span></button>
+            <div id="wbSecInv">
+              <a href="#" class="is-current" aria-current="page">Open investigations</a>
+              <a href="#">Closed investigations</a>
+            </div>
+            <button class="ds-secnav-group-title" style="margin-top:8px" aria-expanded="false" aria-controls="wbSecLab">Lab Reports <span aria-hidden="true">▸</span></button>
+            <div id="wbSecLab" hidden></div>
+            <button class="ds-secnav-group-title is-danger" style="margin-top:8px">Required — 2 sections incomplete</button>
+          </nav>
+          <p class="ds-type-body" style="max-width:420px">Items are 14/600 on the secondary surface; hover #E0E0E0,
+          pressed #D5D5D5 (proposed). Sub-links 14/400, current = 600 primary. The danger group renders #FFD9D9
+          with hover #FAC7C7. Group headers use the Overline style.</p>
+        </div>
+      </div>
+    </div>
+    <div class="wb-example">
+      <h3>Header</h3>
+      <div class="wb-canvas" style="padding:0">
+        <header class="ds-header">
+          <span class="ds-logo"><img src="assets/texas-logo-main.png" alt="Texas Health and Human Services"></span>
+          <span class="ds-header-spacer"></span>
+          <button class="ds-btn-icon" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#help"/></svg></button>
+          <button class="ds-profile-btn" aria-haspopup="menu" aria-expanded="false" style="padding:0"><span class="ds-avatar" aria-hidden="true">PP</span><span class="ds-sr-only">Account menu — P. Preparer</span></button>
+        </header>
+      </div>
+    </div>
+    <div class="wb-example">
+      <h3>Skip link</h3>
+      <div class="wb-canvas">
+        <a class="ds-skip-link" href="#" style="position:static;display:inline-block">Skip to main content</a>
+        <p class="ds-type-caption" style="margin:12px 0 0">The first focusable element on every screen — parked off-screen
+        until keyboard focus reveals it, then jumps to <code>#main</code> (which carries <code>tabindex="-1"</code>).
+        Shown here in its focused position.</p>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>The rail is a <code>&lt;nav aria-label="Main navigation"&gt;</code> landmark; the current screen carries <code>aria-current="page"</code> (drives the active visual too).</li>
+      <li>Rail focus is a white inset ring on the teal surface — visible on the dark background where the standard teal ring would vanish.</li>
+      <li>Secondary-nav group headers are buttons with <code>aria-expanded</code>/<code>aria-controls</code>; collapse chevrons are <code>aria-hidden</code>.</li>
+      <li>The incomplete-sections state says so in words ("Required — 2 sections incomplete"), not just a red tint (1.4.1).</li>
+      <li>Header: the logo image has alt text, icon-only controls are labeled buttons, the avatar is decorative with a hidden text label carrying the name.</li>
+      <li>At 400% zoom the secondary nav goes full-width above the content; the header wraps instead of clipping.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="chips">
+    <h2>Icon buttons &amp; chips</h2>
+    <p class="wb-desc">Wave 2 — names track the variant inventory: Icon, Close, Filter, Filter chip, Add Row.</p>
+    <div class="wb-example">
+      <h3>Button — Icon · Close · Add Row</h3>
+      <div class="wb-canvas">
+        <div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+          <button class="ds-btn-icon" aria-label="Print"><svg class="ds-icon"><use href="../icons/sprite.svg#print"/></svg></button>
+          <button class="ds-btn-icon is-hover" aria-label="Download (hover)"><svg class="ds-icon"><use href="../icons/sprite.svg#download"/></svg></button>
+          <button class="ds-btn-icon is-pressed" aria-label="Settings (pressed)"><svg class="ds-icon"><use href="../icons/sprite.svg#settings"/></svg></button>
+          <button class="ds-btn-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
+          <button class="ds-btn-pill"><svg class="ds-icon"><use href="../icons/sprite.svg#add"/></svg>Add row</button>
+        </div>
+      </div>
+    </div>
+    <div class="wb-example">
+      <h3>Button — Filter &amp; Filter chip</h3>
+      <div class="wb-canvas">
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Current sex <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
+          <button class="ds-chip is-hover" aria-haspopup="listbox" aria-expanded="false">Condition <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
+          <button class="ds-chip is-filtered" aria-label="Remove filter: Female">Female <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button>
+          <button class="ds-chip is-filtered" aria-label="Remove filter: Open">Open <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>Icon-only buttons always carry an <code>aria-label</code>; the icon itself is <code>aria-hidden</code>. Icon buttons are 40px, close 32px — both clear the 24px AA target minimum (2.5.8).</li>
+      <li>Filter chips that open a value list use <code>aria-haspopup</code> + <code>aria-expanded</code>; applied-filter chips announce their action ("Remove filter: Female"), and removal is confirmed via the results region's live update.</li>
+      <li>The applied state is teal <em>plus</em> the × affordance — not color alone.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="pickers">
+    <h2>Multi-select &amp; datepicker</h2>
+    <div class="wb-example">
+      <h3>Form — Multi-Select (chips) · Datepicker</h3>
+      <div class="wb-canvas">
+        <div style="display:grid;gap:18px;max-width:460px">
+          <div class="ds-multiselect" role="group" aria-label="Conditions — selected values">
+            <span class="item">LEAD <button type="button" aria-label="Remove LEAD"><span aria-hidden="true">×</span></button></span>
+            <span class="item">TB <button type="button" aria-label="Remove TB"><span aria-hidden="true">×</span></button></span>
+            <span class="item">COVID-19 <button type="button" aria-label="Remove COVID-19"><span aria-hidden="true">×</span></button></span>
+          </div>
+          <div class="ds-field" style="max-width:none">
+            <label for="wbDob">Date of birth</label>
+            <div class="ds-datefield">
+              <input class="ds-input" type="text" id="wbDob" inputmode="numeric" aria-describedby="wbDobFmt" style="width:220px">
+              <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#calendar_today"/></svg>
+            </div>
+            <span class="ds-help-text" id="wbDobFmt">Format: MM/DD/YYYY</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>Selected values are removable <code>&lt;button&gt;</code>s, each named for its value ("Remove LEAD") — never bare × links.</li>
+      <li>The chip container is a labeled group; keyboard users can reach and remove every chip. Values must also be removable from the dropdown itself.</li>
+      <li>Date format lives in persistent help text tied by <code>aria-describedby</code> — a placeholder disappears on input and fails as the only format cue (3.3.2).</li>
+      <li>Typing the date directly is always allowed; the calendar popup is an alternative, not the only path.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="accordion">
+    <h2>Accordion</h2>
+    <div class="wb-example">
+      <h3>Accordion — section</h3>
+      <div class="wb-canvas">
+        <div class="ds-accordion" style="max-width:640px">
+          <button class="ds-accordion-header" aria-expanded="true" aria-controls="wbAccBody">Summary
+            <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg>
+          </button>
+          <div class="ds-accordion-body ds-type-body" id="wbAccBody">Case summary content renders here — the header is 15/600 on the
+          secondary surface with a rotating chevron; the body inherits Body 14.</div>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>The header is a <code>&lt;button&gt;</code> with <code>aria-expanded</code> and <code>aria-controls</code> pointing at the body; the chevron is <code>aria-hidden</code> and its rotation is disabled under <code>prefers-reduced-motion</code>.</li>
+      <li>Wrap the header button in the section's heading element (<code>&lt;h3&gt;&lt;button&gt;…&lt;/h3&gt;</code>) so the page outline includes collapsed sections.</li>
+      <li>Collapsed content uses <code>hidden</code> — genuinely removed from Tab order and screen readers, not visually parked off-screen.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="toasts">
+    <h2>Toasts</h2>
+    <div class="wb-example">
+      <h3>Alerts — Toast Success</h3>
+      <div class="wb-canvas">
+        <div class="ds-toast" role="status">
+          <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#check_circle"/></svg>
+          Investigation saved. The record is now available in the queue.
+          <button class="ds-btn-close" aria-label="Dismiss notification"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li><code>role="status"</code> announces the toast without stealing focus; focus never moves to a toast.</li>
+      <li>No auto-dismiss under 20 seconds unless the same information stays available elsewhere (2.2.1); the dismiss button is always present and labeled.</li>
+      <li>Success green on the subtle background passes 4.5:1; the check icon is reinforcement, not the message.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="cards">
+    <h2>Cards</h2>
+    <div class="wb-example">
+      <h3>Card — Dashboard · Notices · Summary</h3>
+      <div class="wb-canvas">
+        <div style="display:grid;gap:20px;max-width:640px">
+          <div class="ds-card ds-card-plainhead">
+            <div class="ds-card-header"><svg class="ds-card-icon"><use href="../icons/sprite.svg#search"/></svg><h2 class="ds-card-title">Patient Search</h2></div>
+            <div class="ds-card-body ds-type-body">Dashboard cards carry a plain header with a primary icon.</div>
+          </div>
+          <div class="ds-card ds-card-warnhead">
+            <div class="ds-card-header"><svg class="ds-card-icon"><use href="../icons/sprite.svg#error"/></svg><h2 class="ds-card-title">Notices</h2></div>
+            <div class="ds-card-body ds-type-body">The notices card keeps its warning-tinted header.</div>
+          </div>
+          <div class="ds-summary">
+            <div class="row1">Hepatitis B, acute · 10100 · Open</div>
+            <div class="row2">Investigator: P. Preparer · Started 03/05/2026 · Jurisdiction: Region 7</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>Card headers are real headings (<code>&lt;h2&gt;</code>/<code>&lt;h3&gt;</code>) at the right outline level; header icons are <code>aria-hidden</code>.</li>
+      <li>White on the teal card header = 7.0:1 (AAA); secondary text in the summary band passes 4.5:1 on #E6F2F5.</li>
+      <li>The warning-tinted Notices header keeps dark text — tint is never allowed to drop contrast below AA.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="modal-variants">
+    <h2>Modal variants</h2>
+    <p class="wb-desc">Wave 3 — Find, Search Results, and Small, per the variant inventory. All reuse the base modal shell.</p>
+    <div class="wb-example">
+      <h3>Modal — Find</h3>
+      <div class="wb-canvas" style="background:var(--ds-surface-secondary)">
+        <div class="ds-modal" role="dialog" aria-modal="true" aria-labelledby="mvFindTitle" style="margin:0 auto">
+          <div class="ds-modal-header">
+            <h2 id="mvFindTitle">Find Organization</h2>
+            <button class="ds-modal-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
+          </div>
+          <div class="ds-modal-body" style="display:grid;gap:14px">
+            <div class="ds-field"><label for="mv-name">Organization name</label><input class="ds-input" id="mv-name" type="text"></div>
+            <div class="ds-field"><label for="mv-juris">Jurisdiction</label><select class="ds-select" id="mv-juris"><option>All jurisdictions</option></select></div>
+          </div>
+          <div class="ds-form-footer">
+            <button class="ds-btn ds-btn-outline">Clear</button>
+            <button class="ds-btn ds-btn-primary"><svg class="ds-icon" style="margin-right:8px"><use href="../icons/sprite.svg#search"/></svg>Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wb-example">
+      <h3>Modal — Search Results</h3>
+      <div class="wb-canvas" style="background:var(--ds-surface-secondary)">
+        <div class="ds-modal" role="dialog" aria-modal="true" aria-labelledby="mvResTitle" style="margin:0 auto;width:min(720px,95%)">
+          <div class="ds-modal-header">
+            <h2 id="mvResTitle">Organization Search Results</h2>
+            <button class="ds-modal-close" aria-label="Close"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button>
+          </div>
+          <div class="ds-modal-body" style="padding:0">
+            <div class="ds-table-scroll">
+            <table class="ds-table">
+              <caption class="ds-sr-only">Organizations matching your search</caption>
+              <thead><tr><th scope="col">Name</th><th scope="col">Address</th><th scope="col">Jurisdiction</th><th scope="col"><span class="ds-sr-only">Select</span></th></tr></thead>
+              <tbody>
+                <tr><td>Austin Public Health Lab</td><td>7201 Levander Loop</td><td>Travis</td><td><a class="ds-link" href="#" aria-label="Select Austin Public Health Lab">Select</a></td></tr>
+                <tr><td>Dallas County Health Dept</td><td>2377 N Stemmons Fwy</td><td>Dallas</td><td><a class="ds-link" href="#" aria-label="Select Dallas County Health Dept">Select</a></td></tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+          <div class="ds-form-footer">
+            <button class="ds-btn ds-btn-outline">Back to search</button>
+            <button class="ds-btn ds-btn-primary">Select</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wb-example">
+      <h3>Modal — Small</h3>
+      <div class="wb-canvas" style="background:var(--ds-surface-secondary)">
+        <div class="ds-modal" role="dialog" aria-modal="true" aria-labelledby="mvNoteTitle" style="margin:0 auto;width:min(420px,92%)">
+          <div class="ds-modal-header">
+            <h2 id="mvNoteTitle">Add Note</h2>
+            <button class="ds-modal-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
+          </div>
+          <div class="ds-modal-body">
+            <div class="ds-field" style="max-width:none"><label for="mv-note" class="ds-required">Note</label><textarea class="ds-input" id="mv-note" rows="3"></textarea></div>
+          </div>
+          <div class="ds-form-footer">
+            <button class="ds-btn ds-btn-outline">Cancel</button>
+            <button class="ds-btn ds-btn-primary">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>All three variants keep the base contract: <code>role="dialog" aria-modal="true"</code>, <code>aria-labelledby</code> on the visible title, labeled close button, focus trap + return.</li>
+      <li>Search Results: the table keeps full semantics inside the dialog (caption, <code>scope="col"</code>, a named header for the Select column) and scrolls inside <code>.ds-table-scroll</code>.</li>
+      <li>Each row's Select action names its row ("Select Austin Public Health Lab") — ambiguous repeated links fail 2.4.4.</li>
+      <li>Chained dialogs (Find → Results) move focus to the new dialog's title on swap and announce the result count via a live region.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="repeating-block">
+    <h2>Repeating block</h2>
+    <div class="wb-example">
+      <h3>Table — Repeating Block</h3>
+      <div class="wb-canvas">
+        <div style="border:1px solid var(--ds-border);border-radius:var(--ds-radius-card);overflow:hidden;max-width:680px">
+          <table class="ds-table">
+            <caption class="ds-sr-only">Lab test results for this investigation</caption>
+            <thead><tr><th scope="col">Test</th><th scope="col">Result</th><th scope="col">Date</th><th scope="col"><span class="ds-sr-only">Actions</span></th></tr></thead>
+            <tbody>
+              <tr><td>SARS-CoV-2 RNA Pnl</td><td>Detected</td><td>03/02/2026</td><td class="ds-row-actions"><a href="#" aria-label="Edit row"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a><a href="#" aria-label="Delete row"><svg class="ds-icon"><use href="../icons/sprite.svg#delete"/></svg></a></td></tr>
+              <tr><td>Hepatitis B virus DNA</td><td>Not detected</td><td>03/04/2026</td><td class="ds-row-actions"><a href="#" aria-label="Edit row"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a><a href="#" aria-label="Delete row"><svg class="ds-icon"><use href="../icons/sprite.svg#delete"/></svg></a></td></tr>
+            </tbody>
+          </table>
+          <div class="ds-table-addrow"><button class="ds-btn-pill"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Add row</button></div>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>Row actions name their row ("Edit SARS-CoV-2 RNA Pnl row"); the actions column header exists for screen readers even though it is visually empty.</li>
+      <li>After "Add row", focus moves into the first field of the new row and a live region announces the addition; after delete, focus lands on the nearest surviving row.</li>
+      <li>Delete is confirmed through an accessible dialog — never silently on click.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="jumper">
+    <h2>Jumper links &amp; profile</h2>
+    <div class="wb-example">
+      <h3>Button — Nav Link (jumper) · Profile Button</h3>
+      <div class="wb-canvas">
+        <div style="display:grid;gap:22px">
+          <nav class="ds-jumper" aria-label="Section shortcuts">
+            <a href="#" aria-current="true">Patient</a>
+            <a href="#">Case Info</a>
+            <a href="#">Lab Results</a>
+            <a href="#">Notes</a>
+          </nav>
+          <button class="ds-profile-btn" aria-haspopup="menu" aria-expanded="false">
+            <span class="ds-avatar" aria-hidden="true">PP</span>
+            P. Preparer
+            <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>Jumper links live in a labeled <code>&lt;nav&gt;</code>; the active section carries <code>aria-current</code>, which drives the teal visual. Each link targets an element with a matching <code>id</code> and a <code>tabindex="-1"</code> so focus actually moves.</li>
+      <li>The profile control is a menu button: <code>aria-haspopup="menu"</code> + <code>aria-expanded</code>; the avatar initials are decorative — the visible name is the accessible name.</li>
+      <li>Jumper rows wrap at narrow widths; no horizontal scrolling at 400% zoom.</li>
+    </ul></details>
+  </section>
+
+  <section class="wb-section" id="footers">
+    <h2>Footers</h2>
+    <div class="wb-example">
+      <h3>Pagination footer · modal footer · bulk bar</h3>
+      <div class="wb-canvas">
+        <div style="display:grid;gap:20px;max-width:760px">
+          <div class="ds-footer-pagination"><span>Showing 1–10 of 190</span><span style="flex:1"></span><button class="ds-btn-page">Previous</button><button class="ds-btn-page">Next</button></div>
+          <div class="ds-footer-modal"><button class="ds-btn ds-btn-outline">Cancel</button><button class="ds-btn ds-btn-primary">Save</button></div>
+          <div><span class="ds-bulkbar" role="region" aria-label="Bulk actions"><span aria-live="polite">3 selected</span> <button>Assign</button><button>Export</button><button aria-label="Clear selection"><span aria-hidden="true">✕</span></button></span></div>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
+      <li>The bulk bar is a labeled <code>role="region"</code>; the selection count updates through <code>aria-live="polite"</code> as rows are checked.</li>
+      <li>A floating bar must never cover the focused element — keep scroll padding equal to the bar height so tabbed-to rows stay visible (2.4.11).</li>
+      <li>White on the dark bar = 12:1; bar buttons are real buttons and the clear control is labeled.</li>
+      <li>All three footers wrap their actions at narrow widths (1.4.10).</li>
+    </ul></details>
+  </section>
+</main>
+</body>
+</html>
