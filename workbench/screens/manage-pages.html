@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage Pages — Page Management — NEDSS</title>
+<link rel="stylesheet" href="../../tokens/tokens.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .layout { display: flex; min-height: 100vh; }
+  .rail { flex: none; }
+  .content { flex: 1; min-width: 0; }
+  .page-body { padding: 24px; display: grid; gap: 16px; }
+  .table-card { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-card); overflow: hidden; background: var(--ds-body-bg); }
+  .ds-toolbar .ds-input { width: 280px; }
+  .chip-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .chip-row .ds-link { font-size: 13px; }
+  @media (max-width: 820px) {
+    .layout { flex-direction: column; }
+    .rail.ds-nav-rail.is-expanded { width: 100%; display: flex; flex-wrap: wrap; align-items: center; min-height: 0; }
+    .ds-toolbar .ds-input { width: 100%; }
+    .page-body { padding: 16px; }
+  }
+</style>
+</head>
+<body class="ds">
+<a class="ds-skip-link" href="#main">Skip to main content</a>
+<div class="layout">
+  <nav class="rail ds-nav-rail is-expanded" aria-label="Main navigation" id="railNav">
+    <button class="ds-btn-icon" id="railToggle" aria-label="Collapse navigation" aria-expanded="true" aria-controls="railNav" style="margin:12px 14px;background:transparent"><svg class="ds-nav-icon" aria-hidden="true" style="fill:#fff"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a href="#">Patient</a></li>
+      <li><a href="#">Organization</a></li>
+      <li><a href="#">Provider</a></li>
+      <li><a href="#">Place</a></li>
+      <li><a href="#">Lab Report</a></li>
+      <li><a href="#">Morbidity Report</a></li>
+      <li><a href="#">Summary Report</a></li>
+      <li><a href="#">Bulk Data</a></li>
+    </ul>
+    <button class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a href="merge-patients.html">Manual Search</a></li>
+      <li><a href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" href="#" aria-current="page"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <div class="content">
+    <header class="ds-header">
+      <span class="ds-logo"><img src="../assets/texas-logo-main.png" alt="Texas Health and Human Services"></span>
+      <span class="ds-header-spacer"></span>
+      <button class="ds-btn-icon" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></button>
+      <button class="ds-profile-btn" aria-haspopup="menu" aria-expanded="false" style="padding:0"><span class="ds-avatar" aria-hidden="true">PP</span><span class="ds-sr-only">Account menu — P. Preparer</span></button>
+    </header>
+    <main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav class="ds-breadcrumb" aria-label="Breadcrumb">
+          <a href="system-management.html">System Management</a>
+          <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg>
+          <a href="system-management.html">Page Management</a>
+          <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg>
+          <span class="is-current" aria-current="page">Manage Pages</span>
+        </nav>
+        <h1 class="ds-type-display" style="margin:8px 0 0">Page Library</h1>
+      </div>
+      <div class="page-body">
+        <!-- Post-action feedback (legacy deleteMsg infoBox). DEV: server-rendered
+             after a draft delete; role="status" because it confirms. -->
+        <div class="ds-alert ds-alert-success" role="status">
+          Draft <b>Hepatitis_Case_Map_v3</b> was deleted. The published version is unchanged.
+        </div>
+        <div class="ds-alert ds-alert-info">
+          Pages built before Page Builder are managed in the legacy
+          <a href="#">Custom Fields Admin menu</a>.
+        </div>
+
+        <div class="ds-toolbar">
+          <a class="ds-btn ds-btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
+          <a class="ds-btn ds-btn-outline" href="#">Page Porting</a>
+          <button class="ds-btn ds-btn-outline"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg>Print</button>
+          <button class="ds-btn ds-btn-outline"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg>Download</button>
+          <span class="ds-toolbar-spacer"></span>
+          <input class="ds-input" type="search" id="filterInput" aria-label="Filter pages" placeholder="Filter pages" aria-describedby="filterStatus">
+        </div>
+
+        <!-- Column filters as a chip row (legacy per-header filter popups on
+             Event Type / Page State / Last Updated / Last Updated By). -->
+        <div class="chip-row" role="group" aria-label="Column filters">
+          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Event Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Page State <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Last Updated By <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+          <button class="ds-chip is-filtered" aria-label="Remove filter: Event Type Investigation" data-chip>Event Type: Investigation <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#close"/></svg></button>
+          <a class="ds-link" href="#" id="clearFilters">Remove all filters and sorts</a>
+        </div>
+
+        <div id="filterStatus" class="ds-sr-only" role="status" aria-live="polite"></div>
+
+        <div class="table-card">
+          <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Page library table, scrolls horizontally when zoomed">
+          <table class="ds-table" id="pageTable">
+            <caption class="ds-sr-only">Page library. Column headers with buttons are sortable. Editing a published page creates a new draft.</caption>
+            <thead>
+              <tr>
+                <th scope="col"><span class="ds-sr-only">Actions</span></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="1">Event Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Page Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="3">Page State <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="4">Related Condition(s) <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="5">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="6">Last Updated By <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+              </tr>
+            </thead>
+            <!-- DEV: tbody = th:each over pages. View is a link. Edit is a link on
+                 Draft rows; on Published rows it is a BUTTON (data-draft) because
+                 it creates a draft: the confirm dialog below replaces the legacy
+                 window.confirm(). -->
+            <tbody>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View Hepatitis_Case_Map_v2"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><button type="button" data-draft="Hepatitis_Case_Map_v2" aria-label="Edit Hepatitis_Case_Map_v2 (creates a draft)"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></button></td>
+                <td>Investigation</td>
+                <td>Hepatitis_Case_Map_v2</td>
+                <td><span class="ds-badge ds-badge-active">Published</span></td>
+                <td>Hepatitis A, acute; Hepatitis B, acute; Hepatitis C, acute</td>
+                <td>08/28/2026</td>
+                <td>Randi Alvarez</td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View Lead_Case_Map_v1"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit Lead_Case_Map_v1"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td>Investigation</td>
+                <td>Lead_Case_Map_v1</td>
+                <td><span class="ds-badge ds-badge-pending">Initial Draft</span></td>
+                <td>Lead, Elevated Blood Levels</td>
+                <td>09/10/2026</td>
+                <td>Priya Patel</td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View COVID19_Case_Map_v1"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit COVID19_Case_Map_v1"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td>Investigation</td>
+                <td>COVID19_Case_Map_v1</td>
+                <td><span class="ds-badge ds-badge-open">Published with Draft</span></td>
+                <td>Novel Coronavirus 2019</td>
+                <td>09/02/2026</td>
+                <td>Randi Alvarez</td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View STD_Interview_v1"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><button type="button" data-draft="STD_Interview_v1" aria-label="Edit STD_Interview_v1 (creates a draft)"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></button></td>
+                <td>Interview</td>
+                <td>STD_Interview_v1</td>
+                <td><span class="ds-badge ds-badge-active">Published</span></td>
+                <td>Syphilis, primary; Gonorrhea; Chlamydia trachomatis infection</td>
+                <td>07/14/2026</td>
+                <td>Marcus Lee</td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View TB_Case_Map_2020"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><button type="button" data-draft="TB_Case_Map_2020" aria-label="Edit TB_Case_Map_2020 (creates a draft)"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></button></td>
+                <td>Investigation</td>
+                <td>TB_Case_Map_2020</td>
+                <td><span class="ds-badge ds-badge-active">Published</span></td>
+                <td>Tuberculosis (2020 RVCT)</td>
+                <td>05/30/2026</td>
+                <td>Marcus Lee</td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View Vaccination_Record_v1"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit Vaccination_Record_v1"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td>Vaccination</td>
+                <td>Vaccination_Record_v1</td>
+                <td><span class="ds-badge ds-badge-pending">Draft</span></td>
+                <td>—</td>
+                <td>09/09/2026</td>
+                <td>Priya Patel</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="ds-footer-pagination">
+            <span class="ds-page-summary" id="pageSummary">Results 1–6 of 63</span>
+            <span class="ds-toolbar-spacer"></span>
+            <nav class="ds-pagination" aria-label="Pagination">
+              <button class="ds-page-btn" aria-label="Previous page" disabled><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_left"/></svg></button>
+              <button class="ds-page-btn is-active" aria-current="page">1</button>
+              <button class="ds-page-btn">2</button>
+              <button class="ds-page-btn">3</button>
+              <button class="ds-page-btn" aria-label="Next page"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg></button>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Create-draft confirmation (replaces the legacy window.confirm on Edit of a
+     published page). Standard dialog contract: trap, Esc, focus returns. -->
+<div class="ds-modal-backdrop" id="draftModal" hidden>
+  <div class="ds-modal" role="dialog" aria-modal="true" aria-labelledby="dmTitle" aria-describedby="dmDesc" tabindex="-1">
+    <div class="ds-modal-header">
+      <h2 id="dmTitle">Create a draft?</h2>
+      <button class="ds-modal-close" aria-label="Close"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#close"/></svg></button>
+    </div>
+    <div class="ds-modal-body">
+      <p class="ds-type-body" id="dmDesc" style="margin:0"></p>
+    </div>
+    <div class="ds-form-footer">
+      <button class="ds-btn ds-btn-outline" data-close>Cancel</button>
+      <button class="ds-btn ds-btn-primary" id="dmConfirm">Create draft</button>
+    </div>
+  </div>
+</div>
+<script>
+/* Working reference implementations — same contracts as the Algorithm Library
+   template. DEV: keep the aria updates and announcements when wiring HTMX. */
+(function () {
+  var table = document.getElementById('pageTable');
+  var status = document.getElementById('filterStatus');
+  var tbody = table.tBodies[0];
+
+  /* Sort: aria-sort exclusively on the sorted th, order announced. */
+  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var th = btn.closest('th');
+      var col = +btn.dataset.sort;
+      var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
+      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
+      th.setAttribute('aria-sort', dir);
+      var rows = Array.prototype.slice.call(tbody.rows);
+      rows.sort(function (a, b) {
+        var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();
+        return dir === 'ascending' ? x.localeCompare(y) : y.localeCompare(x);
+      });
+      rows.forEach(function (r) { tbody.appendChild(r); });
+      status.textContent = 'Sorted by ' + btn.textContent.trim() + ', ' + dir;
+    });
+  });
+
+  /* Text filter: announce the result count, never move focus. */
+  var filter = document.getElementById('filterInput');
+  var t;
+  filter.addEventListener('input', function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      var q = filter.value.trim().toLowerCase();
+      var shown = 0;
+      Array.prototype.forEach.call(tbody.rows, function (r) {
+        var hit = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+        r.hidden = !hit;
+        if (hit) shown++;
+      });
+      status.textContent = q ? (shown + ' of ' + tbody.rows.length + ' pages shown') : '';
+    }, 300);
+  });
+
+  /* Applied filter chips: removal announced; focus moves to the chip row's
+     next control so keyboard users are not stranded. */
+  document.querySelectorAll('[data-chip]').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var label = chip.textContent.trim();
+      var next = chip.nextElementSibling || chip.previousElementSibling;
+      chip.remove();
+      status.textContent = 'Filter removed: ' + label + '. Showing all pages.';
+      if (next) next.focus();
+    });
+  });
+
+  /* Remove all filters/sorts — the legacy "Remove All Filters/Sorts" contract. */
+  document.getElementById('clearFilters').addEventListener('click', function (e) {
+    e.preventDefault();
+    filter.value = '';
+    Array.prototype.forEach.call(tbody.rows, function (r) { r.hidden = false; });
+    document.querySelectorAll('[data-chip]').forEach(function (c) { c.remove(); });
+    status.textContent = 'All filters and sorts removed. Showing all pages.';
+  });
+  /* Edit on a published page creates a draft: confirm first. */
+  var backdrop = document.getElementById('draftModal'), dialog = backdrop.querySelector('.ds-modal'), opener = null;
+  function closeDraft() { backdrop.hidden = true; if (opener) opener.focus(); }
+  document.querySelectorAll('[data-draft]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      opener = btn;
+      document.getElementById('dmDesc').textContent = btn.dataset.draft + ' is published. Editing creates a new draft; the published page stays live until the draft is published.';
+      backdrop.hidden = false; dialog.focus();
+    });
+  });
+  backdrop.querySelectorAll('.ds-modal-close, [data-close]').forEach(function (b) { b.addEventListener('click', closeDraft); });
+  document.getElementById('dmConfirm').addEventListener('click', function () {
+    /* DEV: POST createNewDraft for opener.dataset.draft, then navigate to Edit Page. */
+    backdrop.hidden = true;
+    status.textContent = 'Draft of ' + opener.dataset.draft + ' created.';
+    opener.focus();
+  });
+  backdrop.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeDraft(); return; }
+    if (e.key !== 'Tab') return;
+    var items = dialog.querySelectorAll('button, [href], input, select, textarea');
+    var first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+})();
+
+/* Rail submenu toggle (shared navbar fragment contract) */
+document.querySelectorAll('.ds-nav-group').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var open = b.getAttribute('aria-expanded') === 'true';
+    b.setAttribute('aria-expanded', String(!open));
+    document.getElementById(b.getAttribute('aria-controls')).hidden = open;
+  });
+});
+/* Hamburger: collapse the rail to icons (open groups close so nothing is
+   reachable-but-invisible); expand restores labels. */
+var railToggle = document.getElementById('railToggle');
+railToggle.addEventListener('click', function () {
+  var rail = document.getElementById('railNav');
+  var expanded = rail.classList.toggle('is-expanded');
+  railToggle.setAttribute('aria-expanded', String(expanded));
+  railToggle.setAttribute('aria-label', expanded ? 'Collapse navigation' : 'Expand navigation');
+  if (!expanded) {
+    rail.querySelectorAll('.ds-nav-group[aria-expanded="true"]').forEach(function (g) {
+      g.setAttribute('aria-expanded', 'false');
+      document.getElementById(g.getAttribute('aria-controls')).hidden = true;
+    });
+  }
+});
+</script>
+</body>
+</html>

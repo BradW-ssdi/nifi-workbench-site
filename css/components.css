@@ -232,8 +232,8 @@ th[aria-sort] .ds-sort-btn { color: var(--ds-primary-hover); font-weight: 700; }
 .ds-table tr.is-flagged > td:first-child { box-shadow: inset 3px 0 0 var(--ds-warning); }
 .ds-table tbody tr.is-flagged:hover > td { background: var(--warning-bg-subtle); }
 .ds-table .ds-row-actions { white-space: nowrap; }
-.ds-table .ds-row-actions a { display: inline-flex; padding: 4px; border-radius: var(--ds-radius); color: var(--ds-primary); }
-.ds-table .ds-row-actions a:hover { background: var(--teal-100); }
+.ds-table .ds-row-actions :is(a, button) { display: inline-flex; padding: 4px; border: 0; background: transparent; border-radius: var(--ds-radius); color: var(--ds-primary); cursor: pointer; }
+.ds-table .ds-row-actions :is(a, button):hover { background: var(--teal-100); }
 .ds-table .ds-row-actions .ds-icon { width: 20px; height: 20px; }
 .ds-table-scroll { overflow-x: auto; }
 
