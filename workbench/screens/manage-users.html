@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage Users — Security Management — NEDSS</title>
+<link rel="stylesheet" href="../../tokens/tokens.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .layout { display: flex; min-height: 100vh; }
+  .rail { flex: none; }
+  .content { flex: 1; min-width: 0; }
+  .page-body { padding: 24px; display: grid; gap: 16px; }
+  .table-card { border: 1px solid var(--ds-border); border-radius: var(--ds-radius-card); overflow: hidden; background: var(--ds-body-bg); }
+  .ds-toolbar .ds-input { width: 280px; }
+  .chip-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .chip-row .ds-link { font-size: 13px; }
+  @media (max-width: 820px) {
+    .layout { flex-direction: column; }
+    .rail.ds-nav-rail.is-expanded { width: 100%; display: flex; flex-wrap: wrap; align-items: center; min-height: 0; }
+    .ds-toolbar .ds-input { width: 100%; }
+    .page-body { padding: 16px; }
+  }
+</style>
+</head>
+<body class="ds">
+<a class="ds-skip-link" href="#main">Skip to main content</a>
+<div class="layout">
+  <nav class="rail ds-nav-rail is-expanded" aria-label="Main navigation" id="railNav">
+    <button class="ds-btn-icon" id="railToggle" aria-label="Collapse navigation" aria-expanded="true" aria-controls="railNav" style="margin:12px 14px;background:transparent"><svg class="ds-nav-icon" aria-hidden="true" style="fill:#fff"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a href="#">Patient</a></li>
+      <li><a href="#">Organization</a></li>
+      <li><a href="#">Provider</a></li>
+      <li><a href="#">Place</a></li>
+      <li><a href="#">Lab Report</a></li>
+      <li><a href="#">Morbidity Report</a></li>
+      <li><a href="#">Summary Report</a></li>
+      <li><a href="#">Bulk Data</a></li>
+    </ul>
+    <button class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a href="merge-patients.html">Manual Search</a></li>
+      <li><a href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" href="#" aria-current="page"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <div class="content">
+    <header class="ds-header">
+      <span class="ds-logo"><img src="../assets/texas-logo-main.png" alt="Texas Health and Human Services"></span>
+      <span class="ds-header-spacer"></span>
+      <button class="ds-btn-icon" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></button>
+      <button class="ds-profile-btn" aria-haspopup="menu" aria-expanded="false" style="padding:0"><span class="ds-avatar" aria-hidden="true">PP</span><span class="ds-sr-only">Account menu — P. Preparer</span></button>
+    </header>
+    <main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav class="ds-breadcrumb" aria-label="Breadcrumb">
+          <a href="system-management.html">System Management</a>
+          <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg>
+          <a href="system-management.html">Security Management</a>
+          <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg>
+          <span class="is-current" aria-current="page">Manage Users</span>
+        </nav>
+        <h1 class="ds-type-display" style="margin:8px 0 0">Manage Users</h1>
+      </div>
+      <div class="page-body">
+        <!-- Post-action feedback (legacy ConfirmMesg infoBox). DEV: server-rendered
+             after create/edit/inactivate; role="status" because it confirms. -->
+        <div class="ds-alert ds-alert-success" role="status">
+          User <b>sthompson</b> was created. They can sign in once their account is provisioned in the identity provider.
+        </div>
+
+        <div class="ds-toolbar">
+          <a class="ds-btn ds-btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
+          <button class="ds-btn ds-btn-outline"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg>Print</button>
+          <button class="ds-btn ds-btn-outline"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg>Download</button>
+          <span class="ds-toolbar-spacer"></span>
+          <input class="ds-input" type="search" id="filterInput" aria-label="Filter users" placeholder="Filter users" aria-describedby="filterStatus">
+        </div>
+
+        <!-- Column filters as a chip row (legacy per-header popups: text on
+             User ID / names / Jurisdiction / Program Area / Permission Set / Role,
+             pick lists on Status / Date Created / Last Login). -->
+        <div class="chip-row" role="group" aria-label="Column filters">
+          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Jurisdiction <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Program Area <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Last Login <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+          <button class="ds-chip is-filtered" aria-label="Remove filter: Status Active" data-chip>Status: Active <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#close"/></svg></button>
+          <a class="ds-link" href="#" id="clearFilters">Remove all filters and sorts</a>
+        </div>
+
+        <div id="filterStatus" class="ds-sr-only" role="status" aria-live="polite"></div>
+
+        <div class="table-card">
+          <div class="ds-table-scroll" tabindex="0" role="group" aria-label="User table, scrolls horizontally when zoomed">
+          <table class="ds-table" id="userTable">
+            <caption class="ds-sr-only">Users. Column headers with buttons are sortable. Status changes are made from the View User screen.</caption>
+            <thead>
+              <tr>
+                <th scope="col"><span class="ds-sr-only">Actions</span></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="1">User ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Last Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="3">First Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="4">Jurisdiction <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="5">Program Area <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="6">Permission Set <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="7">Role <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="8">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="9">Date Created <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="10">Last Login <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></th>
+              </tr>
+            </thead>
+            <!-- DEV: tbody = th:each over users. Multi-value cells (Jurisdiction,
+                 Program Area) list values separated by semicolons; never truncate to
+                 a count with a tooltip. -->
+            <tbody>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View Randi Alvarez (ralvarez)"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit Randi Alvarez (ralvarez)"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td>ralvarez</td>
+                <td>Alvarez</td>
+                <td>Randi</td>
+                <td>State</td>
+                <td>All program areas</td>
+                <td>System Administrator</td>
+                <td>Administrator</td>
+                <td><span class="ds-badge ds-badge-active">Active</span></td>
+                <td>02/11/2024</td>
+                <td>09/11/2026</td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View Priya Patel (ppatel)"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit Priya Patel (ppatel)"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td>ppatel</td>
+                <td>Patel</td>
+                <td>Priya</td>
+                <td>Region 11 (Houston)</td>
+                <td>Hepatitis; STD; TB</td>
+                <td>Investigator</td>
+                <td>Epidemiologist</td>
+                <td><span class="ds-badge ds-badge-active">Active</span></td>
+                <td>06/03/2025</td>
+                <td>09/10/2026</td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View Marcus Lee (mlee)"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit Marcus Lee (mlee)"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td>mlee</td>
+                <td>Lee</td>
+                <td>Marcus</td>
+                <td>Dallas County</td>
+                <td>Hepatitis; General Communicable Diseases</td>
+                <td>Data Entry</td>
+                <td>Data Entry Specialist</td>
+                <td><span class="ds-badge ds-badge-active">Active</span></td>
+                <td>08/19/2025</td>
+                <td>09/09/2026</td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View Jasmine Nguyen (jnguyen)"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit Jasmine Nguyen (jnguyen)"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td>jnguyen</td>
+                <td>Nguyen</td>
+                <td>Jasmine</td>
+                <td>Travis County</td>
+                <td>STD</td>
+                <td>Surveillance</td>
+                <td>Surveillance Coordinator</td>
+                <td><span class="ds-badge ds-badge-active">Active</span></td>
+                <td>01/27/2026</td>
+                <td>09/08/2026</td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View Daniel Okafor (dokafor)"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit Daniel Okafor (dokafor)"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td>dokafor</td>
+                <td>Okafor</td>
+                <td>Daniel</td>
+                <td>Region 8 (San Antonio)</td>
+                <td>TB</td>
+                <td>Investigator</td>
+                <td>Epidemiologist</td>
+                <td><span class="ds-badge ds-badge-inactive">Inactive</span></td>
+                <td>03/14/2023</td>
+                <td>11/30/2025</td>
+              </tr>
+              <tr>
+                <td class="ds-row-actions"><a href="#" aria-label="View Sarah Thompson (sthompson)"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit Sarah Thompson (sthompson)"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td>sthompson</td>
+                <td>Thompson</td>
+                <td>Sarah</td>
+                <td>State</td>
+                <td>All program areas</td>
+                <td>Read Only</td>
+                <td>Reports Viewer</td>
+                <td><span class="ds-badge ds-badge-active">Active</span></td>
+                <td>05/05/2026</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="ds-footer-pagination">
+            <span class="ds-page-summary" id="pageSummary">Results 1–6 of 1,284</span>
+            <span class="ds-toolbar-spacer"></span>
+            <nav class="ds-pagination" aria-label="Pagination">
+              <button class="ds-page-btn" aria-label="Previous page" disabled><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_left"/></svg></button>
+              <button class="ds-page-btn is-active" aria-current="page">1</button>
+              <button class="ds-page-btn">2</button>
+              <button class="ds-page-btn">3</button>
+              <button class="ds-page-btn" aria-label="Next page"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg></button>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+/* Working reference implementations — same contracts as the Algorithm Library
+   template. DEV: keep the aria updates and announcements when wiring HTMX. */
+(function () {
+  var table = document.getElementById('userTable');
+  var status = document.getElementById('filterStatus');
+  var tbody = table.tBodies[0];
+
+  /* Sort: aria-sort exclusively on the sorted th, order announced. */
+  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var th = btn.closest('th');
+      var col = +btn.dataset.sort;
+      var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
+      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
+      th.setAttribute('aria-sort', dir);
+      var rows = Array.prototype.slice.call(tbody.rows);
+      rows.sort(function (a, b) {
+        var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();
+        return dir === 'ascending' ? x.localeCompare(y) : y.localeCompare(x);
+      });
+      rows.forEach(function (r) { tbody.appendChild(r); });
+      status.textContent = 'Sorted by ' + btn.textContent.trim() + ', ' + dir;
+    });
+  });
+
+  /* Text filter: announce the result count, never move focus. */
+  var filter = document.getElementById('filterInput');
+  var t;
+  filter.addEventListener('input', function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      var q = filter.value.trim().toLowerCase();
+      var shown = 0;
+      Array.prototype.forEach.call(tbody.rows, function (r) {
+        var hit = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+        r.hidden = !hit;
+        if (hit) shown++;
+      });
+      status.textContent = q ? (shown + ' of ' + tbody.rows.length + ' users shown') : '';
+    }, 300);
+  });
+
+  /* Applied filter chips: removal announced; focus moves to the chip row's
+     next control so keyboard users are not stranded. */
+  document.querySelectorAll('[data-chip]').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var label = chip.textContent.trim();
+      var next = chip.nextElementSibling || chip.previousElementSibling;
+      chip.remove();
+      status.textContent = 'Filter removed: ' + label + '. Showing all users.';
+      if (next) next.focus();
+    });
+  });
+
+  /* Remove all filters/sorts — the legacy "Remove All Filters/Sorts" contract. */
+  document.getElementById('clearFilters').addEventListener('click', function (e) {
+    e.preventDefault();
+    filter.value = '';
+    Array.prototype.forEach.call(tbody.rows, function (r) { r.hidden = false; });
+    document.querySelectorAll('[data-chip]').forEach(function (c) { c.remove(); });
+    status.textContent = 'All filters and sorts removed. Showing all users.';
+  });
+})();
+
+/* Rail submenu toggle (shared navbar fragment contract) */
+document.querySelectorAll('.ds-nav-group').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var open = b.getAttribute('aria-expanded') === 'true';
+    b.setAttribute('aria-expanded', String(!open));
+    document.getElementById(b.getAttribute('aria-controls')).hidden = open;
+  });
+});
+/* Hamburger: collapse the rail to icons (open groups close so nothing is
+   reachable-but-invisible); expand restores labels. */
+var railToggle = document.getElementById('railToggle');
+railToggle.addEventListener('click', function () {
+  var rail = document.getElementById('railNav');
+  var expanded = rail.classList.toggle('is-expanded');
+  railToggle.setAttribute('aria-expanded', String(expanded));
+  railToggle.setAttribute('aria-label', expanded ? 'Collapse navigation' : 'Expand navigation');
+  if (!expanded) {
+    rail.querySelectorAll('.ds-nav-group[aria-expanded="true"]').forEach(function (g) {
+      g.setAttribute('aria-expanded', 'false');
+      document.getElementById(g.getAttribute('aria-controls')).hidden = true;
+    });
+  }
+});
+</script>
+</body>
+</html>
