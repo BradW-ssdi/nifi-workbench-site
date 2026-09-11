@@ -26,6 +26,7 @@
       { title: 'WDS — Add Algorithm', href: 'screens/wds-add-algorithm.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Conditions', href: 'screens/manage-conditions.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Pages', href: 'screens/manage-pages.html', ext: true, icon: 'open_in_new' },
+      { title: 'Manage Questions', href: 'screens/manage-questions.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Users', href: 'screens/manage-users.html', ext: true, icon: 'open_in_new' },
       { title: 'Merge Patients — Manual', href: 'screens/merge-patients.html', ext: true, icon: 'open_in_new' },
       { title: 'Merge Patients — System Identified', href: 'screens/merge-system-identified.html', ext: true, icon: 'open_in_new' }
