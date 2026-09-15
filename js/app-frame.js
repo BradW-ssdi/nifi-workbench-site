@@ -78,7 +78,8 @@
       function close(returnFocus) {
         btn.setAttribute('aria-expanded', 'false');
         menu.hidden = true;
-        if (returnFocus) btn.focus();
+        /* After the collapsed state is published, so screen readers announce it on return. */
+        if (returnFocus) window.setTimeout(function () { btn.focus(); }, 30);
       }
       btn.addEventListener('click', function () {
         if (isOpen()) { close(false); return; }

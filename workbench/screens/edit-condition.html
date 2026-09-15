@@ -92,8 +92,8 @@
     <div class="form-content">
       <!-- Error summary. DEV: server-side validation renders this same block on postback,
            with one link per error and aria-invalid plus the message on each field. -->
-      <div class="ds-error-summary" id="errorSummary" role="alert" tabindex="-1" hidden>
-        <h2>Please fix the following errors:</h2>
+      <div class="ds-error-summary" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
+        <h2 id="errorSummaryTitle">Please fix the following errors:</h2>
         <ul id="errorList"></ul>
       </div>
       <p class="ds-type-caption required-note"><span class="ds-required-mark" aria-hidden="true">*</span> Indicates a required field</p>
@@ -113,7 +113,7 @@
             <div class="ds-field-row">
               <label class="ds-field-label" for="conditionName"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Name:</label>
               <div class="ds-field-control">
-                <input class="ds-input" id="conditionName" name="conditionName" type="text" autocomplete="off" maxlength="50" value="Syphilis, primary" required aria-describedby="conditionName-help">
+                <input class="ds-input" id="conditionName" name="conditionName" type="text" autocomplete="off" maxlength="50" value="Syphilis, primary" required aria-invalid="false" aria-describedby="conditionName-help">
                 <span class="ds-help-text" id="conditionName-help">Up to 50 characters.</span>
                 <span class="ds-error-text" id="conditionName-error" hidden></span>
               </div>
@@ -218,7 +218,7 @@
             <div class="ds-field-row">
               <label class="ds-field-label" for="daysBefore"><span class="ds-required-mark" aria-hidden="true">*</span>Days Before Onset:</label>
               <div class="ds-field-control">
-                <input class="ds-input is-short" id="daysBefore" name="daysBefore" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="daysBefore-help">
+                <input class="ds-input is-short" id="daysBefore" name="daysBefore" type="text" autocomplete="off" maxlength="3" required aria-invalid="false" inputmode="numeric" disabled aria-describedby="daysBefore-help">
                 <span class="ds-help-text" id="daysBefore-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
                 <span class="ds-error-text" id="daysBefore-error" hidden></span>
               </div>
@@ -226,7 +226,7 @@
             <div class="ds-field-row">
               <label class="ds-field-label" for="daysAfter"><span class="ds-required-mark" aria-hidden="true">*</span>Days After Onset:</label>
               <div class="ds-field-control">
-                <input class="ds-input is-short" id="daysAfter" name="daysAfter" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="daysAfter-help">
+                <input class="ds-input is-short" id="daysAfter" name="daysAfter" type="text" autocomplete="off" maxlength="3" required aria-invalid="false" inputmode="numeric" disabled aria-describedby="daysAfter-help">
                 <span class="ds-help-text" id="daysAfter-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
                 <span class="ds-error-text" id="daysAfter-error" hidden></span>
               </div>
@@ -343,7 +343,7 @@
     var err = byId(el.id + '-error');
     if (!err) return;
     err.hidden = true; err.textContent = '';
-    el.removeAttribute('aria-invalid');
+    el.setAttribute('aria-invalid', 'false'); /* explicit false: Chrome otherwise reports an empty required select as invalid before any submit */
     var ids = (el.getAttribute('aria-describedby') || '').split(' ').filter(function (i) { return i && i !== err.id; });
     if (ids.length) el.setAttribute('aria-describedby', ids.join(' ')); else el.removeAttribute('aria-describedby');
   }

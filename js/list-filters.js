@@ -79,7 +79,9 @@
       chip.setAttribute('aria-expanded', 'false');
       if (panel) panel.hidden = true;
       openChip = null;
-      if (returnFocus) chip.focus();
+      /* Focus moves after the collapsed state reaches the accessibility tree; focusing in the same task
+         made NVDA announce the chip as still expanded. */
+      if (returnFocus) window.setTimeout(function () { chip.focus(); }, 30);
     }
 
     function buildPanel(chip, col) {

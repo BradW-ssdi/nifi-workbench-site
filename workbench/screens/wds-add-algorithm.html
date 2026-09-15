@@ -78,8 +78,8 @@
         <!-- Error summary (WCAG 3.3.1): hidden until a failed submit; then it
              receives focus and each entry is a link to its field.
              DEV: server-side validation renders the same block on postback. -->
-        <div class="ds-error-summary" id="errorSummary" role="alert" tabindex="-1" hidden>
-          <h2>There is a problem</h2>
+        <div class="ds-error-summary" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
+          <h2 id="errorSummaryTitle">There is a problem</h2>
           <ul id="errorList"></ul>
         </div>
 
@@ -95,12 +95,12 @@
               <div class="ds-form-body">
                 <div class="ds-field">
                   <label class="ds-required" for="algName">Algorithm Name</label>
-                  <input class="ds-input" id="algName" name="algName" type="text" required data-errmsg="Enter an algorithm name">
+                  <input class="ds-input" id="algName" name="algName" type="text" required aria-invalid="false" data-errmsg="Enter an algorithm name">
                   <span class="ds-error-text" id="algName-error" hidden></span>
                 </div>
                 <div class="ds-field">
                   <label class="ds-required" for="eventType">Event Type</label>
-                  <select class="ds-select" id="eventType" name="eventType" required data-errmsg="Select an event type">
+                  <select class="ds-select" id="eventType" name="eventType" required aria-invalid="false" data-errmsg="Select an event type">
                     <option value="">Select event type</option>
                     <option>Laboratory Report</option>
                     <option>Case Report</option>
@@ -115,7 +115,7 @@
               <div class="ds-form-body">
                 <div class="ds-field">
                   <label class="ds-required" for="frequency">Frequency</label>
-                  <select class="ds-select" id="frequency" name="frequency" required>
+                  <select class="ds-select" id="frequency" name="frequency" required aria-invalid="false">
                     <option selected>Real-Time</option>
                   </select>
                   <span class="ds-error-text" id="frequency-error" hidden></span>
@@ -220,7 +220,7 @@
   }
   function clearFieldError(field) {
     var err = document.getElementById(field.id + '-error');
-    field.removeAttribute('aria-invalid');
+    field.setAttribute('aria-invalid', 'false');
     if (err) { err.textContent = ''; err.hidden = true; }
   }
 
