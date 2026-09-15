@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App Frame - NEDSS</title>
+<link rel="stylesheet" href="../../tokens/tokens.css">
+<link rel="stylesheet" href="../../css/components.css">
+<script src="../../js/app-frame.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; display: grid; gap: 20px; max-width: 980px; }
+  .frame-checks { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
+  .frame-slot { min-height: 240px; display: grid; place-items: center; border: 2px dashed var(--ds-border); border-radius: var(--ds-radius-card); color: var(--ds-text-secondary); }
+  @media (max-width: 820px) { .page-body { padding: 16px; } }
+</style>
+</head>
+<body class="ds">
+<!-- app-frame:top -->
+<a class="ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item" data-nav-id="system-management" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ds-header-spacer"></span>
+    <a class="ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="ds-menu">
+      <button type="button" class="ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="ds-sr-only">Account menu, P. Preparer</span></button>
+      <ul class="ds-menu-list" id="accountMenu" hidden>
+        <li class="ds-menu-meta">Signed in as P. Preparer</li>
+        <li><a href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+  <div class="ds-page-header">
+    <h1 class="ds-type-display">App Frame</h1>
+    <p class="ds-type-body" style="margin:6px 0 0">The shared frame every screen sits in: skip link, main navigation rail, header, and footer. Nothing on this page is screen-specific.</p>
+  </div>
+  <div class="page-body">
+    <section class="ds-card" aria-labelledby="checksTitle">
+      <div class="ds-card-header"><h2 class="ds-card-title" id="checksTitle">What to check against this page</h2></div>
+      <div class="ds-card-body">
+        <ol class="frame-checks">
+          <li>Press Tab once from the address bar: "Skip to main content" appears; Enter moves focus to the page content.</li>
+          <li>The rail starts collapsed (icons only). Hover or Tab to an icon: its label appears beside it. Escape hides the label.</li>
+          <li>The menu button expands and collapses the rail. The choice persists while you move between screens in the same tab.</li>
+          <li>Data Entry and Merge Patients open and close their lists. Clicking either one while the rail is collapsed expands the rail and opens that list.</li>
+          <li>The logo returns to Home. Help and the account menu work from the keyboard; Escape closes the account menu and returns focus to its button.</li>
+          <li>The header stays at the top while the page scrolls; the footer sits at the bottom of short pages.</li>
+          <li>At 200% and 400% zoom the rail becomes a bar with the menu button, and nothing scrolls sideways.</li>
+        </ol>
+      </div>
+    </section>
+    <div class="frame-slot"><p>Screen content goes here, inside &lt;main id="main" tabindex="-1"&gt;.</p></div>
+  </div>
+</main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer">
+    <p>NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+</body>
+</html>

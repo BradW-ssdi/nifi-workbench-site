@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add Condition - Page Management - NEDSS</title>
+<link rel="stylesheet" href="../../tokens/tokens.css">
+<link rel="stylesheet" href="../../css/components.css">
+<script src="../../js/app-frame.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .form-content { min-width: 0; }
+  .required-note { margin: 0 0 12px; }
+  .ds-form-layout.is-nav-collapsed #secnavLinks { display: none; }
+</style>
+</head>
+<body class="ds" data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ds-header-spacer"></span>
+    <a class="ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="ds-menu">
+      <button type="button" class="ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="ds-sr-only">Account menu, P. Preparer</span></button>
+      <ul class="ds-menu-list" id="accountMenu" hidden>
+        <li class="ds-menu-meta">Signed in as P. Preparer</li>
+        <li><a href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+  <!-- Modernizes the legacy Condition.jsp (Create mode) using the Phase 2 add/edit layout
+       from templates/organizations/addOrganization.html. -->
+  <div class="ds-form-titlebar">
+    <div class="ds-form-titles">
+      <nav class="ds-breadcrumb" aria-label="Breadcrumb">
+          <a href="system-management.html">System Management</a>
+          <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg>
+          <a href="system-management.html">Page Management</a>
+          <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg>
+          <a href="manage-conditions.html">Manage Conditions</a>
+          <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg>
+          <span class="is-current" aria-current="page">Add Condition</span>
+        </nav>
+      <h1 class="ds-type-display" style="margin:8px 0 0">Add Condition</h1>
+    </div>
+    <div class="ds-form-actions">
+      <button type="button" class="ds-btn ds-btn-outline ds-btn-round" id="cancelBtn">Cancel</button>
+      <button type="submit" form="conditionForm" class="ds-btn ds-btn-primary ds-btn-round">Submit</button>
+    </div>
+  </div>
+
+  <div class="ds-form-layout" id="formLayout">
+    <nav class="ds-secnav" aria-label="Section navigation">
+      <button type="button" class="ds-btn-icon" id="secnavToggle" aria-expanded="true" aria-controls="secnavLinks" aria-label="Hide section navigation"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#left_panel_close"/></svg></button>
+      <div id="secnavLinks">
+        <p class="ds-secnav-title">Condition</p>
+        <a href="#details" aria-current="location">Condition Details</a>
+        <a href="#behavior">Condition Behavior</a>
+      </div>
+    </nav>
+
+    <div class="form-content">
+      <!-- Error summary. DEV: server-side validation renders this same block on postback,
+           with one link per error and aria-invalid plus the message on each field. -->
+      <div class="ds-error-summary" id="errorSummary" role="alert" tabindex="-1" hidden>
+        <h2>Please fix the following errors:</h2>
+        <ul id="errorList"></ul>
+      </div>
+      <p class="ds-type-caption required-note"><span class="ds-required-mark" aria-hidden="true">*</span> Indicates a required field</p>
+
+      <form id="conditionForm" action="manage-conditions.html" novalidate data-mode="add">
+        <section class="ds-form-accordion" id="details" aria-labelledby="detailsHeading">
+          <h2 id="detailsHeading"><button type="button" class="ds-form-accordion-header" aria-expanded="true" aria-controls="detailsBody">Condition Details<svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></h2>
+          <div class="ds-form-accordion-body" id="detailsBody">
+            <div class="ds-field-row">
+              <label class="ds-field-label" for="codingSystem"><span class="ds-required-mark" aria-hidden="true">*</span>Coding System:</label>
+              <div class="ds-field-control">
+                <select class="ds-select" id="codingSystem" name="codingSystem" required>
+                  <option value="">Select</option>
+                  <option value="Nationally Notifiable Conditions (NND)">Nationally Notifiable Conditions (NND)</option>
+                  <option value="Local">Local</option>
+                </select>
+                <span class="ds-error-text" id="codingSystem-error" hidden></span>
+              </div>
+            </div>
+            <div class="ds-field-row">
+              <label class="ds-field-label" for="conditionCode"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Code:</label>
+              <div class="ds-field-control">
+                <input class="ds-input" id="conditionCode" name="conditionCode" type="text" autocomplete="off" maxlength="16" required aria-describedby="conditionCode-help">
+                <span class="ds-help-text" id="conditionCode-help">Letters and numbers only, up to 16 characters.</span>
+                <span class="ds-error-text" id="conditionCode-error" hidden></span>
+              </div>
+            </div>
+            <div class="ds-field-row">
+              <label class="ds-field-label" for="conditionName"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Name:</label>
+              <div class="ds-field-control">
+                <input class="ds-input" id="conditionName" name="conditionName" type="text" autocomplete="off" maxlength="50" required aria-describedby="conditionName-help">
+                <span class="ds-help-text" id="conditionName-help">Up to 50 characters.</span>
+                <span class="ds-error-text" id="conditionName-error" hidden></span>
+              </div>
+            </div>
+            <div class="ds-field-row">
+              <label class="ds-field-label" for="programArea"><span class="ds-required-mark" aria-hidden="true">*</span>Program Area:</label>
+              <div class="ds-field-control">
+                <select class="ds-select" id="programArea" name="programArea" required>
+                  <option value="">Select</option>
+                  <option value="ELP">Environmental (ELP)</option>
+                  <option value="GCD">General Communicable Diseases (GCD)</option>
+                  <option value="HEP">Hepatitis (HEP)</option>
+                  <option value="HIV">HIV/AIDS (HIV)</option>
+                  <option value="STD">Sexually Transmitted Diseases (STD)</option>
+                  <option value="TB">Tuberculosis (TB)</option>
+                  <option value="VPD">Vaccine Preventable Diseases (VPD)</option>
+                </select>
+                <span class="ds-error-text" id="programArea-error" hidden></span>
+              </div>
+            </div>
+            <div class="ds-field-row">
+              <label class="ds-field-label" for="conditionFamily">Condition Family:</label>
+              <div class="ds-field-control">
+                <select class="ds-select" id="conditionFamily" name="conditionFamily">
+                  <option value="">None</option>
+                  <option value="Environmental">Environmental</option>
+                  <option value="Hepatitis">Hepatitis</option>
+                  <option value="Respiratory">Respiratory</option>
+                  <option value="Syphilis">Syphilis</option>
+                  <option value="Tuberculosis">Tuberculosis</option>
+                  <option value="Vaccine Preventable">Vaccine Preventable</option>
+                </select>
+                <span class="ds-error-text" id="conditionFamily-error" hidden></span>
+              </div>
+            </div>
+            <div class="ds-field-row">
+              <label class="ds-field-label" for="coinfectionGroup">Co-infection Group:</label>
+              <div class="ds-field-control">
+                <select class="ds-select" id="coinfectionGroup" name="coinfectionGroup" disabled aria-describedby="coinfectionGroup-help">
+                  <option value="">None</option>
+                  <option value="HIV and syphilis">HIV and syphilis</option>
+                  <option value="HIV and gonorrhea">HIV and gonorrhea</option>
+                  <option value="HIV and chlamydia">HIV and chlamydia</option>
+                </select>
+                <span class="ds-help-text" id="coinfectionGroup-help">Available only for the STD and HIV program areas.</span>
+                <span class="ds-error-text" id="coinfectionGroup-error" hidden></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="ds-form-accordion" id="behavior" aria-labelledby="behaviorHeading">
+          <h2 id="behaviorHeading"><button type="button" class="ds-form-accordion-header" aria-expanded="true" aria-controls="behaviorBody">Condition Behavior<svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></h2>
+          <div class="ds-form-accordion-body" id="behaviorBody">
+            <div class="ds-field-row">
+              <span class="ds-field-label" id="nnd-label">CDC Reportable Condition (NND):</span>
+              <div class="ds-field-control">
+                <div class="ds-radio-inline" role="radiogroup" aria-labelledby="nnd-label">
+                  <label class="ds-check"><input type="radio" name="nnd" id="nnd-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input type="radio" name="nnd" id="nnd-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="ds-field-row">
+              <span class="ds-field-label" id="morbidity-label">Reportable through Morbidity Reports:</span>
+              <div class="ds-field-control">
+                <div class="ds-radio-inline" role="radiogroup" aria-labelledby="morbidity-label">
+                  <label class="ds-check"><input type="radio" name="morbidity" id="morbidity-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input type="radio" name="morbidity" id="morbidity-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="ds-field-row">
+              <span class="ds-field-label" id="summary-label">Reportable in Aggregate (Summary):</span>
+              <div class="ds-field-control">
+                <div class="ds-radio-inline" role="radiogroup" aria-labelledby="summary-label">
+                  <label class="ds-check"><input type="radio" name="summary" id="summary-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input type="radio" name="summary" id="summary-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="ds-field-row">
+              <span class="ds-field-label" id="contactTracing-label">Utilizes Contact Tracing Module:</span>
+              <div class="ds-field-control">
+                <div class="ds-radio-inline" role="radiogroup" aria-labelledby="contactTracing-label">
+                  <label class="ds-check"><input type="radio" name="contactTracing" id="contactTracing-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input type="radio" name="contactTracing" id="contactTracing-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="ds-field-row">
+              <span class="ds-field-label" id="autoInfectious-label">Auto-Calculation of Infectious Period:</span>
+              <div class="ds-field-control">
+                <div class="ds-radio-inline" role="radiogroup" aria-labelledby="autoInfectious-label">
+                  <label class="ds-check"><input type="radio" name="autoInfectious" id="autoInfectious-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input type="radio" name="autoInfectious" id="autoInfectious-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="ds-field-row">
+              <label class="ds-field-label" for="daysBefore"><span class="ds-required-mark" aria-hidden="true">*</span>Days Before Onset:</label>
+              <div class="ds-field-control">
+                <input class="ds-input is-short" id="daysBefore" name="daysBefore" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="daysBefore-help">
+                <span class="ds-help-text" id="daysBefore-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
+                <span class="ds-error-text" id="daysBefore-error" hidden></span>
+              </div>
+            </div>
+            <div class="ds-field-row">
+              <label class="ds-field-label" for="daysAfter"><span class="ds-required-mark" aria-hidden="true">*</span>Days After Onset:</label>
+              <div class="ds-field-control">
+                <input class="ds-input is-short" id="daysAfter" name="daysAfter" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="daysAfter-help">
+                <span class="ds-help-text" id="daysAfter-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
+                <span class="ds-error-text" id="daysAfter-error" hidden></span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </form>
+    </div>
+  </div>
+</main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer">
+    <p>NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+
+<!-- Cancel confirmation. Replaces the legacy confirm(); same wording intent as the
+     Phase 2 Cancel Add Organization modal. -->
+<div class="ds-modal-backdrop" id="cancelModal" hidden>
+  <div class="ds-modal" role="dialog" aria-modal="true" aria-labelledby="cancelTitle" aria-describedby="cancelDesc" tabindex="-1">
+    <div class="ds-modal-header">
+      <h2 id="cancelTitle">Cancel Add Condition</h2>
+      <button type="button" class="ds-modal-close" aria-label="Close"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#close"/></svg></button>
+    </div>
+    <div class="ds-modal-body">
+      <p class="ds-type-body" id="cancelDesc" style="margin:0">Are you sure you want to leave Add Condition? Any information you have entered will be lost.</p>
+    </div>
+    <div class="ds-form-footer">
+      <button type="button" class="ds-btn ds-btn-outline ds-btn-round" data-close>Keep editing</button>
+      <a class="ds-btn ds-btn-primary ds-btn-round" href="manage-conditions.html">Discard and leave</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Reference behavior for add and edit screens. DEV: keep every aria update. */
+(function () {
+  var form = document.getElementById('conditionForm');
+  var summary = document.getElementById('errorSummary');
+  var list = document.getElementById('errorList');
+  var byId = function (id) { return document.getElementById(id); };
+
+  /* Collapsible sections */
+  function setSection(btn, open) {
+    btn.setAttribute('aria-expanded', String(open));
+    byId(btn.getAttribute('aria-controls')).hidden = !open;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.ds-form-accordion-header'), function (btn) {
+    btn.addEventListener('click', function () { setSection(btn, btn.getAttribute('aria-expanded') !== 'true'); });
+  });
+  function openSectionFor(el) {
+    var section = el.closest('.ds-form-accordion');
+    if (section) setSection(section.querySelector('.ds-form-accordion-header'), true);
+  }
+
+  /* Section navigation */
+  var layout = byId('formLayout'), navToggle = byId('secnavToggle');
+  navToggle.addEventListener('click', function () {
+    var open = navToggle.getAttribute('aria-expanded') === 'true';
+    navToggle.setAttribute('aria-expanded', String(!open));
+    navToggle.setAttribute('aria-label', open ? 'Show section navigation' : 'Hide section navigation');
+    layout.classList.toggle('is-nav-collapsed', open);
+  });
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#secnavLinks a'));
+  navLinks.forEach(function (a) {
+    a.addEventListener('click', function () {
+      navLinks.forEach(function (x) { x.removeAttribute('aria-current'); });
+      a.setAttribute('aria-current', 'location');
+      var target = byId(a.getAttribute('href').slice(1));
+      setSection(target.querySelector('.ds-form-accordion-header'), true);
+    });
+  });
+
+  /* Field dependencies (legacy makeEnabled and enablePdInfectDays) */
+  var program = byId('programArea'), coinf = byId('coinfectionGroup');
+  if (program && program.tagName === 'SELECT') {
+    program.addEventListener('change', function () {
+      var allowed = program.value === 'STD' || program.value === 'HIV';
+      coinf.disabled = !allowed;
+      if (!allowed) coinf.value = '';
+    });
+  }
+  var daysBefore = byId('daysBefore'), daysAfter = byId('daysAfter');
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="autoInfectious"]'), function (r) {
+    r.addEventListener('change', function () {
+      var on = r.value === 'Y' && r.checked;
+      [daysBefore, daysAfter].forEach(function (el) {
+        el.disabled = !on;
+        if (!on) { el.value = ''; clearError(el); }
+      });
+    });
+  });
+
+  /* Validation with an error summary */
+  function setError(el, msg) {
+    var err = byId(el.id + '-error');
+    err.textContent = msg; err.hidden = false;
+    el.setAttribute('aria-invalid', 'true');
+    var ids = (el.getAttribute('aria-describedby') || '').split(' ').filter(Boolean);
+    if (ids.indexOf(err.id) === -1) ids.push(err.id);
+    el.setAttribute('aria-describedby', ids.join(' '));
+  }
+  function clearError(el) {
+    var err = byId(el.id + '-error');
+    if (!err) return;
+    err.hidden = true; err.textContent = '';
+    el.removeAttribute('aria-invalid');
+    var ids = (el.getAttribute('aria-describedby') || '').split(' ').filter(function (i) { return i && i !== err.id; });
+    if (ids.length) el.setAttribute('aria-describedby', ids.join(' ')); else el.removeAttribute('aria-describedby');
+  }
+  function validate() {
+    var errors = [];
+    function need(id, msg) { var el = byId(id); if (el && !el.disabled && (el.tagName === 'INPUT' || el.tagName === 'SELECT') && !el.value.trim()) errors.push([el, msg]); return el; }
+    need('codingSystem', 'Select a coding system');
+    var code = need('conditionCode', 'Enter a condition code');
+    if (code && code.tagName === 'INPUT' && code.value.trim() && !/^[A-Za-z0-9]+$/.test(code.value.trim())) errors.push([code, 'Condition code can only use letters and numbers']);
+    var name = need('conditionName', 'Enter a condition name');
+    if (name.value.trim() && /[<>"&]/.test(name.value)) errors.push([name, 'Condition name cannot use < > " or &']);
+    need('programArea', 'Select a program area');
+    [[daysBefore, 'before'], [daysAfter, 'after']].forEach(function (pair) {
+      var el = pair[0];
+      if (el.disabled) return;
+      if (!el.value.trim()) errors.push([el, 'Enter the days ' + pair[1] + ' onset']);
+      else if (!/^[0-9]{1,3}$/.test(el.value.trim())) errors.push([el, 'Days ' + pair[1] + ' onset must be a whole number from 0 to 999']);
+    });
+    return errors;
+  }
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    Array.prototype.forEach.call(form.querySelectorAll('[aria-invalid]'), clearError);
+    var errors = validate();
+    if (!errors.length) {
+      summary.hidden = true;
+      /* DEV: POST, then redirect to the Condition Library with the created or updated confirmation. */
+      window.location.href = form.getAttribute('action');
+      return;
+    }
+    list.innerHTML = '';
+    errors.forEach(function (pair) {
+      setError(pair[0], pair[1]);
+      var li = document.createElement('li'), a = document.createElement('a');
+      a.href = '#' + pair[0].id; a.textContent = pair[1];
+      a.addEventListener('click', function (e) { e.preventDefault(); openSectionFor(pair[0]); pair[0].focus(); });
+      li.appendChild(a); list.appendChild(li);
+    });
+    summary.hidden = false;
+    summary.focus();
+  });
+  form.addEventListener('input', function (e) { if (e.target.getAttribute('aria-invalid')) clearError(e.target); });
+  form.addEventListener('change', function (e) { if (e.target.getAttribute('aria-invalid')) clearError(e.target); });
+
+  /* Cancel confirmation dialog */
+  var backdrop = byId('cancelModal'), dialog = backdrop.querySelector('.ds-modal'), cancelBtn = byId('cancelBtn');
+  function closeModal() { backdrop.hidden = true; cancelBtn.focus(); }
+  cancelBtn.addEventListener('click', function () { backdrop.hidden = false; dialog.focus(); });
+  Array.prototype.forEach.call(backdrop.querySelectorAll('.ds-modal-close, [data-close]'), function (b) { b.addEventListener('click', closeModal); });
+  backdrop.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeModal(); return; }
+    if (e.key !== 'Tab') return;
+    var items = dialog.querySelectorAll('button, [href]');
+    var first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+})();
+</script>
+</body>
+</html>

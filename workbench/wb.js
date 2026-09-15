@@ -9,7 +9,8 @@
 
   var PAGES = [
     { group: 'Start', items: [
-      { title: 'Overview', href: 'index.html', icon: 'home' }
+      { title: 'Overview', href: 'index.html', icon: 'home' },
+      { title: 'Dev test round 1', href: 'dev-test.html', icon: 'description' }
     ]},
     { group: 'Foundations', items: [
       { title: 'Tokens & type', href: 'foundations.html', icon: 'tune' },
@@ -21,10 +22,15 @@
     ]},
     { group: 'Views', items: [
       { title: 'Home Dashboard', href: 'screens/home.html', ext: true, icon: 'open_in_new' },
-      { title: 'System Management', href: 'screens/system-management.html', ext: true, icon: 'open_in_new' },
+      { title: 'App Frame', href: 'screens/frame.html', ext: true, icon: 'open_in_new' },
+      { title: 'System Management: A. Cards', href: 'screens/system-management.html', ext: true, icon: 'open_in_new' },
+      { title: 'System Management: B. Directory', href: 'screens/system-management-directory.html', ext: true, icon: 'open_in_new' },
+      { title: 'System Management: C. Index', href: 'screens/system-management-index.html', ext: true, icon: 'open_in_new' },
       { title: 'WDS — Algorithm Library', href: 'screens/wds-algorithm-library.html', ext: true, icon: 'open_in_new' },
       { title: 'WDS — Add Algorithm', href: 'screens/wds-add-algorithm.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Conditions', href: 'screens/manage-conditions.html', ext: true, icon: 'open_in_new' },
+      { title: 'Add Condition', href: 'screens/add-condition.html', ext: true, icon: 'open_in_new' },
+      { title: 'Edit Condition', href: 'screens/edit-condition.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Pages', href: 'screens/manage-pages.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Questions', href: 'screens/manage-questions.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Users', href: 'screens/manage-users.html', ext: true, icon: 'open_in_new' },

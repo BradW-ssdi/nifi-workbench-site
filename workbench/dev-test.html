@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIFI DS: Dev test round 1</title>
+<link rel="stylesheet" href="../tokens/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="wb.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="wb.js"></script>
+<style>
+  .guide ol, .guide ul { padding-left: 22px; display: grid; gap: 10px; max-width: 900px; }
+  .guide code { font-size: 12.5px; }
+  .guide .ds-table td, .guide .ds-table th { vertical-align: top; }
+</style>
+</head>
+<body class="ds wb">
+<main class="wb-main guide">
+  <p class="ds-type-overline">NIFI Design System</p>
+  <h1 class="ds-type-display">Dev test round 1</h1>
+  <p class="ds-type-body">This round tests the screens we have built so far and the app frame they share. The design system is far from complete: this is a first pass to find problems in the frame, the patterns, and the handoff itself before we build more. The same guide is in <code>docs/dev-test-round-1.md</code>.</p>
+
+  <section class="wb-section" id="scope">
+    <h2>In scope</h2>
+    <div class="ds-table-scroll"><table class="ds-table"><thead><tr><th scope="col">Screen</th><th scope="col">File</th><th scope="col">What it exercises</th></tr></thead><tbody><tr><td>App Frame</td><td><code>screens/frame.html</code></td><td>Skip link, rail collapse and groups, collapsed labels, header, account menu, footer</td></tr><tr><td>Home</td><td><code>screens/home.html</code></td><td>Dashboard cards, tabs, queue counts</td></tr><tr><td>System Management A, B, C</td><td><code>screens/system-management*.html</code></td><td>Three menu layouts, Find a setting, vertical tabs (B)</td></tr><tr><td>Algorithm Library</td><td><code>screens/wds-algorithm-library.html</code></td><td>Sort, filter, pagination, import modal</td></tr><tr><td>Add Algorithm</td><td><code>screens/wds-add-algorithm.html</code></td><td>Tabs, form validation, error summary</td></tr><tr><td>Manage Conditions</td><td><code>screens/manage-conditions.html</code></td><td>Phase 2 table, search, Filter button, chips, and footer; flagged rows; alerts</td></tr><tr><td>Add Condition</td><td><code>screens/add-condition.html</code></td><td>Add screen layout, required fields, dependent fields, error summary, cancel dialog</td></tr><tr><td>Edit Condition</td><td><code>screens/edit-condition.html</code></td><td>Same layout with read-only identifiers and prefilled values</td></tr><tr><td>Manage Pages</td><td><code>screens/manage-pages.html</code></td><td>State badges, create-draft confirmation</td></tr><tr><td>Manage Questions</td><td><code>screens/manage-questions.html</code></td><td>Search criteria and results on one screen</td></tr><tr><td>Manage Users</td><td><code>screens/manage-users.html</code></td><td>Wide table at zoom, multi-value cells</td></tr><tr><td>Merge Patients: Manual Search</td><td><code>screens/merge-patients.html</code></td><td>Selection table, survivor radios, bulk bar, confirm modal</td></tr><tr><td>Merge Patients: System Identified</td><td><code>screens/merge-system-identified.html</code></td><td>Queue flow, focus after each action</td></tr></tbody></table></div>
+  </section>
+
+  <section class="wb-section" id="out-of-scope">
+    <h2>Not in scope</h2>
+    <ul><li>Real data, routes, and permissions. Links that go nowhere use <code>#</code>. Data is static.</li><li>Components that have no screen yet (see the Components page for what exists).</li><li>Dark theme.</li><li>Figma prototype fidelity beyond the frame: the Figma screens are reference images with a working rail, header, and footer.</li></ul>
+  </section>
+
+  <section class="wb-section" id="how">
+    <h2>How to test each screen</h2>
+    <ol><li><b>Frame.</b> Run the checklist on <code>screens/frame.html</code> once, then spot check it on every other screen: the current rail item is correct, the logo returns Home, the rail state carries between screens.</li><li><b>Keyboard only.</b> Tab through the whole page. Focus is always visible, the order makes sense, every control works with Enter or Space, Escape closes menus and dialogs, and focus returns where it came from.</li><li><b>Zoom.</b> At 200% and 400% (or a 640px and 320px wide window): one column, no sideways scrolling of the page, every control reachable. Only data tables may scroll sideways, inside their own box.</li><li><b>Screen reader.</b> NVDA with Chrome or JAWS with Chrome: the page title, one h1, landmarks (Main navigation, Breadcrumb, Footer), and every announcement in the screen's contract (sort, filter counts, errors, confirmations).</li><li><b>Automated.</b> axe DevTools, or the vendored axe from the console (see <code>docs/accessibility.md</code>). We see zero violations on every screen in scope. Two known "needs review" items: the Add Algorithm comments field while the sticky header overlaps it, and color contrast on the Components page, where specimens sit on gradients and overlays. Check those by eye.</li><li><b>Build it.</b> Pick one screen and build it in the app from its template and the contract in <code>docs/dev-handoff.md</code>. Note anything in the template or contract that was unclear, missing, or hard to do in Thymeleaf and HTMX.</li></ol>
+  </section>
+
+  <section class="wb-section" id="reporting">
+    <h2>Reporting</h2>
+    <p class="ds-type-body">For each finding: the screen, the steps, what you expected, what happened, browser and zoom level, and a screenshot. Say whether it is a bug in the template, a gap in the contract, or a question about the design.</p>
+  </section>
+</main>
+</body>
+</html>

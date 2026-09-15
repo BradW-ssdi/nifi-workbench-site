@@ -196,20 +196,19 @@
 
   <section class="wb-section" id="tables">
     <h2>Data table</h2>
-    <p class="wb-desc">Sortable headers, view/edit row actions, zebra rows, hover highlight and status badges —
-    the pattern behind the WDS Algorithm Library.</p>
+    <p class="wb-desc">Matches the Phase 2 dynamic queue: grey header, compact rows, caret on the sorted column only, outlined frame, and the Phase 2 footer. The pattern behind every list screen.</p>
     <div class="wb-example">
       <h3>Table with row actions and pagination</h3>
       <div class="wb-canvas">
-        <div style="border:1px solid var(--ds-border);border-radius:8px;overflow:hidden">
+        <div class="ds-table-frame">
           <div class="ds-table-scroll">
           <table class="ds-table">
             <caption class="ds-sr-only">Decision support algorithms, sorted by algorithm name ascending</caption>
             <thead>
               <tr>
                 <th scope="col">Actions</th>
-                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn">Algorithm Name <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button></th>
+                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn">Algorithm Name <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
                 <th scope="col">Status</th>
               </tr>
             </thead>
@@ -233,14 +232,17 @@
           </table>
           </div>
           <div class="ds-footer-pagination">
-            <span class="ds-page-summary">Results 1–20 of 35</span>
-            <span class="ds-toolbar-spacer"></span>
+            <span class="ds-page-summary">Items 1 - 20 of 35</span>
             <nav class="ds-pagination" aria-label="Pagination">
-              <button class="ds-page-btn" aria-label="Previous page"><svg class="ds-icon"><use href="../icons/sprite.svg#chevron_left"/></svg></button>
-              <button class="ds-page-btn is-active" aria-current="page">1</button>
-              <button class="ds-page-btn">2</button>
-              <button class="ds-page-btn" aria-label="Next page"><svg class="ds-icon"><use href="../icons/sprite.svg#chevron_right"/></svg></button>
+              <button type="button" class="ds-page-btn" aria-label="Previous page" disabled>Previous</button>
+              <button type="button" class="ds-page-btn is-active" aria-current="page" aria-label="Page 1">1</button>
+              <button type="button" class="ds-page-btn" aria-label="Page 2">2</button>
+              <button type="button" class="ds-page-btn" aria-label="Next page">Next</button>
             </nav>
+            <div class="ds-page-size">
+              <select class="ds-select" id="wbPageSize"><option>5</option><option selected>25</option><option>50</option><option>100</option></select>
+              <label for="wbPageSize">Items per page</label>
+            </div>
           </div>
         </div>
       </div>
@@ -252,7 +254,9 @@
       <li>Row hover highlight is enhancement only — no information lives in hover.</li>
       <li>A flagged row (<code>tr.is-flagged</code>, warning tint + inset bar) always pairs with a visible <code>ds-badge-warning</code> in a cell — the tint alone is never the message (1.4.1). See the Manage Conditions view.</li>
       <li>Wide tables scroll inside <code>.ds-table-scroll</code> so the page itself never scrolls two ways at 400% zoom (1.4.10); the wrapper is keyboard-scrollable when it clips.</li>
-      <li>Pagination is a <code>&lt;nav aria-label="Pagination"&gt;</code>; the current page carries <code>aria-current="page"</code>; prev/next are labeled buttons.</li>
+      <li>Pagination is a <code>&lt;nav aria-label="Pagination"&gt;</code>; the current page carries <code>aria-current="page"</code>; number buttons are named "Page N"; Previous and Next are words, and at the ends they get the <code>disabled</code> attribute.</li>
+      <li>Items per page is a native <code>&lt;select&gt;</code> with a visible <code>&lt;label&gt;</code>.</li>
+      <li>Only the sorted column shows its caret; unsorted headers are still buttons, and hover underlines them.</li>
     </ul></details>
   </section>
 
@@ -522,20 +526,31 @@
       </div>
     </div>
     <div class="wb-example">
-      <h3>Button — Filter &amp; Filter chip</h3>
+      <h3>Search to filter, Filter button, and filter chips (Phase 2 queue)</h3>
       <div class="wb-canvas">
-        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="display:grid;gap:14px">
+        <div class="ds-toolbar">
+          <input class="ds-input ds-input-search" type="search" aria-label="Filter the table" placeholder="Search to filter..." style="width:320px">
+          <span class="ds-toolbar-spacer"></span>
+          <button type="button" class="ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#print"/></svg></button>
+          <button type="button" class="ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#download"/></svg></button>
+        </div>
+        <div><button type="button" class="ds-btn ds-btn-outline ds-filter-toggle" aria-expanded="true" aria-controls="wbChips"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#filter_alt"/></svg>Filter</button></div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap" id="wbChips" role="group" aria-label="Column filters">
           <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Current sex <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
           <button class="ds-chip is-hover" aria-haspopup="listbox" aria-expanded="false">Condition <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
           <button class="ds-chip is-filtered" aria-label="Remove filter: Female">Female <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button>
           <button class="ds-chip is-filtered" aria-label="Remove filter: Open">Open <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button>
+        </div>
         </div>
       </div>
     </div>
     <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
       <li>Icon-only buttons always carry an <code>aria-label</code>; the icon itself is <code>aria-hidden</code>. Icon buttons are 40px, close 32px — both clear the 24px AA target minimum (2.5.8).</li>
       <li>Filter chips that open a value list use <code>aria-haspopup</code> + <code>aria-expanded</code>; applied-filter chips announce their action ("Remove filter: Female"), and removal is confirmed via the results region's live update.</li>
-      <li>The applied state is teal <em>plus</em> the × affordance — not color alone.</li>
+      <li>Chips match Phase 2: light teal, teal border, 16px corners, 35px tall (teal on light teal is 6.1:1). An applied chip is told apart by its value and the × affordance, never by color.</li>
+      <li>The Filter button is a real button with <code>aria-expanded</code> and <code>aria-controls</code> pointing at the chip row, which toggles with <code>hidden</code>.</li>
+      <li>"Search to filter" has an accessible name of its own; the placeholder is only a hint.</li>
     </ul></details>
   </section>
 
@@ -764,13 +779,64 @@
     </ul></details>
   </section>
 
+  <section class="wb-section" id="add-edit">
+    <h2>Add and edit screens</h2>
+    <p class="wb-desc">The Phase 2 add/edit layout (Add Organization): sticky title bar with pill actions, section navigation, collapsible teal sections, label beside the field. See Add Condition and Edit Condition.</p>
+    <div class="wb-example">
+      <h3>Title bar, section, and field rows</h3>
+      <div class="wb-canvas">
+        <div style="display:grid;gap:16px">
+          <div class="ds-form-titlebar" style="position:static">
+            <div class="ds-form-titles"><p class="ds-type-display" style="margin:0">Add Condition</p></div>
+            <div class="ds-form-actions">
+              <button type="button" class="ds-btn ds-btn-outline ds-btn-round">Cancel</button>
+              <button type="button" class="ds-btn ds-btn-primary ds-btn-round">Submit</button>
+            </div>
+          </div>
+          <section class="ds-form-accordion" aria-labelledby="wbSectionTitle">
+            <h3 id="wbSectionTitle" style="margin:0"><button type="button" class="ds-form-accordion-header" aria-expanded="true" aria-controls="wbSectionBody">Condition Details<svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button></h3>
+            <div class="ds-form-accordion-body" id="wbSectionBody">
+              <div class="ds-field-row">
+                <label class="ds-field-label" for="wbCode"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Code:</label>
+                <div class="ds-field-control">
+                  <input class="ds-input" id="wbCode" type="text" required aria-describedby="wbCodeHelp">
+                  <span class="ds-help-text" id="wbCodeHelp">Letters and numbers only, up to 16 characters.</span>
+                </div>
+              </div>
+              <div class="ds-field-row">
+                <label class="ds-field-label" for="wbArea">Program Area:</label>
+                <div class="ds-field-control"><select class="ds-select" id="wbArea"><option>Hepatitis (HEP)</option></select></div>
+              </div>
+              <div class="ds-field-row">
+                <span class="ds-field-label" id="wbNndLabel">CDC Reportable Condition (NND):</span>
+                <div class="ds-field-control"><div class="ds-radio-inline" role="radiogroup" aria-labelledby="wbNndLabel"><label class="ds-check"><input type="radio" name="wbNnd" checked> Yes</label><label class="ds-check"><input type="radio" name="wbNnd"> No</label></div></div>
+              </div>
+              <div class="ds-field-row">
+                <span class="ds-field-label" id="wbStatusLabel">Status:</span>
+                <div class="ds-field-control"><span class="ds-field-value"><span class="ds-badge ds-badge-active">Active</span></span></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility - 508 / WCAG AA</summary><ul>
+      <li>Section headers are buttons inside a heading, with <code>aria-expanded</code> and <code>aria-controls</code>; the body toggles with <code>hidden</code>. White on teal is 7.0:1.</li>
+      <li>Every control has a <code>&lt;label for&gt;</code>. Required fields use the <code>required</code> attribute; the red star is hidden from screen readers and explained in a note at the top of the form.</li>
+      <li>Yes and No questions are a <code>role="radiogroup"</code> named by the visible label with <code>aria-labelledby</code>.</li>
+      <li>Read-only values in edit mode are text, not disabled inputs, so they stay readable and in the reading order.</li>
+      <li>On a failed Submit the error summary is focused and links to each field; each field gets <code>aria-invalid</code> and its message through <code>aria-describedby</code>.</li>
+      <li>At 820px and below labels move above their fields and the section navigation stacks above the form (1.4.10).</li>
+    </ul></details>
+  </section>
+
   <section class="wb-section" id="footers">
     <h2>Footers</h2>
     <div class="wb-example">
       <h3>Pagination footer · modal footer · bulk bar</h3>
       <div class="wb-canvas">
         <div style="display:grid;gap:20px;max-width:760px">
-          <div class="ds-footer-pagination"><span>Showing 1–10 of 190</span><span style="flex:1"></span><button class="ds-btn-page">Previous</button><button class="ds-btn-page">Next</button></div>
+          <div class="ds-footer-pagination"><span class="ds-page-summary">Items 1 - 10 of 190</span><nav class="ds-pagination" aria-label="Pagination, footer example"><button type="button" class="ds-page-btn" aria-label="Previous page" disabled>Previous</button><button type="button" class="ds-page-btn is-active" aria-current="page" aria-label="Page 1">1</button><button type="button" class="ds-page-btn" aria-label="Next page">Next</button></nav><div class="ds-page-size"><select class="ds-select" id="wbFootSize"><option selected>10</option><option>25</option></select><label for="wbFootSize">Items per page</label></div></div>
           <div class="ds-footer-modal"><button class="ds-btn ds-btn-outline">Cancel</button><button class="ds-btn ds-btn-primary">Save</button></div>
           <div><span class="ds-bulkbar" role="region" aria-label="Bulk actions"><span aria-live="polite">3 selected</span> <button>Assign</button><button>Export</button><button aria-label="Clear selection"><span aria-hidden="true">✕</span></button></span></div>
         </div>
