@@ -199,7 +199,7 @@
     };
     var h = '<div class="wb-brand"><span class="dot">' + ic('account_tree') + '</span><div><b>NIFI Design System</b><span>Texas HHS · workbench</span></div></div>';
     h += '<input class="ds-input wb-filter" type="search" placeholder="Filter" aria-label="Filter navigation">';
-    h += '<nav class="wb-nav">';
+    h += '<nav class="wb-nav" aria-label="Workbench">';
     PAGES.forEach(function (g) {
       h += '<p>' + g.group + '</p>';
       g.items.forEach(function (it) {
@@ -217,6 +217,16 @@
     h += '</nav>';
     aside.innerHTML = h;
     document.body.insertBefore(aside, document.body.firstChild);
+    var main = document.querySelector('main');
+    if (main) {
+      if (!main.id) main.id = 'wb-main';
+      if (!main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+      var skip = document.createElement('a');
+      skip.className = 'ds-skip-link';
+      skip.href = '#' + main.id;
+      skip.textContent = 'Skip to main content';
+      document.body.insertBefore(skip, document.body.firstChild);
+    }
 
     var filter = aside.querySelector('.wb-filter');
     filter.addEventListener('input', function () {
@@ -282,3 +292,27 @@
     var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(markScrollables, 200); });
   });
 })();
+
+/* Specimen disclosures on the components page toggle for real, so keyboard and screen
+   reader users get the behavior the markup promises. */
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest && e.target.closest('.wb-canvas button[aria-expanded]');
+  if (!btn || btn.hasAttribute('data-menu-button')) return;
+  var open = btn.getAttribute('aria-expanded') === 'true';
+  btn.setAttribute('aria-expanded', String(!open));
+  var id = btn.getAttribute('aria-controls');
+  var target = id && document.getElementById(id);
+  if (target) target.hidden = open;
+  var arrow = btn.querySelector('span[aria-hidden="true"]');
+  if (arrow && (arrow.textContent === String.fromCharCode(9662) || arrow.textContent === String.fromCharCode(9656))) arrow.textContent = String.fromCharCode(open ? 9656 : 9662);
+});
+
+/* State matrices are static pictures of each state (hover, focus, pressed). They stay readable by
+   screen readers but leave the Tab order, so keyboard users never land on a control that is
+   permanently drawn as focused. */
+function wbMatrices() {
+  document.querySelectorAll('.wb-matrix').forEach(function (m) {
+    m.querySelectorAll('a[href], button, input, select, textarea, [tabindex]').forEach(function (el) { el.setAttribute('tabindex', '-1'); });
+  });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wbMatrices); else wbMatrices();

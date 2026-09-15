@@ -82,6 +82,25 @@
 
   --ds-table-header-bg: var(--gray-300);
   --ds-table-outline: var(--gray-400);
+  /* Form control boundaries (WCAG 1.4.11). Phase 2 adopted #6c757d in its 508 fix: 4.69:1 on white,
+     4.22:1 on the light section surface. Tables and cards keep --ds-border. */
+  --ds-field-border: #6c757d;
+  --ds-field-border-on-gray: var(--gray-600); /* fields on the #cccccc table footer: 4.0:1 */
+  /* Pairs the dark theme swaps: text and icons on a primary or status fill, tints behind primary text,
+     row hover, disabled fills, and alert inks. */
+  --ds-on-primary: var(--white);
+  --ds-on-status: var(--white);
+  --ds-tint: var(--teal-100);
+  --ds-tint-strong: var(--teal-150);
+  --ds-row-hover: var(--gray-50);
+  --ds-disabled-bg: var(--gray-200);
+  --ds-page-disabled-bg: var(--gray-300);
+  --ds-page-disabled-ink: var(--gray-900);
+  --ds-success-ink: var(--green-700);
+  --ds-warning-ink: var(--gold-800);
+  --ds-danger-ink: var(--red-800);
+  --ds-info-ink: var(--blue-700);
+  --ds-danger-hover-bg: #fac7c7;
 
   /* ------------------------------ typography -----------------------------
      Improved ramp. Sizes anchored to what ships today (28/24/20/16/14/12);
@@ -152,4 +171,35 @@
   --ds-link-hover: #A7D8FF;
   --ds-valid: #6FD1BF;
   --ds-invalid: #FF6B7D;
+  /* 508 round: Phase 2 dark puts white text on #47bad9 (2.25:1). We keep its surfaces and brand teal and
+     put near-black ink on light fills instead. Every pair below measures 4.5:1 or better. */
+  --ds-primary-hover: #7AE3FF;
+  --ds-primary-pressed: #A8EEFF;
+  --ds-danger-hover: #FF7089;
+  --ds-danger-pressed: #FF96A8;
+  --ds-pending: #C9A7F2;
+  --ds-status-closed: #B9BFC3;
+  --ds-on-primary: #0C1114;          /* 8.4:1 on #47bad9 */
+  --ds-on-status: #0C1114;           /* 5.9:1 or better on every status fill */
+  --ds-tint: #12323A;                /* primary text 6.0:1 */
+  --ds-tint-strong: #1B4652;         /* primary text 4.6:1 */
+  --ds-row-hover: #1F2630;
+  --ds-disabled-bg: #303030;
+  --ds-page-disabled-bg: #303030;
+  --ds-page-disabled-ink: #B9BFC3;
+  --ds-table-header-bg: #303030;
+  --ds-table-outline: #5A666C;
+  --ds-field-border: #8A949A;        /* 6.8:1 on black */
+  --ds-field-border-on-gray: #8A949A; /* 4.2:1 on #303030 */
+  --ds-focus-ring: #7CC4FF;          /* 11:1 on black */
+  --ds-focus-halo: #000000;
+  --ds-success-ink: #A7E9DB;
+  --ds-warning-ink: #FFE0A6;
+  --ds-danger-ink: #FFD6DC;
+  --ds-info-ink: #BFE7FF;
+  --ds-danger-hover-bg: #5B2730;
+  --success-bg-subtle: #112835; --success-border-subtle: #215C4F;
+  --info-bg-subtle: #193246;    --info-border-subtle: #1E5773;
+  --warning-bg-subtle: #2B2106; --warning-border-subtle: #6B4F0E;
+  --danger-bg-subtle: #2B1117;  --danger-border-subtle: #5B2730;
 }

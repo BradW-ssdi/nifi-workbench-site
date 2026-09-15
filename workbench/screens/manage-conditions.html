@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="../../tokens/tokens.css">
 <link rel="stylesheet" href="../../css/components.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -105,10 +106,10 @@
           <button type="button" class="ds-btn ds-btn-outline ds-filter-toggle" id="filterToggle" aria-expanded="true" aria-controls="columnFilters"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#filter_alt"/></svg>Filter</button>
         </div>
         <div class="chip-row" id="columnFilters" role="group" aria-label="Column filters">
-          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Program Area <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
-          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Condition Family <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
-          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
-          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">NND <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+          <button type="button" class="ds-chip" data-filter-column="Program Area" aria-expanded="false">Program Area <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+          <button type="button" class="ds-chip" data-filter-column="Condition Family" aria-expanded="false">Condition Family <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+          <button type="button" class="ds-chip" data-filter-column="Status" aria-expanded="false">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+          <button type="button" class="ds-chip" data-filter-column="NND" aria-expanded="false">NND <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
           <button class="ds-chip is-filtered" aria-label="Remove filter: Status Active" data-chip>Status: Active <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#close"/></svg></button>
           <a class="ds-link" href="#" id="clearFilters">Remove all filters and sorts</a>
         </div>

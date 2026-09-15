@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="../../tokens/tokens.css">
 <link rel="stylesheet" href="../../css/components.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -277,7 +278,7 @@
   backdrop.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { close(); return; }
     if (e.key !== 'Tab') return;
-    var items = dialog.querySelectorAll('button, [href], input, select, textarea');
+    var items = Array.prototype.filter.call(dialog.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'), function (el) { return el.offsetParent !== null; });
     var first = items[0], last = items[items.length - 1];
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }

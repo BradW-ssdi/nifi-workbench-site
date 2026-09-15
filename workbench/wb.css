@@ -17,7 +17,7 @@ body.wb { margin: 0; display: grid; grid-template-columns: 268px minmax(0, 1fr);
   box-shadow: 0 2px 8px rgba(44, 103, 119, .35);
   display: inline-flex; align-items: center; justify-content: center;
 }
-.wb-brand .dot svg { width: 16px; height: 16px; fill: #fff; }
+.wb-brand .dot svg { width: 16px; height: 16px; color: #fff; fill: currentColor; }
 .wb-brand b { font-size: 14.5px; letter-spacing: -.01em; }
 .wb-brand span { display: block; font-size: 11px; color: var(--ds-text-secondary); margin-top: 1px; }
 .wb-filter { width: 100%; margin: 0 0 6px; box-sizing: border-box; min-height: 32px; font-size: 13px; background: #fff; }
@@ -30,7 +30,7 @@ body.wb { margin: 0; display: grid; grid-template-columns: 268px minmax(0, 1fr);
   display: flex; align-items: center; gap: 9px; padding: 6px 8px; border-radius: 6px;
   color: var(--ds-text); text-decoration: none; line-height: 1.35;
 }
-.wb-nav a svg { width: 15px; height: 15px; fill: var(--ds-text-secondary); flex: none; }
+.wb-nav a svg { width: 15px; height: 15px; color: var(--ds-text-secondary); fill: currentColor; flex: none; }
 .wb-nav a { transition: background .12s ease, color .12s ease; }
 .wb-nav a:hover { background: var(--teal-100); }
 .wb-nav a.is-here {
@@ -38,7 +38,7 @@ body.wb { margin: 0; display: grid; grid-template-columns: 268px minmax(0, 1fr);
   color: #fff; font-weight: 600;
   box-shadow: 0 2px 10px rgba(44, 103, 119, .30);
 }
-.wb-nav a.is-here svg { fill: #fff; }
+.wb-nav a.is-here svg { color: #fff; }
 .wb-nav a.wb-sub {
   padding: 4px 8px 4px 18px; margin-left: 14px; font-size: 13px;
   color: var(--ds-text-secondary); border-left: 1px solid var(--ds-border); border-radius: 0 6px 6px 0;
@@ -158,4 +158,16 @@ body.wb { margin: 0; display: grid; grid-template-columns: 268px minmax(0, 1fr);
   .wb-sidebar { position: static; height: auto; max-height: none; border-right: 0; border-bottom: 1px solid var(--ds-border); padding-bottom: 18px; }
   .wb-main { padding: 24px 16px 80px; }
   .wb-section > h2 .wb-anchor { position: static; margin-right: 6px; }
+}
+
+/* Rings inside clipping containers (the scrolling sidebar, rounded example cards) are
+   drawn inside the control so they are never cut off. */
+.wb-toggle:focus-visible, .wb-nav a:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; box-shadow: none; }
+
+/* The workbench chrome (sidebar, Show code, accessibility notes) is light only. When a page is
+   switched to the dark theme to check specimens, the chrome keeps its light tokens. */
+[data-bs-theme="dark"] .wb-sidebar, [data-bs-theme="dark"] .wb-toggle, [data-bs-theme="dark"] .wb-a11y, [data-bs-theme="dark"] .wb-filter {
+  --ds-primary: #2C6777; --ds-text: #333333; --ds-text-secondary: #5a5f66; --ds-body-bg: #ffffff;
+  --ds-border: #d0d5d7; --ds-field-border: #6c757d; --ds-focus-ring: #0070C0; --ds-focus-halo: #ffffff;
+  color: #333333;
 }

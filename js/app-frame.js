@@ -61,7 +61,9 @@
       });
     });
 
-    rail.addEventListener('keydown', function (e) {
+    /* Escape hides a flyout whether keyboard focus or pointer hover opened it. Hovering
+       does not move focus into the rail, so the listener is on the document (WCAG 1.4.13). */
+    document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') rail.classList.add('is-tips-off');
     });
     rail.addEventListener('focusin', function () { rail.classList.remove('is-tips-off'); });

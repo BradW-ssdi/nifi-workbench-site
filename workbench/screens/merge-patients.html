@@ -287,7 +287,7 @@
     if (errs.length) {
       errs.forEach(function (e) {
         var li = document.createElement('li'), a = document.createElement('a');
-        a.href = '#'; a.textContent = e.msg; a.addEventListener('click', function (ev) { ev.preventDefault(); e.focus.focus(); });
+        a.href = '#candTable'; a.textContent = e.msg; a.addEventListener('click', function (ev) { ev.preventDefault(); e.focus.focus(); });
         li.appendChild(a); list.appendChild(li);
       });
       summary.hidden = false; summary.focus();
@@ -304,7 +304,7 @@
   backdrop.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { closeModal(); return; }
     if (e.key !== 'Tab') return;
-    var items = dialog.querySelectorAll('button, [href], input, select, textarea');
+    var items = Array.prototype.filter.call(dialog.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'), function (el) { return el.offsetParent !== null; });
     var first = items[0], last = items[items.length - 1];
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }

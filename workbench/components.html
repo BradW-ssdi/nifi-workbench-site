@@ -486,7 +486,7 @@
           <span class="ds-logo"><img src="assets/texas-logo-main.png" alt="Texas Health and Human Services"></span>
           <span class="ds-header-spacer"></span>
           <button class="ds-btn-icon" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#help"/></svg></button>
-          <button class="ds-profile-btn" aria-haspopup="menu" aria-expanded="false" style="padding:0"><span class="ds-avatar" aria-hidden="true">PP</span><span class="ds-sr-only">Account menu — P. Preparer</span></button>
+          <button type="button" class="ds-profile-btn" aria-expanded="false" style="padding:0"><span class="ds-avatar" aria-hidden="true">PP</span><span class="ds-sr-only">Account menu — P. Preparer</span></button>
         </header>
       </div>
     </div>
@@ -537,8 +537,8 @@
         </div>
         <div><button type="button" class="ds-btn ds-btn-outline ds-filter-toggle" aria-expanded="true" aria-controls="wbChips"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#filter_alt"/></svg>Filter</button></div>
         <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap" id="wbChips" role="group" aria-label="Column filters">
-          <button class="ds-chip" aria-haspopup="listbox" aria-expanded="false">Current sex <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
-          <button class="ds-chip is-hover" aria-haspopup="listbox" aria-expanded="false">Condition <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
+          <button type="button" class="ds-chip" aria-expanded="false">Current sex <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
+          <button type="button" class="ds-chip is-hover" aria-expanded="false">Condition <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
           <button class="ds-chip is-filtered" aria-label="Remove filter: Female">Female <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button>
           <button class="ds-chip is-filtered" aria-label="Remove filter: Open">Open <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button>
         </div>
@@ -547,7 +547,7 @@
     </div>
     <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
       <li>Icon-only buttons always carry an <code>aria-label</code>; the icon itself is <code>aria-hidden</code>. Icon buttons are 40px, close 32px — both clear the 24px AA target minimum (2.5.8).</li>
-      <li>Filter chips that open a value list use <code>aria-haspopup</code> + <code>aria-expanded</code>; applied-filter chips announce their action ("Remove filter: Female"), and removal is confirmed via the results region's live update.</li>
+      <li>Filter chips are disclosure buttons (Phase 2 coded chip): <code>aria-expanded</code> plus <code>aria-controls</code> pointing at a filter panel that sits in the page flow under the chip row. The panel has a named search, a fieldset of checkboxes, Clear selection, and Update. Escape closes it and returns focus to the chip. Behavior: <code>js/list-filters.js</code>. They are not listboxes, so they carry no <code>aria-haspopup</code>; applied-filter chips announce their action ("Remove filter: Female"), and removal is confirmed via the results region's live update.</li>
       <li>Chips match Phase 2: light teal, teal border, 16px corners, 35px tall (teal on light teal is 6.1:1). An applied chip is told apart by its value and the × affordance, never by color.</li>
       <li>The Filter button is a real button with <code>aria-expanded</code> and <code>aria-controls</code> pointing at the chip row, which toggles with <code>hidden</code>.</li>
       <li>"Search to filter" has an accessible name of its own; the placeholder is only a hint.</li>
@@ -764,7 +764,7 @@
             <a href="#">Lab Results</a>
             <a href="#">Notes</a>
           </nav>
-          <button class="ds-profile-btn" aria-haspopup="menu" aria-expanded="false">
+          <button type="button" class="ds-profile-btn" aria-expanded="false">
             <span class="ds-avatar" aria-hidden="true">PP</span>
             P. Preparer
             <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg>
@@ -774,7 +774,7 @@
     </div>
     <details class="wb-a11y"><summary>Accessibility — 508 / WCAG AA</summary><ul>
       <li>Jumper links live in a labeled <code>&lt;nav&gt;</code>; the active section carries <code>aria-current</code>, which drives the teal visual. Each link targets an element with a matching <code>id</code> and a <code>tabindex="-1"</code> so focus actually moves.</li>
-      <li>The profile control is a menu button: <code>aria-haspopup="menu"</code> + <code>aria-expanded</code>; the avatar initials are decorative — the visible name is the accessible name.</li>
+      <li>The profile control is a disclosure button, the same as the app frame: <code>aria-expanded</code> plus <code>aria-controls</code>; the avatar initials are decorative — the visible name is the accessible name.</li>
       <li>Jumper rows wrap at narrow widths; no horizontal scrolling at 400% zoom.</li>
     </ul></details>
   </section>

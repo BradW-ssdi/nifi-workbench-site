@@ -104,35 +104,47 @@
           <div class="ds-form-accordion-body" id="detailsBody">
             <div class="ds-field-row">
               <span class="ds-field-label" id="codingSystem-label">Coding System:</span>
-              <div class="ds-field-control"><span class="ds-field-value" id="codingSystem-value">Nationally Notifiable Conditions (NND)</span></div>
+              <div class="ds-field-control"><span class="ds-field-value" id="codingSystem-value">Notifiable Event (Disease/Condition) Code List</span></div>
             </div>
             <div class="ds-field-row">
               <span class="ds-field-label" id="conditionCode-label">Condition Code:</span>
-              <div class="ds-field-control"><span class="ds-field-value" id="conditionCode-value">10100</span></div>
+              <div class="ds-field-control"><span class="ds-field-value" id="conditionCode-value">10311</span></div>
             </div>
             <div class="ds-field-row">
               <label class="ds-field-label" for="conditionName"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Name:</label>
               <div class="ds-field-control">
-                <input class="ds-input" id="conditionName" name="conditionName" type="text" autocomplete="off" maxlength="50" value="Hepatitis B, acute" required aria-describedby="conditionName-help">
+                <input class="ds-input" id="conditionName" name="conditionName" type="text" autocomplete="off" maxlength="50" value="Syphilis, primary" required aria-describedby="conditionName-help">
                 <span class="ds-help-text" id="conditionName-help">Up to 50 characters.</span>
                 <span class="ds-error-text" id="conditionName-error" hidden></span>
               </div>
             </div>
             <div class="ds-field-row">
               <span class="ds-field-label" id="programArea-label">Program Area:</span>
-              <div class="ds-field-control"><span class="ds-field-value" id="programArea-value">Hepatitis (HEP)</span></div>
+              <div class="ds-field-control"><span class="ds-field-value" id="programArea-value">Sexually Transmitted Disease</span></div>
             </div>
             <div class="ds-field-row">
               <label class="ds-field-label" for="conditionFamily">Condition Family:</label>
               <div class="ds-field-control">
                 <select class="ds-select" id="conditionFamily" name="conditionFamily">
                   <option value="">None</option>
-                  <option value="Environmental">Environmental</option>
-                  <option value="Hepatitis" selected>Hepatitis</option>
-                  <option value="Respiratory">Respiratory</option>
-                  <option value="Syphilis">Syphilis</option>
-                  <option value="Tuberculosis">Tuberculosis</option>
-                  <option value="Vaccine Preventable">Vaccine Preventable</option>
+                  <option value="ARBO">Arboviral</option>
+                  <option value="BioThreat">BioThreat</option>
+                  <option value="Chagas">Chagas</option>
+                  <option value="ENVT">Environmental Health</option>
+                  <option value="FOOD">Foodborne</option>
+                  <option value="Generic">Generic</option>
+                  <option value="HANTA">Hantavirus</option>
+                  <option value="HCID">HCID</option>
+                  <option value="Helminths">Helminths</option>
+                  <option value="Hepatitis">Hepatitis</option>
+                  <option value="MDRO">MDRO</option>
+                  <option value="Polio">Polio</option>
+                  <option value="Rabies">Rabies</option>
+                  <option value="TICK">Tickborne</option>
+                  <option value="TB">Tuberculosis</option>
+                  <option value="VECTOR">Vectorborne, other</option>
+                  <option value="VISA">VISA\VRSA</option>
+                  <option value="WestNile">West Nile</option>
                 </select>
                 <span class="ds-error-text" id="conditionFamily-error" hidden></span>
               </div>
@@ -140,13 +152,11 @@
             <div class="ds-field-row">
               <label class="ds-field-label" for="coinfectionGroup">Co-infection Group:</label>
               <div class="ds-field-control">
-                <select class="ds-select" id="coinfectionGroup" name="coinfectionGroup" disabled aria-describedby="coinfectionGroup-help">
+                <select class="ds-select" id="coinfectionGroup" name="coinfectionGroup" aria-describedby="coinfectionGroup-help">
                   <option value="">None</option>
-                  <option value="HIV and syphilis">HIV and syphilis</option>
-                  <option value="HIV and gonorrhea">HIV and gonorrhea</option>
-                  <option value="HIV and chlamydia">HIV and chlamydia</option>
+                  <option value="STD_HIV_GROUP" selected>STD HIV Co-Infection Group</option>
                 </select>
-                <span class="ds-help-text" id="coinfectionGroup-help">Available only for the STD and HIV program areas.</span>
+                <span class="ds-help-text" id="coinfectionGroup-help">Available only for the Sexually Transmitted Disease and HIV/AIDS program areas.</span>
                 <span class="ds-error-text" id="coinfectionGroup-error" hidden></span>
               </div>
             </div>
@@ -191,8 +201,8 @@
               <span class="ds-field-label" id="contactTracing-label">Utilizes Contact Tracing Module:</span>
               <div class="ds-field-control">
                 <div class="ds-radio-inline" role="radiogroup" aria-labelledby="contactTracing-label">
-                  <label class="ds-check"><input type="radio" name="contactTracing" id="contactTracing-y" value="Y"> Yes</label>
-                  <label class="ds-check"><input type="radio" name="contactTracing" id="contactTracing-n" value="N" checked> No</label>
+                  <label class="ds-check"><input type="radio" name="contactTracing" id="contactTracing-y" value="Y" checked> Yes</label>
+                  <label class="ds-check"><input type="radio" name="contactTracing" id="contactTracing-n" value="N"> No</label>
                 </div>
               </div>
             </div>
@@ -302,7 +312,9 @@
   var program = byId('programArea'), coinf = byId('coinfectionGroup');
   if (program && program.tagName === 'SELECT') {
     program.addEventListener('change', function () {
-      var allowed = program.value === 'STD' || program.value === 'HIV';
+      /* DEV: the legacy page asks the server (PropertyUtil.isStdOrHivProgramArea), which reads
+         STD_PROGRAM_AREAS and HIV_PROGRAM_AREAS from NBS_configuration. */
+      var allowed = ["STD", "HIV/AIDS"].indexOf(program.value) !== -1;
       coinf.disabled = !allowed;
       if (!allowed) coinf.value = '';
     });
@@ -384,7 +396,7 @@
   backdrop.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { closeModal(); return; }
     if (e.key !== 'Tab') return;
-    var items = dialog.querySelectorAll('button, [href]');
+    var items = Array.prototype.filter.call(dialog.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'), function (el) { return el.offsetParent !== null; });
     var first = items[0], last = items[items.length - 1];
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }

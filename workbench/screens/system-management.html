@@ -19,7 +19,7 @@
   .opt-switch ul { display: flex; margin: 0; padding: 3px; list-style: none; background: var(--ds-body-bg); border: 1px solid var(--ds-border); border-radius: 8px; }
   .opt-switch a { display: block; padding: 6px 12px; border-radius: 6px; color: var(--ds-text); text-decoration: none; font-size: 13px; font-weight: 500; }
   .opt-switch a:hover { background: var(--ds-surface-secondary); }
-  .opt-switch a[aria-current="page"] { background: var(--ds-primary); color: #fff; }
+  .opt-switch a[aria-current="page"] { background: var(--ds-primary); color: var(--ds-on-primary); }
   .menu-find { display: grid; gap: 6px; max-width: 520px; }
   .menu-find .ds-input { width: 100%; min-height: 40px; }
   .menu-empty { margin: 0; padding: 16px; border: 1px dashed var(--ds-border); border-radius: var(--ds-radius-card); color: var(--ds-text-secondary); }
@@ -29,7 +29,9 @@
   .menu-list, .menu-list ul { list-style: none; margin: 0; padding: 0; }
   .menu-list { padding: 8px 0; }
   .menu-link { display: block; padding: 7px 18px; color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; }
-  .menu-link:hover { background: var(--teal-100); color: var(--ds-link-hover); }
+  .menu-link:hover { background: var(--ds-tint); color: var(--ds-link-hover); }
+  /* The card clips to its rounded corners, so the ring is drawn inside the link. */
+  .menu-link:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; box-shadow: none; }
   .menu-link.is-parent { font-weight: 600; }
   .menu-list ul { margin: 0 0 6px 30px; border-left: 2px solid var(--ds-border); }
   .menu-list ul .menu-link { padding-left: 14px; }

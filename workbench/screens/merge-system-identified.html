@@ -14,7 +14,7 @@
   .group-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 12px 16px; background: var(--ds-surface-secondary); border-bottom: 1px solid var(--ds-border); }
   .group-head h2 { font-size: var(--ds-type-h3-size); font-weight: 600; margin: 0; }
   .match-on { display: inline-flex; gap: 6px; flex-wrap: wrap; }
-  .match-on span { background: var(--teal-100); color: var(--ds-primary); border-radius: 999px; font: 600 12px/1 var(--ds-font-family); padding: 5px 10px; }
+  .match-on span { background: var(--ds-tint); color: var(--ds-primary); border-radius: 999px; font: 600 12px/1 var(--ds-font-family); padding: 5px 10px; }
   .sub { color: var(--ds-text-secondary); font-size: 13px; display: block; }
   @media (max-width: 820px) {
     .page-body { padding: 16px; }
@@ -265,7 +265,7 @@
   backdrop.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { closeConfirm(); return; }
     if (e.key !== 'Tab') return;
-    var items = dialog.querySelectorAll('button, [href], input, select, textarea');
+    var items = Array.prototype.filter.call(dialog.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'), function (el) { return el.offsetParent !== null; });
     var first = items[0], last = items[items.length - 1];
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
