@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIFI DS: BA review</title>
+<link rel="stylesheet" href="../css/ds.css">
+<link rel="stylesheet" href="wb.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* the template needs the room: this page uses the full width; text keeps a readable measure */
+  .wb-main { max-width: none; }
+  p.lead, .rv-steps { max-width: 78ch; }
+  #rvListTitle + .ds-table-frame { max-width: 1180px; }
+  .rv-table th, .rv-table td { vertical-align: top; }
+  /* the template under review: a tint, bold text, and an outline on the row, which forced colors keeps */
+  .rv-table tr.is-selected { outline: 2px solid var(--bs-primary); outline-offset: -2px; }
+  .rv-table tr.is-selected > * { background: var(--ds-tint); }
+  .rv-table a[aria-current="page"] { font-weight: 600; }
+  .rv-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  .rv-tools { display: flex; flex-wrap: wrap; align-items: end; gap: 12px 24px; margin: 12px 0 16px; }
+  .rv-tools .form-select { width: auto; }
+  /* notes first, so keyboard users reach them before the template's own controls */
+  .rv-layout { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .rv-stage { overflow: auto; border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius-lg); background: var(--bs-tertiary-bg); }
+  /* focus inside the template: the frame does not match :focus here, so review.js sets .has-focus */
+  .rv-stage iframe.has-focus { outline: 3px solid var(--bs-primary); outline-offset: -3px; }
+  .rv-stage iframe { display: block; width: 100%; height: max(560px, 78vh); border: 0; background: var(--bs-body-bg); margin: 0 auto; }
+  .rv-notes { max-height: max(560px, 78vh); overflow: auto; border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius-lg); background: var(--bs-body-bg); }
+  /* a button tabbed into view stops clear of the sticky heading and of the bottom edge, so its ring is not cut off */
+  .rv-notes { scroll-padding: 56px 0 12px; }
+  .rv-notes h2 { position: sticky; top: 0; z-index: 1; margin: 0; padding: 12px 16px; background: var(--bs-body-bg); border-bottom: 1px solid var(--bs-border-color); }
+  .rv-notes ol { list-style: none; margin: 0; padding: 0; }
+  .rv-note { padding: 12px 16px; border-bottom: 1px solid var(--bs-border-color); scroll-margin-top: 52px; }
+  .rv-note:focus { outline: 3px solid var(--bs-primary); outline-offset: -3px; }
+  .rv-note-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .rv-note-head code { margin-left: auto; font-size: 12px; }
+  .rv-num { flex: none; width: 24px; height: 24px; border-radius: 50%; background: #B35C00; color: #fff; font-weight: 700; font-size: 12px; line-height: 24px; text-align: center; }
+  .rv-note-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  @media (max-width: 1200px) { .rv-layout { grid-template-columns: minmax(0, 1fr); } .rv-notes { max-height: none; } }
+  @media (forced-colors: active) { .rv-num { border: 1px solid CanvasText; } }
+</style>
+<script src="wb.js"></script>
+</head>
+<body class="ds wb">
+<main class="wb-main">
+
+<section class="wb-section" style="margin-top:0">
+<h1 class="display-6 mb-0">BA review</h1>
+<p class="lead">Each template with its requirements as numbered notes. Open a template, read its notes beside it, and
+use Show on template to find each one on the screen. The full process, from Ready for BA review to Approved, is in
+<code>docs/ba-review.md</code>.</p>
+<ol class="rv-steps">
+  <li>Pick a template from the table. Templates for November 1 come first, in roadmap order.</li>
+  <li>Check each note against the business rules. A note marked <strong>Question for BA</strong> needs an answer.</li>
+  <li>For a change or an answer, use Copy reference on the note and paste it into your comment on the template's Jira story, so
+  the comment points at one note (for example "Merge Patients: Manual Search, note MP-5").</li>
+  <li>When the notes are right, comment <strong>Approved</strong> on the story. Design then marks the template Approved here,
+  with the date, and it goes to development.</li>
+</ol>
+</section>
+
+<section class="wb-section" aria-labelledby="rvListTitle">
+<h2 id="rvListTitle">Templates</h2>
+<div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Templates, scrolls sideways">
+<table class="table rv-table mb-0">
+  <thead><tr><th scope="col">Template</th><th scope="col">Scope</th><th scope="col">Status</th><th scope="col">Notes</th><th scope="col">Decisions</th></tr></thead>
+  <tbody id="rvRows"></tbody>
+</table>
+</div></div>
+</section>
+
+<section class="wb-section" id="review" aria-labelledby="rvTitle">
+<div class="rv-head"><h2 id="rvTitle" class="mb-0">Template</h2><span id="rvBadge"></span></div>
+<div class="rv-tools">
+  <div class="form-check form-switch mb-1"><input class="form-check-input" type="checkbox" role="switch" id="rvPins" checked><label class="form-check-label" for="rvPins">Show note markers</label></div>
+  <div><label class="form-label" for="rvWidth">Template width</label>
+    <select class="form-select" id="rvWidth"><option value="">Full width</option><option value="1280">1280 pixels, desktop</option><option value="768">768 pixels, tablet</option><option value="375">375 pixels, phone</option></select></div>
+  <a class="mb-1" id="rvOpen" href="#" target="_blank" rel="noopener">Open the template in a new tab</a>
+</div>
+<div id="rvStatus" class="visually-hidden" role="status"></div>
+<div class="rv-layout">
+  <section class="rv-notes" aria-labelledby="rvNotesTitle"><h2 class="h6" id="rvNotesTitle">Notes</h2><ol id="rvNotes"></ol></section>
+  <div class="rv-stage" id="rvStage" tabindex="0" role="group" aria-label="Template preview"><iframe id="rvFrame" title="Template"></iframe></div>
+</div>
+</section>
+
+</main>
+<script src="review-notes.js"></script>
+<script src="review.js"></script>
+</body>
+</html>

@@ -3,9 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NIFI Design System — Workbench</title>
-<link rel="stylesheet" href="../tokens/tokens.css">
-<link rel="stylesheet" href="../css/components.css">
+<title>NIFI Design System: Workbench</title>
+<link rel="stylesheet" href="../css/ds.css">
 <link rel="stylesheet" href="wb.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,7 +23,7 @@
     mask-image: linear-gradient(115deg, transparent 45%, black 100%);
     -webkit-mask-image: linear-gradient(115deg, transparent 45%, black 100%);
   }
-  .hero .ds-type-overline { color: #9FD4E3; }
+  .hero .ds-overline { color: #9FD4E3; }
   .hero h1 { color: #fff; letter-spacing: -.02em; }
   .hero p { color: #E3EEF2; }
   .hero b { color: #fff; }
@@ -40,27 +39,27 @@
   .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 28px; }
   .links a {
     position: relative; display: block; padding: 20px 22px;
-    border: 1px solid var(--ds-border); border-radius: 12px;
-    text-decoration: none; color: var(--ds-text); background: var(--ds-body-bg);
+    border: 1px solid var(--bs-border-color); border-radius: 12px;
+    text-decoration: none; color: var(--bs-body-color); background: var(--bs-body-bg);
     box-shadow: 0 1px 2px rgba(16,42,51,.05), 0 10px 28px -18px rgba(16,42,51,.18);
     transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
   }
   .links a:hover {
-    transform: translateY(-2px); border-color: var(--ds-primary);
+    transform: translateY(-2px); border-color: var(--bs-primary);
     box-shadow: 0 2px 4px rgba(16,42,51,.06), 0 20px 44px -18px rgba(44,103,119,.35);
   }
   .links a::after {
     content: "→"; position: absolute; right: 18px; top: 20px;
-    color: var(--ds-primary); font-weight: 600; opacity: 0; transform: translateX(-4px);
+    color: var(--bs-primary); font-weight: 600; opacity: 0; transform: translateX(-4px);
     transition: opacity .14s ease, transform .14s ease;
   }
   .links a:hover::after { opacity: 1; transform: translateX(0); }
-  .links .ds-type-h2 { display: flex; align-items: center; gap: 12px; }
+  .links .h2 { display: flex; align-items: center; gap: 12px; }
   .links .ds-icon {
-    fill: var(--ds-primary); width: 38px; height: 38px; flex: none;
-    background: var(--teal-100); border-radius: 10px; padding: 7px; box-sizing: border-box;
+    fill: var(--bs-primary); width: 38px; height: 38px; flex: none;
+    background: var(--ds-tint); border-radius: 10px; padding: 7px; box-sizing: border-box;
   }
-  .links .ds-type-caption { display: inline-block; margin-top: 8px; }
+  .links .small { display: inline-block; margin-top: 8px; }
 </style>
 <script src="wb.js"></script>
 </head>
@@ -68,16 +67,16 @@
 <main class="wb-main">
 <section class="wb-section" id="overview" style="margin-top:0">
   <div class="hero">
-    <p class="ds-type-overline">Texas HHS · NEDSS Modernization · Phase 3</p>
-    <h1 class="ds-type-display">NIFI Design System — Workbench</h1>
-    <p class="ds-type-body" style="max-width:76ch">Code-first proof of concept. One copy of every token and component, consumed
-    by the views. The workbench renders the same CSS the application will consume — every specimen is live, and
-    <b>Show code</b> on any example reveals the exact HTML plus the system CSS behind it. The Figma library mirrors
-    this file for file: same tokens, same components, same screens — and every component ships 508 / WCAG AA verified.</p>
+    <p class="ds-overline">Texas HHS · NEDSS Modernization · Phase 3</p>
+    <h1 class="display-6 mb-0">NIFI Design System: Workbench</h1>
+    <p  style="max-width:76ch">Code-first proof of concept. There is one copy of every token and component, and the
+    views use it. The workbench renders the same CSS the application will use, so every specimen is live.
+    <b>Show code</b> on any example shows its exact HTML and the system CSS behind it. The Figma library matches
+    this one file for file, with the same tokens, components, and screens. Every component is verified for 508 / WCAG AA.</p>
     <div class="facts">
-      <div><b>2</b><span>token files, light + dark</span></div>
+      <div><b>1</b><span>stylesheet: Bootstrap 5.3.3 built from source with the NEDSS tokens, light + dark</span></div>
       <div><b>36</b><span>icons, ranked by app usage</span></div>
-      <div><b>97</b><span>components in the Figma library, in 22 variant sets</span></div>
+      <div><b>218</b><span>components in the Figma library, in 28 variant sets, all on variables</span></div>
       <div><b>16</b><span>screens, code and reference JS included</span></div>
       <div><b>0</b><span>axe violations, WCAG 2.1 AA + 508</span></div>
     </div>
@@ -87,26 +86,29 @@
 <section class="wb-section" id="browse">
   <h2>Browse</h2>
   <div class="links">
-    <a href="foundations.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#tune"/></svg>Foundations</span><br><span class="ds-type-caption">Color tokens (light + dark) and the improved type system</span></a>
-    <a href="components.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#article"/></svg>Components</span><br><span class="ds-type-caption">Atoms and molecules with full state matrices — live hover/focus/pressed</span></a>
-    <a href="icons.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#settings"/></svg>Icons</span><br><span class="ds-type-caption">Material Symbols Rounded sprite — the same set the Figma foundations carry</span></a>
-    <a href="provenance.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#content_paste_search"/></svg>Provenance</span><br><span class="ds-type-caption">Where each pattern is produced in the app today, and what duplicates it</span></a>
-    <a href="screens/home.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Home Dashboard</span><br><span class="ds-type-caption">Patient search, queues, notices, and reports — the app front door</span></a>
-    <a href="dev-test.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#description"/></svg>Dev test round 1</span><br><span class="ds-type-caption">What to test, how to test it, and how to report findings</span></a>
-    <a href="screens/frame.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: App Frame</span><br><span class="ds-type-caption">The shared skip link, rail, header, and footer every screen sits in</span></a>
-    <a href="screens/system-management.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: System Management, A. Cards</span><br><span class="ds-type-caption">The mock layout, fixed: column flow so no card leaves a gap, plus find a setting</span></a>
-    <a href="screens/system-management-directory.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: System Management, B. Directory</span><br><span class="ds-type-caption">Category list with a detail panel, deep links, and cross-category search</span></a>
-    <a href="screens/system-management-index.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: System Management, C. Index</span><br><span class="ds-type-caption">Search first, common tasks, and full-width category rows</span></a>
-    <a href="screens/wds-algorithm-library.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: WDS Algorithm Library</span><br><span class="ds-type-caption">Queue with data table, toolbar, and the import modal</span></a>
-    <a href="screens/wds-add-algorithm.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: WDS Add Algorithm</span><br><span class="ds-type-caption">Form with tabs, sections, and required-field treatment</span></a>
-    <a href="screens/manage-conditions.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Manage Conditions</span><br><span class="ds-type-caption">Condition library with chip filters, flagged rows, and post-action alerts</span></a>
-    <a href="screens/add-condition.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Add Condition</span><br><span class="ds-type-caption">The add screen pattern: sticky actions, section navigation, teal sections, error summary</span></a>
-    <a href="screens/edit-condition.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Edit Condition</span><br><span class="ds-type-caption">The edit screen pattern: read-only identifiers and prefilled values</span></a>
-    <a href="screens/manage-pages.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Manage Pages</span><br><span class="ds-type-caption">Page library with state badges and a create-draft confirmation on published pages</span></a>
-    <a href="screens/manage-users.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Manage Users</span><br><span class="ds-type-caption">Security user list with ten sortable columns, chip filters, and status badges</span></a>
-    <a href="screens/manage-questions.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Manage Questions</span><br><span class="ds-type-caption">Question library with search criteria and results on one screen</span></a>
-    <a href="screens/merge-patients.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Merge Patients — Manual</span><br><span class="ds-type-caption">Selection table with survivor choice, floating bulk bar, and confirm modal</span></a>
-    <a href="screens/merge-system-identified.html"><span class="ds-type-h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Merge Patients — System Identified</span><br><span class="ds-type-caption">Group-by-group queue with merge, remove, skip, and no-merge actions</span></a>
+    <a href="foundations.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#tune"/></svg>Foundations</span><br><span class="small text-body-secondary">Color tokens (light + dark) and the improved type system</span></a>
+    <a href="components.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#article"/></svg>Components</span><br><span class="small text-body-secondary">Atoms and molecules with full state matrices: live hover/focus/pressed</span></a>
+    <a href="icons.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#settings"/></svg>Icons</span><br><span class="small text-body-secondary">Material Symbols Rounded sprite, the same set the Figma foundations carry</span></a>
+    <a href="provenance.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#content_paste_search"/></svg>Provenance</span><br><span class="small text-body-secondary">Where each pattern is produced in the app today, and what duplicates it</span></a>
+    <a href="screens/home.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Home Dashboard</span><br><span class="small text-body-secondary">Patient search, queues, notices, and reports: the app front door</span></a>
+    <a href="review.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#content_paste_search"/></svg>BA review</span><br><span class="small text-body-secondary">Each template with its requirements as numbered notes, its review status, and the decisions so far</span></a>
+    <a href="dev-test.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#description"/></svg>Dev test round 1</span><br><span class="small text-body-secondary">What to test, how to test it, and how to report findings</span></a>
+    <a href="screens/frame.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: App Frame</span><br><span class="small text-body-secondary">The shared skip link, rail, header, and footer every screen sits in</span></a>
+    <a href="screens/system-management.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: System Management</span><br><span class="small text-body-secondary">The main menu: a side nav of modules beside a card for every module, with find a setting</span></a>
+    <a href="screens/wds-algorithm-library.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: WDS Algorithm Library</span><br><span class="small text-body-secondary">Queue with data table, toolbar, and the import modal</span></a>
+    <a href="screens/wds-add-algorithm.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: WDS Add Algorithm</span><br><span class="small text-body-secondary">Form with tabs, sections, and required-field treatment</span></a>
+    <a href="screens/wds-view-algorithm.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: WDS View Algorithm</span><br><span class="small text-body-secondary">The saved algorithm on one page, read only, with Print, Export, and Edit</span></a>
+    <a href="screens/wds-edit-algorithm.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: WDS Edit Algorithm</span><br><span class="small text-body-secondary">The add form opened with a saved algorithm, its criteria tables filled in</span></a>
+    <a href="screens/manage-conditions.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Manage Conditions</span><br><span class="small text-body-secondary">Condition library with chip filters, flagged rows, and post-action alerts</span></a>
+    <a href="screens/add-condition.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Add Condition</span><br><span class="small text-body-secondary">The add screen pattern: sticky actions, section navigation, teal sections, error summary</span></a>
+    <a href="screens/edit-condition.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Edit Condition</span><br><span class="small text-body-secondary">The edit screen pattern: read-only identifiers and prefilled values</span></a>
+    <a href="screens/manage-pages.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Manage Pages</span><br><span class="small text-body-secondary">Page library with state badges and a create-draft confirmation on published pages</span></a>
+    <a href="screens/manage-conditions-dialogs.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>Proof of concept: dialog on dialog</span><br><span class="small text-body-secondary">Manage Conditions with View, Add, and Edit in dialogs; Edit opens on top of View</span></a>
+    <a href="screens/edit-page.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>Proof of concept: drag and drop</span><br><span class="small text-body-secondary">Edit Page: move questions and subsections by dragging, by keyboard, or from a Move menu</span></a>
+    <a href="screens/manage-users.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Manage Users</span><br><span class="small text-body-secondary">Security user list with ten sortable columns, chip filters, and status badges</span></a>
+    <a href="screens/manage-questions.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Manage Questions</span><br><span class="small text-body-secondary">Question library with search criteria and results on one screen</span></a>
+    <a href="screens/merge-patients.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Merge Patients, Manual</span><br><span class="small text-body-secondary">Selection table with survivor choice, floating bulk bar, and confirm modal</span></a>
+    <a href="screens/merge-system-identified.html"><span class="h2"><svg class="ds-icon"><use href="../icons/sprite.svg#open_in_new"/></svg>View: Merge Patients, System Identified</span><br><span class="small text-body-secondary">Group-by-group queue with merge, remove, skip, and no-merge actions</span></a>
   </div>
 </section>
 </main>

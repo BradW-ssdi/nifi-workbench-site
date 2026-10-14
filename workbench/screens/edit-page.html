@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edit Page (POC) - Page Management - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<link rel="stylesheet" href="../phase2/island.css"><!-- Phase 2 styles for .ds-phase2, only in this layout -->
+<script src="../../js/app-frame.js" defer></script>
+<script src="../../js/ds-dialog.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  [hidden] { display: none !important; }
+  .page-body { padding: 24px; display: grid; gap: 16px; }
+  .pb-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 24px; }
+  .pb-head .pb-titles { flex: 1 1 320px; min-width: 0; }
+  .pb-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .pb-tabs { margin-bottom: 4px; }
+  /* grid items: allow them to shrink below their longest word in a narrow frame */
+  .pb-section, .pb-sub, .pb-q, .pb-panel > * { min-width: 0; }
+  .pb-section { border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius-lg); background: var(--bs-body-bg); }
+  .pb-section > .pb-row { background: var(--ds-table-header-bg, var(--bs-secondary-bg)); border-radius: var(--bs-border-radius-lg) var(--bs-border-radius-lg) 0 0; font-weight: 600; }
+  .pb-subs { list-style: none; margin: 0; display: grid; gap: 12px; padding: 12px; }
+  .pb-sub { border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius); }
+  .pb-sub > .pb-row { font-weight: 600; border-bottom: 1px solid var(--bs-border-color); }
+  .pb-items { list-style: none; margin: 0; padding: 6px; min-height: 44px; display: grid; gap: 4px; }
+  .pb-row { display: flex; align-items: center; gap: 10px; padding: 6px 8px; min-height: 44px; }
+  .pb-q { border-radius: var(--bs-border-radius); background: var(--bs-body-bg); }
+  .pb-q:hover { background: var(--ds-tint); }
+  .pb-label { flex: 1 1 auto; min-width: 0; overflow-wrap: break-word; }
+  .pb-type { flex: none; font-size: 12px; color: var(--bs-secondary-color); }
+  .pb-handle { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid transparent; border-radius: var(--bs-border-radius); background: transparent; color: var(--bs-secondary-color); cursor: grab; touch-action: none; }
+  .pb-handle:hover { border-color: var(--bs-border-color); color: var(--bs-body-color); }
+  .pb-handle[aria-pressed="true"] { border-color: var(--bs-primary); color: var(--bs-primary); background: var(--ds-tint); cursor: grabbing; }
+  .pb-move { flex: none; white-space: nowrap; }
+  .pb-menu { position: relative; }
+  /* opens to the left of its button, level with it: it covers labels, never another row's Move button */
+  .pb-menu .dropdown-menu { top: 0; right: calc(100% + 6px); left: auto; margin-top: 0; }
+  /* the item being moved: an outline and a tint, not color alone */
+  .is-moving { outline: 2px dashed var(--bs-primary); outline-offset: 1px; background: var(--ds-tint); }
+  .pb-drop-line { height: 0; border-top: 3px solid var(--bs-primary); margin: -2px 0; border-radius: 2px; }
+  .pb-ghost { position: fixed; z-index: 1100; pointer-events: none; opacity: 0.9; box-shadow: var(--bs-box-shadow); background: var(--bs-body-bg); border: 1px solid var(--bs-primary); border-radius: var(--bs-border-radius); padding: 6px 10px; max-width: 420px; }
+  .pb-help { margin: 0; }
+  .ds-empty { margin: 0; padding: 24px; text-align: center; color: var(--bs-secondary-color); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius-lg); }
+  @media (max-width: 820px) { .page-body { padding: 16px; } }
+  /* narrow: the question type goes under its label instead of squeezing it */
+  @media (max-width: 480px) {
+    .pb-q > .pb-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "h l m" "h t m"; column-gap: 8px; row-gap: 0; }
+    .pb-q > .pb-row > .pb-handle { grid-area: h; } .pb-q > .pb-row > .pb-label { grid-area: l; } .pb-q > .pb-row > .pb-type { grid-area: t; } .pb-q > .pb-row > .pb-menu { grid-area: m; }
+    .pb-subs { padding: 8px; } .pb-items { padding: 4px; } .pb-row { gap: 6px; padding: 6px 4px; }
+    /* the word goes, the chevron stays; the button keeps its full accessible name */
+    .pb-move-text { display: none; } .pb-move { min-width: 36px; min-height: 36px; }
+  }
+  @media (forced-colors: active) { .is-moving { outline-color: Highlight; } .pb-drop-line { border-top-color: Highlight; } }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header pb-head">
+        <div class="pb-titles">
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="system-management.html">System Management</a></li>
+              <li class="breadcrumb-item"><a href="manage-pages.html">Page Library</a></li>
+              <li class="breadcrumb-item">View Page</li>
+              <li class="breadcrumb-item active" aria-current="page">Edit Page</li>
+            </ol>
+          </nav>
+          <h1 class="display-6 mb-0 mt-2">Edit Page</h1>
+          <p class="mb-0 mt-2 d-flex flex-wrap align-items-center gap-2"><span class="fw-semibold">Cyclosporiasis Investigation (PageBuilder)</span><span class="badge text-bg-warning">Draft</span></p>
+        </div>
+        <div class="pb-actions">
+          <a class="btn btn-outline-primary rounded-pill" href="#">Preview</a>
+          <a class="btn btn-primary rounded-pill" href="#">Done editing</a>
+        </div>
+      </div>
+      <div class="page-body">
+        <!-- POC (BA review 2026-10-08): drag and drop with a manual relocate, on the page builder's Edit Page
+             (Page Management > Page Library > View Page > Edit Page). Questions move within and between subsections,
+             subsections within and between sections. Three ways to move, all equal:
+             1. Pointer: drag the handle; a line shows where the item lands.
+             2. Keyboard: Enter or Space on the handle picks the item up; Up and Down move it one position at a time,
+                across subsections; Enter or Space drops it; Escape puts it back. Each step is announced.
+             3. Move menu: Move up, Move down, or Move to... (a dialog to choose the destination and position).
+             Every move is announced and can be undone. DEV: each move posts the element, its new parent and its
+             position; the server answers with the new order. -->
+        <div class="alert alert-info mb-0">
+          <b>Proof of concept: drag and drop.</b> Drag a question or subsection by its handle, use the keyboard on the
+          handle, or use its Move menu.
+        </div>
+        <p class="visually-hidden" id="dragHelp">Press Enter or Space to pick up. Then use the Up and Down arrows to move, Enter or Space to drop, Escape to cancel. Or use the Move menu.</p>
+        <div class="alert alert-success mb-0 d-flex flex-wrap align-items-center gap-3" id="moved" role="status" hidden><span id="movedText"></span><button type="button" class="btn btn-link p-0" id="undoBtn">Undo</button></div>
+        <div id="dragStatus" class="visually-hidden" role="status" aria-live="assertive"></div>
+
+        <ul class="nav nav-underline pb-tabs" role="tablist" aria-label="Page tabs">
+          <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="true" id="tPatient" aria-controls="pPatient">Patient</button></li>
+          <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tCase" aria-controls="pCase" tabindex="-1">Case Info</button></li>
+          <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tContact" aria-controls="pContact" tabindex="-1">Contact Tracing</button></li>
+        </ul>
+        <div id="pPatient" role="tabpanel" aria-labelledby="tPatient" class="d-grid gap-3" data-canvas>
+          <section class="pb-section" data-label="Patient Information" aria-labelledby="m1"><div class="pb-row"><h2 class="h6 mb-0 pb-label" id="m1">Patient Information</h2></div><ul class="pb-subs" data-holds="subsection" aria-labelledby="m1"><li class="pb-sub" data-kind="subsection" data-label="General Information"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move subsection: General Information"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label" id="m2">General Information</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m5" aria-label="Move options for subsection: General Information"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m5" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div><ul class="pb-items" data-holds="question" aria-labelledby="m2"><li class="pb-q" data-kind="question" data-label="Information As of Date"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Information As of Date"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Information As of Date</span><span class="pb-type">Date</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m3" aria-label="Move options for question: Information As of Date"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m3" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="Comments"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Comments"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Comments</span><span class="pb-type">Text area</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m4" aria-label="Move options for question: Comments"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m4" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li></ul></li><li class="pb-sub" data-kind="subsection" data-label="Name Information"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move subsection: Name Information"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label" id="m6">Name Information</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m12" aria-label="Move options for subsection: Name Information"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m12" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div><ul class="pb-items" data-holds="question" aria-labelledby="m6"><li class="pb-q" data-kind="question" data-label="Name Information As Of Date"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Name Information As Of Date"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Name Information As Of Date</span><span class="pb-type">Date</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m7" aria-label="Move options for question: Name Information As Of Date"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m7" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="First Name"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: First Name"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">First Name</span><span class="pb-type">Text</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m8" aria-label="Move options for question: First Name"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m8" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="Middle Name"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Middle Name"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Middle Name</span><span class="pb-type">Text</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m9" aria-label="Move options for question: Middle Name"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m9" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="Last Name"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Last Name"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Last Name</span><span class="pb-type">Text</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m10" aria-label="Move options for question: Last Name"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m10" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="Suffix"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Suffix"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Suffix</span><span class="pb-type">Coded</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m11" aria-label="Move options for question: Suffix"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m11" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li></ul></li><li class="pb-sub" data-kind="subsection" data-label="Other Personal Details"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move subsection: Other Personal Details"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label" id="m13">Other Personal Details</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m19" aria-label="Move options for subsection: Other Personal Details"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m19" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div><ul class="pb-items" data-holds="question" aria-labelledby="m13"><li class="pb-q" data-kind="question" data-label="Date of Birth"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Date of Birth"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Date of Birth</span><span class="pb-type">Date</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m14" aria-label="Move options for question: Date of Birth"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m14" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="Reported Age"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Reported Age"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Reported Age</span><span class="pb-type">Number</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m15" aria-label="Move options for question: Reported Age"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m15" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="Reported Age Units"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Reported Age Units"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Reported Age Units</span><span class="pb-type">Coded</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m16" aria-label="Move options for question: Reported Age Units"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m16" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="Current Sex"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Current Sex"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Current Sex</span><span class="pb-type">Coded</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m17" aria-label="Move options for question: Current Sex"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m17" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="Is the patient deceased?"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Is the patient deceased?"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Is the patient deceased?</span><span class="pb-type">Coded</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m18" aria-label="Move options for question: Is the patient deceased?"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m18" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li></ul></li><li class="pb-sub" data-kind="subsection" data-label="Reporting Address for Case Counting"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move subsection: Reporting Address for Case Counting"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label" id="m20">Reporting Address for Case Counting</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m26" aria-label="Move options for subsection: Reporting Address for Case Counting"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m26" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div><ul class="pb-items" data-holds="question" aria-labelledby="m20"><li class="pb-q" data-kind="question" data-label="Street Address 1"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Street Address 1"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Street Address 1</span><span class="pb-type">Text</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m21" aria-label="Move options for question: Street Address 1"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m21" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="City"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: City"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">City</span><span class="pb-type">Text</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m22" aria-label="Move options for question: City"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m22" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="State"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: State"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">State</span><span class="pb-type">Coded</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m23" aria-label="Move options for question: State"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m23" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="Zip"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Zip"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Zip</span><span class="pb-type">Text</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m24" aria-label="Move options for question: Zip"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m24" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="County"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: County"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">County</span><span class="pb-type">Coded</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m25" aria-label="Move options for question: County"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m25" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li></ul></li></ul></section><section class="pb-section" data-label="Ethnicity and Race" aria-labelledby="m27"><div class="pb-row"><h2 class="h6 mb-0 pb-label" id="m27">Ethnicity and Race</h2></div><ul class="pb-subs" data-holds="subsection" aria-labelledby="m27"><li class="pb-sub" data-kind="subsection" data-label="Ethnicity and Race Information"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move subsection: Ethnicity and Race Information"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label" id="m28">Ethnicity and Race Information</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m31" aria-label="Move options for subsection: Ethnicity and Race Information"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m31" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div><ul class="pb-items" data-holds="question" aria-labelledby="m28"><li class="pb-q" data-kind="question" data-label="Ethnicity"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Ethnicity"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Ethnicity</span><span class="pb-type">Coded</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m29" aria-label="Move options for question: Ethnicity"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m29" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li><li class="pb-q" data-kind="question" data-label="Race"><div class="pb-row"><button type="button" class="pb-handle" aria-pressed="false" aria-describedby="dragHelp" aria-label="Move question: Race"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#drag_indicator"/></svg></button><span class="pb-label">Race</span><span class="pb-type">Coded, multiple</span><div class="pb-menu"><button type="button" class="btn btn-light btn-sm pb-move" aria-haspopup="true" aria-expanded="false" aria-controls="m30" aria-label="Move options for question: Race"><span class="pb-move-text">Move</span><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button><ul class="dropdown-menu" id="m30" hidden><li><button type="button" class="dropdown-item" data-act="up">Move up</button></li><li><button type="button" class="dropdown-item" data-act="down">Move down</button></li><li><button type="button" class="dropdown-item" data-act="to">Move to...</button></li></ul></div></div></li></ul></li></ul></section>
+        </div>
+        <div id="pCase" role="tabpanel" aria-labelledby="tCase" hidden><p class="ds-empty mb-0">Case Info tab (not part of this proof of concept).</p></div>
+        <div id="pContact" role="tabpanel" aria-labelledby="tContact" hidden><p class="ds-empty mb-0">Contact Tracing tab (not part of this proof of concept).</p></div>
+      </div>
+
+      <div class="modal" id="moveDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="moveTitle" aria-describedby="moveWhat" hidden>
+        <div class="modal-dialog"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="moveTitle">Move to</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body d-grid gap-3">
+            <p class="mb-0" id="moveWhat"></p>
+            <div class="ds-field"><label for="moveParent" id="moveParentLabel">Destination</label><select class="form-select" id="moveParent"></select></div>
+            <div class="ds-field"><label for="movePos">Position</label><select class="form-select" id="movePos"></select></div>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="moveDo">Move</button></div>
+        </div></div>
+      </div>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+
+<!-- Create-draft confirmation (replaces the legacy window.confirm on Edit of a
+     published page). Standard dialog contract: trap, Esc, focus returns. -->
+<div class="modal" id="draftModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="dmTitle" aria-describedby="dmDesc" hidden>
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="dmTitle">Create a draft?</h2>
+          <button type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0" id="dmDesc" style="margin:0"></p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-primary" data-close>Cancel</button>
+          <button class="btn btn-primary" id="dmConfirm">Create draft</button>
+        </div>
+    </div>
+  </div>
+</div>
+<script>
+/* POC: drag and drop, keyboard move, and Move to on the page builder's Edit Page. */
+(function () {
+  'use strict';
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  var canvas = $('[data-canvas]'), live = $('#dragStatus'), lastMove = null;
+  function say(m) { live.textContent = ''; setTimeout(function () { live.textContent = m; }, 40); }
+  function kindOf(el) { return el.getAttribute('data-kind'); }
+  function labelOf(el) { return el.getAttribute('data-label'); }
+  function listOf(el) { return el.parentElement; }
+  function listName(list) { var c = list.closest('[data-label]'); return c ? labelOf(c) : ''; }
+  /* Moves stay within the open tab: lists on hidden tabs are not destinations. */
+  function lists(kind) { return $$('[role="tabpanel"]:not([hidden]) [data-holds="' + kind + '"]', canvas); }
+  function siblings(list, kind) { return $$(':scope > [data-kind="' + kind + '"]', list); }
+  function where(el) {
+    var list = listOf(el), items = siblings(list, kindOf(el));
+    return 'position ' + (items.indexOf(el) + 1) + ' of ' + items.length + ' in ' + listName(list);
+  }
+  /* All slots an item can occupy, in reading order: [list, index] */
+  function slots(el) {
+    var out = [];
+    lists(kindOf(el)).forEach(function (list) {
+      var items = siblings(list, kindOf(el)).filter(function (x) { return x !== el; });
+      for (var i = 0; i <= items.length; i++) out.push([list, i]);
+    });
+    return out;
+  }
+  function place(el, list, index) {
+    var items = siblings(list, kindOf(el)).filter(function (x) { return x !== el; });
+    list.insertBefore(el, items[index] || null);
+  }
+  function snapshot(el) { return { list: listOf(el), next: el.nextElementSibling }; }
+  function restore(el, snap) { snap.list.insertBefore(el, snap.next && snap.next !== el ? snap.next : null); }
+  function done(el, before, how) {
+    lastMove = { el: el, before: before };
+    var msg = 'Moved ' + labelOf(el) + ' to ' + where(el) + '.';
+    $('#movedText').textContent = msg; $('#moved').hidden = false;
+    say(msg);
+  }
+  $('#undoBtn').addEventListener('click', function () {
+    if (!lastMove) return;
+    restore(lastMove.el, lastMove.before);
+    var msg = 'Move undone. ' + labelOf(lastMove.el) + ' is back at ' + where(lastMove.el) + '.';
+    $('#movedText').textContent = msg; say(msg);
+    $('.pb-handle', lastMove.el).focus();
+    lastMove = null; $('#undoBtn').hidden = true;
+    setTimeout(function () { $('#undoBtn').hidden = false; $('#moved').hidden = true; }, 4000);
+  });
+
+  /* ---- Keyboard: pick up, move, drop ---- */
+  var grabbed = null, grabSnap = null;
+  function pick(el) { grabbed = el; grabSnap = snapshot(el); el.classList.add('is-moving'); $('.pb-handle', el).setAttribute('aria-pressed', 'true');
+    say('Picked up ' + labelOf(el) + ', ' + where(el) + '. Use the Up and Down arrows to move, Enter or Space to drop, Escape to cancel.'); }
+  function drop(cancel) {
+    var el = grabbed; grabbed = null;
+    el.classList.remove('is-moving'); $('.pb-handle', el).setAttribute('aria-pressed', 'false');
+    if (cancel) { restore(el, grabSnap); say('Move cancelled. ' + labelOf(el) + ' is back at ' + where(el) + '.'); }
+    else if (listOf(el) === grabSnap.list && el.nextElementSibling === grabSnap.next) { say(labelOf(el) + ' dropped where it was.'); }
+    else done(el, grabSnap);
+    $('.pb-handle', el).focus();
+  }
+  function step(el, dir) {
+    var all = slots(el), list = listOf(el), cur = siblings(list, kindOf(el)).indexOf(el);
+    var at = -1;
+    all.forEach(function (s, i) { if (s[0] === list && s[1] === cur) at = i; });
+    var to = all[at + dir];
+    if (!to) { say(labelOf(el) + ' is already at the ' + (dir < 0 ? 'top.' : 'end.')); return; }
+    place(el, to[0], to[1]);
+    $('.pb-handle', el).focus();
+    say(labelOf(el) + ', ' + where(el) + '.');
+  }
+  canvas.addEventListener('keydown', function (e) {
+    var h = e.target.closest('.pb-handle'); if (!h) return;
+    var el = h.closest('[data-kind]');
+    if (grabbed === el && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) { e.preventDefault(); step(el, e.key === 'ArrowUp' ? -1 : 1); }
+    else if (grabbed === el && e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); drop(true); }
+  });
+  /* Pick up and drop on activation (click), not on keydown: Enter and Space on the button still do it, and a screen
+     reader in browse mode activates buttons with a click and never sends the keydown. A click that ends a pointer drag
+     is not an activation. */
+  var dragEnded = false;
+  canvas.addEventListener('click', function (e) {
+    var h = e.target.closest('.pb-handle'); if (!h) return;
+    if (dragEnded) { dragEnded = false; return; }
+    var el = h.closest('[data-kind]');
+    if (grabbed === el) drop(false); else { if (grabbed) drop(true); pick(el); }
+  });
+  canvas.addEventListener('focusout', function (e) {
+    if (!grabbed) return;
+    setTimeout(function () { if (grabbed && !grabbed.contains(document.activeElement)) drop(true); }, 0);
+  });
+
+  /* ---- Pointer: drag the handle ---- */
+  var drag = null;
+  canvas.addEventListener('pointerdown', function (e) {
+    var h = e.target.closest('.pb-handle'); if (!h || e.button !== 0) return;
+    var el = h.closest('[data-kind]');
+    drag = { el: el, snap: snapshot(el), x: e.clientX, y: e.clientY, started: false, line: null, ghost: null, target: null };
+    h.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    if (!drag.started) {
+      if (Math.abs(e.clientY - drag.y) + Math.abs(e.clientX - drag.x) < 6) return;
+      drag.started = true; drag.el.classList.add('is-moving');
+      drag.ghost = document.createElement('div'); drag.ghost.className = 'pb-ghost'; drag.ghost.textContent = labelOf(drag.el); document.body.appendChild(drag.ghost);
+      drag.line = document.createElement('div'); drag.line.className = 'pb-drop-line';
+    }
+    drag.ghost.style.left = (e.clientX + 12) + 'px'; drag.ghost.style.top = (e.clientY + 8) + 'px';
+    /* the list under the pointer, and the slot by the middle of each item */
+    var kind = kindOf(drag.el), best = null;
+    lists(kind).forEach(function (list) {
+      var r = list.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top - 8 || e.clientY > r.bottom + 8) return;
+      var items = siblings(list, kind).filter(function (x) { return x !== drag.el; }), idx = items.length;
+      for (var i = 0; i < items.length; i++) { var ir = items[i].getBoundingClientRect(); if (e.clientY < ir.top + ir.height / 2) { idx = i; break; } }
+      best = [list, idx, items];
+    });
+    if (!best) { if (drag.line.parentNode) drag.line.remove(); drag.target = null; return; }
+    drag.target = best;
+    best[0].insertBefore(drag.line, best[2][best[1]] || null);
+  });
+  function endDrag(e, cancel) {
+    if (!drag) return;
+    var d = drag; drag = null;
+    if (d.ghost) d.ghost.remove();
+    if (d.line && d.line.parentNode) d.line.remove();
+    d.el.classList.remove('is-moving');
+    if (!d.started) return;
+    dragEnded = true; setTimeout(function () { dragEnded = false; }, 0);
+    if (cancel || !d.target) { say('Move cancelled.'); return; }
+    place(d.el, d.target[0], d.target[1]);
+    if (listOf(d.el) === d.snap.list && d.el.nextElementSibling === d.snap.next) return;
+    done(d.el, d.snap);
+  }
+  canvas.addEventListener('pointerup', function (e) { endDrag(e, false); });
+  canvas.addEventListener('pointercancel', function (e) { endDrag(e, true); });
+  window.addEventListener('keydown', function (e) { if (drag && e.key === 'Escape') { e.preventDefault(); endDrag(e, true); } }, true);
+
+  /* ---- Move menu ---- */
+  var openMenu = null;
+  function closeMenu(focusBtn) { if (!openMenu) return; openMenu.menu.hidden = true; openMenu.menu.classList.remove('show'); openMenu.btn.setAttribute('aria-expanded', 'false'); if (focusBtn) openMenu.btn.focus(); openMenu = null; }
+  canvas.addEventListener('click', function (e) {
+    var b = e.target.closest('.pb-move');
+    if (b) {
+      var m = document.getElementById(b.getAttribute('aria-controls'));
+      if (openMenu && openMenu.btn === b) { closeMenu(true); return; }
+      closeMenu(false);
+      m.hidden = false; m.classList.add('show'); b.setAttribute('aria-expanded', 'true'); openMenu = { btn: b, menu: m };
+      $('.dropdown-item', m).focus(); return;
+    }
+    var act = e.target.closest('[data-act]');
+    if (act) {
+      var el = act.closest('[data-kind]'), what = act.getAttribute('data-act'), btn = openMenu.btn;
+      closeMenu(false);
+      if (what === 'to') { openMoveTo(el, btn); return; }
+      var snap = snapshot(el), all = slots(el), list = listOf(el), cur = siblings(list, kindOf(el)).indexOf(el), at = -1;
+      all.forEach(function (s, i) { if (s[0] === list && s[1] === cur) at = i; });
+      var to = all[at + (what === 'up' ? -1 : 1)];
+      if (!to) { say(labelOf(el) + ' is already at the ' + (what === 'up' ? 'top.' : 'end.')); btn.focus(); return; }
+      place(el, to[0], to[1]); done(el, snap); btn.focus();
+    }
+  });
+  window.addEventListener('keydown', function (e) {
+    if (!openMenu) return;
+    var items = $$('.dropdown-item', openMenu.menu), i = items.indexOf(document.activeElement);
+    /* On window in the capture phase, and stop the keys handled here: the Bootstrap
+       bundle in the Phase 2 frame listens on document (capture) for arrow keys inside
+       any .dropdown-menu and throws when the menu has no data-bs-toggle. */
+    if (e.key === 'Escape' || e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); e.stopPropagation(); }
+    if (e.key === 'Escape') closeMenu(true);
+    if (e.key === 'ArrowDown') items[(i + 1) % items.length].focus();
+    if (e.key === 'ArrowUp') items[(i - 1 + items.length) % items.length].focus();
+    if (e.key === 'Tab') closeMenu(false);
+  }, true);
+  document.addEventListener('click', function (e) { if (openMenu && !openMenu.menu.contains(e.target) && !openMenu.btn.contains(e.target)) closeMenu(false); });
+
+  /* ---- Move to dialog ---- */
+  var dlg = $('#moveDialog'), moveEl = null, moveOpener = null;
+  function fillPositions() {
+    var list = lists(kindOf(moveEl))[+$('#moveParent').value], items = siblings(list, kindOf(moveEl)).filter(function (x) { return x !== moveEl; });
+    $('#movePos').innerHTML = '<option value="0">At the top</option>' + items.map(function (x, i) { return '<option value="' + (i + 1) + '">After ' + labelOf(x).replace(/</g, '&lt;') + '</option>'; }).join('');
+    if (list === listOf(moveEl)) $('#movePos').value = String(siblings(list, kindOf(moveEl)).indexOf(moveEl));
+  }
+  function openMoveTo(el, opener) {
+    moveEl = el; moveOpener = opener;
+    var kind = kindOf(el);
+    $('#moveTitle').textContent = 'Move ' + kind;
+    $('#moveWhat').textContent = labelOf(el) + ' is at ' + where(el) + '.';
+    $('#moveParentLabel').textContent = kind === 'question' ? 'Subsection' : 'Section';
+    $('#moveParent').innerHTML = lists(kind).map(function (l, i) { return '<option value="' + i + '"' + (l === listOf(el) ? ' selected' : '') + '>' + listName(l).replace(/</g, '&lt;') + '</option>'; }).join('');
+    fillPositions();
+    dsDialog.show(dlg); $('#moveParent').focus();
+  }
+  $('#moveParent').addEventListener('change', fillPositions);
+  function closeMoveTo() { dsDialog.hide(dlg); if (moveOpener) moveOpener.focus(); }
+  $$('[data-close]', dlg).forEach(function (b) { b.addEventListener('click', closeMoveTo); });
+  $('#moveDo').addEventListener('click', function () {
+    var snap = snapshot(moveEl), list = lists(kindOf(moveEl))[+$('#moveParent').value];
+    place(moveEl, list, +$('#movePos').value);
+    dsDialog.hide(dlg);
+    if (listOf(moveEl) === snap.list && moveEl.nextElementSibling === snap.next) say(labelOf(moveEl) + ' stays where it was.');
+    else done(moveEl, snap);
+    $('.pb-move', moveEl).focus();
+  });
+  window.addEventListener('keydown', function (e) { if (e.key === 'Escape' && dsDialog.top() === dlg) { e.stopPropagation(); closeMoveTo(); } }, true);
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab' || dsDialog.top() !== dlg) return;
+    var f = $$('select, button', dlg).filter(function (x) { return x.offsetParent; });
+    if (e.shiftKey && (document.activeElement === f[0] || document.activeElement === dlg)) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+  });
+
+  /* ---- Tabs ---- */
+  var tabs = $$('[role="tab"]');
+  tabs.forEach(function (t, i) {
+    function sel(tab) { tabs.forEach(function (x) { var on = x === tab; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; }); tab.focus(); }
+    t.addEventListener('click', function () { sel(t); });
+    t.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') sel(tabs[(i + 1) % tabs.length]); if (e.key === 'ArrowLeft') sel(tabs[(i - 1 + tabs.length) % tabs.length]); });
+  });
+})();
+</script>
+</body>
+</html>

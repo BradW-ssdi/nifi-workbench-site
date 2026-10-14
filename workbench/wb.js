@@ -10,7 +10,8 @@
   var PAGES = [
     { group: 'Start', items: [
       { title: 'Overview', href: 'index.html', icon: 'home' },
-      { title: 'Dev test round 1', href: 'dev-test.html', icon: 'description' }
+      { title: 'Dev test round 1', href: 'dev-test.html', icon: 'description' },
+      { title: 'BA review', href: 'review.html', icon: 'content_paste_search' }
     ]},
     { group: 'Foundations', items: [
       { title: 'Tokens & type', href: 'foundations.html', icon: 'tune' },
@@ -23,19 +24,21 @@
     { group: 'Views', items: [
       { title: 'Home Dashboard', href: 'screens/home.html', ext: true, icon: 'open_in_new' },
       { title: 'App Frame', href: 'screens/frame.html', ext: true, icon: 'open_in_new' },
-      { title: 'System Management: A. Cards', href: 'screens/system-management.html', ext: true, icon: 'open_in_new' },
-      { title: 'System Management: B. Directory', href: 'screens/system-management-directory.html', ext: true, icon: 'open_in_new' },
-      { title: 'System Management: C. Index', href: 'screens/system-management-index.html', ext: true, icon: 'open_in_new' },
-      { title: 'WDS — Algorithm Library', href: 'screens/wds-algorithm-library.html', ext: true, icon: 'open_in_new' },
-      { title: 'WDS — Add Algorithm', href: 'screens/wds-add-algorithm.html', ext: true, icon: 'open_in_new' },
+      { title: 'System Management', href: 'screens/system-management.html', ext: true, icon: 'open_in_new' },
+      { title: 'WDS: Algorithm Library', href: 'screens/wds-algorithm-library.html', ext: true, icon: 'open_in_new' },
+      { title: 'WDS: Add Algorithm', href: 'screens/wds-add-algorithm.html', ext: true, icon: 'open_in_new' },
+      { title: 'WDS: View Algorithm', href: 'screens/wds-view-algorithm.html', ext: true, icon: 'open_in_new' },
+      { title: 'WDS: Edit Algorithm', href: 'screens/wds-edit-algorithm.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Conditions', href: 'screens/manage-conditions.html', ext: true, icon: 'open_in_new' },
       { title: 'Add Condition', href: 'screens/add-condition.html', ext: true, icon: 'open_in_new' },
       { title: 'Edit Condition', href: 'screens/edit-condition.html', ext: true, icon: 'open_in_new' },
+      { title: 'Conditions: dialog on dialog', href: 'screens/manage-conditions-dialogs.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Pages', href: 'screens/manage-pages.html', ext: true, icon: 'open_in_new' },
+      { title: 'Edit Page (drag and drop)', href: 'screens/edit-page.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Questions', href: 'screens/manage-questions.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Users', href: 'screens/manage-users.html', ext: true, icon: 'open_in_new' },
-      { title: 'Merge Patients — Manual', href: 'screens/merge-patients.html', ext: true, icon: 'open_in_new' },
-      { title: 'Merge Patients — System Identified', href: 'screens/merge-system-identified.html', ext: true, icon: 'open_in_new' }
+      { title: 'Merge Patients: Manual', href: 'screens/merge-patients.html', ext: true, icon: 'open_in_new' },
+      { title: 'Merge Patients: System Identified', href: 'screens/merge-system-identified.html', ext: true, icon: 'open_in_new' }
     ]}
   ];
 
@@ -198,7 +201,10 @@
       return '<svg aria-hidden="true"><use href="../icons/sprite.svg#' + name + '"/></svg>';
     };
     var h = '<div class="wb-brand"><span class="dot">' + ic('account_tree') + '</span><div><b>NIFI Design System</b><span>Texas HHS · workbench</span></div></div>';
-    h += '<input class="ds-input wb-filter" type="search" placeholder="Filter" aria-label="Filter navigation">';
+    /* The design system's list filter field (rounded pill, as on Manage Conditions) with a search icon. */
+    h += '<div class="wb-filter">' + ic('search') +
+      '<input class="form-control rounded-pill" type="search" id="wbFilter" placeholder="Filter pages" aria-label="Filter pages" aria-describedby="wbFilterStatus">' +
+      '<span class="visually-hidden" id="wbFilterStatus" aria-live="polite"></span></div>';
     h += '<nav class="wb-nav" aria-label="Workbench">';
     PAGES.forEach(function (g) {
       h += '<p>' + g.group + '</p>';
@@ -222,18 +228,28 @@
       if (!main.id) main.id = 'wb-main';
       if (!main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
       var skip = document.createElement('a');
-      skip.className = 'ds-skip-link';
+      skip.className = 'visually-hidden-focusable ds-skip-link';
       skip.href = '#' + main.id;
       skip.textContent = 'Skip to main content';
       document.body.insertBefore(skip, document.body.firstChild);
     }
 
-    var filter = aside.querySelector('.wb-filter');
+    /* Filter: hide pages that don't match and any group left empty, and announce the count (4.1.3). */
+    var filter = aside.querySelector('#wbFilter'), status = aside.querySelector('#wbFilterStatus'), timer;
     filter.addEventListener('input', function () {
-      var q = filter.value.trim().toLowerCase();
+      var q = filter.value.trim().toLowerCase(), shown = 0;
       aside.querySelectorAll('.wb-nav a').forEach(function (a) {
-        a.style.display = !q || a.textContent.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
+        var hit = !q || a.textContent.toLowerCase().indexOf(q) !== -1;
+        a.hidden = !hit;
+        if (hit && !a.classList.contains('wb-sub')) shown++;
       });
+      aside.querySelectorAll('.wb-nav p').forEach(function (p) {
+        var any = false;
+        for (var n = p.nextElementSibling; n && n.tagName === 'A'; n = n.nextElementSibling) if (!n.hidden) { any = true; break; }
+        p.hidden = !any;
+      });
+      clearTimeout(timer);
+      timer = setTimeout(function () { status.textContent = q ? (shown ? shown + (shown === 1 ? ' page matches' : ' pages match') : 'No pages match') : ''; }, 400);
     });
 
     /* scrollspy */
@@ -278,7 +294,7 @@
         if (!el.getAttribute('aria-label')) {
           var ex = el.closest('.wb-example');
           var h = ex && ex.querySelector('h3');
-          el.setAttribute('aria-label', (h ? h.textContent + ' — ' : '') + 'scrollable content');
+          el.setAttribute('aria-label', (h ? h.textContent + ': ' : '') + 'scrollable content');
         }
       }
     });

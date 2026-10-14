@@ -4,20 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Add Condition - Page Management - NEDSS</title>
-<link rel="stylesheet" href="../../tokens/tokens.css">
-<link rel="stylesheet" href="../../css/components.css">
+<link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/ds-dialog.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   .form-content { min-width: 0; }
   .required-note { margin: 0 0 12px; }
-  .ds-form-layout.is-nav-collapsed #secnavLinks { display: none; }
+  .ds-form-layout.is-nav-collapsed #secnavLinks { display: none !important; }
 </style>
 </head>
-<body class="ds" data-nav-section="system-management">
+<body data-nav-section="system-management">
 <!-- app-frame:top -->
-<a class="ds-skip-link" href="#main">Skip to main content</a>
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
 <div class="ds-app">
   <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
     <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
@@ -44,15 +44,15 @@
     <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
   </nav>
   <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
-  <header class="ds-header">
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
-    <span class="ds-header-spacer"></span>
-    <a class="ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
-    <div class="ds-menu">
-      <button type="button" class="ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="ds-sr-only">Account menu, P. Preparer</span></button>
-      <ul class="ds-menu-list" id="accountMenu" hidden>
-        <li class="ds-menu-meta">Signed in as P. Preparer</li>
-        <li><a href="#">Sign out</a></li>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
       </ul>
     </div>
   </header>
@@ -60,32 +60,31 @@
 <main id="main" tabindex="-1">
   <!-- Modernizes the legacy Condition.jsp (Create mode) using the Phase 2 add/edit layout
        from templates/organizations/addOrganization.html. -->
-  <div class="ds-form-titlebar">
-    <div class="ds-form-titles">
-      <nav class="ds-breadcrumb" aria-label="Breadcrumb">
-          <a href="system-management.html">System Management</a>
-          <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg>
-          <a href="system-management.html">Page Management</a>
-          <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg>
-          <a href="manage-conditions.html">Manage Conditions</a>
-          <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#chevron_right"/></svg>
-          <span class="is-current" aria-current="page">Add Condition</span>
+  <div class="ds-form-titlebar d-flex flex-wrap align-items-end px-4">
+    <div class="flex-grow-1" style="min-width:0;flex-basis:320px">
+      <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="system-management.html">System Management</a></li>
+            <li class="breadcrumb-item"><a href="system-management.html">Page Management</a></li>
+            <li class="breadcrumb-item"><a href="manage-conditions.html">Manage Conditions</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add Condition</li>
+          </ol>
         </nav>
-      <h1 class="ds-type-display" style="margin:8px 0 0">Add Condition</h1>
+      <h1 class="display-6 mb-0 mt-2">Add Condition</h1>
     </div>
-    <div class="ds-form-actions">
-      <button type="button" class="ds-btn ds-btn-outline ds-btn-round" id="cancelBtn">Cancel</button>
-      <button type="submit" form="conditionForm" class="ds-btn ds-btn-primary ds-btn-round">Submit</button>
+    <div class="d-flex flex-wrap gap-3">
+      <button type="button" class="btn btn-outline-primary rounded-pill" id="cancelBtn">Cancel</button>
+      <button type="submit" form="conditionForm" class="btn btn-primary rounded-pill">Submit</button>
     </div>
   </div>
 
   <div class="ds-form-layout" id="formLayout">
     <nav class="ds-secnav" aria-label="Section navigation">
-      <button type="button" class="ds-btn-icon" id="secnavToggle" aria-expanded="true" aria-controls="secnavLinks" aria-label="Hide section navigation"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#left_panel_close"/></svg></button>
-      <div id="secnavLinks">
-        <p class="ds-secnav-title">Condition</p>
-        <a href="#details" aria-current="location">Condition Details</a>
-        <a href="#behavior">Condition Behavior</a>
+      <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="secnavToggle" aria-expanded="true" aria-controls="secnavLinks" aria-label="Hide section navigation"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#left_panel_close"/></svg></button>
+      <div id="secnavLinks" class="nav nav-pills flex-column">
+        <p class="ds-secnav-title fw-semibold px-3 mt-2 mb-1">Condition</p>
+        <a class="nav-link" href="#details" aria-current="location">Condition Details</a>
+        <a class="nav-link" href="#behavior">Condition Behavior</a>
       </div>
     </nav>
 
@@ -96,16 +95,18 @@
         <h2 id="errorSummaryTitle">Please fix the following errors:</h2>
         <ul id="errorList"></ul>
       </div>
-      <p class="ds-type-caption required-note"><span class="ds-required-mark" aria-hidden="true">*</span> Indicates a required field</p>
+      <p class="small text-body-secondary required-note"><span class="ds-required-mark" aria-hidden="true">*</span> Indicates a required field</p>
 
       <form id="conditionForm" action="manage-conditions.html" novalidate data-mode="add">
-        <section class="ds-form-accordion" id="details" aria-labelledby="detailsHeading">
-          <h2 id="detailsHeading"><button type="button" class="ds-form-accordion-header" aria-expanded="true" aria-controls="detailsBody">Condition Details<svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></h2>
-          <div class="ds-form-accordion-body" id="detailsBody">
-            <div class="ds-field-row">
-              <label class="ds-field-label" for="codingSystem"><span class="ds-required-mark" aria-hidden="true">*</span>Coding System:</label>
-              <div class="ds-field-control">
-                <select class="ds-select" id="codingSystem" name="codingSystem" required aria-invalid="false">
+        <section class="accordion ds-form-accordion" id="details" aria-labelledby="detailsHeading">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="detailsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="detailsBody">Condition Details</button></h2>
+            <div class="accordion-collapse collapse show" id="detailsBody">
+              <div class="accordion-body">
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="codingSystem"><span class="ds-required-mark" aria-hidden="true">*</span>Coding System:</label>
+              <div class="col-md-5">
+                <select class="form-select" id="codingSystem" name="codingSystem" required aria-invalid="false">
                   <option value="">Select</option>
                   <option value="2.16.840.1.113883.12.78">Abnormal flags (HL7)</option>
                   <option value="2.16.840.1.113883.12.155">Accept/application acknowledgment conditions</option>
@@ -348,29 +349,29 @@
                   <option value="2.16.840.1.114222.4.5.290">Wound Classification (NHSN ACS)</option>
                   <option value="2.16.840.1.113883.12.136">Yes/No Indicator (HL7)</option>
                 </select>
-                <span class="ds-error-text" id="codingSystem-error" hidden></span>
+                <span class="invalid-feedback" id="codingSystem-error" hidden></span>
               </div>
             </div>
-            <div class="ds-field-row">
-              <label class="ds-field-label" for="conditionCode"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Code:</label>
-              <div class="ds-field-control">
-                <input class="ds-input" id="conditionCode" name="conditionCode" type="text" autocomplete="off" maxlength="16" required aria-invalid="false" aria-describedby="conditionCode-help">
-                <span class="ds-help-text" id="conditionCode-help">Letters and numbers only, up to 16 characters.</span>
-                <span class="ds-error-text" id="conditionCode-error" hidden></span>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="conditionCode"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Code:</label>
+              <div class="col-md-5">
+                <input class="form-control" id="conditionCode" name="conditionCode" type="text" autocomplete="off" maxlength="16" required aria-invalid="false" aria-describedby="conditionCode-help">
+                <span class="form-text" id="conditionCode-help">Letters and numbers only, up to 16 characters.</span>
+                <span class="invalid-feedback" id="conditionCode-error" hidden></span>
               </div>
             </div>
-            <div class="ds-field-row">
-              <label class="ds-field-label" for="conditionName"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Name:</label>
-              <div class="ds-field-control">
-                <input class="ds-input" id="conditionName" name="conditionName" type="text" autocomplete="off" maxlength="50" required aria-invalid="false" aria-describedby="conditionName-help">
-                <span class="ds-help-text" id="conditionName-help">Up to 50 characters.</span>
-                <span class="ds-error-text" id="conditionName-error" hidden></span>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="conditionName"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Name:</label>
+              <div class="col-md-5">
+                <input class="form-control" id="conditionName" name="conditionName" type="text" autocomplete="off" maxlength="50" required aria-invalid="false" aria-describedby="conditionName-help">
+                <span class="form-text" id="conditionName-help">Up to 50 characters.</span>
+                <span class="invalid-feedback" id="conditionName-error" hidden></span>
               </div>
             </div>
-            <div class="ds-field-row">
-              <label class="ds-field-label" for="programArea"><span class="ds-required-mark" aria-hidden="true">*</span>Program Area:</label>
-              <div class="ds-field-control">
-                <select class="ds-select" id="programArea" name="programArea" required aria-invalid="false">
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="programArea"><span class="ds-required-mark" aria-hidden="true">*</span>Program Area:</label>
+              <div class="col-md-5">
+                <select class="form-select" id="programArea" name="programArea" required aria-invalid="false">
                   <option value="">Select</option>
                   <option value="AR/MDRO">Antibiotic Resistance/MDRO</option>
                   <option value="CEDS">General Communicable Disease</option>
@@ -395,13 +396,13 @@
                   <option value="ZCD">Rabies</option>
                   <option value="ZCD_R">Zoonosis </option>
                 </select>
-                <span class="ds-error-text" id="programArea-error" hidden></span>
+                <span class="invalid-feedback" id="programArea-error" hidden></span>
               </div>
             </div>
-            <div class="ds-field-row">
-              <label class="ds-field-label" for="conditionFamily">Condition Family:</label>
-              <div class="ds-field-control">
-                <select class="ds-select" id="conditionFamily" name="conditionFamily">
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="conditionFamily">Condition Family:</label>
+              <div class="col-md-5">
+                <select class="form-select" id="conditionFamily" name="conditionFamily">
                   <option value="">None</option>
                   <option value="ARBO">Arboviral</option>
                   <option value="BioThreat">BioThreat</option>
@@ -422,85 +423,91 @@
                   <option value="VISA">VISA\VRSA</option>
                   <option value="WestNile">West Nile</option>
                 </select>
-                <span class="ds-error-text" id="conditionFamily-error" hidden></span>
+                <span class="invalid-feedback" id="conditionFamily-error" hidden></span>
               </div>
             </div>
-            <div class="ds-field-row">
-              <label class="ds-field-label" for="coinfectionGroup">Co-infection Group:</label>
-              <div class="ds-field-control">
-                <select class="ds-select" id="coinfectionGroup" name="coinfectionGroup" disabled aria-describedby="coinfectionGroup-help">
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="coinfectionGroup">Co-infection Group:</label>
+              <div class="col-md-5">
+                <select class="form-select" id="coinfectionGroup" name="coinfectionGroup" disabled aria-describedby="coinfectionGroup-help">
                   <option value="">None</option>
                   <option value="STD_HIV_GROUP">STD HIV Co-Infection Group</option>
                 </select>
-                <span class="ds-help-text" id="coinfectionGroup-help">Available only for the Sexually Transmitted Disease and HIV/AIDS program areas.</span>
-                <span class="ds-error-text" id="coinfectionGroup-error" hidden></span>
+                <span class="form-text" id="coinfectionGroup-help">Available only for the Sexually Transmitted Disease and HIV/AIDS program areas.</span>
+                <span class="invalid-feedback" id="coinfectionGroup-error" hidden></span>
+              </div>
+            </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="ds-form-accordion" id="behavior" aria-labelledby="behaviorHeading">
-          <h2 id="behaviorHeading"><button type="button" class="ds-form-accordion-header" aria-expanded="true" aria-controls="behaviorBody">Condition Behavior<svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button></h2>
-          <div class="ds-form-accordion-body" id="behaviorBody">
-            <div class="ds-field-row">
-              <span class="ds-field-label" id="nnd-label">CDC Reportable Condition (NND):</span>
-              <div class="ds-field-control">
-                <div class="ds-radio-inline" role="radiogroup" aria-labelledby="nnd-label">
-                  <label class="ds-check"><input type="radio" name="nnd" id="nnd-y" value="Y"> Yes</label>
-                  <label class="ds-check"><input type="radio" name="nnd" id="nnd-n" value="N"> No</label>
+        <section class="accordion ds-form-accordion" id="behavior" aria-labelledby="behaviorHeading">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="behaviorHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="behaviorBody">Condition Behavior</button></h2>
+            <div class="accordion-collapse collapse show" id="behaviorBody">
+              <div class="accordion-body">
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="nnd-label">CDC Reportable Condition (NND):</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="nnd-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="nnd" id="nnd-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="nnd" id="nnd-n" value="N"> No</label>
                 </div>
               </div>
             </div>
-            <div class="ds-field-row">
-              <span class="ds-field-label" id="morbidity-label">Reportable through Morbidity Reports:</span>
-              <div class="ds-field-control">
-                <div class="ds-radio-inline" role="radiogroup" aria-labelledby="morbidity-label">
-                  <label class="ds-check"><input type="radio" name="morbidity" id="morbidity-y" value="Y"> Yes</label>
-                  <label class="ds-check"><input type="radio" name="morbidity" id="morbidity-n" value="N"> No</label>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="morbidity-label">Reportable through Morbidity Reports:</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="morbidity-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="morbidity" id="morbidity-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="morbidity" id="morbidity-n" value="N"> No</label>
                 </div>
               </div>
             </div>
-            <div class="ds-field-row">
-              <span class="ds-field-label" id="summary-label">Reportable in Aggregate (Summary):</span>
-              <div class="ds-field-control">
-                <div class="ds-radio-inline" role="radiogroup" aria-labelledby="summary-label">
-                  <label class="ds-check"><input type="radio" name="summary" id="summary-y" value="Y"> Yes</label>
-                  <label class="ds-check"><input type="radio" name="summary" id="summary-n" value="N"> No</label>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="summary-label">Reportable in Aggregate (Summary):</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="summary-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="summary" id="summary-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="summary" id="summary-n" value="N"> No</label>
                 </div>
               </div>
             </div>
-            <div class="ds-field-row">
-              <span class="ds-field-label" id="contactTracing-label">Utilizes Contact Tracing Module:</span>
-              <div class="ds-field-control">
-                <div class="ds-radio-inline" role="radiogroup" aria-labelledby="contactTracing-label">
-                  <label class="ds-check"><input type="radio" name="contactTracing" id="contactTracing-y" value="Y"> Yes</label>
-                  <label class="ds-check"><input type="radio" name="contactTracing" id="contactTracing-n" value="N"> No</label>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="contactTracing-label">Utilizes Contact Tracing Module:</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="contactTracing-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="contactTracing" id="contactTracing-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="contactTracing" id="contactTracing-n" value="N"> No</label>
                 </div>
               </div>
             </div>
-            <div class="ds-field-row">
-              <span class="ds-field-label" id="autoInfectious-label">Auto-Calculation of Infectious Period:</span>
-              <div class="ds-field-control">
-                <div class="ds-radio-inline" role="radiogroup" aria-labelledby="autoInfectious-label">
-                  <label class="ds-check"><input type="radio" name="autoInfectious" id="autoInfectious-y" value="Y"> Yes</label>
-                  <label class="ds-check"><input type="radio" name="autoInfectious" id="autoInfectious-n" value="N"> No</label>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="autoInfectious-label">Auto-Calculation of Infectious Period:</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="autoInfectious-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="autoInfectious" id="autoInfectious-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="autoInfectious" id="autoInfectious-n" value="N"> No</label>
                 </div>
               </div>
             </div>
-            <div class="ds-field-row">
-              <label class="ds-field-label" for="daysBefore"><span class="ds-required-mark" aria-hidden="true">*</span>Days Before Onset:</label>
-              <div class="ds-field-control">
-                <input class="ds-input is-short" id="daysBefore" name="daysBefore" type="text" autocomplete="off" maxlength="3" required aria-invalid="false" inputmode="numeric" disabled aria-describedby="daysBefore-help">
-                <span class="ds-help-text" id="daysBefore-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
-                <span class="ds-error-text" id="daysBefore-error" hidden></span>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="daysBefore"><span class="ds-required-mark" aria-hidden="true">*</span>Days Before Onset:</label>
+              <div class="col-md-5">
+                <input class="form-control ds-input-short" id="daysBefore" name="daysBefore" type="text" autocomplete="off" maxlength="3" required aria-invalid="false" inputmode="numeric" disabled aria-describedby="daysBefore-help">
+                <span class="form-text" id="daysBefore-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
+                <span class="invalid-feedback" id="daysBefore-error" hidden></span>
               </div>
             </div>
-            <div class="ds-field-row">
-              <label class="ds-field-label" for="daysAfter"><span class="ds-required-mark" aria-hidden="true">*</span>Days After Onset:</label>
-              <div class="ds-field-control">
-                <input class="ds-input is-short" id="daysAfter" name="daysAfter" type="text" autocomplete="off" maxlength="3" required aria-invalid="false" inputmode="numeric" disabled aria-describedby="daysAfter-help">
-                <span class="ds-help-text" id="daysAfter-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
-                <span class="ds-error-text" id="daysAfter-error" hidden></span>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="daysAfter"><span class="ds-required-mark" aria-hidden="true">*</span>Days After Onset:</label>
+              <div class="col-md-5">
+                <input class="form-control ds-input-short" id="daysAfter" name="daysAfter" type="text" autocomplete="off" maxlength="3" required aria-invalid="false" inputmode="numeric" disabled aria-describedby="daysAfter-help">
+                <span class="form-text" id="daysAfter-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
+                <span class="invalid-feedback" id="daysAfter-error" hidden></span>
+              </div>
+            </div>
               </div>
             </div>
           </div>
@@ -510,10 +517,10 @@
   </div>
 </main>
 <!-- app-frame:bottom -->
-  <footer class="ds-app-footer">
-    <p>NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
-    <nav aria-label="Footer">
-      <ul>
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
         <li><a href="#">Accessibility</a></li>
         <li><a href="#">Privacy policy</a></li>
         <li><a href="#">Help</a></li>
@@ -525,18 +532,20 @@
 
 <!-- Cancel confirmation. Replaces the legacy confirm(); same wording intent as the
      Phase 2 Cancel Add Organization modal. -->
-<div class="ds-modal-backdrop" id="cancelModal" hidden>
-  <div class="ds-modal" role="dialog" aria-modal="true" aria-labelledby="cancelTitle" aria-describedby="cancelDesc" tabindex="-1">
-    <div class="ds-modal-header">
-      <h2 id="cancelTitle">Cancel Add Condition</h2>
-      <button type="button" class="ds-modal-close" aria-label="Close"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#close"/></svg></button>
-    </div>
-    <div class="ds-modal-body">
-      <p class="ds-type-body" id="cancelDesc" style="margin:0">Are you sure you want to leave Add Condition? Any information you have entered will be lost.</p>
-    </div>
-    <div class="ds-form-footer">
-      <button type="button" class="ds-btn ds-btn-outline ds-btn-round" data-close>Keep editing</button>
-      <a class="ds-btn ds-btn-primary ds-btn-round" href="manage-conditions.html">Discard and leave</a>
+<div class="modal" id="cancelModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cancelTitle" aria-describedby="cancelDesc" hidden>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="cancelTitle">Cancel Add Condition</h2>
+        <button type="button" class="btn-close" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0" id="cancelDesc">Are you sure you want to leave Add Condition? Any information you have entered will be lost.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary rounded-pill" data-close>Keep editing</button>
+        <a class="btn btn-primary rounded-pill" href="manage-conditions.html">Discard and leave</a>
+      </div>
     </div>
   </div>
 </div>
@@ -550,16 +559,19 @@
   var byId = function (id) { return document.getElementById(id); };
 
   /* Collapsible sections */
+  /* Bootstrap accordion markup, toggled here: aria-expanded on the button, .collapsed for its
+     chevron, .show on the collapse. bootstrap.bundle.js is not loaded. */
   function setSection(btn, open) {
     btn.setAttribute('aria-expanded', String(open));
-    byId(btn.getAttribute('aria-controls')).hidden = !open;
+    btn.classList.toggle('collapsed', !open);
+    byId(btn.getAttribute('aria-controls')).classList.toggle('show', open);
   }
-  Array.prototype.forEach.call(document.querySelectorAll('.ds-form-accordion-header'), function (btn) {
+  Array.prototype.forEach.call(document.querySelectorAll('.accordion-button'), function (btn) {
     btn.addEventListener('click', function () { setSection(btn, btn.getAttribute('aria-expanded') !== 'true'); });
   });
   function openSectionFor(el) {
     var section = el.closest('.ds-form-accordion');
-    if (section) setSection(section.querySelector('.ds-form-accordion-header'), true);
+    if (section) setSection(section.querySelector('.accordion-button'), true);
   }
 
   /* Section navigation */
@@ -576,7 +588,7 @@
       navLinks.forEach(function (x) { x.removeAttribute('aria-current'); });
       a.setAttribute('aria-current', 'location');
       var target = byId(a.getAttribute('href').slice(1));
-      setSection(target.querySelector('.ds-form-accordion-header'), true);
+      setSection(target.querySelector('.accordion-button'), true);
     });
   });
 
@@ -661,10 +673,10 @@
   form.addEventListener('change', function (e) { if (e.target.getAttribute('aria-invalid')) clearError(e.target); });
 
   /* Cancel confirmation dialog */
-  var backdrop = byId('cancelModal'), dialog = backdrop.querySelector('.ds-modal'), cancelBtn = byId('cancelBtn');
-  function closeModal() { backdrop.hidden = true; cancelBtn.focus(); }
-  cancelBtn.addEventListener('click', function () { backdrop.hidden = false; dialog.focus(); });
-  Array.prototype.forEach.call(backdrop.querySelectorAll('.ds-modal-close, [data-close]'), function (b) { b.addEventListener('click', closeModal); });
+  var backdrop = byId('cancelModal'), dialog = backdrop, cancelBtn = byId('cancelBtn');
+  function closeModal() { dsDialog.hide(backdrop); cancelBtn.focus(); }
+  cancelBtn.addEventListener('click', function () { dsDialog.show(backdrop); });
+  Array.prototype.forEach.call(backdrop.querySelectorAll('.btn-close, [data-close]'), function (b) { b.addEventListener('click', closeModal); });
   backdrop.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { closeModal(); return; }
     if (e.key !== 'Tab') return;

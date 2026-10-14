@@ -12,7 +12,9 @@
      When the rail is expanded, the group holding the current page opens.
    - Collapsed-rail labels show as a visible flyout on hover and keyboard focus
      (CSS). Escape hides them until focus or the pointer moves on (WCAG 1.4.13).
-   - Account menu: disclosure button. Escape closes and returns focus; a click
+   - Account menu: a Bootstrap dropdown driven by this script instead of
+     bootstrap.bundle.js: disclosure button with aria-expanded and aria-controls;
+     the menu toggles hidden plus .show. Escape closes and returns focus; a click
      outside or focus leaving the menu closes it. */
 (function () {
   'use strict';
@@ -78,6 +80,7 @@
       function close(returnFocus) {
         btn.setAttribute('aria-expanded', 'false');
         menu.hidden = true;
+        menu.classList.remove('show'); /* Bootstrap .dropdown-menu shows with .show */
         /* After the collapsed state is published, so screen readers announce it on return. */
         if (returnFocus) window.setTimeout(function () { btn.focus(); }, 30);
       }
@@ -85,6 +88,7 @@
         if (isOpen()) { close(false); return; }
         btn.setAttribute('aria-expanded', 'true');
         menu.hidden = false;
+        menu.classList.add('show');
       });
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && isOpen()) close(true);
@@ -98,7 +102,21 @@
     });
   }
 
-  function init() { initRail(); initMenus(); }
+  /* Chrome brings the caret of a focused text field into view, not the field. A tall field near the
+     bottom edge stays cut off. Bring the whole field in; scroll-margin in _a11y.scss keeps it clear
+     of the sticky header. */
+  function initFieldReveal() {
+    document.addEventListener('focusin', function (e) {
+      var el = e.target;
+      if (!el.matches || !el.matches('textarea, input, select')) return;
+      var win = document.querySelector('.ds-window');   /* inside the Phase 2 frame, leave the frame's own fields alone */
+      if (win && !win.contains(el)) return;
+      var r = el.getBoundingClientRect();
+      if (r.bottom > window.innerHeight || r.top < 0) el.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
+  function init() { initRail(); initMenus(); initFieldReveal(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();

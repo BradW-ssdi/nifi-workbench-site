@@ -3,160 +3,303 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NIFI DS — Figma sync sheet (Wave 2+3)</title>
-<link rel="stylesheet" href="../tokens/tokens.css">
-<link rel="stylesheet" href="../css/components.css">
+<title>NIFI DS: Figma build sheet</title>
+<link rel="stylesheet" href="../css/ds.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* Build sheet for the DOM-to-SVG extractor. Each [data-fig] subtree becomes a
-     named group in the exported SVG, which Figma turns into a named layer. */
-  body { margin: 0; padding: 40px; background: #fff; display: grid; gap: 36px; justify-items: start; }
+  /* Build sheet for tools/figma. Every element with data-fig becomes one Figma component.
+     "Family/Prop=Value, Prop=Value" names combine into a variant set named Family.
+     data-fig-mode="composite" keeps the controls inside as component instances. */
+  body { margin: 0; padding: 40px; background: var(--bs-body-bg); }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; margin-bottom: 40px; }
+  .sheet > h2 { flex: 0 0 100%; margin: 0; font-size: 14px; font-weight: 600; }
+  table.sortdemo th { padding: 0; border: 0; background: transparent; }
 </style>
 </head>
-<body class="ds">
+<body>
+<main>
+<h1 class="visually-hidden">Figma build sheet</h1>
 
-<div data-fig="Icon Button/Default"><button class="ds-btn-icon" aria-label="Print"><svg class="ds-icon"><use href="../icons/sprite.svg#print"/></svg></button></div>
-<div data-fig="Icon Button/Hover"><button class="ds-btn-icon is-hover" aria-label="Download"><svg class="ds-icon"><use href="../icons/sprite.svg#download"/></svg></button></div>
-<div data-fig="Icon Button/Pressed"><button class="ds-btn-icon is-pressed" aria-label="Settings"><svg class="ds-icon"><use href="../icons/sprite.svg#settings"/></svg></button></div>
-<div data-fig="Close Button"><button class="ds-btn-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button></div>
-<div data-fig="Filter Chip/Default"><button class="ds-chip">Current sex <svg class="ds-icon"><use href="../icons/sprite.svg#expand_more"/></svg></button></div>
-<div data-fig="Filter Chip/Hover"><button class="ds-chip is-hover">Condition <svg class="ds-icon"><use href="../icons/sprite.svg#expand_more"/></svg></button></div>
-<div data-fig="Filter Chip/Filtered"><button class="ds-chip is-filtered">Female <svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button></div>
-<div data-fig="Footer Pagination" style="width:900px"><div class="ds-footer-pagination"><span class="ds-page-summary">Items 1 - 25 of 182</span><nav class="ds-pagination" aria-label="Pagination"><button type="button" class="ds-page-btn" disabled>Previous</button><button type="button" class="ds-page-btn is-active" aria-current="page">1</button><button type="button" class="ds-page-btn">2</button><button type="button" class="ds-page-btn">3</button><button type="button" class="ds-page-btn">Next</button></nav><div class="ds-page-size"><select class="ds-select" aria-label="Items per page"><option selected>25</option></select><span>Items per page</span></div></div></div>
-<div data-fig="Add Row Pill"><button class="ds-btn-pill"><svg class="ds-icon"><use href="../icons/sprite.svg#add"/></svg>Add row</button></div>
+<div class="sheet"><h2>Button Primary</h2>
+  <button type="button" class="btn btn-primary" data-fig="Button Primary/State=Default, Shape=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-primary is-hover" data-fig="Button Primary/State=Hover, Shape=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-primary is-focus" data-fig="Button Primary/State=Focus, Shape=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-primary is-pressed" data-fig="Button Primary/State=Pressed, Shape=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-primary" disabled data-fig="Button Primary/State=Disabled, Shape=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-primary rounded-pill" data-fig="Button Primary/State=Default, Shape=Pill"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-primary rounded-pill is-hover" data-fig="Button Primary/State=Hover, Shape=Pill"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-primary rounded-pill is-focus" data-fig="Button Primary/State=Focus, Shape=Pill"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+</div>
 
-<div data-fig="Multi-Select" style="width:420px">
+<div class="sheet"><h2>Button Outline</h2>
+  <button type="button" class="btn btn-outline-primary" data-fig="Button Outline/State=Default, Shape=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-outline-primary is-hover" data-fig="Button Outline/State=Hover, Shape=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-outline-primary is-focus" data-fig="Button Outline/State=Focus, Shape=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-outline-primary is-pressed" data-fig="Button Outline/State=Pressed, Shape=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-outline-primary" disabled data-fig="Button Outline/State=Disabled, Shape=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-outline-primary rounded-pill" data-fig="Button Outline/State=Default, Shape=Pill"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-outline-primary rounded-pill is-hover" data-fig="Button Outline/State=Hover, Shape=Pill"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+  <button type="button" class="btn btn-outline-primary rounded-pill is-focus" data-fig="Button Outline/State=Focus, Shape=Pill"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Button</button>
+</div>
+
+<div class="sheet"><h2>Button Danger</h2>
+  <button type="button" class="btn btn-danger" data-fig="Button Danger/State=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#delete"/></svg>Button</button>
+  <button type="button" class="btn btn-danger is-hover" data-fig="Button Danger/State=Hover"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#delete"/></svg>Button</button>
+  <button type="button" class="btn btn-danger is-focus" data-fig="Button Danger/State=Focus"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#delete"/></svg>Button</button>
+  <button type="button" class="btn btn-danger is-pressed" data-fig="Button Danger/State=Pressed"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#delete"/></svg>Button</button>
+  <button type="button" class="btn btn-danger" disabled data-fig="Button Danger/State=Disabled"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#delete"/></svg>Button</button>
+</div>
+
+<div class="sheet"><h2>Button Link, Icon Button, Close Button, Avatar</h2>
+  <button type="button" class="btn btn-link" data-fig="Button Link/State=Default">Clear selection</button>
+  <button type="button" class="btn btn-link is-hover" data-fig="Button Link/State=Hover">Clear selection</button>
+  <button type="button" class="btn btn-link is-focus" data-fig="Button Link/State=Focus">Clear selection</button>
+  <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print" data-fig="Icon Button/State=Default"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#print"/></svg></button>
+  <button type="button" class="btn btn-light rounded-circle ds-btn-icon is-hover" aria-label="Print" data-fig="Icon Button/State=Hover"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#print"/></svg></button>
+  <button type="button" class="btn btn-light rounded-circle ds-btn-icon is-focus" aria-label="Print" data-fig="Icon Button/State=Focus"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#print"/></svg></button>
+  <button type="button" class="btn btn-light rounded-circle ds-btn-icon is-pressed" aria-label="Print" data-fig="Icon Button/State=Pressed"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#print"/></svg></button>
+  <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print" disabled data-fig="Icon Button/State=Disabled"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#print"/></svg></button>
+  <button type="button" class="btn-close" aria-label="Close" data-fig="Close Button/State=Default"></button>
+  <button type="button" class="btn-close is-focus" aria-label="Close" data-fig="Close Button/State=Focus"></button>
+  <span class="ds-avatar" data-fig="Avatar">PP</span>
+</div>
+
+<div class="sheet" style="width:1000px"><h2>Input Text</h2>
+  <input class="form-control" style="width:280px" type="text" placeholder="Placeholder" aria-label="Sample" data-fig="Input Text/State=Default, Shape=Default, Filled=No">
+  <input class="form-control" style="width:280px" type="text" value="Entered value" aria-label="Sample" data-fig="Input Text/State=Default, Shape=Default, Filled=Yes">
+  <input class="form-control is-focus" style="width:280px" type="text" value="Entered value" aria-label="Sample" data-fig="Input Text/State=Focus, Shape=Default, Filled=Yes">
+  <input class="form-control is-focus" style="width:280px" type="text" placeholder="Placeholder" aria-label="Sample" data-fig="Input Text/State=Focus, Shape=Default, Filled=No">
+  <input class="form-control" style="width:280px" type="text" value="Entered value" aria-label="Sample" disabled data-fig="Input Text/State=Disabled, Shape=Default, Filled=Yes">
+  <input class="form-control" style="width:280px" type="text" placeholder="Placeholder" aria-label="Sample" disabled data-fig="Input Text/State=Disabled, Shape=Default, Filled=No">
+  <input class="form-control is-invalid" style="width:280px" type="text" value="Entered value" aria-label="Sample" data-fig="Input Text/State=Invalid, Shape=Default, Filled=Yes">
+  <input class="form-control is-invalid" style="width:280px" type="text" placeholder="Placeholder" aria-label="Sample" data-fig="Input Text/State=Invalid, Shape=Default, Filled=No">
+  <input class="form-control rounded-pill" style="width:280px" type="search" placeholder="Search to filter..." aria-label="Sample" data-fig="Input Text/State=Default, Shape=Pill, Filled=No">
+  <input class="form-control rounded-pill" style="width:280px" type="search" value="hepatitis" aria-label="Sample" data-fig="Input Text/State=Default, Shape=Pill, Filled=Yes">
+  <input class="form-control rounded-pill is-focus" style="width:280px" type="search" placeholder="Search to filter..." aria-label="Sample" data-fig="Input Text/State=Focus, Shape=Pill, Filled=No">
+</div>
+
+<div class="sheet" style="width:1000px"><h2>Select, Textarea, File Input</h2>
+  <select class="form-select" style="width:280px" aria-label="Sample" data-fig="Select/State=Default"><option>Select</option></select>
+  <select class="form-select is-focus" style="width:280px" aria-label="Sample" data-fig="Select/State=Focus"><option>Select</option></select>
+  <select class="form-select" style="width:280px" aria-label="Sample" disabled data-fig="Select/State=Disabled"><option>Select</option></select>
+  <select class="form-select is-invalid" style="width:280px" aria-label="Sample" data-fig="Select/State=Invalid"><option>Select</option></select>
+  <textarea class="form-control" style="width:280px" rows="3" aria-label="Sample" data-fig="Textarea/State=Default">Comment text</textarea>
+  <textarea class="form-control is-focus" style="width:280px" rows="3" aria-label="Sample" data-fig="Textarea/State=Focus">Comment text</textarea>
+  <textarea class="form-control is-invalid" style="width:280px" rows="3" aria-label="Sample" data-fig="Textarea/State=Invalid">Comment text</textarea>
+  <input class="form-control" style="width:280px" type="file" aria-label="Sample" data-fig="File Input">
+</div>
+
+<div class="sheet"><h2>Checkbox, Radio</h2>
+  <input class="form-check-input" type="checkbox" aria-label="Sample" data-fig="Checkbox/State=Default">
+  <input class="form-check-input" type="checkbox" checked aria-label="Sample" data-fig="Checkbox/State=Checked">
+  <input class="form-check-input is-focus" type="checkbox" aria-label="Sample" data-fig="Checkbox/State=Focus">
+  <input class="form-check-input" type="checkbox" disabled aria-label="Sample" data-fig="Checkbox/State=Disabled">
+  <input class="form-check-input" type="radio" name="r1" aria-label="Sample" data-fig="Radio/State=Default">
+  <input class="form-check-input" type="radio" name="r2" checked aria-label="Sample" data-fig="Radio/State=Checked">
+  <input class="form-check-input is-focus" type="radio" name="r3" aria-label="Sample" data-fig="Radio/State=Focus">
+  <input class="form-check-input" type="radio" name="r4" disabled aria-label="Sample" data-fig="Radio/State=Disabled">
+</div>
+
+<div class="sheet"><h2>Badge</h2>
+  <span class="badge text-bg-success" data-fig="Badge/Kind=Success">Active</span>
+  <span class="badge text-bg-warning" data-fig="Badge/Kind=Warning">Needs publish</span>
+  <span class="badge text-bg-danger" data-fig="Badge/Kind=Danger">Rejected</span>
+  <span class="badge text-bg-info" data-fig="Badge/Kind=Info">Published with Draft</span>
+  <span class="badge text-bg-pending" data-fig="Badge/Kind=Pending">Draft</span>
+  <span class="badge text-bg-closed" data-fig="Badge/Kind=Closed">Inactive</span>
+  <span class="badge text-bg-secondary" data-fig="Badge/Kind=Secondary">Label</span>
+  <span class="badge text-bg-primary" data-fig="Badge/Kind=Primary">Label</span>
+</div>
+
+<div class="sheet"><h2>Filter Chip</h2>
+  <button type="button" class="ds-chip" data-fig="Filter Chip/State=Default">Program Area <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
+  <button type="button" class="ds-chip is-hover" data-fig="Filter Chip/State=Hover">Program Area <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
+  <button type="button" class="ds-chip is-focus" data-fig="Filter Chip/State=Focus">Program Area <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
+  <button type="button" class="ds-chip is-filtered" data-fig="Filter Chip/State=Filtered">Status: Active <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button>
+</div>
+
+<div class="sheet"><h2>Page Link, Tab, Section nav link</h2>
+  <ul class="pagination mb-0">
+    <li class="page-item"><button type="button" class="page-link" data-fig="Page Link/State=Default">2</button></li>
+    <li class="page-item"><button type="button" class="page-link is-hover" data-fig="Page Link/State=Hover">2</button></li>
+    <li class="page-item"><button type="button" class="page-link is-focus" data-fig="Page Link/State=Focus">2</button></li>
+    <li class="page-item"><button type="button" class="page-link active" aria-current="page" data-fig="Page Link/State=Current">1</button></li>
+    <li class="page-item disabled"><button type="button" class="page-link disabled" disabled data-fig="Page Link/State=Disabled">Previous</button></li>
+  </ul>
+  <ul class="nav nav-underline" role="tablist" aria-label="Sample tabs">
+    <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" tabindex="-1" data-fig="Tab/State=Default">Tab</button></li>
+    <li class="nav-item" role="presentation"><button type="button" class="nav-link is-hover" role="tab" aria-selected="false" tabindex="-1" data-fig="Tab/State=Hover">Tab</button></li>
+    <li class="nav-item" role="presentation"><button type="button" class="nav-link is-focus" role="tab" aria-selected="false" tabindex="-1" data-fig="Tab/State=Focus">Tab</button></li>
+    <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="true" data-fig="Tab/State=Selected">Tab</button></li>
+  </ul>
+  <nav class="ds-secnav" aria-label="Sample section navigation" style="width:240px;padding:0"><div class="nav nav-pills flex-column">
+    <a class="nav-link" href="#" data-fig="SecNav Link/State=Default">Section</a>
+    <a class="nav-link is-focus" href="#" data-fig="SecNav Link/State=Focus">Section</a>
+    <a class="nav-link" href="#" aria-current="location" data-fig="SecNav Link/State=Current">Section</a>
+  </div></nav>
+</div>
+
+<div class="sheet"><h2>Sort Header, Accordion Header, Breadcrumb Item</h2>
+  <table class="table ds-table sortdemo" style="width:auto"><caption class="visually-hidden">Sort header states</caption><thead><tr>
+    <th scope="col"><button type="button" class="ds-sort-btn" data-fig="Sort Header/Sort=None">Column <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
+    <th scope="col" aria-sort="ascending"><button type="button" class="ds-sort-btn" data-fig="Sort Header/Sort=Ascending">Column <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
+    <th scope="col" aria-sort="descending"><button type="button" class="ds-sort-btn" data-fig="Sort Header/Sort=Descending">Column <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
+  </tr></thead></table>
+  <div class="accordion ds-form-accordion" style="width:480px"><div class="accordion-item"><h3 class="accordion-header"><button type="button" class="accordion-button" aria-expanded="true" data-fig="Accordion Header/Open=Yes">Section title</button></h3></div></div>
+  <div class="accordion ds-form-accordion" style="width:480px"><div class="accordion-item"><h3 class="accordion-header"><button type="button" class="accordion-button collapsed" aria-expanded="false" data-fig="Accordion Header/Open=No">Section title</button></h3></div></div>
+  <span class="d-inline-flex align-items-center gap-2" style="font-size:12px" data-fig="Breadcrumb Item/Kind=Link, Divider=No"><a href="#">Page</a></span>
+  <span class="d-inline-flex align-items-center gap-2" style="font-size:12px" data-fig="Breadcrumb Item/Kind=Link, Divider=Yes"><svg class="ds-icon" style="width:16px;height:16px;color:var(--bs-secondary-color)" aria-hidden="true"><use href="../icons/sprite.svg#chevron_right"/></svg><a href="#">Page</a></span>
+  <span class="d-inline-flex align-items-center gap-2" style="font-size:12px;font-weight:600;color:var(--bs-secondary-color)" data-fig="Breadcrumb Item/Kind=Current, Divider=Yes"><svg class="ds-icon" style="width:16px;height:16px" aria-hidden="true"><use href="../icons/sprite.svg#chevron_right"/></svg><span>Page</span></span>
+  <span class="d-inline-flex align-items-center gap-2" style="font-size:12px;font-weight:600;color:var(--bs-secondary-color)" data-fig="Breadcrumb Item/Kind=Current, Divider=No"><span>Page</span></span>
+</div>
+
+<div class="sheet" style="width:1100px"><h2>Composites (the controls inside stay component instances)</h2>
+  <div class="alert alert-success mb-0" style="width:520px" role="status" data-fig="Alert/Kind=Success" data-fig-mode="composite">Record saved. <a href="#" class="alert-link">Open the record</a></div>
+  <div class="alert alert-info mb-0" style="width:520px" data-fig="Alert/Kind=Info" data-fig-mode="composite">Custom fields moved. <a href="#" class="alert-link">Open Page Management</a></div>
+  <div class="alert alert-warning mb-0" style="width:520px" data-fig="Alert/Kind=Warning" data-fig-mode="composite">This page has unpublished changes. <a href="#" class="alert-link">Review the draft</a></div>
+  <div class="alert alert-danger mb-0" style="width:520px" role="alert" data-fig="Alert/Kind=Danger" data-fig-mode="composite">The import failed. <a href="#" class="alert-link">See the log</a></div>
+  <div class="ds-error-summary" role="alert" style="width:520px" data-fig="Error Summary" data-fig-mode="composite"><h2>There is a problem</h2><ul><li><a href="#">Enter an algorithm name</a></li><li><a href="#">Select an event type</a></li></ul></div>
+  <div class="ds-toast" role="status" data-fig="Toast/Kind=Success" data-fig-mode="composite"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#check_circle"/></svg>Investigation saved. The record is now available in the queue.<button type="button" class="btn-close" aria-label="Dismiss notification"></button></div>
+  <div class="ds-table-footer" style="width:900px" data-fig="Table Footer" data-fig-mode="composite"><span class="ds-page-summary">Items 1 - 25 of 182</span><nav aria-label="Pagination"><ul class="pagination mb-0"><li class="page-item disabled"><button type="button" class="page-link disabled" disabled>Previous</button></li><li class="page-item"><button type="button" class="page-link active" aria-current="page">1</button></li><li class="page-item"><button type="button" class="page-link">2</button></li><li class="page-item"><button type="button" class="page-link">3</button></li><li class="page-item"><button type="button" class="page-link">Next</button></li></ul></nav><div class="ds-page-size"><select class="form-select" id="fsSize"><option selected>25</option></select><label for="fsSize">Items per page</label></div></div>
+  <div class="modal position-static d-block" style="width:520px"><div class="modal-dialog m-0"><div class="modal-content" data-fig="Modal/Size=Default" data-fig-mode="composite">
+    <div class="modal-header"><h2 class="modal-title h5">Dialog title</h2><button type="button" class="btn-close" aria-label="Close"></button></div>
+    <div class="modal-body"><p class="mb-0">Dialog body text explains what will happen and what the person can do next.</p></div>
+    <div class="modal-footer"><button type="button" class="btn btn-outline-primary">Cancel</button><button type="button" class="btn btn-primary">Confirm</button></div>
+  </div></div></div>
+  <section class="card shadow-sm" style="width:360px" data-fig="Card/Header=Teal" data-fig-mode="composite"><h2 class="card-header text-bg-primary h6 mb-0">Card title</h2><div class="card-body">Card body text.</div></section>
+</div>
+
+
+<div class="sheet" style="width:1100px"><h2>Form Section, Filter Panel</h2>
+  <section class="card ds-form-section" style="width:480px;margin-bottom:0" data-fig="Card/Header=Form Section" data-fig-mode="composite"><h2 class="card-header h6 mb-0 fw-semibold">Basic Criteria</h2><div class="card-body d-grid gap-3"><div class="ds-field"><label class="ds-required" for="fsFS1">Algorithm Name</label><input class="form-control" id="fsFS1" type="text"></div><div class="ds-field"><label for="fsFS2">Event Type</label><select class="form-select" id="fsFS2"><option>Select event type</option></select></div></div></section>
+  <div class="ds-filter-panel" role="group" aria-labelledby="fsFPt" style="width:360px;margin:0" data-fig="Filter Panel" data-fig-mode="composite"><p class="ds-filter-panel-title" id="fsFPt">Status</p><input type="search" class="form-control rounded-pill" aria-label="Filter Status options" placeholder="Search to filter..."><fieldset class="ds-filter-options"><legend class="visually-hidden">Status values</legend><label class="ds-check ds-filter-all"><input class="form-check-input" type="checkbox"> Select all</label><label class="ds-check"><input class="form-check-input" type="checkbox" checked> Active</label><label class="ds-check"><input class="form-check-input" type="checkbox"> Inactive</label></fieldset><div class="ds-filter-panel-actions"><button type="button" class="btn btn-outline-primary rounded-pill">Clear selection</button><button type="button" class="btn btn-primary rounded-pill">Update</button></div></div>
+</div>
+
+<div class="sheet" style="width:1100px"><h2>Link, Field, Skip Link, Bulk Bar, Page Header</h2>
+  <a href="#" data-fig="Link/State=Default">Manage Workflow Decision Support</a>
+  <a href="#" style="color:var(--bs-link-hover-color)" data-fig="Link/State=Hover">Manage Workflow Decision Support</a>
+  <div class="ds-field" style="width:320px" data-fig="Field/State=Default" data-fig-mode="composite"><label class="ds-required" for="fsF1">Algorithm Name</label><input class="form-control" id="fsF1" type="text" value="000_A_HepB_CI"><span class="form-text">Letters and numbers only.</span></div>
+  <div class="ds-field" style="width:320px" data-fig="Field/State=Error" data-fig-mode="composite"><label class="ds-required" for="fsF2">Algorithm Name</label><input class="form-control is-invalid" id="fsF2" type="text" aria-invalid="true" aria-describedby="fsF2e"><span class="invalid-feedback d-block" id="fsF2e">Enter an algorithm name</span></div>
+  <a class="ds-skip-link" href="#" style="position:static;display:inline-block" data-fig="Skip Link">Skip to main content</a>
+  <div class="ds-bulkbar" role="region" aria-label="Bulk actions" data-fig="Bulk Bar" data-fig-mode="composite"><span>3 selected</span><button type="button" class="btn btn-primary">Merge selected</button><button type="button" class="btn btn-link" aria-label="Clear selection"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button></div>
+  <div class="ds-page-header" style="width:900px;background:var(--bs-secondary-bg);padding:16px 24px" data-fig="Page Header" data-fig-mode="composite"><nav aria-label="Breadcrumb"><ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a href="#">System Management</a></li><li class="breadcrumb-item active" aria-current="page">Manage Conditions</li></ol></nav><p class="display-6 mb-0" style="margin-top:8px">Condition Library</p></div>
+</div>
+<div class="sheet" style="width:1100px"><h2>Patterns</h2>
+<div data-fig="Datepicker" data-fig-mode="composite">
+  <div class="ds-datefield">
+    <input class="form-control" type="text" placeholder="MM/DD/YYYY" aria-label="Date" style="width:220px">
+    <svg class="ds-icon"><use href="../icons/sprite.svg#calendar_today"/></svg>
+  </div>
+</div>
+<div data-fig="Multi-Select" data-fig-mode="composite" style="width:420px">
   <div class="ds-multiselect" role="listbox" aria-label="Conditions">
     <span class="item">LEAD <a href="#" aria-label="Remove LEAD">×</a></span>
     <span class="item">TB <a href="#" aria-label="Remove TB">×</a></span>
     <span class="item">COVID-19 <a href="#" aria-label="Remove COVID-19">×</a></span>
   </div>
 </div>
-
-<div data-fig="Datepicker">
-  <div class="ds-datefield">
-    <input class="ds-input" type="text" placeholder="MM/DD/YYYY" aria-label="Date" style="width:220px">
-    <svg class="ds-icon"><use href="../icons/sprite.svg#calendar_today"/></svg>
-  </div>
-</div>
-
-<div data-fig="Accordion/Expanded" style="width:560px">
-  <div class="ds-accordion">
-    <button class="ds-accordion-header" aria-expanded="true">Summary
-      <svg class="ds-icon"><use href="../icons/sprite.svg#expand_more"/></svg>
-    </button>
-    <div class="ds-accordion-body ds-type-body">Case summary content renders here.</div>
-  </div>
-</div>
-
-<div data-fig="Toast/Success">
-  <div class="ds-toast" role="status">
-    <svg class="ds-icon"><use href="../icons/sprite.svg#check_circle"/></svg>
-    Investigation saved. The record is now available in the queue.
-    <button class="ds-btn-close" aria-label="Dismiss"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
-  </div>
-</div>
-
-<div data-fig="Card/Dashboard" style="width:480px">
-  <div class="ds-card ds-card-plainhead">
-    <div class="ds-card-header"><svg class="ds-card-icon"><use href="../icons/sprite.svg#search"/></svg><h2 class="ds-card-title">Patient Search</h2></div>
-    <div class="ds-card-body ds-type-body">Dashboard cards carry a plain header with a primary icon.</div>
-  </div>
-</div>
-
-<div data-fig="Card/Notices" style="width:480px">
-  <div class="ds-card ds-card-warnhead">
-    <div class="ds-card-header"><svg class="ds-card-icon"><use href="../icons/sprite.svg#error"/></svg><h2 class="ds-card-title">Notices</h2></div>
-    <div class="ds-card-body ds-type-body">The notices card keeps its warning-tinted header.</div>
-  </div>
-</div>
-
-<div data-fig="Card/Summary" style="width:480px">
-  <div class="ds-summary">
-    <div class="row1">Hepatitis B, acute · 10100 · Open</div>
-    <div class="row2">Investigator: P. Preparer · Started 03/05/2026 · Jurisdiction: Region 7</div>
-  </div>
-</div>
-
-<div data-fig="Modal/Find" style="width:560px">
-  <div class="ds-modal">
-    <div class="ds-modal-header">
-      <h2>Find Organization</h2>
-      <button class="ds-modal-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
-    </div>
-    <div class="ds-modal-body" style="display:grid;gap:14px">
-      <div class="ds-field"><label for="fs-name">Organization name</label><input class="ds-input" id="fs-name" type="text"></div>
-      <div class="ds-field"><label for="fs-juris">Jurisdiction</label><select class="ds-select" id="fs-juris"><option>All jurisdictions</option></select></div>
-    </div>
-    <div class="ds-form-footer">
-      <button class="ds-btn ds-btn-outline">Clear</button>
-      <button class="ds-btn ds-btn-primary">Search</button>
-    </div>
-  </div>
-</div>
-
-<div data-fig="Modal/Search Results" style="width:700px">
-  <div class="ds-modal" style="width:100%">
-    <div class="ds-modal-header">
-      <h2>Organization Search Results</h2>
-      <button class="ds-modal-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
-    </div>
-    <div class="ds-modal-body" style="padding:0">
-      <table class="ds-table">
-        <thead><tr><th>Name</th><th>Address</th><th>Jurisdiction</th><th></th></tr></thead>
-        <tbody>
-          <tr><td>Austin Public Health Lab</td><td>7201 Levander Loop</td><td>Travis</td><td><a class="ds-link" href="#">Select</a></td></tr>
-          <tr><td>Dallas County Health Dept</td><td>2377 N Stemmons Fwy</td><td>Dallas</td><td><a class="ds-link" href="#">Select</a></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="ds-form-footer">
-      <button class="ds-btn ds-btn-outline">Back to search</button>
-      <button class="ds-btn ds-btn-primary">Select</button>
-    </div>
-  </div>
-</div>
-
-<div data-fig="Modal/Small" style="width:420px">
-  <div class="ds-modal" style="width:100%">
-    <div class="ds-modal-header">
-      <h2>Add Note</h2>
-      <button class="ds-modal-close" aria-label="Close"><svg class="ds-icon"><use href="../icons/sprite.svg#close"/></svg></button>
-    </div>
-    <div class="ds-modal-body">
-      <div class="ds-field" style="max-width:none"><label for="fs-note" class="ds-required">Note</label><textarea class="ds-input" id="fs-note" rows="3"></textarea></div>
-    </div>
-    <div class="ds-form-footer">
-      <button class="ds-btn ds-btn-outline">Cancel</button>
-      <button class="ds-btn ds-btn-primary">Add</button>
-    </div>
-  </div>
-</div>
-
-<div data-fig="Repeating Block Table" style="width:640px">
-  <div style="border:1px solid var(--ds-border);border-radius:var(--ds-radius-card);overflow:hidden">
-    <table class="ds-table">
+<div data-fig="Repeating Block Table" data-fig-mode="composite" style="width:640px">
+  <div style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg);overflow:hidden">
+    <table class="table ds-table">
       <thead><tr><th>Test</th><th>Result</th><th>Date</th><th></th></tr></thead>
       <tbody>
         <tr><td>SARS-CoV-2 RNA Pnl</td><td>Detected</td><td>03/02/2026</td><td class="ds-row-actions"><a href="#" aria-label="Edit"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a><a href="#" aria-label="Delete"><svg class="ds-icon"><use href="../icons/sprite.svg#delete"/></svg></a></td></tr>
         <tr><td>Hepatitis B virus DNA</td><td>Not detected</td><td>03/04/2026</td><td class="ds-row-actions"><a href="#" aria-label="Edit"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a><a href="#" aria-label="Delete"><svg class="ds-icon"><use href="../icons/sprite.svg#delete"/></svg></a></td></tr>
       </tbody>
     </table>
-    <div class="ds-table-addrow"><button class="ds-btn-pill"><svg class="ds-icon"><use href="../icons/sprite.svg#add"/></svg>Add row</button></div>
+    <div class="px-3 py-2 border-top"><button type="button" class="btn btn-outline-primary rounded-pill"><svg class="ds-icon"><use href="../icons/sprite.svg#add"/></svg>Add row</button></div>
   </div>
 </div>
 
-<div data-fig="Jumper Link/Default"><a class="ds-jumper-item" href="#" style="display:inline-flex;align-items:center;border:1px solid var(--ds-border);border-radius:var(--ds-radius);color:var(--ds-text);text-decoration:none;font:500 13px/1 var(--ds-font-family);padding:7px 12px">Case Info</a></div>
-<div data-fig="Jumper Link/Active"><a class="ds-jumper-item" href="#" style="display:inline-flex;align-items:center;border:1px solid var(--ds-primary);border-radius:var(--ds-radius);background:var(--ds-primary);color:#fff;text-decoration:none;font:500 13px/1 var(--ds-font-family);padding:7px 12px">Patient</a></div>
-
-<div data-fig="Profile Button">
-  <button class="ds-profile-btn">
-    <span class="ds-avatar">PP</span>
-    P. Preparer
-    <svg class="ds-icon"><use href="../icons/sprite.svg#expand_more"/></svg>
-  </button>
+<div data-fig="Jumper Link/State=Default" data-fig-mode="composite"><a class="ds-jumper-item" href="#" style="display:inline-flex;align-items:center;border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius);color:var(--bs-body-color);text-decoration:none;font:500 13px/1 var(--bs-body-font-family);padding:7px 12px">Case Info</a></div>
+<div data-fig="Jumper Link/State=Current" data-fig-mode="composite"><a class="ds-jumper-item" href="#" style="display:inline-flex;align-items:center;border:1px solid var(--bs-primary);border-radius:var(--bs-border-radius);background:var(--bs-primary);color:#fff;text-decoration:none;font:500 13px/1 var(--bs-body-font-family);padding:7px 12px">Patient</a></div>
+<div data-fig="Card/Header=Dashboard" data-fig-mode="composite" style="width:480px">
+  <div class="card shadow-sm ds-card-plainhead">
+    <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon"><use href="../icons/sprite.svg#search"/></svg><h2 class="mb-0">Patient Search</h2></div>
+    <div class="card-body">Dashboard cards carry a plain header with a primary icon.</div>
+  </div>
+</div>
+<div data-fig="Card/Header=Notices" data-fig-mode="composite" style="width:480px">
+  <div class="card shadow-sm ds-card-warnhead">
+    <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon"><use href="../icons/sprite.svg#error"/></svg><h2 class="mb-0">Notices</h2></div>
+    <div class="card-body">The notices card keeps its warning-tinted header.</div>
+  </div>
+</div>
+<div data-fig="Card/Header=Summary" data-fig-mode="composite" style="width:480px">
+  <div class="ds-summary">
+    <div class="row1">Hepatitis B, acute · 10100 · Open</div>
+    <div class="row2">Investigator: P. Preparer · Started 03/05/2026 · Jurisdiction: Region 7</div>
+  </div>
+</div>
+<div data-fig="Modal/Size=Find" data-fig-mode="composite" style="width:560px">
+  <div class="modal position-static d-block">
+  <div class="modal-dialog m-0" style="max-width:none">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title h5">Find Organization</h2>
+      <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+    <div class="modal-body" style="display:grid;gap:14px">
+      <div class="ds-field"><label for="fs-name">Organization name</label><input class="form-control" id="fs-name" type="text"></div>
+      <div class="ds-field"><label for="fs-juris">Jurisdiction</label><select class="form-select" id="fs-juris"><option>All jurisdictions</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline-primary">Clear</button>
+      <button class="btn btn-primary">Search</button>
+    </div>
+  </div>
+  </div>
+  </div>
+</div>
+<div data-fig="Modal/Size=Search Results" data-fig-mode="composite" style="width:700px">
+  <div class="modal position-static d-block">
+  <div class="modal-dialog m-0" style="max-width:none;width:100%">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title h5">Organization Search Results</h2>
+      <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+    <div class="modal-body" style="padding:0">
+      <table class="table ds-table">
+        <thead><tr><th>Name</th><th>Address</th><th>Jurisdiction</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Austin Public Health Lab</td><td>7201 Levander Loop</td><td>Travis</td><td><a href="#">Select</a></td></tr>
+          <tr><td>Dallas County Health Dept</td><td>2377 N Stemmons Fwy</td><td>Dallas</td><td><a href="#">Select</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline-primary">Back to search</button>
+      <button class="btn btn-primary">Select</button>
+    </div>
+  </div>
+  </div>
+  </div>
+</div>
+<div data-fig="Modal/Size=Small" data-fig-mode="composite" style="width:420px">
+  <div class="modal position-static d-block">
+  <div class="modal-dialog m-0" style="max-width:none;width:100%">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title h5">Add Note</h2>
+      <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <div class="ds-field" style="max-width:none"><label for="fs-note" class="ds-required">Note</label><textarea class="form-control" id="fs-note" rows="3"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline-primary">Cancel</button>
+      <button class="btn btn-primary">Add</button>
+    </div>
+  </div>
+  </div>
+  </div>
 </div>
 
+</div>
+
+</main>
+<script src="../tools/figma/extract.js"></script>
 </body>
 </html>
