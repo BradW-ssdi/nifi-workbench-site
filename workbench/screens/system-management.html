@@ -42,7 +42,6 @@
   .menu-link.is-parent { font-weight: 600; }
   /* an action in the menu (opens a dialog) looks like the links beside it */
   .menu-action { width: 100%; border: 0; background: none; text-align: left; font: inherit; }
-  .menu-ext { width: 16px; height: 16px; margin-left: 6px; vertical-align: -2px; }
   .sm-done:focus { outline: none; }
   .sm-done:focus-visible { outline: 2px solid var(--bs-focus-ring-color); outline-offset: 2px; }
   .menu-list ul { margin: 0 0 6px 30px; border-left: 2px solid var(--bs-border-color); }
@@ -203,8 +202,8 @@
         <section class="card shadow-sm menu-card" id="mod-external" aria-labelledby="h-external" data-find-group>
           <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#open_in_new"/></svg><h2 class="mb-0" id="h-external" tabindex="-1">External Applications</h2></div>
           <ul class="menu-list">
-            <li data-find-item data-find-count data-find-text="questionnaire authoring external applications"><a class="menu-link" href="#" target="_blank" rel="noopener"><span>Questionnaire Authoring</span><svg class="ds-icon menu-ext" aria-hidden="true"><use href="../../icons/sprite.svg#open_in_new"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
-            <li data-find-item data-find-count data-find-text="survey administrator external applications"><a class="menu-link" href="#" target="_blank" rel="noopener"><span>Survey Administrator</span><svg class="ds-icon menu-ext" aria-hidden="true"><use href="../../icons/sprite.svg#open_in_new"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+            <li data-find-item data-find-count data-find-text="questionnaire authoring external applications"><a class="menu-link" href="#" target="_blank" rel="noopener"><span>Questionnaire Authoring</span><svg class="ds-icon ds-ext-icon" aria-hidden="true"><use href="../../icons/sprite.svg#open_in_new"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+            <li data-find-item data-find-count data-find-text="survey administrator external applications"><a class="menu-link" href="#" target="_blank" rel="noopener"><span>Survey Administrator</span><svg class="ds-icon ds-ext-icon" aria-hidden="true"><use href="../../icons/sprite.svg#open_in_new"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
           </ul>
         </section>
         </div>

@@ -12895,19 +12895,26 @@ fieldset.ds-field {
   gap: 8px 16px;
 }
 
-.ds-results-head h2, .ds-results-head .h2 {
+.ds-results-head h2, .ds-results-head .h2, .ds-results-title {
   flex: 1 1 auto;
   margin: 0;
   font-size: 1.25rem;
 }
 
-.ds-results-head h2:focus, .ds-results-head .h2:focus {
+.ds-results-head h2:focus, .ds-results-head .h2:focus, .ds-results-title:focus {
   outline: none;
 }
 
-.ds-results-head h2:focus-visible, .ds-results-head .h2:focus-visible {
+.ds-results-head h2:focus-visible, .ds-results-head .h2:focus-visible, .ds-results-title:focus-visible {
   outline: 2px solid var(--bs-focus-ring-color);
   outline-offset: 2px;
+}
+
+.ds-ext-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  vertical-align: -2px;
 }
 
 .ds-toolbar .form-control {

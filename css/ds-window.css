@@ -12624,19 +12624,26 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
   gap: 8px 16px;
 }
 
-.ds-window .ds-results-head h2:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-head .h2:not(.ds-phase2, .ds-phase2 *) {
+.ds-window .ds-results-head h2:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-head .h2:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-title:not(.ds-phase2, .ds-phase2 *) {
   flex: 1 1 auto;
   margin: 0;
   font-size: 1.25rem;
 }
 
-.ds-window .ds-results-head h2:focus:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-head .h2:focus:not(.ds-phase2, .ds-phase2 *) {
+.ds-window .ds-results-head h2:focus:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-head .h2:focus:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-title:focus:not(.ds-phase2, .ds-phase2 *) {
   outline: none;
 }
 
-.ds-window .ds-results-head h2:focus-visible:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-head .h2:focus-visible:not(.ds-phase2, .ds-phase2 *) {
+.ds-window .ds-results-head h2:focus-visible:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-head .h2:focus-visible:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-title:focus-visible:not(.ds-phase2, .ds-phase2 *) {
   outline: 2px solid var(--bs-focus-ring-color);
   outline-offset: 2px;
+}
+
+.ds-window .ds-ext-icon:not(.ds-phase2, .ds-phase2 *) {
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  vertical-align: -2px;
 }
 
 .ds-window .ds-toolbar .form-control:not(.ds-phase2, .ds-phase2 *) {
