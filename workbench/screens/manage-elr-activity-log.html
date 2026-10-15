@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage ELR Activity Log - Case Report and Laboratory - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<script src="../../js/app-frame.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; max-width: 1028px; }   /* 980px of content plus the padding */
+  .legend-note { color: var(--bs-secondary-color); font-size: 0.75rem; }
+  .legend-note .req { color: var(--bs-form-invalid-color); }
+  .apply-group { display: flex; gap: 12px 28px; flex-wrap: wrap; }
+  .ds-field-wide { max-width: none; }
+  .ds-radio-group { border: 0; margin: 0; padding: 0; min-width: 0; max-width: none; }
+  .ds-radio-group legend, fieldset.ds-field legend { font-size: inherit; font-weight: 500; margin-bottom: 6px; float: none; }
+  fieldset.ds-field { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .ds-check-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 8px 20px; padding: 10px 12px; border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius); max-height: 220px; overflow: auto; }
+  .ds-check-list-tall { grid-template-columns: minmax(0, 1fr); max-height: 360px; }
+  .ds-entry-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 14px 20px; align-items: start; }
+  .ds-entry-grid > .ds-field-wide { grid-column: 1 / -1; }
+  .ds-repeat { display: grid; gap: 14px; }
+  .ds-repeat-entry { display: grid; gap: 14px; padding: 16px; border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius-lg); }
+  .ds-empty { margin: 0; padding: 16px; text-align: center; color: var(--bs-secondary-color); }
+  .ds-label { font-weight: 500; }
+  .ds-tab-next { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+  /* Conditional sections hide with the hidden attribute; keep display utilities off them (Bootstrap's are !important) */
+  [hidden] { display: none !important; }
+  .ds-stack { display: grid; gap: 16px; }
+  @media (max-width: 820px) {
+    .page-body { padding: 16px; }
+  }
+  .page-body { max-width: none; }
+  .cs-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .cs-results-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  .cs-results-head h2 { flex: 1 1 auto; margin: 0; font-size: 1.25rem; }
+  .cs-results-head h2:focus { outline: none; }
+  .cs-results-head h2:focus-visible { outline: 2px solid var(--bs-focus-ring-color); outline-offset: 2px; }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb"><li class="breadcrumb-item"><a href="system-management.html">System Management</a></li><li class="breadcrumb-item active" aria-current="page">Manage ELR Activity Log</li></ol>
+        </nav>
+        <h1 class="display-6 mb-0 mt-2">Manage ELR Activity Log</h1>
+      </div>
+      <div class="page-body d-grid gap-3">
+        <!-- Manage ELR Activity Log modernizes LoadDSMActivityLog.do: what happened to each electronic lab report. The PHDC Activity Log is the same screen for case documents. Both dates and at least one status are required, and To cannot be before From. -->
+        <div class="ds-error-summary mb-0" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
+          <h2 id="errorSummaryTitle">There is a problem</h2>
+          <ul id="errorList"></ul>
+        </div>
+        <div id="searchStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+        <form id="searchForm" data-ds-search data-noun="record" data-nouns="records" data-range="logFrom,logTo" data-range-msg="The To date cannot be before the From date" novalidate>
+          <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Find a record</h2>
+            <div class="card-body d-grid gap-3">
+              <p class="form-text mb-0" id="criteriaHint">Choose the time frame and the statuses to see. The sample records are from May 2026.</p>
+              <div class="ds-entry-grid"><div class="ds-field"><label class="ds-required" for="logFrom">From</label><div class="ds-datefield"><input class="form-control" id="logFrom" type="text" inputmode="numeric" autocomplete="off" required data-date data-match-from="processed" data-errmsg="Enter the from date" data-format-msg="Enter the from date as MM/DD/YYYY" aria-describedby="logFrom-fmt"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div><span class="form-text" id="logFrom-fmt">MM/DD/YYYY</span><span class="invalid-feedback" id="logFrom-error" hidden></span></div><div class="ds-field"><label class="ds-required" for="logTo">To</label><div class="ds-datefield"><input class="form-control" id="logTo" type="text" inputmode="numeric" autocomplete="off" required data-date data-match-to="processed" data-errmsg="Enter the to date" data-format-msg="Enter the to date as MM/DD/YYYY" aria-describedby="logTo-fmt"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div><span class="form-text" id="logTo-fmt">MM/DD/YYYY</span><span class="invalid-feedback" id="logTo-error" hidden></span></div><fieldset class="ds-field" data-require-one data-errmsg="Choose at least one status"><legend class="ds-required">Status</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="checkbox" id="logSuccess" data-match-any="status" value="Success" checked> Success</label><label class="ds-check"><input class="form-check-input" type="checkbox" id="logFailure" data-match-any="status" value="Failure" checked> Failure</label></div><span class="invalid-feedback" id="logSuccess-error" hidden></span></fieldset></div>
+              <div class="cs-actions"><button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
+                <button class="btn btn-outline-primary" type="reset">Clear</button></div>
+            </div></section>
+        </form>
+        <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
+          <div class="cs-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
+            </div>
+          <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
+            <table class="table ds-table" id="resultsTable" data-columns="[&quot;processed&quot;, &quot;status&quot;, &quot;patient&quot;, &quot;facility&quot;, &quot;algorithm&quot;, &quot;action&quot;, &quot;messageId&quot;, &quot;observationId&quot;, &quot;accession&quot;, &quot;exception&quot;]" data-actions="[]" data-row-label="processed"><caption class="visually-hidden">Records found</caption><thead><tr><th scope="col">Processed Time</th><th scope="col">Status</th><th scope="col">Patient</th><th scope="col">Reporting Facility</th><th scope="col">Algorithm</th><th scope="col">Action</th><th scope="col">Message ID</th><th scope="col">Observation ID</th><th scope="col">Accession Number</th><th scope="col">Exception Text</th></tr></thead><tbody></tbody></table></div></div>
+          <p class="ds-empty" id="noResults" hidden>No records match these criteria. Check the spelling, or search with less.</p>
+        </section>
+      </div>
+      <script type="application/json" id="searchData">[{"processed": "05/08/2026 14:13:19.400", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Rivera, Ana", "observationId": "OBS875810193TX01", "accession": "filler_order_nbr_20260508141317", "exception": "A matching algorithm was not found. The Lab Report is logged in Documents Requiring Review queue."}, {"processed": "05/08/2026 14:13:13.980", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Chen, Marcus", "observationId": "OBS875810170TX01", "accession": "filler_order_nbr_20260508141221", "exception": "Lab updated successfully and logged in Documents Requiring Review queue."}, {"processed": "05/08/2026 14:12:58.363", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Okafor, Grace", "observationId": "OBS875810170TX01", "accession": "filler_order_nbr_20260508141221", "exception": "Lab updated successfully and logged in Documents Requiring Review queue."}, {"processed": "05/08/2026 14:12:27.667", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Patel, Dev", "observationId": "OBS875810170TX01", "accession": "filler_order_nbr_20260508141221", "exception": "Lab updated successfully and logged in Documents Requiring Review queue."}, {"processed": "05/08/2026 14:12:22.667", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Nguyen, Lily", "observationId": "OBS875810170TX01", "accession": "filler_order_nbr_20260508141221", "exception": "A matching algorithm was not found. The Lab Report is logged in Documents Requiring Review queue."}, {"processed": "05/08/2026 14:10:26.657", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Brooks, Owen", "observationId": "OBS875810158TX01", "accession": "filler_order_nbr_20260508141019", "exception": "Lab updated successfully and logged in Documents Requiring Review queue."}, {"processed": "05/08/2026 14:10:21.170", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Santos, Maya", "observationId": "OBS875810158TX01", "accession": "filler_order_nbr_20260508141019", "exception": "A matching algorithm was not found. The Lab Report is logged in Documents Requiring Review queue."}, {"processed": "05/06/2026 17:10:39.163", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Kim, Jordan", "observationId": "OBS875810066TX01", "accession": "filler_order_nbr_20260506171036", "exception": "A matching algorithm was not found. The Lab Report is logged in Documents Requiring Review queue."}, {"processed": "05/06/2026 17:10:38.937", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Haddad, Sami", "observationId": "OBS875810064TX01", "accession": "filler_order_nbr_20260506180835", "exception": "A matching algorithm was not found. The Lab Report is logged in Documents Requiring Review queue."}, {"processed": "05/06/2026 17:10:38.577", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Lopez, Elena", "observationId": "OBS875810062TX01", "accession": "CCD565", "exception": "A matching algorithm was not found. The Lab Report is logged in Documents Requiring Review queue."}, {"processed": "05/06/2026 17:10:38.360", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Ward, Theo", "observationId": "OBS875810060TX01", "accession": "CCD199", "exception": "A matching algorithm was not found. The Lab Report is logged in Documents Requiring Review queue."}, {"processed": "05/06/2026 16:31:59.397", "status": "Success", "algorithm": "", "action": "", "messageId": "91749169", "facility": "Pathgroup", "patient": "Ibarra, Rosa", "observationId": "OBS875810058TX01", "accession": "JPXQffiller_order_nbr_20260506163157", "exception": "A matching algorithm was not found. The Lab Report is logged in Documents Requiring Review queue."}, {"processed": "05/06/2026 16:28:28.43", "status": "Success", "algorithm": "1_1_TX_COVID19_Positive_MarkAsReviewed", "action": "Mark as Reviewed", "messageId": "91749169", "facility": "Pathgroup", "patient": "Fischer, Noah", "observationId": "OBS875810056TX01", "accession": "CaFHZfiller_order_nbr_20260506162825", "exception": "Successfully Mark Lab as Reviewed"}]</script>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+<script src="../../js/ds-search.js"></script>
+</body>
+</html>

@@ -203,6 +203,19 @@
         { code: 'LM-4', title: 'Show a list first?', pin: { sel: '#snomedCode' }, ask: true,
           text: 'Should these screens list the codes on arrival, with the criteria as filters (as the queue screens do), instead of waiting for a search? SNOMED and LOINC tables are large, which is likely why the current screens ask first.' }
       ] },
+    { id: 'manage-elr-activity-log', title: 'ELR Activity Log', priority: 'ELR/ECR Activity Logs (priority 12)', status: 'ready',
+      notes: [
+        { code: 'AL-1', title: 'Time frame', pin: { sel: '#logFrom' },
+          text: 'From and To dates are required, as MM/DD/YYYY, and To cannot be before From. The current screen also takes a time of day.' },
+        { code: 'AL-2', title: 'Status', pin: { sel: '#logSuccess' },
+          text: 'Success, Failure, or both; at least one.' },
+        { code: 'AL-3', title: 'Records', pin: { sel: 'main button[type=submit]' }, after: 'search',
+          text: 'Each record shows when it was processed, its status, the patient, the reporting facility, the algorithm and action applied, its IDs, and the message the system logged.' },
+        { code: 'AL-4', title: 'Time of day', pin: { sel: '#logTo' }, ask: true,
+          text: 'Do users need the From and To times the current screen offers, or are dates enough?' },
+        { code: 'AL-5', title: 'PHDC log', pin: { sel: 'main h1' },
+          text: 'The PHDC Activity Log is the same screen for case documents.' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },
