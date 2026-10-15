@@ -48,6 +48,7 @@
       { title: 'SNOMED - Condition Link', href: 'screens/link-snomed-condition.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Trigger Codes', href: 'screens/manage-trigger-codes.html', ext: true, icon: 'open_in_new' },
       { title: 'ELR Activity Log', href: 'screens/manage-elr-activity-log.html', ext: true, icon: 'open_in_new' },
+      { title: 'Manage Bulk Import Templates', href: 'screens/manage-bulk-import-templates.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Questions', href: 'screens/manage-questions.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Users', href: 'screens/manage-users.html', ext: true, icon: 'open_in_new' },
       { title: 'Edit User', href: 'screens/edit-user.html', ext: true, icon: 'open_in_new' },

@@ -260,13 +260,13 @@
     clearTimeout(t);
     t = setTimeout(function () {
       var q = filter.value.trim().toLowerCase();
-      var shown = 0;
+      var shown = 0, total = 0;   /* rows a column filter chip removed are not counted */
       Array.prototype.forEach.call(tbody.rows, function (r) {
         var hit = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
         r.hidden = !hit;
-        if (hit) shown++;
+        if (!r.classList.contains('ds-row-filtered')) { total++; if (hit) shown++; }
       });
-      status.textContent = q ? (shown + ' of ' + tbody.rows.length + ' algorithms shown') : '';
+      status.textContent = q ? (shown + ' of ' + total + ' algorithms shown') : '';
     }, 300);
   });
 

@@ -216,6 +216,17 @@
         { code: 'AL-5', title: 'PHDC log', pin: { sel: 'main h1' },
           text: 'The PHDC Activity Log is the same screen for case documents.' }
       ] },
+    { id: 'manage-bulk-import-templates', title: 'Manage Bulk Import Templates', priority: 'Manage Bulk Import (priority 7)', status: 'ready',
+      notes: [
+        { code: 'BI-1', title: 'Library', pin: { sel: '#templateTable' },
+          text: 'Event type, template name, state, related conditions, last updated and by whom, and status, as in the current library.' },
+        { code: 'BI-2', title: 'Filters', pin: { sel: '#filterChipsDiv' },
+          text: 'Event Type, Template State, and Status are filters, as in the Phase 2 queues; Filter adds the other columns. Status shows Active templates on arrival.' },
+        { code: 'BI-3', title: 'Import', pin: { sel: 'main .ds-toolbar' },
+          text: 'Add New, Import (a template file), Print, and Download.' },
+        { code: 'BI-4', title: 'Inactive on arrival?', pin: { sel: '#status' }, ask: true,
+          text: 'Should the library show only Active templates when it opens, as this template does, or everything?' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },
