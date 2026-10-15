@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Map Questions - Page Management - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<link rel="stylesheet" href="../phase2/island.css"><!-- Phase 2 styles for .ds-phase2, only in this layout -->
+<script src="../../js/app-frame.js" defer></script>
+<script src="../../js/ds-dialog.js"></script>
+<script src="../../js/list-filters.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }   /* the column never grows past the page: a wide Phase 2 chip is squeezed, as in Phase 2, instead of widening it */
+  .ds-toolbar .form-control { width: 280px; }
+  @media (max-width: 820px) {
+    .ds-toolbar .form-control { width: 100%; }
+    .page-body { padding: 16px; }
+  }
+  /* Porting steps: where this screen sits in the five. The current step is marked by weight and a bar, not color only. */
+  .pp-steps { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 12px 0 0; padding: 0; counter-reset: step; }
+  .pp-steps li { counter-increment: step; color: var(--bs-secondary-color); padding-bottom: 4px; }
+  .pp-steps li::before { content: counter(step) ". "; }
+  .pp-steps li[aria-current="step"] { color: var(--bs-body-color); font-weight: 600; box-shadow: inset 0 -3px 0 var(--bs-primary); }
+  .pp-details { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; margin: 0; }
+  .pp-details dt { font-weight: 600; }
+  .pp-details dd { margin: 0; overflow-wrap: anywhere; }
+  @media (max-width: 480px) { .pp-details { grid-template-columns: minmax(0, 1fr); } .pp-details dd { margin-bottom: 8px; } }
+  /* Map question dialog: the radio groups as on the form templates */
+  .apply-group { display: flex; gap: 12px 28px; flex-wrap: wrap; }
+  .ds-radio-group legend, fieldset.ds-field legend { font-size: inherit; font-weight: 500; margin-bottom: 6px; float: none; }
+  .pp-done svg { width: 18px; height: 18px; margin-right: 4px; vertical-align: -4px; color: var(--bs-success-text-emphasis); }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb"><li class="breadcrumb-item"><a href="system-management.html">System Management</a></li><li class="breadcrumb-item"><a href="manage-pages.html">Manage Pages</a></li><li class="breadcrumb-item"><a href="manage-page-porting.html">Page Porting</a></li><li class="breadcrumb-item active" aria-current="page">Port Page</li></ol>
+        </nav>
+        <h1 class="display-6 mb-0 mt-2">Map Questions</h1>
+        <ol class="pp-steps" aria-label="Porting steps"><li class="pp-done"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#check_circle"/></svg>Map details<span class="visually-hidden">, done</span></li><li aria-current="step">Map questions</li><li>Map answers</li><li>Review mapping</li><li>Port condition</li></ol>
+      </div>
+      <div class="page-body">
+        <!-- Map Questions modernizes PortPage.do step two (QuestionMappingPage.jsp): each question on the From page is mapped to a question on the To page, or marked not to port. Same queue contract as Manage Pages. Map on a row opens the Map question dialog (js/ds-dialog.js). DEV: the server saves each mapping; Save keeps the map to finish later. -->
+        <dl class="pp-details">
+          <dt>Map</dt><dd>Varicella_Legacy_to_Page_Builder_Mapping_NBS_5_4_GA_TX</dd>
+          <dt>From page</dt><dd>Legacy Varicella Investigation</dd>
+          <dt>To page</dt><dd>Varicella Investigation</dd>
+        </dl>
+        <p class="mb-0" id="remaining"><strong>Questions left to map:</strong> <span id="remainingCount">5 of 24</span></p>
+        <div id="mapStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+        <div class="ds-toolbar">
+          <input class="form-control rounded-pill" type="search" id="filterInput" aria-label="Filter questions" placeholder="Search to filter..." aria-describedby="filterStatus">
+          <span class="ms-auto"></span>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+        </div>
+        <!-- Column filter chips: Phase 2's queue chips, in Phase 2's order (the chips, Filter, then "| Reset" while a
+             filter is applied). DEV: build this with the Phase 3 queue component in the app
+             (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
+        <div class="ds-phase2">
+          <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="questionTable" data-noun="questions">
+            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Status">
+              <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="qmStatus">
+                <span id="qmStatus-chipLabel">Status</span>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="qmStatus-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+              </div>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="qmStatus-subMenu"></div>
+            </div>
+            <div class="chipsWithSubMenu" data-chip-type="S" data-column="From Data Type">
+              <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="qmType">
+                <span id="qmType-chipLabel">From Data Type</span>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="qmType-subMenu" aria-label="Edit From Data Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+              </div>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="qmType-subMenu"></div>
+            </div>
+            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Map">
+              <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="qmMap">
+                <span id="qmMap-chipLabel">Map</span>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="qmMap-subMenu" aria-label="Edit Map filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+              </div>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="qmMap-subMenu"></div>
+            </div>
+            <div id="filtersButtonDiv">
+              <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="filterButtonId" class="chip-button btn-outline-dark rounded-pill dropdown-toggle d-flex align-items-center bg-primary chip badge me-2 ps-3 filter-chip" id="filtersId">
+                <span aria-hidden="true" class="material-symbols-rounded text me-1" style="font-size: 24px;">filter_alt</span>
+                <span class="me-2" style="font-size: 14px;">Filter</span>
+              </button>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="filterButtonId"></div>
+            </div>
+            <div id="clearFiltersDiv" style="margin-top: 5px">| <button type="button" class="btn btn-link p-0 text-decoration-none align-baseline" id="clearFilters">Reset</button></div>
+          </div>
+        </div>
+        <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+        <div class="ds-table-frame">
+          <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Map Questions table, scrolls horizontally when zoomed">
+          <table class="table ds-table" id="questionTable">
+            <caption class="visually-hidden">Questions on the From page and the To page question each maps to. Column headers with buttons are sortable.</caption>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col"><button class="ds-sort-btn" data-sort="1">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="2">From ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">From Label <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">From Data Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Map <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">To ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="7">To Label <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="8">To Data Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th></tr></thead>
+            <tbody>
+              <tr data-q="VAR218"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR218" aria-haspopup="dialog" aria-label="Map VAR218 Manufacturer"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR218</td><td>Manufacturer</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">VAC107</td><td data-c="toLabel">Vaccine Manufacturer(1)</td><td data-c="toType">CODED</td></tr>
+              <tr data-q="VAR219"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR219" aria-haspopup="dialog" aria-label="Map VAR219 Lot Number"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR219</td><td>Lot Number</td><td>TEXT</td><td data-c="map">Yes</td><td data-c="toId">VAC108</td><td data-c="toLabel">Vaccine Lot Number(1)</td><td data-c="toType">TEXT</td></tr>
+              <tr data-q="VAR216"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR216" aria-haspopup="dialog" aria-label="Map VAR216 Vaccination Date"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR216</td><td>Vaccination Date</td><td>DATE</td><td data-c="map">Yes</td><td data-c="toId">VAC103</td><td data-c="toLabel">Vaccine Administered Date(1)</td><td data-c="toType">DATE</td></tr>
+              <tr data-q="VAR217"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR217" aria-haspopup="dialog" aria-label="Map VAR217 Vaccine Type"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR217</td><td>Vaccine Type</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">VAC101</td><td data-c="toLabel">Vaccine Type(1)</td><td data-c="toType">CODED</td></tr>
+              <tr data-q="LDF111"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="LDF111" aria-haspopup="dialog" aria-label="Map LDF111 Earliest Date Suspected:"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete</span></td><td>LDF111</td><td>Earliest Date Suspected:</td><td>DATE</td><td data-c="map">Yes</td><td data-c="toId">TX7100</td><td data-c="toLabel">Earliest Date Suspected</td><td data-c="toType">DATE</td></tr>
+              <tr data-q="LDF110"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="LDF110" aria-haspopup="dialog" aria-label="Map LDF110 *used for upgrade only* - If yes, Number of Doses"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-pending">Mapping Needed</span></td><td>LDF110</td><td>*used for upgrade only* - If yes, Number of Doses</td><td>NUMERIC</td><td data-c="map"><span class="visually-hidden">Not set</span></td><td data-c="toId"><span class="visually-hidden">None</span></td><td data-c="toLabel"></td><td data-c="toType"></td></tr>
+              <tr data-q="VAR177"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR177" aria-haspopup="dialog" aria-label="Map VAR177 Specify Other PCR Source"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR177</td><td>Specify Other PCR Source</td><td>TEXT</td><td data-c="map">Yes</td><td data-c="toId">LAB165_SYS_OTH</td><td data-c="toLabel">Specimen Source Sys Other(2)</td><td data-c="toType">TEXT</td></tr>
+              <tr data-q="VAR210"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR210" aria-haspopup="dialog" aria-label="Map VAR210 Other Medication"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR210</td><td>Other Medication</td><td>TEXT</td><td data-c="map">Yes</td><td data-c="toId">VAR140_SYS_OTH</td><td data-c="toLabel">Medication Administered_1 Sys Other(1)</td><td data-c="toType">TEXT</td></tr>
+              <tr data-q="VAR178"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR178" aria-haspopup="dialog" aria-label="Map VAR178 PCR Result"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR178</td><td>PCR Result</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">INV291</td><td data-c="toLabel">Lab Test Result(2)</td><td data-c="toType">CODED</td></tr>
+              <tr data-q="VAR211"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR211" aria-haspopup="dialog" aria-label="Map VAR211 Temperature Units"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-pending">Mapping Needed</span></td><td>VAR211</td><td>Temperature Units</td><td>CODED</td><td data-c="map"><span class="visually-hidden">Not set</span></td><td data-c="toId"><span class="visually-hidden">None</span></td><td data-c="toLabel"></td><td data-c="toType"></td></tr>
+              <tr data-q="VAR175"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR175" aria-haspopup="dialog" aria-label="Map VAR175 Date of PCR Specimen"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR175</td><td>Date of PCR Specimen</td><td>DATE</td><td data-c="map">Yes</td><td data-c="toId">LAB163</td><td data-c="toLabel">Specimen Collection Date(2)</td><td data-c="toType">DATE</td></tr>
+              <tr data-q="VAR176"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR176" aria-haspopup="dialog" aria-label="Map VAR176 Source of PCR Specimen"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR176</td><td>Source of PCR Specimen</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">LAB165</td><td data-c="toLabel">Specimen Source(2)</td><td data-c="toType">CODED</td></tr>
+              <tr data-q="VAR215"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR215" aria-haspopup="dialog" aria-label="Map VAR215 44. Where was the patient born"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete</span></td><td>VAR215</td><td>44. Where was the patient born</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">DEM126</td><td data-c="toLabel">Country of Birth</td><td data-c="toType">CODED</td></tr>
+              <tr data-q="VAR179"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR179" aria-haspopup="dialog" aria-label="Map VAR179 Specify Other PCR Result"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-pending">Mapping Needed (R)</span></td><td>VAR179</td><td>Specify Other PCR Result</td><td>TEXT</td><td data-c="map"><span class="visually-hidden">Not set</span></td><td data-c="toId"><span class="visually-hidden">None</span></td><td data-c="toLabel"></td><td data-c="toType"></td></tr>
+              <tr data-q="VAR212"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR212" aria-haspopup="dialog" aria-label="Map VAR212 Age at Diagnosis Units"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-pending">Mapping Needed</span></td><td>VAR212</td><td>Age at Diagnosis Units</td><td>CODED</td><td data-c="map"><span class="visually-hidden">Not set</span></td><td data-c="toId"><span class="visually-hidden">None</span></td><td data-c="toLabel"></td><td data-c="toType"></td></tr>
+              <tr data-q="VAR170"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR170" aria-haspopup="dialog" aria-label="Map VAR170 28. Was laboratory testing done for varicella"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete</span></td><td>VAR170</td><td>28. Was laboratory testing done for varicella</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">INV740</td><td data-c="toLabel">Laboratory Testing Performed Indicator</td><td data-c="toType">CODED</td></tr>
+              <tr data-q="VAR173"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR173" aria-haspopup="dialog" aria-label="Map VAR173 DFA Result"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR173</td><td>DFA Result</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">INV291</td><td data-c="toLabel">Lab Test Result(1)</td><td data-c="toType">CODED</td></tr>
+              <tr data-q="VAR174"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR174" aria-haspopup="dialog" aria-label="Map VAR174 30. PCR Specimen"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-pending">Mapping Needed (R)</span></td><td>VAR174</td><td>30. PCR Specimen</td><td>CODED</td><td data-c="map"><span class="visually-hidden">Not set</span></td><td data-c="toId"><span class="visually-hidden">None</span></td><td data-c="toLabel"></td><td data-c="toType"></td></tr>
+              <tr data-q="VAR171"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR171" aria-haspopup="dialog" aria-label="Map VAR171 29. Was direct fluorescent antibody testing done"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR171</td><td>29. Was direct fluorescent antibody testing done</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">INV290</td><td data-c="toLabel">Lab Test Type(1)</td><td data-c="toType">CODED</td></tr>
+              <tr data-q="VAR172"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR172" aria-haspopup="dialog" aria-label="Map VAR172 Date of DFA"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR172</td><td>Date of DFA</td><td>DATE</td><td data-c="map">Yes</td><td data-c="toId">LAB163</td><td data-c="toLabel">Specimen Collection Date(1)</td><td data-c="toType">DATE</td></tr>
+              <tr data-q="VAR158"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR158" aria-haspopup="dialog" aria-label="Map VAR158 47. Is this case a healthcare worker"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete</span></td><td>VAR158</td><td>47. Is this case a healthcare worker</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">INV926</td><td data-c="toLabel">Case Patient a Healthcare Worker</td><td data-c="toType">CODED</td></tr>
+              <tr data-q="VAR151"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR151" aria-haspopup="dialog" aria-label="Map VAR151 Age at Diagnosis"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Auto-Mapped</span></td><td>VAR151</td><td>Age at Diagnosis</td><td>NUMERIC</td><td data-c="map">Yes</td><td data-c="toId">VAR151</td><td data-c="toLabel">Age at Previous Diagnosis</td><td data-c="toType">NUMERIC</td></tr>
+              <tr data-q="VAR152"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR152" aria-haspopup="dialog" aria-label="Map VAR152 43. Previous case diagnosed by"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Auto-Mapped</span></td><td>VAR152</td><td>43. Previous case diagnosed by</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">VAR152</td><td data-c="toLabel">Previous Case Diagnosed By</td><td data-c="toType">CODED</td></tr>
+              <tr data-q="VAR144"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR144" aria-haspopup="dialog" aria-label="Map VAR144 Cause of death"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete</span></td><td>VAR144</td><td>Cause of death</td><td>TEXT</td><td data-c="map">Yes</td><td data-c="toId">NBS425</td><td data-c="toLabel">Cause of death</td><td data-c="toType">TEXT</td></tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="ds-table-footer">
+            <span class="ds-page-summary" id="pageSummary">Items 1 - 24 of 24</span>
+            <nav aria-label="Pagination">
+              <ul class="pagination mb-0">
+                <li class="page-item"><button type="button" class="page-link disabled" aria-label="Previous page" disabled>Previous</button></li>
+                <li class="page-item"><button type="button" class="page-link active" aria-current="page" aria-label="Page 1">1</button></li>
+                <li class="page-item"><button type="button" class="page-link disabled" aria-label="Next page" disabled>Next</button></li>
+              </ul>
+            </nav>
+            <div class="ds-page-size">
+              <select class="form-select" id="pageSize"><option>5</option><option selected>25</option><option>50</option><option>100</option></select>
+              <label for="pageSize">Items per page</label>
+            </div>
+          </div>
+        </div>
+        <div class="ds-form-footer" style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg)">
+          <a class="btn btn-outline-primary" href="port-page.html">Back</a>
+          <button type="button" class="btn btn-outline-primary" id="saveMap">Save</button>
+          <a class="btn btn-primary" href="#">Map Answers</a>
+        </div>
+      </div>
+      <div class="modal" id="mapDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="mapTitle" hidden>
+        <div class="modal-dialog modal-lg"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="mapTitle">Map question</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body d-grid gap-3">
+            <dl class="pp-details" id="mapFrom">
+              <dt>From question</dt><dd data-f="name"></dd>
+              <dt>Data type</dt><dd data-f="type"></dd>
+              <dt>Value set</dt><dd data-f="vs"></dd>
+            </dl>
+            <fieldset class="ds-field ds-radio-group"><legend class="ds-required">Map this question?</legend><div class="apply-group">
+              <label class="ds-check"><input class="form-check-input" type="radio" name="mapQ" id="mapQ-Y" value="Yes"> Yes</label>
+              <label class="ds-check"><input class="form-check-input" type="radio" name="mapQ" id="mapQ-N" value="No"> No, do not port it</label></div></fieldset>
+            <div class="ds-field" id="toWrap"><label class="ds-required" for="toQuestion">To Question</label>
+              <select class="form-select" id="toQuestion" aria-describedby="toQuestion-hint"><option value="">Select a question</option><option value="19824006" data-type="CODED" data-block="0" data-label="Infection of skin AND/OR subcutaneous tissue">19824006 Infection of skin AND/OR subcutaneous tissue (coded)</option><option value="233604007" data-type="CODED" data-block="0" data-label="Pneumonia">233604007 Pneumonia (coded)</option><option value="24059009" data-type="CODED" data-block="0" data-label="Acute cerebellar ataxia due to varicella">24059009 Acute cerebellar ataxia due to varicella (coded)</option><option value="31646008" data-type="CODED" data-block="0" data-label="Encephalitis Indicator">31646008 Encephalitis Indicator (coded)</option><option value="34095006" data-type="CODED" data-block="0" data-label="Dehydration">34095006 Dehydration (coded)</option><option value="364402001" data-type="CODED" data-block="0" data-label="Body Region(s) of Rash">364402001 Body Region(s) of Rash (coded)</option><option value="364402001_SYS_OTH" data-type="TEXT" data-block="0" data-label="Body Region(s) of Rash Sys Other">364402001_SYS_OTH Body Region(s) of Rash Sys Other (text)</option><option value="364637009" data-type="CODED" data-block="0" data-label="Character of Lesions">364637009 Character of Lesions (coded)</option><option value="386661006" data-type="CODED" data-block="0" data-label="Fever">386661006 Fever (coded)</option><option value="50960005" data-type="CODED" data-block="0" data-label="Hemorrhage (morphologic abnormality)">50960005 Hemorrhage (morphologic abnormality) (coded)</option><option value="81269_3" data-type="NUMERIC" data-block="0" data-label="Rash Duration">81269_3 Rash Duration (numeric)</option><option value="DEM126" data-type="CODED" data-block="0" data-label="Country of Birth">DEM126 Country of Birth (coded)</option><option value="INV202" data-type="NUMERIC" data-block="0" data-label="cln_maxtemp_f">INV202 cln_maxtemp_f (numeric)</option><option value="INV202_SYS_UNIT" data-type="CODED" data-block="0" data-label="cln_maxtemp_f Sys Unit">INV202_SYS_UNIT cln_maxtemp_f Sys Unit (coded)</option><option value="INV203" data-type="DATE" data-block="0" data-label="Date of Fever Onset">INV203 Date of Fever Onset (date)</option><option value="INV224" data-type="CODED" data-block="0" data-label="Transmission Setting">INV224 Transmission Setting (coded)</option><option value="INV224_SYS_OTH" data-type="TEXT" data-block="0" data-label="Transmission Setting Sys Other">INV224_SYS_OTH Transmission Setting Sys Other (text)</option><option value="INV290" data-type="CODED" data-block="4" data-label="Lab Test Type(4)">INV290 Lab Test Type(4) (coded, repeating block)</option><option value="INV290_SYS_OTH" data-type="TEXT" data-block="4" data-label="Lab Test Type Sys Other(4)">INV290_SYS_OTH Lab Test Type Sys Other(4) (text, repeating block)</option><option value="INV291" data-type="CODED" data-block="3" data-label="Lab Test Result(3)">INV291 Lab Test Result(3) (coded, repeating block)</option><option value="INV291_SYS_OTH" data-type="TEXT" data-block="2" data-label="Lab Test Result Sys Other(2)">INV291_SYS_OTH Lab Test Result Sys Other(2) (text, repeating block)</option><option value="INV359" data-type="CODED" data-block="0" data-label="Was the Rash Generalized">INV359 Was the Rash Generalized (coded)</option><option value="INV740" data-type="CODED" data-block="0" data-label="Laboratory Testing Performed Indicator">INV740 Laboratory Testing Performed Indicator (coded)</option><option value="INV926" data-type="CODED" data-block="0" data-label="Case Patient a Healthcare Worker">INV926 Case Patient a Healthcare Worker (coded)</option><option value="LAB163" data-type="DATE" data-block="4" data-label="Specimen Collection Date(4)">LAB163 Specimen Collection Date(4) (date, repeating block)</option><option value="LAB165" data-type="CODED" data-block="2" data-label="Specimen Source(2)">LAB165 Specimen Source(2) (coded, repeating block)</option><option value="LAB165_SYS_OTH" data-type="TEXT" data-block="2" data-label="Specimen Source Sys Other(2)">LAB165_SYS_OTH Specimen Source Sys Other(2) (text, repeating block)</option><option value="LAB515" data-type="CODED" data-block="0" data-label="Specimen(s) Sent to CDC">LAB515 Specimen(s) Sent to CDC (coded)</option><option value="LAB628" data-type="TEXT" data-block="4" data-label="Test Result Quantitative(4)">LAB628 Test Result Quantitative(4) (text, repeating block)</option><option value="LGCY_483269137" data-type="NUMERIC" data-block="0" data-label="Number of Days Ill">LGCY_483269137 Number of Days Ill (numeric)</option><option value="LGCY_483269138" data-type="CODED" data-block="0" data-label="Vaccination Indicator">LGCY_483269138 Vaccination Indicator (coded)</option><option value="LGCY_490443017" data-type="NUMERIC" data-block="0" data-label="Number of Varicella Vaccine Doses Received">LGCY_490443017 Number of Varicella Vaccine Doses Received (numeric)</option><option value="NBS212" data-type="CODED" data-block="9" data-label="Strain Type">NBS212 Strain Type (coded, repeating block)</option><option value="NBS340" data-type="CODED" data-block="0" data-label="Complications Indicator">NBS340 Complications Indicator (coded)</option><option value="NBS343" data-type="CODED" data-block="0" data-label="Other Complications Indicator">NBS343 Other Complications Indicator (coded)</option><option value="NBS343_OTH" data-type="TEXT" data-block="0" data-label="Specify Other Complication">NBS343_OTH Specify Other Complication (text)</option><option value="NBS407" data-type="DATE" data-block="8" data-label="Performing Laboratory Type(8)">NBS407 Performing Laboratory Type(8) (date, repeating block)</option><option value="NBS408" data-type="CODED" data-block="0" data-label="Was specimen sent for strain identification">NBS408 Was specimen sent for strain identification (coded)</option><option value="NBS413" data-type="TEXT" data-block="0" data-label="Specify Dermatome">NBS413 Specify Dermatome (text)</option><option value="NBS414" data-type="CODED" data-block="0" data-label="Macules (flat) present">NBS414 Macules (flat) present (coded)</option><option value="NBS415" data-type="NUMERIC" data-block="0" data-label="Number of Macules">NBS415 Number of Macules (numeric)</option><option value="NBS416" data-type="CODED" data-block="0" data-label="Papules (raised) present">NBS416 Papules (raised) present (coded)</option><option value="NBS417" data-type="NUMERIC" data-block="0" data-label="Number of Papules">NBS417 Number of Papules (numeric)</option><option value="NBS418" data-type="CODED" data-block="0" data-label="Vesicles (fluid) present">NBS418 Vesicles (fluid) present (coded)</option><option value="NBS419" data-type="NUMERIC" data-block="0" data-label="Number of Vesicles">NBS419 Number of Vesicles (numeric)</option><option value="NBS420" data-type="CODED" data-block="0" data-label="Scabs">NBS420 Scabs (coded)</option><option value="NBS421" data-type="NUMERIC" data-block="0" data-label="Number of days until all lesions crusted over">NBS421 Number of days until all lesions crusted over (numeric)</option><option value="NBS422" data-type="CODED" data-block="0" data-label="How was pneumonia diagnosed">NBS422 How was pneumonia diagnosed (coded)</option><option value="NBS423" data-type="DATE" data-block="0" data-label="Stop Date of Medication">NBS423 Stop Date of Medication (date)</option><option value="NBS424" data-type="CODED" data-block="0" data-label="Autopsy performed">NBS424 Autopsy performed (coded)</option><option value="NBS425" data-type="TEXT" data-block="0" data-label="Cause of death">NBS425 Cause of death (text)</option><option value="NBS426" data-type="CODED" data-block="0" data-label="Reason for only one dose ever (Patient 6 or older)">NBS426 Reason for only one dose ever (Patient 6 or older) (coded)</option><option value="NBS426_SYS_OTH" data-type="TEXT" data-block="0" data-label="Reason for only one dose ever (Patient 6 or older) Sys Other">NBS426_SYS_OTH Reason for only one dose ever (Patient 6 or older) Sys Other (text)</option><option value="NBS427" data-type="CODED" data-block="0" data-label="If Whole Cell ELISA, specify manufacturer">NBS427 If Whole Cell ELISA, specify manufacturer (coded)</option><option value="NBS428" data-type="CODED" data-block="0" data-label="If gp ELISA, specify manufacturer">NBS428 If gp ELISA, specify manufacturer (coded)</option><option value="NBS429" data-type="CODED" data-block="7" data-label="Type of IgG Test">NBS429 Type of IgG Test (coded, repeating block)</option><option value="NBS430" data-type="TEXT" data-block="0" data-label="Specify Other IgG Test">NBS430 Specify Other IgG Test (text)</option><option value="TX7100" data-type="DATE" data-block="0" data-label="Earliest Date Suspected">TX7100 Earliest Date Suspected (date)</option><option value="VAC101" data-type="CODED" data-block="3" data-label="Vaccine Type(3)">VAC101 Vaccine Type(3) (coded, repeating block)</option><option value="VAC103" data-type="DATE" data-block="3" data-label="Vaccine Administered Date(3)">VAC103 Vaccine Administered Date(3) (date, repeating block)</option><option value="VAC107" data-type="CODED" data-block="3" data-label="Vaccine Manufacturer(3)">VAC107 Vaccine Manufacturer(3) (coded, repeating block)</option><option value="VAC108" data-type="TEXT" data-block="2" data-label="Vaccine Lot Number(2)">VAC108 Vaccine Lot Number(2) (text, repeating block)</option><option value="VAC126" data-type="CODED" data-block="0" data-label="Did subject receive disease-containing vaccine">VAC126 Did subject receive disease-containing vaccine (coded)</option><option value="VAC149" data-type="CODED" data-block="0" data-label="Reason Not Vaccinated Per ACIP Recommendations">VAC149 Reason Not Vaccinated Per ACIP Recommendations (coded)</option><option value="VAC149_SYS_OTH" data-type="TEXT" data-block="0" data-label="Reason Not Vaccinated Per ACIP Recommendations Sys Other">VAC149_SYS_OTH Reason Not Vaccinated Per ACIP Recommendations Sys Other (text)</option><option value="VAR127" data-type="TEXT" data-block="0" data-label="Immunocompromised Associated Condition/Treatment">VAR127 Immunocompromised Associated Condition/Treatment (text)</option><option value="VAR140" data-type="CODED" data-block="1" data-label="Medication Administered_1(1)">VAR140 Medication Administered_1(1) (coded, repeating block)</option><option value="VAR140_SYS_OTH" data-type="TEXT" data-block="1" data-label="Medication Administered_1 Sys Other(1)">VAR140_SYS_OTH Medication Administered_1 Sys Other(1) (text, repeating block)</option><option value="VAR141" data-type="DATE" data-block="1" data-label="Date treatment or therapy started(1)">VAR141 Date treatment or therapy started(1) (date, repeating block)</option><option value="VAR151" data-type="NUMERIC" data-block="0" data-label="Age at Previous Diagnosis">VAR151 Age at Previous Diagnosis (numeric)</option><option value="VAR151_SYS_UNIT" data-type="CODED" data-block="0" data-label="Age at Previous Diagnosis Sys Unit">VAR151_SYS_UNIT Age at Previous Diagnosis Sys Unit (coded)</option><option value="VAR152" data-type="CODED" data-block="0" data-label="Previous Case Diagnosed By">VAR152 Previous Case Diagnosed By (coded)</option><option value="VAR152_SYS_OTH" data-type="TEXT" data-block="0" data-label="Previous Case Diagnosed By Sys Other">VAR152_SYS_OTH Previous Case Diagnosed By Sys Other (text)</option></select>
+              <span class="form-text" id="toQuestion-hint">Each question shows its data type.</span>
+              <span class="invalid-feedback" id="toQuestion-error" hidden></span></div>
+            <fieldset class="ds-field ds-radio-group" id="mapAWrap"><legend class="ds-required">Map the answers too?</legend><div class="apply-group">
+              <label class="ds-check"><input class="form-check-input" type="radio" name="mapA" id="mapA-Y" value="Yes"> Yes</label>
+              <label class="ds-check"><input class="form-check-input" type="radio" name="mapA" id="mapA-N" value="No"> No</label></div>
+              <span class="invalid-feedback" id="mapA-Y-error" hidden></span></fieldset>
+            <div class="ds-field" id="blockWrap"><label class="ds-required" for="blockNbr">Repeating Block Number</label>
+              <input class="form-control" id="blockNbr" type="text" inputmode="numeric" autocomplete="off" aria-describedby="blockNbr-hint">
+              <span class="form-text" id="blockNbr-hint">The To question repeats. Enter which repeat this answer goes in.</span>
+              <span class="invalid-feedback" id="blockNbr-error" hidden></span></div>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="mapSave">Save</button></div>
+        </div></div>
+      </div>
+      <script type="application/json" id="mapData">{"VAR218": {"fromId": "VAR218", "fromLabel": "Manufacturer", "fromType": "CODED", "fromValueSet": "PHVS_VZ_VAC_MFGR", "codes": 1, "block": 1, "toId": "VAC107", "toLabel": "Vaccine Manufacturer(1)", "toType": "CODED", "toValueSet": "VAC_MFGR", "map": "Yes", "status": "Complete (R)"}, "VAR219": {"fromId": "VAR219", "fromLabel": "Lot Number", "fromType": "TEXT", "fromValueSet": "", "codes": 0, "block": 1, "toId": "VAC108", "toLabel": "Vaccine Lot Number(1)", "toType": "TEXT", "toValueSet": "", "map": "Yes", "status": "Complete (R)"}, "VAR216": {"fromId": "VAR216", "fromLabel": "Vaccination Date", "fromType": "DATE", "fromValueSet": "", "codes": 0, "block": 1, "toId": "VAC103", "toLabel": "Vaccine Administered Date(1)", "toType": "DATE", "toValueSet": "", "map": "Yes", "status": "Complete (R)"}, "VAR217": {"fromId": "VAR217", "fromLabel": "Vaccine Type", "fromType": "CODED", "fromValueSet": "PHVS_VZ_VAC_ADMIN", "codes": 2, "block": 1, "toId": "VAC101", "toLabel": "Vaccine Type(1)", "toType": "CODED", "toValueSet": "VAC_NM", "map": "Yes", "status": "Complete (R)"}, "LDF111": {"fromId": "LDF111", "fromLabel": "Earliest Date Suspected:", "fromType": "DATE", "fromValueSet": "", "codes": 0, "block": 0, "toId": "TX7100", "toLabel": "Earliest Date Suspected", "toType": "DATE", "toValueSet": "", "map": "Yes", "status": "Complete"}, "LDF110": {"fromId": "LDF110", "fromLabel": "*used for upgrade only* - If yes, Number of Doses", "fromType": "NUMERIC", "fromValueSet": "", "codes": 0, "block": 0, "toId": "", "toLabel": "", "toType": "", "toValueSet": "", "map": "", "status": "Mapping Needed"}, "VAR177": {"fromId": "VAR177", "fromLabel": "Specify Other PCR Source", "fromType": "TEXT", "fromValueSet": "", "codes": 0, "block": 2, "toId": "LAB165_SYS_OTH", "toLabel": "Specimen Source Sys Other(2)", "toType": "TEXT", "toValueSet": "", "map": "Yes", "status": "Complete (R)"}, "VAR210": {"fromId": "VAR210", "fromLabel": "Other Medication", "fromType": "TEXT", "fromValueSet": "", "codes": 0, "block": 1, "toId": "VAR140_SYS_OTH", "toLabel": "Medication Administered_1 Sys Other(1)", "toType": "TEXT", "toValueSet": "", "map": "Yes", "status": "Complete (R)"}, "VAR178": {"fromId": "VAR178", "fromLabel": "PCR Result", "fromType": "CODED", "fromValueSet": "PHVS_VZ_LAB_TEST_INT", "codes": 7, "block": 2, "toId": "INV291", "toLabel": "Lab Test Result(2)", "toType": "CODED", "toValueSet": "PHVS_LABTESTINTERPRETATION_VZ", "map": "Yes", "status": "Complete (R)"}, "VAR211": {"fromId": "VAR211", "fromLabel": "Temperature Units", "fromType": "CODED", "fromValueSet": "PHVS_TEMP_UNIT", "codes": 0, "block": 0, "toId": "", "toLabel": "", "toType": "", "toValueSet": "", "map": "", "status": "Mapping Needed"}, "VAR175": {"fromId": "VAR175", "fromLabel": "Date of PCR Specimen", "fromType": "DATE", "fromValueSet": "", "codes": 0, "block": 2, "toId": "LAB163", "toLabel": "Specimen Collection Date(2)", "toType": "DATE", "toValueSet": "", "map": "Yes", "status": "Complete (R)"}, "VAR176": {"fromId": "VAR176", "fromLabel": "Source of PCR Specimen", "fromType": "CODED", "fromValueSet": "PHVS_VZ_PCR_SPEC_SRC", "codes": 9, "block": 2, "toId": "LAB165", "toLabel": "Specimen Source(2)", "toType": "CODED", "toValueSet": "SPECIMENTYPEVPD", "map": "Yes", "status": "Complete (R)"}, "VAR215": {"fromId": "VAR215", "fromLabel": "44. Where was the patient born", "fromType": "CODED", "fromValueSet": "PSL_CNTRY", "codes": 278, "block": 0, "toId": "DEM126", "toLabel": "Country of Birth", "toType": "CODED", "toValueSet": "PHVS_BIRTHCOUNTRY_CDC", "map": "Yes", "status": "Complete"}, "VAR179": {"fromId": "VAR179", "fromLabel": "Specify Other PCR Result", "fromType": "TEXT", "fromValueSet": "", "codes": 0, "block": 2, "toId": "", "toLabel": "", "toType": "", "toValueSet": "", "map": "", "status": "Mapping Needed (R)"}, "VAR212": {"fromId": "VAR212", "fromLabel": "Age at Diagnosis Units", "fromType": "CODED", "fromValueSet": "AGE_UNIT", "codes": 7, "block": 0, "toId": "", "toLabel": "", "toType": "", "toValueSet": "", "map": "", "status": "Mapping Needed"}, "VAR170": {"fromId": "VAR170", "fromLabel": "28. Was laboratory testing done for varicella", "fromType": "CODED", "fromValueSet": "YNU", "codes": 0, "block": 0, "toId": "INV740", "toLabel": "Laboratory Testing Performed Indicator", "toType": "CODED", "toValueSet": "YNU", "map": "Yes", "status": "Complete"}, "VAR173": {"fromId": "VAR173", "fromLabel": "DFA Result", "fromType": "CODED", "fromValueSet": "PHVS_LAB_TEST_INTERP", "codes": 6, "block": 1, "toId": "INV291", "toLabel": "Lab Test Result(1)", "toType": "CODED", "toValueSet": "PHVS_LABTESTINTERPRETATION_VZ", "map": "Yes", "status": "Complete (R)"}, "VAR174": {"fromId": "VAR174", "fromLabel": "30. PCR Specimen", "fromType": "CODED", "fromValueSet": "YNU", "codes": 1, "block": 2, "toId": "", "toLabel": "", "toType": "", "toValueSet": "", "map": "", "status": "Mapping Needed (R)"}, "VAR171": {"fromId": "VAR171", "fromLabel": "29. Was direct fluorescent antibody testing done", "fromType": "CODED", "fromValueSet": "YNU", "codes": 1, "block": 1, "toId": "INV290", "toLabel": "Lab Test Type(1)", "toType": "CODED", "toValueSet": "PHVS_LABTESTTYPE_VZ", "map": "Yes", "status": "Complete (R)"}, "VAR172": {"fromId": "VAR172", "fromLabel": "Date of DFA", "fromType": "DATE", "fromValueSet": "", "codes": 0, "block": 1, "toId": "LAB163", "toLabel": "Specimen Collection Date(1)", "toType": "DATE", "toValueSet": "", "map": "Yes", "status": "Complete (R)"}, "VAR158": {"fromId": "VAR158", "fromLabel": "47. Is this case a healthcare worker", "fromType": "CODED", "fromValueSet": "YNU", "codes": 0, "block": 0, "toId": "INV926", "toLabel": "Case Patient a Healthcare Worker", "toType": "CODED", "toValueSet": "YNU", "map": "Yes", "status": "Complete"}, "VAR151": {"fromId": "VAR151", "fromLabel": "Age at Diagnosis", "fromType": "NUMERIC", "fromValueSet": "", "codes": 0, "block": 0, "toId": "VAR151", "toLabel": "Age at Previous Diagnosis", "toType": "NUMERIC", "toValueSet": "", "map": "Yes", "status": "Auto-Mapped"}, "VAR152": {"fromId": "VAR152", "fromLabel": "43. Previous case diagnosed by", "fromType": "CODED", "fromValueSet": "PHVS_VZ_DIAG_BY", "codes": 0, "block": 0, "toId": "VAR152", "toLabel": "Previous Case Diagnosed By", "toType": "CODED", "toValueSet": "PHVS_VZ_DIAG_BY", "map": "Yes", "status": "Auto-Mapped"}, "VAR144": {"fromId": "VAR144", "fromLabel": "Cause of death", "fromType": "TEXT", "fromValueSet": "", "codes": 0, "block": 0, "toId": "NBS425", "toLabel": "Cause of death", "toType": "TEXT", "toValueSet": "", "map": "Yes", "status": "Complete"}}</script>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+<script>
+/* Working reference implementations. Same contracts as the Algorithm Library
+   template. DEV: keep the aria updates and announcements when wiring HTMX. */
+(function () {
+  var table = document.getElementById('questionTable');
+  var status = document.getElementById('filterStatus');
+  var tbody = table.tBodies[0];
+
+  /* Sort: aria-sort exclusively on the sorted th, order announced. */
+  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var th = btn.closest('th');
+      var col = +btn.dataset.sort;
+      var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
+      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
+      th.setAttribute('aria-sort', dir);
+      var rows = Array.prototype.slice.call(tbody.rows);
+      rows.sort(function (a, b) {
+        var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();
+        return dir === 'ascending' ? x.localeCompare(y) : y.localeCompare(x);
+      });
+      rows.forEach(function (r) { tbody.appendChild(r); });
+      status.textContent = 'Sorted by ' + btn.textContent.trim() + ', ' + dir;
+    });
+  });
+
+  /* Text filter: announce the result count, never move focus. */
+  var filter = document.getElementById('filterInput');
+  var t;
+  filter.addEventListener('input', function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      var q = filter.value.trim().toLowerCase();
+      var shown = 0, total = 0;   /* rows a column filter chip removed are not counted */
+      Array.prototype.forEach.call(tbody.rows, function (r) {
+        var hit = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+        r.hidden = !hit;
+        if (!r.classList.contains('ds-row-filtered')) { total++; if (hit) shown++; }
+      });
+      status.textContent = q ? (shown + ' of ' + total + ' questions shown') : '';
+    }, 300);
+  });
+
+  /* Column filter chips and Reset: js/list-filters.js. */
+})();
+</script>
+<script>
+/* Map question dialog. Map on a row opens it with that question; Cancel, Close, and Escape return focus to the button;
+   Tab stays in the dialog. Save checks the fields, updates the row and the count of questions left, says what changed,
+   and returns focus to the row's Map button. DEV: the server saves each mapping (PortPage.do mapAField). */
+(function () {
+  var data = JSON.parse(document.getElementById('mapData').textContent);
+  var dlg = document.getElementById('mapDialog'), status = document.getElementById('mapStatus');
+  var to = document.getElementById('toQuestion'), block = document.getElementById('blockNbr');
+  var opener = null, q = null;
+  function $(id) { return document.getElementById(id); }
+  function radio(name) { var r = dlg.querySelector('input[name="' + name + '"]:checked'); return r ? r.value : ''; }
+  function say(msg) { status.textContent = ''; setTimeout(function () { status.textContent = msg; }, 60); }
+  function target() { var o = to.options[to.selectedIndex]; return o && o.value ? o : null; }
+  function setError(field, msg) {
+    var err = $(field.id + '-error'), ids = (field.getAttribute('aria-describedby') || '').split(' ').filter(Boolean);
+    if (msg) { err.textContent = msg; err.hidden = false; field.setAttribute('aria-invalid', 'true'); if (ids.indexOf(err.id) < 0) ids.push(err.id); }
+    else { err.textContent = ''; err.hidden = true; field.removeAttribute('aria-invalid'); ids = ids.filter(function (i) { return i !== err.id; }); }
+    if (ids.length) field.setAttribute('aria-describedby', ids.join(' ')); else field.removeAttribute('aria-describedby');
+  }
+  function sync() {
+    var yes = radio('mapQ') === 'Yes', t = target();
+    $('toWrap').hidden = !yes;
+    $('mapAWrap').hidden = !(yes && t && q.fromType === 'CODED' && t.getAttribute('data-type') === 'CODED');
+    $('blockWrap').hidden = !(yes && t && +t.getAttribute('data-block') > 0);
+  }
+  function open(btn) {
+    opener = btn; q = data[btn.getAttribute('data-map')];
+    dlg.querySelector('[data-f="name"]').textContent = q.fromId + ' ' + q.fromLabel;
+    dlg.querySelector('[data-f="type"]').textContent = q.fromType;
+    dlg.querySelector('[data-f="vs"]').textContent = q.fromValueSet || 'None';
+    $(q.map === 'No' ? 'mapQ-N' : 'mapQ-Y').checked = true;
+    to.value = q.toId || '';
+    /* a question already mapped shows its answers choice; one still to map starts with none */
+    $('mapA-Y').checked = !!q.toId && q.codes > 0; $('mapA-N').checked = !!q.toId && !(q.codes > 0);
+    block.value = q.toId && q.block ? q.block : '';
+    [to, block, $('mapA-Y')].forEach(function (f) { setError(f, ''); });
+    sync();
+    dsDialog.show(dlg);
+  }
+  function close() { dsDialog.hide(dlg); if (opener) opener.focus(); }
+  function remaining() {
+    var all = Object.keys(data), left = all.filter(function (k) { return /^Mapping Needed/.test(data[k].status); }).length;
+    $('remainingCount').textContent = left + ' of ' + all.length;
+    return left;
+  }
+  function save() {
+    var bad = [], yes = radio('mapQ') === 'Yes', t = target();
+    [to, block, $('mapA-Y')].forEach(function (f) { setError(f, ''); });
+    if (yes && !t) bad.push([to, 'Choose the question to map to']);
+    if (!$('mapAWrap').hidden && !radio('mapA')) bad.push([$('mapA-Y'), 'Choose whether to map the answers']);
+    if (!$('blockWrap').hidden && !/^[1-9][0-9]?$/.test(block.value.trim())) bad.push([block, 'Enter the repeating block number, a whole number from 1 to 99']);
+    if (bad.length) { bad.forEach(function (b) { setError(b[0], b[1]); }); bad[0][0].focus(); return; }
+    var row = document.querySelector('#questionTable tr[data-q="' + q.fromId + '"]'), rep = t && +t.getAttribute('data-block') > 0;
+    q.map = yes ? 'Yes' : 'No';
+    q.toId = yes ? t.value : ''; q.toLabel = yes ? t.getAttribute('data-label') : ''; q.toType = yes ? t.getAttribute('data-type') : '';
+    q.status = yes ? (rep ? 'Complete (R)' : 'Complete') : 'Complete';
+    row.querySelector('[data-c="status"]').innerHTML = '<span class="badge text-bg-success">' + q.status + '</span>';
+    row.querySelector('[data-c="map"]').textContent = q.map;
+    row.querySelector('[data-c="toId"]').innerHTML = q.toId || '<span class="visually-hidden">None</span>';
+    row.querySelector('[data-c="toLabel"]').textContent = q.toLabel;
+    row.querySelector('[data-c="toType"]').textContent = q.toType;
+    var left = remaining();
+    close();
+    say((yes ? q.fromId + ' mapped to ' + q.toId + '.' : q.fromId + ' will not be ported.') + ' ' + (left ? left + ' left to map.' : 'All questions are mapped.'));
+  }
+  document.getElementById('questionTable').addEventListener('click', function (e) { var b = e.target.closest('[data-map]'); if (b) open(b); });
+  /* A field's error clears as soon as it is edited (input, not change: change fires on blur, and a message vanishing
+     then would move Save out from under the pointer mid-click). Save checks again. */
+  dlg.addEventListener('input', function (e) {
+    var f = e.target.name === 'mapA' ? $('mapA-Y') : e.target;
+    if (f.getAttribute('aria-invalid') === 'true') setError(f, '');
+  });
+  dlg.addEventListener('change', sync);
+  $('mapSave').addEventListener('click', save);
+  Array.prototype.forEach.call(dlg.querySelectorAll('[data-close]'), function (b) { b.addEventListener('click', close); });
+  window.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !dlg.hidden) { e.stopPropagation(); close(); } }, true);
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab' || dlg.hidden) return;
+    var f = Array.prototype.slice.call(dlg.querySelectorAll('button, input, select, [href]')).filter(function (el) { return !el.disabled && el.offsetParent; });
+    if (e.shiftKey && (document.activeElement === f[0] || document.activeElement === dlg)) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+  });
+  $('saveMap').addEventListener('click', function () { say('Mapping saved. ' + remaining() + ' questions left to map.'); });
+})();
+</script>
+</body>
+</html>

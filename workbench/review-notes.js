@@ -326,6 +326,19 @@
         { code: 'PP-4', title: 'Same page twice?', pin: { sel: '#toPage' }, ask: true,
           text: 'Can the From and To pages be the same page? This template does not check.' }
       ] },
+    { id: 'port-map-questions', title: 'Port Page: Map Questions', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'MQ-1', title: 'Questions left', pin: { sel: '#remaining' },
+          text: 'How many From questions still need a To question. It updates as each one is mapped.' },
+        { code: 'MQ-2', title: 'Status', pin: { sel: '#qmStatus' },
+          text: 'The current statuses: Auto-Mapped, Complete, and Mapping Needed; (R) marks a question in a repeating block. Filter by status to see what is left.' },
+        { code: 'MQ-3', title: 'Map in a dialog', pin: { sel: '[data-map="VAR212"]' },
+          text: 'Map opens a dialog for that question, instead of loading it into a form on the page as the current screen does. Choose the To question, or that it is not ported; for coded questions, whether to map the answers too; for a repeating To question, which repeat.' },
+        { code: 'MQ-4', title: 'Which To questions?', pin: { sel: '[data-map="VAR212"]' }, ask: true,
+          text: 'Should the To Question list show only questions of the same data type, or all of them as this template does?' },
+        { code: 'MQ-5', title: 'Save', pin: { sel: '#saveMap' }, ask: true,
+          text: 'The current screen has Save and Continue and Map Answers. Here Save keeps the map to finish later and Map Answers moves on. Is that what Save and Continue does today?' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },
