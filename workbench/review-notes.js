@@ -348,6 +348,26 @@
         { code: 'MA-3', title: 'Filter by question', pin: { sel: '#amLabel' },
           text: 'From Label narrows the list to one question\'s answers.' }
       ] },
+    { id: 'port-review-mapping', title: 'Port Page: Review Mapping', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'RM-1', title: 'Every mapping', pin: { sel: '#reviewTable' },
+          text: 'Questions and their answers in one list before anything is ported. Change on a row goes back to the step that sets it.' },
+        { code: 'RM-2', title: 'Export Map', pin: { sel: 'main .ds-toolbar .btn-outline-primary' },
+          text: 'Saves the map as a file, to import on another system.' },
+        { code: 'RM-3', title: 'Technical columns', pin: { sel: '#reviewTable thead' }, ask: true,
+          text: 'The current screen also lists value sets, DB locations, translation flags, and the answer group number. Which of those do reviewers use?' }
+      ] },
+    { id: 'port-condition', title: 'Port Page: Port Condition', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'PC-1', title: 'In order', pin: { sel: '#getCount' },
+          text: 'Get the case count, run the pre-run check, then convert. Doing a step too early says what comes first, in the error summary.' },
+        { code: 'PC-2', title: 'Confirm', pin: { sel: '#runConv' },
+          text: 'Run Conversion asks first, and lists what cannot be done until every case is ported, as the current pop-up does.' },
+        { code: 'PC-3', title: 'Pre-run each time?', pin: { sel: '#preRun' }, ask: true,
+          text: 'The run log shows a pre-run before each conversion. Must the pre-run be repeated before every conversion, as this template asks?' },
+        { code: 'PC-4', title: 'Failed runs', pin: { sel: '#logTable' }, ask: true,
+          text: 'A failed run logs a system error (for example NEDSSAppException ERR109). What should the log say to an administrator instead?' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Port Condition - Page Management - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<script src="../../js/app-frame.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; max-width: 1028px; }   /* 980px of content plus the padding */
+  .legend-note { color: var(--bs-secondary-color); font-size: 0.75rem; }
+  .legend-note .req { color: var(--bs-form-invalid-color); }
+  .apply-group { display: flex; gap: 12px 28px; flex-wrap: wrap; }
+  .ds-field-wide { max-width: none; }
+  .ds-radio-group { border: 0; margin: 0; padding: 0; min-width: 0; max-width: none; }
+  .ds-radio-group legend, fieldset.ds-field legend { font-size: inherit; font-weight: 500; margin-bottom: 6px; float: none; }
+  fieldset.ds-field { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .ds-check-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 8px 20px; padding: 10px 12px; border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius); max-height: 220px; overflow: auto; }
+  .ds-check-list-tall { grid-template-columns: minmax(0, 1fr); max-height: 360px; }
+  .ds-entry-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 14px 20px; align-items: start; }
+  .ds-entry-grid > .ds-field-wide { grid-column: 1 / -1; }
+  .ds-repeat { display: grid; gap: 14px; }
+  .ds-repeat-entry { display: grid; gap: 14px; padding: 16px; border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius-lg); }
+  .ds-empty { margin: 0; padding: 16px; text-align: center; color: var(--bs-secondary-color); }
+  .ds-label { font-weight: 500; }
+  .ds-tab-next { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+  /* Conditional sections hide with the hidden attribute; keep display utilities off them (Bootstrap's are !important) */
+  [hidden] { display: none !important; }
+  .ds-stack { display: grid; gap: 16px; }
+  @media (max-width: 820px) {
+    .page-body { padding: 16px; }
+  }
+  /* Porting steps: where this screen sits in the five. The current step is marked by weight and a bar, not color only. */
+  .pp-steps { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 12px 0 0; padding: 0; counter-reset: step; }
+  .pp-steps li { counter-increment: step; color: var(--bs-secondary-color); padding-bottom: 4px; display: flex; align-items: center; gap: 4px; }
+  .pp-steps li::before { content: counter(step) "."; }
+  .pp-steps .pp-done svg { flex: none; width: 18px; height: 18px; color: var(--bs-success-text-emphasis); }
+  .pp-steps li[aria-current="step"] { color: var(--bs-body-color); font-weight: 600; box-shadow: inset 0 -3px 0 var(--bs-primary); }
+  .pp-details { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; margin: 0; }
+  .pp-details dt { font-weight: 600; }
+  .pp-details dd { margin: 0; overflow-wrap: anywhere; }
+  @media (max-width: 480px) { .pp-details { grid-template-columns: minmax(0, 1fr); } .pp-details dd { margin-bottom: 8px; } }
+  /* Map question dialog: the radio groups as on the form templates */
+  .apply-group { display: flex; gap: 12px 28px; flex-wrap: wrap; }
+  .ds-radio-group legend, fieldset.ds-field legend { font-size: inherit; font-weight: 500; margin-bottom: 6px; float: none; }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb"><li class="breadcrumb-item"><a href="system-management.html">System Management</a></li><li class="breadcrumb-item"><a href="manage-pages.html">Manage Pages</a></li><li class="breadcrumb-item"><a href="manage-page-porting.html">Page Porting</a></li><li class="breadcrumb-item active" aria-current="page">Port Page</li></ol>
+        </nav>
+        <h1 class="display-6 mb-0 mt-2">Port Condition</h1>
+        <ol class="pp-steps" aria-label="Porting steps"><li class="pp-done"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#check_circle"/></svg>Map details<span class="visually-hidden">, done</span></li><li class="pp-done"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#check_circle"/></svg>Map questions<span class="visually-hidden">, done</span></li><li class="pp-done"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#check_circle"/></svg>Map answers<span class="visually-hidden">, done</span></li><li class="pp-done"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#check_circle"/></svg>Review mapping<span class="visually-hidden">, done</span></li><li aria-current="step">Port condition</li></ol>
+      </div>
+      <div class="page-body d-grid gap-3">
+        <!-- Port Condition modernizes PortPage.do step five (PortCondition.jsp, ProdRunPopUp.jsp): get the case count, run
+             the pre-run check, then convert a number of cases. Each action adds to the run log. DEV: the server runs the
+             count, the pre-run, and the conversion; the sample log is the Varicella map's, before its last run. -->
+        <dl class="pp-details">
+          <dt>Map</dt><dd>Varicella_Legacy_to_Page_Builder_Mapping_NBS_5_4_GA_TX</dd>
+          <dt>From page</dt><dd>Legacy Varicella Investigation</dd>
+          <dt>To page</dt><dd>Varicella Investigation</dd>
+        </dl>
+        <div class="alert alert-warning mb-0">
+          <h2 class="h6 mb-2">Before you convert</h2>
+          <ul class="mb-0">
+            <li>Back up the database first.</li>
+            <li>Do not convert in production while people are using the system.</li>
+          </ul>
+        </div>
+        <p class="mb-0">1 active condition uses the Legacy Varicella Investigation page.</p>
+        <p class="legend-note mb-0"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
+        <div class="ds-error-summary mb-0" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
+          <h2 id="errorSummaryTitle">There is a problem</h2>
+          <ul id="errorList"></ul>
+        </div>
+        <div id="portStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+        <section class="card ds-form-section mb-0" aria-labelledby="pcCond"><h2 class="card-header h6 mb-0 fw-semibold" id="pcCond">1. Condition</h2>
+          <div class="card-body d-grid gap-3">
+            <p class="mb-0">Choose the condition to port from Legacy Varicella Investigation to Varicella Investigation, then get its case count.</p>
+            <div class="ds-field"><label class="ds-required" for="portCondition">Condition</label>
+              <select class="form-select" id="portCondition"><option value="">Select a condition</option><option value="10030">Varicella (Chickenpox)</option></select>
+              <span class="invalid-feedback" id="portCondition-error" hidden></span></div>
+            <div><button type="button" class="btn btn-outline-primary" id="getCount">Get Case Count</button></div>
+            <p class="mb-0" id="caseCount" hidden><strong>Cases to port:</strong> <span id="caseCountValue"></span></p>
+          </div></section>
+        <section class="card ds-form-section mb-0" aria-labelledby="pcNotif"><h2 class="card-header h6 mb-0 fw-semibold" id="pcNotif">2. Notifications</h2>
+          <div class="card-body d-grid gap-3">
+            <p class="mb-0">If any notifications need approval, process them and run the message out processor before you convert.</p>
+            <dl class="pp-details" id="notifCounts" hidden>
+              <dt>Notifications needing approval</dt><dd>0</dd>
+              <dt>Notifications to process</dt><dd>0</dd>
+            </dl>
+          </div></section>
+        <section class="card ds-form-section mb-0" aria-labelledby="pcRun"><h2 class="card-header h6 mb-0 fw-semibold" id="pcRun">3. Validate and convert</h2>
+          <div class="card-body d-grid gap-3">
+            <p class="mb-0">Run the pre-run check to validate the map for this condition. Once it passes, enter how many cases to convert and run the conversion.</p>
+            <div><button type="button" class="btn btn-outline-primary" id="preRun">Validate Map (Pre-Run)</button></div>
+            <div class="ds-field"><label class="ds-required" for="records">Number of Records to Migrate</label>
+              <input class="form-control" id="records" type="text" inputmode="numeric" autocomplete="off" aria-describedby="records-hint" style="max-width:12rem">
+              <span class="form-text" id="records-hint">4 remaining</span>
+              <span class="invalid-feedback" id="records-error" hidden></span></div>
+            <div><button type="button" class="btn btn-primary" id="runConv" aria-haspopup="dialog">Run Conversion</button></div>
+          </div></section>
+        <section class="d-grid gap-2" aria-labelledby="logTitle">
+          <h2 class="h5 mb-0" id="logTitle">Run log</h2>
+          <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Run log, scrolls sideways">
+            <table class="table ds-table" id="logTable"><caption class="visually-hidden">Run log, newest first</caption>
+              <thead><tr><th scope="col">Process</th><th scope="col">Message</th><th scope="col">Status</th><th scope="col">Start Time</th><th scope="col">End Time</th></tr></thead>
+              <tbody>
+                <tr><td>Pre-Run</td><td>There were 0 mapping error(s). For condition code &quot;10030&quot;, 4 case(s) require conversion to the new TO page.</td><td><span class="badge text-bg-success">Pass</span></td><td>04/28/2026 10:05:46 AM</td><td>04/28/2026 10:05:51 AM</td></tr>
+                <tr><td>Pre-Run</td><td>There were 0 mapping error(s). For condition code &quot;10030&quot;, 4 case(s) require conversion to the new TO page.</td><td><span class="badge text-bg-success">Pass</span></td><td>04/28/2026 10:00:40 AM</td><td>04/28/2026 10:00:45 AM</td></tr>
+                <tr><td>Production</td><td>gov.cdc.nedss.exception.NEDSSAppException: ERR109</td><td><span class="badge text-bg-danger">Fail</span></td><td>04/27/2026 10:51:38 PM</td><td>04/27/2026 10:51:40 PM</td></tr>
+                <tr><td>Production</td><td>There were 0 mapping error(s). For condition code &quot;10030&quot;, 4 case(s) require conversion to the new TO page.</td><td><span class="badge text-bg-success">Pass</span></td><td>04/27/2026 10:51:34 PM</td><td>04/27/2026 10:51:38 PM</td></tr>
+                <tr><td>Pre-Run</td><td>There were 0 mapping error(s). For condition code &quot;10030&quot;, 4 case(s) require conversion to the new TO page.</td><td><span class="badge text-bg-success">Pass</span></td><td>04/27/2026 10:50:57 PM</td><td>04/27/2026 10:51:02 PM</td></tr>
+                <tr><td>Pre-Run</td><td>There were 0 mapping error(s). For condition code &quot;10030&quot;, 4 case(s) require conversion to the new TO page.</td><td><span class="badge text-bg-success">Pass</span></td><td>04/27/2026 10:46:16 PM</td><td>04/27/2026 10:46:21 PM</td></tr>
+                <tr><td>Pre-Run</td><td>There were 0 mapping error(s). For condition code &quot;10030&quot;, 4 case(s) require conversion to the new TO page.</td><td><span class="badge text-bg-success">Pass</span></td><td>04/27/2026 10:46:14 PM</td><td>04/27/2026 10:46:19 PM</td></tr>
+                <tr><td>Production</td><td>gov.cdc.nedss.exception.NEDSSAppException: ERR109</td><td><span class="badge text-bg-danger">Fail</span></td><td>04/27/2026 10:32:28 PM</td><td>04/27/2026 10:33:25 PM</td></tr>
+                <tr><td>Production</td><td>There were 0 mapping error(s). For condition code &quot;10030&quot;, 4 case(s) require conversion to the new TO page.</td><td><span class="badge text-bg-success">Pass</span></td><td>04/27/2026 10:32:23 PM</td><td>04/27/2026 10:32:28 PM</td></tr>
+                <tr><td>Pre-Run</td><td>There were 0 mapping error(s). For condition code &quot;10030&quot;, 4 case(s) require conversion to the new TO page.</td><td><span class="badge text-bg-success">Pass</span></td><td>04/27/2026 10:29:35 PM</td><td>04/27/2026 10:29:40 PM</td></tr>
+              </tbody></table></div></div>
+        </section>
+        <div class="ds-form-footer" style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg)">
+          <a class="btn btn-outline-primary" href="port-review-mapping.html">Back</a>
+          <a class="btn btn-primary" href="manage-page-porting.html">Done</a>
+        </div>
+      </div>
+      <div class="modal" id="runDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="runTitle" aria-describedby="runText" hidden>
+        <div class="modal-dialog modal-lg"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="runTitle">Run the conversion?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body">
+            <p id="runText">This ports <span id="runCount"></span> of Varicella (Chickenpox) from Legacy Varicella Investigation to Varicella Investigation, using the map Varicella_Legacy_to_Page_Builder_Mapping_NBS_5_4_GA_TX.</p>
+            <h3 class="h6">Until every case is ported</h3>
+            <ul>
+              <li>Do not open or edit the From or To page in Page Management.</li>
+              <li>Do not open or edit Varicella (Chickenpox) investigations, or create new ones.</li>
+            </ul>
+            <h3 class="h6">Once the first case is ported</h3>
+            <ul>
+              <li>This condition can no longer be mapped from the same From page.</li>
+              <li>The map is locked.</li>
+              <li>After the next ETL run, the condition's data is in the To page's data mart, not the From page's. The From page's data mart is removed once no condition is left on that page.</li>
+            </ul>
+            <p class="mb-0">If you have not backed up the database, cancel and do that first.</p>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="runYes">Run Conversion</button></div>
+        </div></div>
+      </div>
+      <script type="application/json" id="portData">{"cases": 4, "caseIds": ["CAS495191022TX01", "CAS495191023TX01", "CAS495241000TX01", "CAS495242000TX01"]}</script>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+<script src="../../js/ds-dialog.js"></script>
+<script>
+/* Port Condition. Each action checks what it needs first and lists any problem in the error summary, whose links move
+   to the control. Get Case Count shows the count and notification counts; Validate Map (Pre-Run) adds a log row;
+   Run Conversion checks the number of records, then asks in a dialog. Results are announced and added to the run log,
+   newest first. DEV: each action is a server call (PortPage.do submitPreRun, submitProductionRun). */
+(function () {
+  var data = JSON.parse(document.getElementById('portData').textContent), left = data.cases, counted = false, prerun = false;
+  function $(id) { return document.getElementById(id); }
+  var summary = $('errorSummary'), list = $('errorList'), status = $('portStatus'), dlg = $('runDialog'), cond = $('portCondition'), rec = $('records');
+  function say(msg) { status.textContent = ''; setTimeout(function () { status.textContent = msg; }, 60); }
+  function now() {
+    var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; }, h = d.getHours() % 12 || 12;
+    return p(d.getMonth() + 1) + '/' + p(d.getDate()) + '/' + d.getFullYear() + ' ' + p(h) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds()) + (d.getHours() < 12 ? ' AM' : ' PM');
+  }
+  function log(process, message) {
+    var tr = document.createElement('tr'), t = now();
+    [process, message].forEach(function (v) { var td = document.createElement('td'); td.textContent = v; tr.appendChild(td); });
+    var st = document.createElement('td'); st.innerHTML = '<span class="badge text-bg-success">Pass</span>'; tr.appendChild(st);
+    [t, t].forEach(function (v) { var td = document.createElement('td'); td.textContent = v; tr.appendChild(td); });
+    $('logTable').tBodies[0].insertBefore(tr, $('logTable').tBodies[0].firstChild);
+  }
+  function fieldError(f, msg) {
+    var err = $(f.id + '-error');
+    if (!err) return;
+    err.textContent = msg || ''; err.hidden = !msg;
+    var ids = (f.getAttribute('aria-describedby') || '').split(' ').filter(function (i) { return i && i !== err.id; });
+    if (msg) { f.setAttribute('aria-invalid', 'true'); ids.push(err.id); } else f.removeAttribute('aria-invalid');
+    if (ids.length) f.setAttribute('aria-describedby', ids.join(' ')); else f.removeAttribute('aria-describedby');
+  }
+  function problems(bad) {
+    [cond, rec].forEach(function (f) { fieldError(f, ''); });
+    list.innerHTML = '';
+    if (!bad.length) { summary.hidden = true; return false; }
+    bad.forEach(function (b) {
+      fieldError(b[0], b[1]);
+      var li = document.createElement('li'), a = document.createElement('a');
+      a.href = '#' + b[0].id; a.textContent = b[1];
+      a.addEventListener('click', function (e) { e.preventDefault(); b[0].focus(); });
+      li.appendChild(a); list.appendChild(li);
+    });
+    summary.hidden = false; summary.focus();
+    return true;
+  }
+  function needCount() { return !cond.value ? [[cond, 'Choose a condition']] : (!counted ? [[$('getCount'), 'Get the case count first']] : []); }
+  $('getCount').addEventListener('click', function () {
+    if (problems(cond.value ? [] : [[cond, 'Choose a condition']])) return;
+    counted = true;
+    $('caseCountValue').textContent = left;
+    $('caseCount').hidden = false; $('notifCounts').hidden = false;
+    say(left + ' cases to port. No notifications need approval or processing.');
+  });
+  cond.addEventListener('change', function () { counted = false; prerun = false; $('caseCount').hidden = true; $('notifCounts').hidden = true; });
+  $('preRun').addEventListener('click', function () {
+    if (problems(needCount())) return;
+    prerun = true;
+    log('Pre-Run', 'There were 0 mapping errors. ' + left + ' cases need conversion to the new page.');
+    say('Pre-run passed: 0 mapping errors, ' + left + ' cases to convert.');
+  });
+  var n = 0, opener = null;
+  $('runConv').addEventListener('click', function () {
+    var bad = needCount(), v = rec.value.trim();
+    if (!bad.length && !prerun) bad.push([$('preRun'), 'Run the pre-run check first']);
+    if (!v) bad.push([rec, 'Enter the number of records to migrate']);
+    else if (!/^[0-9]+$/.test(v) || +v < 1) bad.push([rec, 'Enter the number of records as a whole number']);
+    else if (+v > left) bad.push([rec, left ? 'Enter no more than ' + left + ', the number of cases left to port' : 'There are no cases left to port']);
+    if (problems(bad)) return;
+    n = +v; opener = $('runConv');
+    $('runCount').textContent = n + (n === 1 ? ' case' : ' cases');
+    dsDialog.show(dlg);
+  });
+  function close(back) { dsDialog.hide(dlg); if (back && opener) opener.focus(); }
+  Array.prototype.forEach.call(dlg.querySelectorAll('[data-close]'), function (b) { b.addEventListener('click', function () { close(true); }); });
+  $('runYes').addEventListener('click', function () {
+    close(true);
+    for (var i = 0; i < n; i++) log('Production', 'Conversion successful for ' + (data.caseIds[data.cases - left + i] || 'case ' + (data.cases - left + i + 1)));
+    left -= n; prerun = false;
+    $('records-hint').textContent = left + ' remaining';
+    $('caseCountValue').textContent = left;
+    rec.value = '';
+    say('Converted ' + n + (n === 1 ? ' case. ' : ' cases. ') + (left ? left + ' left to port. Run the pre-run check again before the next conversion.' : 'Every case is ported.'));
+  });
+  window.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !dlg.hidden) { e.stopPropagation(); close(true); } }, true);
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab' || dlg.hidden) return;
+    var f = Array.prototype.slice.call(dlg.querySelectorAll('button, [href], input, select')).filter(function (el) { return !el.disabled && el.offsetParent; });
+    if (e.shiftKey && (document.activeElement === f[0] || document.activeElement === dlg)) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+  });
+})();
+</script>
+</body>
+</html>

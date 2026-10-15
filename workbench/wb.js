@@ -62,6 +62,8 @@
       { title: 'Port Page', href: 'screens/port-page.html', ext: true, icon: 'open_in_new' },
       { title: 'Port Page: Map Questions', href: 'screens/port-map-questions.html', ext: true, icon: 'open_in_new' },
       { title: 'Port Page: Map Answers', href: 'screens/port-map-answers.html', ext: true, icon: 'open_in_new' },
+      { title: 'Port Page: Review Mapping', href: 'screens/port-review-mapping.html', ext: true, icon: 'open_in_new' },
+      { title: 'Port Page: Port Condition', href: 'screens/port-condition.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Questions', href: 'screens/manage-questions.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Users', href: 'screens/manage-users.html', ext: true, icon: 'open_in_new' },
       { title: 'Edit User', href: 'screens/edit-user.html', ext: true, icon: 'open_in_new' },
