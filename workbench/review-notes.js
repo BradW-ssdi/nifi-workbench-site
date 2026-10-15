@@ -192,6 +192,17 @@
         { code: 'DS-3', title: 'Deleting a data source in use', pin: { sel: '#deleteSource' }, ask: true,
           text: 'This template refuses to delete a data source while reports use it, and says how many. Is that the rule, or should deleting it also remove or move those reports?' }
       ] },
+    { id: 'manage-snomeds', title: 'Lab Management search screens', priority: 'Lab Management (priority 6)', status: 'ready',
+      notes: [
+        { code: 'LM-1', title: 'Criteria first', pin: { sel: '#snomedCode' },
+          text: 'As today, each code table screen starts with search criteria: here a SNOMED code or a description. One of the two is required. Manage LOINCs, Manage Laboratories, and the link screens work the same way.' },
+        { code: 'LM-2', title: 'Contains or Equal', pin: { sel: '#snomedDesc-op' },
+          text: 'The description matches as Contains or Equal, as today.' },
+        { code: 'LM-3', title: 'Results', pin: { sel: '#searchForm button[type=submit]' }, after: 'search',
+          text: 'Results show under the criteria with how many were found, Edit on each row, and Add New.' },
+        { code: 'LM-4', title: 'Show a list first?', pin: { sel: '#snomedCode' }, ask: true,
+          text: 'Should these screens list the codes on arrival, with the criteria as filters (as the queue screens do), instead of waiting for a search? SNOMED and LOINC tables are large, which is likely why the current screens ask first.' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },
