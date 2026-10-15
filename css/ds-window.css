@@ -12429,6 +12429,109 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
   color: var(--bs-form-invalid-color);
 }
 
+.ds-window .legend-note:not(.ds-phase2, .ds-phase2 *) {
+  color: var(--bs-secondary-color);
+  font-size: 0.75rem;
+}
+
+.ds-window .legend-note .req:not(.ds-phase2, .ds-phase2 *) {
+  color: var(--bs-form-invalid-color);
+}
+
+.ds-window .ds-entry-grid:not(.ds-phase2, .ds-phase2 *) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 14px 20px;
+  align-items: start;
+}
+
+.ds-window .ds-field-wide:not(.ds-phase2, .ds-phase2 *) {
+  max-width: none;
+}
+
+.ds-window .ds-entry-grid > .ds-field-wide:not(.ds-phase2, .ds-phase2 *) {
+  grid-column: 1/-1;
+}
+
+.ds-window fieldset.ds-field:not(.ds-phase2, .ds-phase2 *) {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.ds-window .ds-radio-group:not(.ds-phase2, .ds-phase2 *) {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  max-width: none;
+}
+
+.ds-window .ds-radio-group legend:not(.ds-phase2, .ds-phase2 *), .ds-window fieldset.ds-field legend:not(.ds-phase2, .ds-phase2 *) {
+  font-size: inherit;
+  font-weight: 500;
+  margin-bottom: 6px;
+  float: none;
+}
+
+.ds-window .apply-group:not(.ds-phase2, .ds-phase2 *) {
+  display: flex;
+  gap: 12px 28px;
+  flex-wrap: wrap;
+}
+
+.ds-window .ds-check-list:not(.ds-phase2, .ds-phase2 *) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 8px 20px;
+  padding: 10px 12px;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  max-height: 220px;
+  overflow: auto;
+}
+
+.ds-window .ds-check-list-tall:not(.ds-phase2, .ds-phase2 *) {
+  grid-template-columns: minmax(0, 1fr);
+  max-height: 360px;
+}
+
+.ds-window .ds-repeat:not(.ds-phase2, .ds-phase2 *) {
+  display: grid;
+  gap: 14px;
+}
+
+.ds-window .ds-repeat-entry:not(.ds-phase2, .ds-phase2 *) {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px dashed var(--bs-border-color);
+  border-radius: var(--bs-border-radius-lg);
+}
+
+.ds-window .ds-empty:not(.ds-phase2, .ds-phase2 *) {
+  margin: 0;
+  padding: 16px;
+  text-align: center;
+  color: var(--bs-secondary-color);
+}
+
+.ds-window .ds-label:not(.ds-phase2, .ds-phase2 *) {
+  font-weight: 500;
+}
+
+.ds-window .ds-tab-next:not(.ds-phase2, .ds-phase2 *) {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.ds-window .ds-stack:not(.ds-phase2, .ds-phase2 *) {
+  display: grid;
+  gap: 16px;
+}
+
 .ds-window .ds-filter-toggle[aria-expanded=true]:not(.ds-phase2, .ds-phase2 *) {
   background: var(--ds-tint);
 }

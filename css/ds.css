@@ -12700,6 +12700,109 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])) {
   color: var(--bs-form-invalid-color);
 }
 
+.legend-note {
+  color: var(--bs-secondary-color);
+  font-size: 0.75rem;
+}
+
+.legend-note .req {
+  color: var(--bs-form-invalid-color);
+}
+
+.ds-entry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 14px 20px;
+  align-items: start;
+}
+
+.ds-field-wide {
+  max-width: none;
+}
+
+.ds-entry-grid > .ds-field-wide {
+  grid-column: 1/-1;
+}
+
+fieldset.ds-field {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.ds-radio-group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  max-width: none;
+}
+
+.ds-radio-group legend, fieldset.ds-field legend {
+  font-size: inherit;
+  font-weight: 500;
+  margin-bottom: 6px;
+  float: none;
+}
+
+.apply-group {
+  display: flex;
+  gap: 12px 28px;
+  flex-wrap: wrap;
+}
+
+.ds-check-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 8px 20px;
+  padding: 10px 12px;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  max-height: 220px;
+  overflow: auto;
+}
+
+.ds-check-list-tall {
+  grid-template-columns: minmax(0, 1fr);
+  max-height: 360px;
+}
+
+.ds-repeat {
+  display: grid;
+  gap: 14px;
+}
+
+.ds-repeat-entry {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px dashed var(--bs-border-color);
+  border-radius: var(--bs-border-radius-lg);
+}
+
+.ds-empty {
+  margin: 0;
+  padding: 16px;
+  text-align: center;
+  color: var(--bs-secondary-color);
+}
+
+.ds-label {
+  font-weight: 500;
+}
+
+.ds-tab-next {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.ds-stack {
+  display: grid;
+  gap: 16px;
+}
+
 .ds-filter-toggle[aria-expanded=true] {
   background: var(--ds-tint);
 }
