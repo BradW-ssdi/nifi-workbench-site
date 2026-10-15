@@ -146,6 +146,28 @@
         { code: 'VP-6', title: 'Back to top', pin: { sel: '.vp-section-head' }, ask: true,
           text: 'The current screen has a Back to top link on every section. This template leaves it out, since sections close and the page header is always reachable. Is Back to top still needed?' }
       ] },
+    { id: 'manage-permission-sets', title: 'Manage Permission Sets', priority: 'Security Management (priority 4)', status: 'ready',
+      notes: [
+        { code: 'PS-1', title: 'Two lists', pin: { sel: '#sysTitle' },
+          text: 'System defined sets come with NBS and cannot be changed, so they offer View only. User defined sets offer View and Edit.' },
+        { code: 'PS-2', title: 'Search', pin: { sel: '#psFilter' },
+          text: 'Filters both lists by name or description and says how many sets show.' },
+        { code: 'PS-3', title: 'Add New', pin: { sel: 'main .ds-toolbar .btn-primary' },
+          text: 'Opens the permission set form empty. Start from copies another set, as Add From Template does today.' }
+      ] },
+    { id: 'edit-permission-set', title: 'Edit Permission Set', priority: 'Security Management (priority 4)', status: 'ready',
+      notes: [
+        { code: 'EPS-1', title: 'One table per business object', pin: { sel: '#g-patient' },
+          text: 'Each operation has a User and a Guest box. A guest has access to shared records only.' },
+        { code: 'EPS-2', title: 'Requires', pin: { sel: '#op-PatientAdd-req' },
+          text: 'Each "User must also have" note from the current screen is in the Requires column, and Submit checks them: turning on Add Patient without Find Patient is reported, and says what to turn on.' },
+        { code: 'EPS-3', title: 'Jump to a group', pin: { sel: '.ps-side' },
+          text: 'The list of groups beside the tables jumps to a group and shows how many of its operations are on.' },
+        { code: 'EPS-4', title: 'Approval', pin: { sel: '#op-NotificationCreate' },
+          text: 'Create Notification and Share Investigation also choose whether approval is needed, as today.' },
+        { code: 'EPS-5', title: 'Guest without User', pin: { sel: '#PatientViewGuest' }, ask: true,
+          text: 'Can an operation be on for Guest while it is off for User? The Requires rules cover User only, so this form does not stop it.' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },

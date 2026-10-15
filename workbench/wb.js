@@ -39,6 +39,9 @@
       { title: 'Edit Page (drag and drop)', href: 'screens/edit-page.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Questions', href: 'screens/manage-questions.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Users', href: 'screens/manage-users.html', ext: true, icon: 'open_in_new' },
+      { title: 'Manage Permission Sets', href: 'screens/manage-permission-sets.html', ext: true, icon: 'open_in_new' },
+      { title: 'Edit Permission Set', href: 'screens/edit-permission-set.html', ext: true, icon: 'open_in_new' },
+      { title: 'View Permission Set', href: 'screens/view-permission-set.html', ext: true, icon: 'open_in_new' },
       { title: 'Merge Patients: Manual', href: 'screens/merge-patients.html', ext: true, icon: 'open_in_new' },
       { title: 'Merge Patients: System Identified', href: 'screens/merge-system-identified.html', ext: true, icon: 'open_in_new' }
     ]}
