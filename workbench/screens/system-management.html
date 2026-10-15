@@ -40,6 +40,10 @@
   /* !important: inside the Phase 2 frame an !important focus rule of theirs otherwise replaces a screen's own ring */
   .menu-link:focus-visible { outline: 2px solid var(--bs-focus-ring-color) !important; outline-offset: -2px !important; box-shadow: none !important; }
   .menu-link.is-parent { font-weight: 600; }
+  /* an action in the menu (opens a dialog) looks like the links beside it */
+  .menu-action { width: 100%; border: 0; background: none; text-align: left; font: inherit; }
+  .sm-done:focus { outline: none; }
+  .sm-done:focus-visible { outline: 2px solid var(--bs-focus-ring-color); outline-offset: 2px; }
   .menu-list ul { margin: 0 0 6px 30px; border-left: 2px solid var(--bs-border-color); }
   .menu-list ul .menu-link { padding-left: 14px; }
   /* 992px and below: the nav sits above the cards, not sticky; its links wrap in two columns */
@@ -99,6 +103,7 @@
     <p class="mb-0 mt-2">Choose a setting to manage.</p>
   </div>
   <div class="page-body">
+    <div class="alert alert-success sm-done mb-0" id="resetCacheDone" role="status" tabindex="-1" hidden></div>
     <!-- System Management main menu: a side nav of modules beside a card for every module (the BA review chose the
          workbench layout). The side nav jumps to a card and marks the card in view; Find a setting filters both.
          DEV: the cards and links are permission-gated server-side; render only what the profile allows, and drop a
@@ -154,7 +159,7 @@
                 <li data-find-item data-find-count data-find-text="manage link between loinc and condition manage lab tests case report and laboratory management"><a class="menu-link" href="link-loinc-condition.html"><span>Manage Link between LOINC and Condition</span></a></li>
               </ul>
             </li>
-            <li data-find-item data-find-count data-find-text="reset lab mapping cache case report and laboratory management"><a class="menu-link" href="#"><span>Reset Lab Mapping Cache</span></a></li>
+            <li data-find-item data-find-count data-find-text="reset lab mapping cache case report and laboratory management"><button type="button" class="menu-link menu-action" data-opens="resetCacheDialog" aria-haspopup="dialog"><span>Reset Lab Mapping Cache</span></button></li>
           </ul>
         </section>
         <section class="card shadow-sm menu-card" id="mod-messaging" aria-labelledby="h-messaging" data-find-group>
@@ -202,6 +207,15 @@
         </div>
       </div>
     </div>
+  </div>
+  <!-- Reset Lab Mapping Cache (ResetCache.do?method=resetLabMappingCache): confirm first. On success the message at the
+       top of the page takes focus. DEV: the reset runs on the server. -->
+  <div class="modal" id="resetCacheDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="resetCacheTitle" aria-describedby="resetCacheText" hidden>
+    <div class="modal-dialog"><div class="modal-content">
+      <div class="modal-header"><h2 class="modal-title h5" id="resetCacheTitle">Reset the lab mapping cache?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+      <div class="modal-body"><p id="resetCacheText" class="mb-0">The lab test program area mappings are loaded again.</p></div>
+      <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="resetCacheYes">Reset Cache</button></div>
+    </div></div>
   </div>
 </main>
 <!-- app-frame:bottom -->
@@ -299,6 +313,37 @@
       document.querySelector('[data-count-text-for="' + c.id + '"]').textContent = ', ' + n + (n === 1 ? ' setting' : ' settings');
     });
     update();
+  });
+})();
+</script>
+<script src="../../js/ds-dialog.js"></script>
+<script>
+/* Menu actions: a button opens its dialog (data-opens). Cancel, Close, and Escape return focus to the button; Tab stays
+   in the dialog. Confirming shows the result at the top of the page and moves focus to it. */
+(function () {
+  var dlg = document.getElementById('resetCacheDialog'), done = document.getElementById('resetCacheDone'), opener = null;
+  function focusables() {
+    return Array.prototype.slice.call(dlg.querySelectorAll('button, [href], input, select, textarea')).filter(function (el) { return !el.disabled && el.offsetParent; });
+  }
+  function close(back) { dsDialog.hide(dlg); if (back && opener) opener.focus(); }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-opens]'), function (b) {
+    b.addEventListener('click', function () { opener = b; done.hidden = true; dsDialog.show(document.getElementById(b.getAttribute('data-opens'))); });
+  });
+  Array.prototype.forEach.call(dlg.querySelectorAll('[data-close]'), function (b) { b.addEventListener('click', function () { close(true); }); });
+  document.getElementById('resetCacheYes').addEventListener('click', function () {
+    close(false);
+    done.textContent = 'The lab mapping cache was reset.';
+    done.hidden = false;
+    done.focus();
+  });
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !dlg.hidden) { e.stopPropagation(); close(true); }
+  }, true);
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab' || dlg.hidden) return;
+    var f = focusables(); if (!f.length) return;
+    if (e.shiftKey && (document.activeElement === f[0] || document.activeElement === dlg)) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
   });
 })();
 </script>

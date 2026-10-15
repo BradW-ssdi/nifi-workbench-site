@@ -85,8 +85,10 @@
           text: 'A user sees only the settings their permissions allow. A module with nothing visible is left out, and the counts are of visible settings.' },
         { code: 'SM-5', title: 'Scope', pin: { sel: '#mod-page-management' },
           text: 'Manage Alerts, Manage User Email, Epi-Link (Lot Number) Management and Manage HIV Partner Services File are Nice to Have and not in the menu. Manage Notices is under Page Management, after Manage Pages.' },
-        { code: 'SM-6', title: 'Reset Lab Mapping Cache', pin: { sel: 'a', text: 'Reset Lab Mapping Cache' },
-          text: 'Runs an action instead of opening a page, so it will ask for confirmation first.' }
+        { code: 'SM-6', title: 'Reset Lab Mapping Cache', pin: { sel: 'button[data-opens="resetCacheDialog"]' },
+          text: 'Runs an action instead of opening a page, so it asks for confirmation first. After the reset, a message at the top of the page says it was done.' },
+        { code: 'SM-7', title: 'Restart after a reset?', pin: { sel: 'button[data-opens="resetCacheDialog"]' }, ask: true,
+          text: 'The current screen says to restart the server for the reset to take effect. Is that still true? If so, the message should say so.' }
       ] },
     { id: 'wds-algorithm-library', title: 'WDS: Algorithm Library', priority: 'November 1, priority 2', status: 'ready',
       notes: [
