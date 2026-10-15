@@ -146,6 +146,21 @@
         { code: 'VP-6', title: 'Back to top', pin: { sel: '.vp-section-head' }, ask: true,
           text: 'The current screen has a Back to top link on every section. This template leaves it out, since sections close and the page header is always reachable. Is Back to top still needed?' }
       ] },
+    { id: 'edit-user', title: 'Edit User', priority: 'Security Management (priority 4)', status: 'ready',
+      notes: [
+        { code: 'EU-1', title: 'Required details', pin: { sel: '#firstName' },
+          text: 'First and last name are required. The user ID cannot change after the user is added.' },
+        { code: 'EU-2', title: 'External users', pin: { sel: '#external' },
+          text: 'An external user works for an outside agency and must have a reporting facility.' },
+        { code: 'EU-3', title: 'Program area administrator', pin: { sel: '#paa' },
+          text: 'Choosing it shows the program areas this user administers.' },
+        { code: 'EU-4', title: 'Roles', pin: { sel: '#rolesTitle' },
+          text: 'Each role gives a permission set for one jurisdiction and program area, optionally as a guest. A jurisdiction and program area can have only one role. A user needs at least one role.' },
+        { code: 'EU-5', title: 'Lookups', pin: { sel: '#facility ~ [data-lookup-search]' },
+          text: 'Reporting Facility and Provider are found with Search, the same way as resulted tests in WDS.' },
+        { code: 'EU-6', title: 'At least one role', pin: { sel: '#rolesTitle' }, ask: true,
+          text: 'Must every active user have at least one role? This form requires one.' }
+      ] },
     { id: 'manage-permission-sets', title: 'Manage Permission Sets', priority: 'Security Management (priority 4)', status: 'ready',
       notes: [
         { code: 'PS-1', title: 'Two lists', pin: { sel: '#sysTitle' },

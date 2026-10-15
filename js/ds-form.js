@@ -1,25 +1,31 @@
-/* Workflow Decision Support algorithm form (Add Algorithm, Edit Algorithm): reference behavior.
-   Legacy source: DecisionSupport.do (createLoad, editLoad), Laboratory Report event type.
+/* Design system form behavior: the reference implementation for the form templates (Add and Edit Algorithm, Edit
+   User). It runs on the form marked data-ds-form (or #algForm). The parts a form does not use are skipped: no tabs,
+   no repeating tables, no lookups.
 
    Contracts (keep them when wiring the server):
    - Tabs: WAI-ARIA tabs, roving tabindex, Left and Right arrows.
    - Conditional sections: an element with data-show-when="name=value[|value]" shows only while the named control
-     (select or checked radio) has one of the values. Hidden sections keep their values but are not validated.
-   - Repeating tables ([data-repeat]): an entry area under the table with an Add button. Add validates the entry,
+     (select, checked radio, or checked checkbox) has one of the values. Hidden sections keep their values but are not validated.
+   - Repeating tables ([data-repeat]): an entry area under the table with an Add button. Each column in data-columns
+     names how it reads the entry: a WDS reader (READ below) or a generic one, select:<id> (the option text) or
+     check:<id> (Yes or No). data-validate="unique" with data-unique="<fields>" rejects a row that repeats another
+     row's values in those fields. Rows are named by their first column, or by the first N with
+     data-label-columns="N", so no two row buttons share a name. Add validates the entry,
      appends a row, clears the entry, announces "<row> added", and returns focus to the first entry field. Each row has
      Edit (loads the row back into the entry, the button reads Update) and Delete (confirmed in the page dialog, focus
      moves to the next row or to the first entry field). Rows post as hidden inputs named <data-name>[i].<field>.
    - Lookups ([data-lookup]): a read-only field with Search and Clear. Search opens a dialog with a filter box and a
      list of options; Select fills the field and returns focus to Search.
    - Validation on Submit: required controls that are visible, and every repeating table marked data-min="1".
-     The error summary links focus the control and switch to its tab first. */
+     The error summary links focus the control and switch to its tab first. On success the form's data-saved
+     message is announced (DEV: post the form). */
 (function () {
   'use strict';
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
   function txt(el) { return (el.textContent || '').replace(/\s+/g, ' ').trim(); }
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-  var form = $('#algForm');
+  var form = $('form[data-ds-form]') || $('#algForm');
   if (!form) return;
   var status = $('#formStatus');
   function say(msg) { status.textContent = ''; setTimeout(function () { status.textContent = msg; }, 60); }
@@ -53,6 +59,7 @@
     var els = $$('[name="' + name + '"]', form);
     if (!els.length) return '';
     if (els[0].type === 'radio') { var c = els.filter(function (e) { return e.checked; })[0]; return c ? c.value : ''; }
+    if (els[0].type === 'checkbox') return els[0].checked ? els[0].value : '';
     return els[0].value;
   }
   /* Part of the form as it stands: not inside a hidden conditional section. An inactive tab still counts, so Submit
@@ -215,7 +222,26 @@
     logic: function (entry, raw) { var l = sel(entry, 'logic'); return raw ? l.value : selText(l); },
     value: function (entry, raw) { var v = sel(entry, 'value'); return raw ? v.value : selText(v); }
   };
+  /* Generic readers: "select:<id>" shows the option text and posts the value; "check:<id>" shows Yes or No */
+  function reader(spec) {
+    if (READ[spec]) return READ[spec];
+    var p = spec.split(':'), el = document.getElementById(p[1]);
+    if (p[0] === 'check') return function (entry, raw) { return el.checked ? (raw ? 'Y' : 'Yes') : (raw ? 'N' : 'No'); };
+    return function (entry, raw) { return raw ? el.value : selText(el); };
+  }
   var VALIDATE = {
+    /* No two rows with the same values in the fields named by data-unique (the row being edited is not compared) */
+    unique: function (entry, block, editing, cells) {
+      var keys = block.getAttribute('data-unique').split(','), mine = keys.map(function (k) { return cells.filter(function (c) { return c.field === k; })[0].value; }).join('|');
+      var dup = block._rows().some(function (tr) {
+        if (tr === editing) return false;
+        return keys.map(function (k) { var h = $('input[type=hidden][data-field="' + k + '"]', tr); return h ? h.value : ''; }).join('|') === mine;
+      });
+      if (!dup) return [];
+      var first = $('select, input', entry);
+      setError(first, block.getAttribute('data-unique-msg'));
+      return [first];
+    },
     labResult: function (entry) {
       if (($('input[name="includeResult"]:checked', entry) || {}).value === 'N') return [];
       var coded = $('#codedResult'), filled = [coded.value, $('#numericValue').value, $('#textValue').value || ($('#textOp').value === 'NN' ? 'x' : '')].filter(Boolean).length;
@@ -263,15 +289,16 @@
         clearError(f);
         if (!f.value.trim()) { setError(f, f.getAttribute('data-errmsg')); errs.push(f); }
       });
+      var cells = spec.map(function (c) { return { field: c.field, text: reader(c.read)(entry), value: reader(c.read)(entry, true) }; });
       var custom = block.getAttribute('data-validate');
-      if (!errs.length && custom) errs = errs.concat(VALIDATE[custom](entry));
+      if (!errs.length && custom) errs = errs.concat(VALIDATE[custom](entry, block, editing, cells));
       if (errs.length) { errs[0].focus(); return null; }
-      return spec.map(function (c) { return { field: c.field, text: READ[c.read](entry), value: READ[c.read](entry, true) }; });
+      return cells;
     }
     /* The entry's own values, kept on the row so Edit can load them back */
     function entryState() {
       var st = { f: {}, r: {} };
-      $$('input:not([type=radio]), select, textarea', entry).forEach(function (f) { if (f.id) st.f[f.id] = [f.value, f.getAttribute('data-code') || '']; });
+      $$('input:not([type=radio]), select, textarea', entry).forEach(function (f) { if (f.id) st.f[f.id] = [f.type === 'checkbox' ? (f.checked ? '1' : '') : f.value, f.getAttribute('data-code') || '']; });
       $$('input[type=radio]:checked', entry).forEach(function (r) { st.r[r.name] = r.value; });
       return st;
     }
@@ -281,12 +308,15 @@
       if (q && st.f[q.id]) { q.value = st.f[q.id][0]; syncQuestion(entry); }
       Object.keys(st.f).forEach(function (id) {
         var f = document.getElementById(id); if (!f || f === q) return;
+        if (f.type === 'checkbox') { f.checked = !!st.f[id][0]; return; }
         f.value = st.f[id][0];
         if (st.f[id][1]) f.setAttribute('data-code', st.f[id][1]); else f.removeAttribute('data-code');
       });
       if (numOp) numOp.dispatchEvent(new Event('change'));
     }
-    function rowLabel(cells) { return cells[0].text; }
+    /* A row is named by its first column, or by its first N when data-label-columns="N" (so two rows never share a name) */
+    var labelCols = +(block.getAttribute('data-label-columns') || 1);
+    function rowLabel(cells) { return cells.slice(0, labelCols).map(function (c) { return c.text; }).join(', '); }
     function makeRow(cells) {
       var tr = document.createElement('tr');
       tr.setAttribute('data-row', '');
@@ -298,7 +328,7 @@
       return tr;
     }
     function clearEntry() {
-      entryFields().forEach(function (f) { if (f.tagName === 'SELECT') f.selectedIndex = 0; else f.value = ''; f.removeAttribute('data-code'); clearError(f); });
+      entryFields().forEach(function (f) { if (f.tagName === 'SELECT') f.selectedIndex = 0; else if (f.type === 'checkbox') f.checked = false; else f.value = ''; f.removeAttribute('data-code'); clearError(f); });
       $$('input[type=radio][data-default]', entry).forEach(function (r) { r.checked = true; });
       $$('[data-role="question"]', entry).forEach(function () { syncQuestion(entry); });
       if (numOp) { numOp.dispatchEvent(new Event('change')); }
@@ -339,7 +369,7 @@
         syncConditions();
         addBtn.innerHTML = '<svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#save"/></svg>Update ' + noun.toLowerCase();
         var f = entryFields()[0] || $('[data-lookup-search]', entry); if (f) f.focus();
-        say('Editing ' + noun.toLowerCase() + ': ' + txt(tr.cells[0]) + '. Change the fields, then Update.');
+        say('Editing ' + noun.toLowerCase() + ': ' + rowLabel(tr._cells) + '. Change the fields, then Update.');
       }
     });
     // rows rendered by the server: keep their cells for labels
@@ -379,7 +409,7 @@
       bad.push({ f: target, msg: block.getAttribute('data-min-msg') });
     });
     markTabs(bad);
-    if (!bad.length) { summary.hidden = true; say('Algorithm saved.'); /* DEV: post the form; on success go to View Algorithm with a success alert. */ return; }
+    if (!bad.length) { summary.hidden = true; say(form.getAttribute('data-saved') || 'Algorithm saved.'); /* DEV: post the form; on success go to the View screen with a success alert. */ return; }
     bad.forEach(function (b) {
       var li = document.createElement('li'), a = document.createElement('a');
       a.href = '#' + b.f.id; a.textContent = b.msg;
