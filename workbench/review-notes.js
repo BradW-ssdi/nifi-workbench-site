@@ -339,6 +339,15 @@
         { code: 'MQ-5', title: 'Save', pin: { sel: '#saveMap' }, ask: true,
           text: 'The current screen has Save and Continue and Map Answers. Here Save keeps the map to finish later and Map Answers moves on. Is that what Save and Continue does today?' }
       ] },
+    { id: 'port-map-answers', title: 'Port Page: Map Answers', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'MA-1', title: 'Answers left', pin: { sel: '#remaining' },
+          text: 'How many coded answers still need a To answer. It updates as each one is mapped.' },
+        { code: 'MA-2', title: 'Map in a dialog', pin: { sel: '[data-map="VAR212|H"]' },
+          text: 'Map opens a dialog for that answer: map it to an answer in the To question\'s value set, or leave it out. Some answers change on the way, for example Hours becomes unknown.' },
+        { code: 'MA-3', title: 'Filter by question', pin: { sel: '#amLabel' },
+          text: 'From Label narrows the list to one question\'s answers.' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },
