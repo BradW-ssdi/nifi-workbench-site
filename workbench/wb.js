@@ -34,6 +34,7 @@
       { title: 'Edit Condition', href: 'screens/edit-condition.html', ext: true, icon: 'open_in_new' },
       { title: 'Conditions: dialog on dialog', href: 'screens/manage-conditions-dialogs.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Pages', href: 'screens/manage-pages.html', ext: true, icon: 'open_in_new' },
+      { title: 'Add Page', href: 'screens/add-page.html', ext: true, icon: 'open_in_new' },
       { title: 'View Page', href: 'screens/view-page.html', ext: true, icon: 'open_in_new' },
       { title: 'Edit Page (drag and drop)', href: 'screens/edit-page.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Questions', href: 'screens/manage-questions.html', ext: true, icon: 'open_in_new' },

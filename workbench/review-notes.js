@@ -114,6 +114,23 @@
         { code: 'WV-3', title: 'One page, read only', pin: { sel: 'h2', text: 'Basic Criteria' },
           text: 'The same sections as Add, on one page instead of tabs, with the criteria as tables.' }
       ] },
+    { id: 'add-page', title: 'Add Page', priority: 'Page Builder (priority 3)', status: 'ready',
+      notes: [
+        { code: 'AP-1', title: 'Required details', pin: { sel: '#eventType' },
+          text: 'Event type, template, message mapping guide, and page name are required. Data mart name and description are optional.' },
+        { code: 'AP-2', title: 'Template follows the event type', pin: { sel: '#template' },
+          text: 'The template list shows the templates for the chosen event type.' },
+        { code: 'AP-3', title: 'Page conditions', pin: { sel: '#eventType' },
+          text: 'Only investigation pages have conditions. The section appears when Event Type is Investigation.', after: 'choose Investigation as the event type' },
+        { code: 'AP-4', title: 'Conditions already on a page', pin: { sel: '#condHelp' }, after: 'choose Investigation as the event type',
+          text: 'Only conditions not mapped to another page are listed. A condition already on a page cannot be added; that page is cloned instead.' },
+        { code: 'AP-5', title: 'Choosing conditions', pin: { sel: '#condFind' }, after: 'choose Investigation as the event type',
+          text: 'Find narrows the list; checked conditions show as chips that can be removed. This replaces the two lists with Add and Remove buttons.' },
+        { code: 'AP-6', title: 'After Submit', pin: { sel: 'main button[type=submit]' },
+          text: 'The new page is a draft, and Edit Page opens on it.' },
+        { code: 'AP-7', title: 'Are conditions required?', pin: { sel: '#eventType' }, ask: true,
+          text: 'Must an investigation page have at least one related condition before it is saved? The current screen does not require one.' }
+      ] },
     { id: 'view-page', title: 'View Page', priority: 'Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'VP-1', title: 'Actions by page state', pin: { sel: '.vp-toolbar' },
