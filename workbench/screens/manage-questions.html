@@ -12,11 +12,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   .page-body { padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }   /* the column never grows past the page: a wide Phase 2 chip is squeezed, as in Phase 2, instead of widening it */
-  .ds-toolbar .form-control { width: 280px; }
   .search-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
   .search-grid .ds-field { max-width: none; }
   @media (max-width: 820px) {
-    .ds-toolbar .form-control { width: 100%; }
     .page-body { padding: 16px; }
   }
 </style>

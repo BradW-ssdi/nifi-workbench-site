@@ -16,11 +16,6 @@
     .page-body { padding: 16px; }
   }
   .page-body { max-width: none; }
-  .cs-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  .cs-results-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
-  .cs-results-head h2 { flex: 1 1 auto; margin: 0; font-size: 1.25rem; }
-  .cs-results-head h2:focus { outline: none; }
-  .cs-results-head h2:focus-visible { outline: 2px solid var(--bs-focus-ring-color); outline-offset: 2px; }
 </style>
 </head>
 <body data-nav-section="system-management">
@@ -84,12 +79,12 @@
             <div class="card-body d-grid gap-3">
               <p class="form-text mb-0" id="criteriaHint">Choose the time frame and the statuses to see. The sample records are from May 2026.</p>
               <div class="ds-entry-grid"><div class="ds-field"><label class="ds-required" for="logFrom">From</label><div class="ds-datefield"><input class="form-control" id="logFrom" type="text" inputmode="numeric" autocomplete="off" required data-date data-match-from="processed" data-errmsg="Enter the from date" data-format-msg="Enter the from date as MM/DD/YYYY" aria-describedby="logFrom-fmt"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div><span class="form-text" id="logFrom-fmt">MM/DD/YYYY</span><span class="invalid-feedback" id="logFrom-error" hidden></span></div><div class="ds-field"><label class="ds-required" for="logTo">To</label><div class="ds-datefield"><input class="form-control" id="logTo" type="text" inputmode="numeric" autocomplete="off" required data-date data-match-to="processed" data-errmsg="Enter the to date" data-format-msg="Enter the to date as MM/DD/YYYY" aria-describedby="logTo-fmt"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div><span class="form-text" id="logTo-fmt">MM/DD/YYYY</span><span class="invalid-feedback" id="logTo-error" hidden></span></div><fieldset class="ds-field" data-require-one data-errmsg="Choose at least one status"><legend class="ds-required">Status</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="checkbox" id="logSuccess" data-match-any="status" value="Success" checked> Success</label><label class="ds-check"><input class="form-check-input" type="checkbox" id="logFailure" data-match-any="status" value="Failure" checked> Failure</label></div><span class="invalid-feedback" id="logSuccess-error" hidden></span></fieldset></div>
-              <div class="cs-actions"><button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
+              <div class="ds-actions"><button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
                 <button class="btn btn-outline-primary" type="reset">Clear</button></div>
             </div></section>
         </form>
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
-          <div class="cs-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
+          <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
             </div>
           <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
             <table class="table ds-table" id="resultsTable" data-columns="[&quot;processed&quot;, &quot;status&quot;, &quot;patient&quot;, &quot;facility&quot;, &quot;algorithm&quot;, &quot;action&quot;, &quot;messageId&quot;, &quot;observationId&quot;, &quot;accession&quot;, &quot;exception&quot;]" data-actions="[]" data-row-label="processed"><caption class="visually-hidden">Records found</caption><thead><tr><th scope="col">Processed Time</th><th scope="col">Status</th><th scope="col">Patient</th><th scope="col">Reporting Facility</th><th scope="col">Algorithm</th><th scope="col">Action</th><th scope="col">Message ID</th><th scope="col">Observation ID</th><th scope="col">Accession Number</th><th scope="col">Exception Text</th></tr></thead><tbody></tbody></table></div></div>

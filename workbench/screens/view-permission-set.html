@@ -41,9 +41,6 @@
   .ps-approval { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 6px; }
   .ps-guest-note { margin: 0 0 12px; }
   .ps-yes { font-weight: 600; }
-  .ps-dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 12px 20px; }
-  .ps-dl dt { font-weight: 500; color: var(--bs-secondary-color); font-size: 13px; }
-  .ps-dl dd { margin: 2px 0 0; }
   @media (max-width: 992px) {
     .ps-layout { grid-template-columns: minmax(0, 1fr); }
     .ps-side { position: static; max-height: none; }
@@ -123,7 +120,7 @@
         </div>
         <section class="card ds-form-section">
           <h2 class="card-header h6 mb-0 fw-semibold">Permission Set Information</h2>
-          <div class="card-body"><dl class="ps-dl mb-0"><div><dt>Permission Set Name</dt><dd>NEDSS CASEWORKER</dd></div><div><dt>Description</dt><dd>Interacts regularly with a subject. Interacts with the data at a working level to build the Investigation.</dd></div></dl></div>
+          <div class="card-body"><dl class="ds-dl mb-0"><div><dt>Permission Set Name</dt><dd>NEDSS CASEWORKER</dd></div><div><dt>Description</dt><dd>Interacts regularly with a subject. Interacts with the data at a working level to build the Investigation.</dd></div></dl></div>
         </section>
         <section class="card ds-form-section" aria-labelledby="permTitle">
           <h2 class="card-header h6 mb-0 fw-semibold" id="permTitle">Permissions</h2>

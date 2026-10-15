@@ -16,11 +16,6 @@
     .page-body { padding: 16px; }
   }
   .page-body { max-width: none; }
-  .cs-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  .cs-results-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
-  .cs-results-head h2 { flex: 1 1 auto; margin: 0; font-size: 1.25rem; }
-  .cs-results-head h2:focus { outline: none; }
-  .cs-results-head h2:focus-visible { outline: 2px solid var(--bs-focus-ring-color); outline-offset: 2px; }
 </style>
 </head>
 <body data-nav-section="system-management">
@@ -84,12 +79,12 @@
             <div class="card-body d-grid gap-3">
               <p class="form-text mb-0" id="criteriaHint">Choose the lab and the test type, then enter a lab test code or a description. The sample results are ten of the Default Manual Lab's resulted tests.</p>
               <div class="ds-entry-grid"><div class="ds-field"><label class="ds-required" for="ltLab">Lab Name</label><select class="form-select" id="ltLab" data-match="labId" required data-errmsg="Choose a lab"><option value="">Select a lab</option><option value="DEFAULT">Default Manual Lab</option><option value="11D0990760">LAB CORP OF AMERICA ATHENS-PSC, 1000 HAWTHORNE AVE SUITE D, ATHENS, GA 30606, 7065469822</option><option value="11D0990761">LAB CORP OF AMERICA ROSWELL-PSC, 1295 HEMBREE RD SUITE 203, ROSWELL, GA 30076, 7704109586</option><option value="11D0885498">LABCORP OF AMERICA HOLDINGS DS, 1506 CHATTANOOGA ROAD STE B, DALTON, GA 30720, 3362291127</option><option value="11D0703709">LABCORP OF AMERICA HOLDINGS DS, 181-A UPPER RIVERDALE RD, RIVERDALE, GA 30274, 7709070447</option><option value="11D0703705">LABCORP OF AMERICA HOLDINGS DS, 478 PEACHTREE RD STE 711, ATLANTA, GA 30308, 4045235277</option><option value="11D0264622">LABCORP OF AMERICA HOLDINGS DS, 5205 WATERS AVE, SAVANNAH, GA 31404, 9123527700</option><option value="11D0872094">LABCORP OF AMERICA HOLDINGS DS, 575 PROFESSIONAL DR SUITE 110, LAWRENCEVILLE, GA 30045, 7709624847</option><option value="11D0858217">LABCORP OF AMERICA HOLDINGS DS, 803 N JEFFERSON ST STE B, ALBANY, GA 31701, 9124363111</option><option value="11D0872078">LABCORP OF AMERICA HOLDINGS DS, 840 CHURCH STREET EXT, MARIETTA, GA 30067, 7704190343</option></select><span class="invalid-feedback" id="ltLab-error" hidden></span></div><div class="ds-field"><label class="ds-required" for="ltType">Test Type</label><select class="form-select" id="ltType" data-match="testType" required data-errmsg="Choose a test type"><option value="">Select a test type</option><option>Ordered</option><option>Resulted</option></select><span class="invalid-feedback" id="ltType-error" hidden></span></div><div class="ds-field"><label for="ltCode">Lab Test Code</label><input class="form-control" id="ltCode" type="text" autocomplete="off" data-match="code"><span class="invalid-feedback" id="ltCode-error" hidden></span></div><div class="ds-field ds-field-wide"><label for="ltDesc">Lab Test Description</label><div class="ds-op-field"><select class="form-select" id="ltDesc-op" data-op-for="ltDesc" aria-label="Lab Test Description operator"><option value="CT" selected>Contains</option><option value="=">Equal</option></select><input class="form-control" id="ltDesc" type="text" autocomplete="off" data-match="description"></div><span class="invalid-feedback" id="ltDesc-error" hidden></span></div></div>
-              <div class="cs-actions"><button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
+              <div class="ds-actions"><button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
                 <button class="btn btn-outline-primary" type="reset">Clear</button></div>
             </div></section>
         </form>
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
-          <div class="cs-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
+          <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
             <a class="btn btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New Lab Test</a></div>
           <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
             <table class="table ds-table" id="resultsTable" data-columns="[&quot;code&quot;, &quot;description&quot;, &quot;labId&quot;, &quot;testType&quot;]" data-actions="[{&quot;label&quot;: &quot;View&quot;, &quot;icon&quot;: &quot;visibility&quot;, &quot;href&quot;: &quot;#&quot;}, {&quot;label&quot;: &quot;Edit&quot;, &quot;icon&quot;: &quot;edit&quot;, &quot;href&quot;: &quot;#&quot;}]" data-row-label="code"><caption class="visually-hidden">Local lab tests found</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">Lab Test Code</th><th scope="col">Lab Test Description</th><th scope="col">Lab ID</th><th scope="col">Test Type</th></tr></thead><tbody></tbody></table></div></div>

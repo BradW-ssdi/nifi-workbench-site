@@ -15,9 +15,7 @@
   @media (max-width: 820px) {
     .page-body { padding: 16px; }
   }
-  .rp-dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 12px 20px; margin: 0; }
-  .rp-dl dt { font-weight: 500; color: var(--bs-secondary-color); font-size: 13px; }
-  .rp-dl dd { margin: 2px 0 0; overflow-wrap: anywhere; }
+  .ds-dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 12px 20px; margin: 0; }
   .rp-name { overflow-wrap: anywhere; }
   .rp-reports { columns: 2 260px; column-gap: 24px; margin: 0; padding-left: 1.25rem; }
   .rp-reports li { break-inside: avoid; margin-bottom: 4px; }
@@ -84,7 +82,7 @@
           <button type="button" class="btn btn-outline-primary rounded-pill" id="deleteSource">Delete</button>
         </div>
         <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Data Source</h2>
-          <div class="card-body"><dl class="rp-dl">
+          <div class="card-body"><dl class="ds-dl">
             <div><dt>Name</dt><dd>NBS_ODS.PHCDEMOGRAPHIC</dd></div><div><dt>Title</dt><dd>Disease Counts by County</dd></div>
             <div><dt>Description</dt><dd>Disease Counts by County summarized to the Case Level, Jurisdiction Security</dd></div>
             <div><dt>Secure by program area and jurisdiction</dt><dd>Yes</dd></div><div><dt>Secure by reporting facility</dt><dd>No</dd></div></dl></div></section>

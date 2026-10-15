@@ -13,21 +13,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   .page-body { padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }   /* the column never grows past the page: a wide Phase 2 chip is squeezed, as in Phase 2, instead of widening it */
-  .ds-toolbar .form-control { width: 280px; }
   @media (max-width: 820px) {
-    .ds-toolbar .form-control { width: 100%; }
     .page-body { padding: 16px; }
   }
   /* Porting steps: where this screen sits in the five. The current step is marked by weight and a bar, not color only. */
-  .pp-steps { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 12px 0 0; padding: 0; counter-reset: step; }
-  .pp-steps li { counter-increment: step; color: var(--bs-secondary-color); padding-bottom: 4px; display: flex; align-items: center; gap: 4px; }
-  .pp-steps li::before { content: counter(step) "."; }
-  .pp-steps .pp-done svg { flex: none; width: 18px; height: 18px; color: var(--bs-success-text-emphasis); }
-  .pp-steps li[aria-current="step"] { color: var(--bs-body-color); font-weight: 600; box-shadow: inset 0 -3px 0 var(--bs-primary); }
-  .pp-details { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; margin: 0; }
-  .pp-details dt { font-weight: 600; }
-  .pp-details dd { margin: 0; overflow-wrap: anywhere; }
-  @media (max-width: 480px) { .pp-details { grid-template-columns: minmax(0, 1fr); } .pp-details dd { margin-bottom: 8px; } }
 </style>
 </head>
 <body data-nav-section="system-management">
@@ -78,11 +67,11 @@
           <ol class="breadcrumb"><li class="breadcrumb-item"><a href="system-management.html">System Management</a></li><li class="breadcrumb-item"><a href="manage-pages.html">Manage Pages</a></li><li class="breadcrumb-item"><a href="manage-page-porting.html">Page Porting</a></li><li class="breadcrumb-item active" aria-current="page">Port Page</li></ol>
         </nav>
         <h1 class="display-6 mb-0 mt-2">Map Questions</h1>
-        <ol class="pp-steps" aria-label="Porting steps"><li class="pp-done"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#check_circle"/></svg>Map details<span class="visually-hidden">, done</span></li><li aria-current="step">Map questions</li><li>Map answers</li><li>Review mapping</li><li>Port condition</li></ol>
+        <ol class="ds-steps" aria-label="Porting steps"><li class="ds-step-done"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#check_circle"/></svg>Map details<span class="visually-hidden">, done</span></li><li aria-current="step">Map questions</li><li>Map answers</li><li>Review mapping</li><li>Port condition</li></ol>
       </div>
       <div class="page-body">
         <!-- Map Questions modernizes PortPage.do step two (QuestionMappingPage.jsp): each question on the From page is mapped to a question on the To page, or marked not to port. Same queue contract as Manage Pages. Map on a row opens the Map question dialog (js/ds-dialog.js). DEV: the server saves each mapping; Save keeps the map to finish later. -->
-        <dl class="pp-details">
+        <dl class="ds-details">
           <dt>Map</dt><dd>Varicella_Legacy_to_Page_Builder_Mapping_NBS_5_4_GA_TX</dd>
           <dt>From page</dt><dd>Legacy Varicella Investigation</dd>
           <dt>To page</dt><dd>Varicella Investigation</dd>
@@ -190,7 +179,7 @@
         <div class="modal-dialog modal-lg"><div class="modal-content">
           <div class="modal-header"><h2 class="modal-title h5" id="mapTitle">Map question</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
           <div class="modal-body d-grid gap-3">
-            <dl class="pp-details" id="mapFrom">
+            <dl class="ds-details" id="mapFrom">
               <dt>From question</dt><dd data-f="name"></dd>
               <dt>Data type</dt><dd data-f="type"></dd>
               <dt>Value set</dt><dd data-f="vs"></dd>

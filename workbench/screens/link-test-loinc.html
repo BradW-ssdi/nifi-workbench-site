@@ -16,11 +16,6 @@
     .page-body { padding: 16px; }
   }
   .page-body { max-width: none; }
-  .cs-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  .cs-results-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
-  .cs-results-head h2 { flex: 1 1 auto; margin: 0; font-size: 1.25rem; }
-  .cs-results-head h2:focus { outline: none; }
-  .cs-results-head h2:focus-visible { outline: 2px solid var(--bs-focus-ring-color); outline-offset: 2px; }
 </style>
 </head>
 <body data-nav-section="system-management">
@@ -84,12 +79,12 @@
             <div class="card-body d-grid gap-3">
               <p class="form-text mb-0" id="criteriaHint">Enter a lab test code. The sample results are links for Default Manual Lab tests that start with T-50.</p>
               <div class="ds-entry-grid"><div class="ds-field"><label class="ds-required" for="ltlCode">Lab Test Code</label><input class="form-control" id="ltlCode" type="text" autocomplete="off" data-match="testCode" required data-errmsg="Enter a lab test code"><span class="invalid-feedback" id="ltlCode-error" hidden></span></div></div>
-              <div class="cs-actions"><button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
+              <div class="ds-actions"><button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
                 <button class="btn btn-outline-primary" type="reset">Clear</button></div>
             </div></section>
         </form>
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
-          <div class="cs-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
+          <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
             <a class="btn btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add Link</a></div>
           <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
             <table class="table ds-table" id="resultsTable" data-columns="[&quot;testCode&quot;, &quot;labId&quot;, &quot;loincCode&quot;]" data-actions="[]" data-row-label="testCode"><caption class="visually-hidden">Links found</caption><thead><tr><th scope="col">Lab Test Code</th><th scope="col">Lab ID</th><th scope="col">LOINC Code</th></tr></thead><tbody></tbody></table></div></div>

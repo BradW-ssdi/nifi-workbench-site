@@ -317,7 +317,7 @@
       ] },
     { id: 'port-page', title: 'Port Page', priority: 'Page Management', status: 'ready',
       notes: [
-        { code: 'PP-1', title: 'Steps', pin: { sel: '.pp-steps' },
+        { code: 'PP-1', title: 'Steps', pin: { sel: '.ds-steps' },
           text: 'Porting has five steps. This is the first; the step list shows where you are.' },
         { code: 'PP-2', title: 'Map name', pin: { sel: '#mapName' },
           text: 'Required, up to 100 characters, and not the name of an existing map, as on the current screen.' },

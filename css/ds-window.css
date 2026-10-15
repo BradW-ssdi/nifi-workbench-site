@@ -12532,6 +12532,122 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
   gap: 16px;
 }
 
+.ds-window .ds-dl:not(.ds-phase2, .ds-phase2 *) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: 12px 20px;
+  margin: 0;
+}
+
+.ds-window .ds-dl dt:not(.ds-phase2, .ds-phase2 *) {
+  font-weight: 500;
+  color: var(--bs-secondary-color);
+  font-size: 13px;
+}
+
+.ds-window .ds-dl dd:not(.ds-phase2, .ds-phase2 *) {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.ds-window .ds-details:not(.ds-phase2, .ds-phase2 *) {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 4px 16px;
+  margin: 0;
+}
+
+.ds-window .ds-details dt:not(.ds-phase2, .ds-phase2 *) {
+  font-weight: 600;
+}
+
+.ds-window .ds-details dd:not(.ds-phase2, .ds-phase2 *) {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .ds-window .ds-details:not(.ds-phase2, .ds-phase2 *) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-window .ds-details dd:not(.ds-phase2, .ds-phase2 *) {
+    margin-bottom: 8px;
+  }
+}
+.ds-window .ds-steps:not(.ds-phase2, .ds-phase2 *) {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 12px 0 0;
+  padding: 0;
+  counter-reset: step;
+}
+
+.ds-window .ds-steps li:not(.ds-phase2, .ds-phase2 *) {
+  counter-increment: step;
+  color: var(--bs-secondary-color);
+  padding-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ds-window .ds-steps li:not(.ds-phase2, .ds-phase2 *)::before {
+  content: counter(step) ".";
+}
+
+.ds-window .ds-steps .ds-step-done svg:not(.ds-phase2, .ds-phase2 *) {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--bs-success-text-emphasis);
+}
+
+.ds-window .ds-steps li[aria-current=step]:not(.ds-phase2, .ds-phase2 *) {
+  color: var(--bs-body-color);
+  font-weight: 600;
+  box-shadow: inset 0 -3px 0 var(--bs-primary);
+}
+
+.ds-window .ds-actions:not(.ds-phase2, .ds-phase2 *) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.ds-window .ds-results-head:not(.ds-phase2, .ds-phase2 *) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+
+.ds-window .ds-results-head h2:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-head .h2:not(.ds-phase2, .ds-phase2 *) {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.ds-window .ds-results-head h2:focus:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-head .h2:focus:not(.ds-phase2, .ds-phase2 *) {
+  outline: none;
+}
+
+.ds-window .ds-results-head h2:focus-visible:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-results-head .h2:focus-visible:not(.ds-phase2, .ds-phase2 *) {
+  outline: 2px solid var(--bs-focus-ring-color);
+  outline-offset: 2px;
+}
+
+.ds-window .ds-toolbar .form-control:not(.ds-phase2, .ds-phase2 *) {
+  width: 280px;
+}
+
+@media (max-width: 820px) {
+  .ds-window .ds-toolbar .form-control:not(.ds-phase2, .ds-phase2 *) {
+    width: 100%;
+  }
+}
 .ds-window .ds-filter-toggle[aria-expanded=true]:not(.ds-phase2, .ds-phase2 *) {
   background: var(--ds-tint);
 }

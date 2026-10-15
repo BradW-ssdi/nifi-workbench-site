@@ -16,11 +16,6 @@
     .page-body { padding: 16px; }
   }
   .page-body { max-width: none; }
-  .cs-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  .cs-results-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
-  .cs-results-head h2 { flex: 1 1 auto; margin: 0; font-size: 1.25rem; }
-  .cs-results-head h2:focus { outline: none; }
-  .cs-results-head h2:focus-visible { outline: 2px solid var(--bs-focus-ring-color); outline-offset: 2px; }
 </style>
 </head>
 <body data-nav-section="system-management">
@@ -84,12 +79,12 @@
             <div class="card-body d-grid gap-3">
               <p class="form-text mb-0" id="criteriaHint">Enter a SNOMED code or a description. The sample results are SNOMEDs whose description contains hepatitis.</p>
               <div class="ds-entry-grid"><div class="ds-field"><label for="snomedCode">SNOMED Code</label><input class="form-control" id="snomedCode" type="text" autocomplete="off" data-match="code"><span class="invalid-feedback" id="snomedCode-error" hidden></span></div><div class="ds-field ds-field-wide"><label for="snomedDesc">SNOMED Description</label><div class="ds-op-field"><select class="form-select" id="snomedDesc-op" data-op-for="snomedDesc" aria-label="SNOMED Description operator"><option value="CT" selected>Contains</option><option value="=">Equal</option></select><input class="form-control" id="snomedDesc" type="text" autocomplete="off" data-match="description"></div><span class="invalid-feedback" id="snomedDesc-error" hidden></span></div></div>
-              <div class="cs-actions"><button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
+              <div class="ds-actions"><button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
                 <button class="btn btn-outline-primary" type="reset">Clear</button></div>
             </div></section>
         </form>
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
-          <div class="cs-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
+          <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
             <a class="btn btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New SNOMED</a></div>
           <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
             <table class="table ds-table" id="resultsTable" data-columns="[&quot;code&quot;, &quot;description&quot;, &quot;conceptId&quot;, &quot;version&quot;]" data-actions="[{&quot;label&quot;: &quot;Edit&quot;, &quot;icon&quot;: &quot;edit&quot;, &quot;href&quot;: &quot;#&quot;}]" data-row-label="code"><caption class="visually-hidden">Snomeds found</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">SNOMED Code</th><th scope="col">SNOMED Description</th><th scope="col">Source Concept ID</th><th scope="col">Source Version ID</th></tr></thead><tbody></tbody></table></div></div>

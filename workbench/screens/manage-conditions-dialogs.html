@@ -13,16 +13,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   .page-body { padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }   /* the column never grows past the page: a wide Phase 2 chip is squeezed, as in Phase 2, instead of widening it */
-  .ds-toolbar .form-control { width: 280px; }
   @media (max-width: 820px) {
-    .ds-toolbar .form-control { width: 100%; }
     .page-body { padding: 16px; }
   }
   [hidden] { display: none !important; }
   .cd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 14px 20px; }
-  .cd-dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 12px 20px; margin: 0; }
-  .cd-dl dt { font-weight: 500; color: var(--bs-secondary-color); font-size: 13px; }
-  .cd-dl dd { margin: 2px 0 0; }
   fieldset.cd-yn { border: 0; margin: 0; padding: 0; min-width: 0; }
   fieldset.cd-yn legend { font-size: inherit; font-weight: 500; margin-bottom: 6px; float: none; }
   .cd-yn-opts { display: flex; gap: 20px; }
@@ -299,8 +294,8 @@
             <button type="button" class="btn-close" data-close aria-label="Close"></button></div>
           <div class="modal-body d-grid gap-3">
             <div class="alert alert-success mb-0" role="status" id="viewSaved" hidden></div>
-            <section aria-labelledby="vDetails"><h3 class="h6" id="vDetails">Condition Details</h3><dl class="cd-dl" id="viewDetails"></dl></section>
-            <section aria-labelledby="vBehavior"><h3 class="h6" id="vBehavior">Condition Behavior</h3><dl class="cd-dl" id="viewBehavior"></dl></section>
+            <section aria-labelledby="vDetails"><h3 class="h6" id="vDetails">Condition Details</h3><dl class="ds-dl" id="viewDetails"></dl></section>
+            <section aria-labelledby="vBehavior"><h3 class="h6" id="vBehavior">Condition Behavior</h3><dl class="ds-dl" id="viewBehavior"></dl></section>
           </div>
           <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Close</button>
             <button type="button" class="btn btn-primary" id="viewEdit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg>Edit</button></div>
