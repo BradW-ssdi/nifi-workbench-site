@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>View Data Source - Report Management - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<script src="../../js/app-frame.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; max-width: 1028px; }   /* 980px of content plus the padding */
+  .legend-note { color: var(--bs-secondary-color); font-size: 0.75rem; }
+  .legend-note .req { color: var(--bs-form-invalid-color); }
+  .apply-group { display: flex; gap: 12px 28px; flex-wrap: wrap; }
+  .ds-field-wide { max-width: none; }
+  .ds-radio-group { border: 0; margin: 0; padding: 0; min-width: 0; max-width: none; }
+  .ds-radio-group legend, fieldset.ds-field legend { font-size: inherit; font-weight: 500; margin-bottom: 6px; float: none; }
+  fieldset.ds-field { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .ds-check-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 8px 20px; padding: 10px 12px; border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius); max-height: 220px; overflow: auto; }
+  .ds-check-list-tall { grid-template-columns: minmax(0, 1fr); max-height: 360px; }
+  .ds-entry-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 14px 20px; align-items: start; }
+  .ds-entry-grid > .ds-field-wide { grid-column: 1 / -1; }
+  .ds-repeat { display: grid; gap: 14px; }
+  .ds-repeat-entry { display: grid; gap: 14px; padding: 16px; border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius-lg); }
+  .ds-empty { margin: 0; padding: 16px; text-align: center; color: var(--bs-secondary-color); }
+  .ds-label { font-weight: 500; }
+  .ds-tab-next { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+  /* Conditional sections hide with the hidden attribute; keep display utilities off them (Bootstrap's are !important) */
+  [hidden] { display: none !important; }
+  .ds-stack { display: grid; gap: 16px; }
+  @media (max-width: 820px) {
+    .page-body { padding: 16px; }
+  }
+  .rp-dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 12px 20px; margin: 0; }
+  .rp-dl dt { font-weight: 500; color: var(--bs-secondary-color); font-size: 13px; }
+  .rp-dl dd { margin: 2px 0 0; overflow-wrap: anywhere; }
+  .rp-name { overflow-wrap: anywhere; }
+  .rp-reports { columns: 2 260px; column-gap: 24px; margin: 0; padding-left: 1.25rem; }
+  .rp-reports li { break-inside: avoid; margin-bottom: 4px; }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb"><li class="breadcrumb-item"><a href="system-management.html">System Management</a></li><li class="breadcrumb-item"><a href="manage-data-sources.html">Manage Data Sources</a></li><li class="breadcrumb-item active" aria-current="page">View Data Source</li></ol>
+        </nav>
+        <h1 class="display-6 mb-0 mt-2">View Data Source</h1>
+        <p class="mb-0 mt-2"><span class="fw-semibold rp-name">Disease Counts by County (NBS_ODS.PHCDEMOGRAPHIC)</span></p>
+      </div>
+      <div class="page-body" style="max-width:none">
+        <!-- View Data Source modernizes ViewDataSource.do: the data source, its columns, and the reports that use it.
+             DEV: Delete is refused while reports use the data source; the confirm dialog says so and offers no Delete. -->
+        <div class="alert alert-success mb-0" role="status" id="colStatus" tabindex="-1" hidden></div>
+        <div class="d-flex flex-wrap gap-2 justify-content-end">
+          <a class="btn btn-outline-primary rounded-pill" href="#">Create column</a>
+          <a class="btn btn-outline-primary rounded-pill" href="#">Create report</a>
+          <a class="btn btn-outline-primary rounded-pill" href="register-data-source.html">Edit</a>
+          <button type="button" class="btn btn-outline-primary rounded-pill" id="deleteSource">Delete</button>
+        </div>
+        <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Data Source</h2>
+          <div class="card-body"><dl class="rp-dl">
+            <div><dt>Name</dt><dd>NBS_ODS.PHCDEMOGRAPHIC</dd></div><div><dt>Title</dt><dd>Disease Counts by County</dd></div>
+            <div><dt>Description</dt><dd>Disease Counts by County summarized to the Case Level, Jurisdiction Security</dd></div>
+            <div><dt>Secure by program area and jurisdiction</dt><dd>Yes</dd></div><div><dt>Secure by reporting facility</dt><dd>No</dd></div></dl></div></section>
+        <section class="card ds-form-section" aria-labelledby="colsTitle"><h2 class="card-header h6 mb-0 fw-semibold" id="colsTitle">Columns</h2>
+          <div class="card-body">
+            <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Columns, scrolls sideways">
+            <table class="table ds-table" id="colTable"><caption class="visually-hidden">Columns of this data source</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">Column Name</th><th scope="col">Title</th><th scope="col">Codeset</th><th scope="col">Type</th><th scope="col">Advanced Filter</th><th scope="col">Column Selection</th></tr></thead><tbody><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column County"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="County" aria-label="Delete column County"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">County</th><td>County</td><td>STATE_COUNTY_CODE_VALUE</td><td>STRING</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column ELP_class_cd"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="ELP_class_cd" aria-label="Delete column ELP_class_cd"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">ELP_class_cd</th><td>ELP Class Code</td><td>EL_TYPE_PST_PAT</td><td>STRING</td><td>No</td><td>No</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column ELP_from_time"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="ELP_from_time" aria-label="Delete column ELP_from_time"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">ELP_from_time</th><td>ELP From Time</td><td><span class="visually-hidden">None</span></td><td>DATETIME</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column ELP_to_time"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="ELP_to_time" aria-label="Delete column ELP_to_time"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">ELP_to_time</th><td>ELP To Time</td><td><span class="visually-hidden">None</span></td><td>DATETIME</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column ELP_use_cd"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="ELP_use_cd" aria-label="Delete column ELP_use_cd"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">ELP_use_cd</th><td>ELP Use Code</td><td>EL_USE_PST_PAT</td><td>STRING</td><td>No</td><td>No</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column Ethnic_group_ind_desc"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="Ethnic_group_ind_desc" aria-label="Delete column Ethnic_group_ind_desc"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">Ethnic_group_ind_desc</th><td>Ethnic Group</td><td>P_ETHN_GRP</td><td>STRING</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column LOCAL_ID"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="LOCAL_ID" aria-label="Delete column LOCAL_ID"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">LOCAL_ID</th><td>Investigation ID2</td><td><span class="visually-hidden">None</span></td><td>STRING</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column MSA_congress_district_cd"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="MSA_congress_district_cd" aria-label="Delete column MSA_congress_district_cd"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">MSA_congress_district_cd</th><td>MSA Congress District Code</td><td><span class="visually-hidden">None</span></td><td>STRING</td><td>No</td><td>No</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column NotificationDate"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="NotificationDate" aria-label="Delete column NotificationDate"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">NotificationDate</th><td>Notification Date</td><td><span class="visually-hidden">None</span></td><td>DATETIME</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column OnSetDate"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="OnSetDate" aria-label="Delete column OnSetDate"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">OnSetDate</th><td>OnSet Date</td><td><span class="visually-hidden">None</span></td><td>DATETIME</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column PHC_code"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="PHC_code" aria-label="Delete column PHC_code"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">PHC_code</th><td>Condition Code</td><td>CONDITION_CODE</td><td>STRING</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column PHC_code_desc"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="PHC_code_desc" aria-label="Delete column PHC_code_desc"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">PHC_code_desc</th><td>Condition Description</td><td>CONDITION_CODE</td><td>STRING</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column PHC_code_short_desc"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="PHC_code_short_desc" aria-label="Delete column PHC_code_short_desc"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">PHC_code_short_desc</th><td>Condition</td><td>CONDITION_CODE</td><td>STRING</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column PST_record_status_cd"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="PST_record_status_cd" aria-label="Delete column PST_record_status_cd"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">PST_record_status_cd</th><td>Postal Record Status Code</td><td><span class="visually-hidden">None</span></td><td>STRING</td><td>No</td><td>No</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column PST_record_status_time"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="PST_record_status_time" aria-label="Delete column PST_record_status_time"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">PST_record_status_time</th><td>Postal Record Status Time</td><td><span class="visually-hidden">None</span></td><td>DATETIME</td><td>No</td><td>No</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column Person_code_desc"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="Person_code_desc" aria-label="Delete column Person_code_desc"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">Person_code_desc</th><td>Person Code Description</td><td><span class="visually-hidden">None</span></td><td>STRING</td><td>No</td><td>No</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column State"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="State" aria-label="Delete column State"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">State</th><td>State</td><td>STATE_CODE</td><td>STRING</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column adults_in_house_nbr"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="adults_in_house_nbr" aria-label="Delete column adults_in_house_nbr"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">adults_in_house_nbr</th><td>Number of Adults in House</td><td><span class="visually-hidden">None</span></td><td>INTEGER</td><td>No</td><td>No</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column age_category_cd"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="age_category_cd" aria-label="Delete column age_category_cd"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">age_category_cd</th><td>Age Category Code</td><td><span class="visually-hidden">None</span></td><td>STRING</td><td>Yes</td><td>Yes</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="Edit column age_reported"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a><button type="button" data-delete-column="age_reported" aria-label="Delete column age_reported"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><th scope="row" class="rp-name">age_reported</th><td>Age Reported</td><td><span class="visually-hidden">None</span></td><td>INTEGER</td><td>Yes</td><td>Yes</td></tr></tbody></table></div></div>
+          </div></section>
+        <section class="card ds-form-section" aria-labelledby="repTitle"><h2 class="card-header h6 mb-0 fw-semibold" id="repTitle">Reports that use this data source</h2>
+          <div class="card-body"><ul class="rp-reports"><li>Border County Case Count</li><li>Case Count by County</li><li>Case Counts Report</li><li>Custom Report for Disease Counts by County</li><li>Disease Counts by County</li><li>Disease Report by County</li><li>Early Childhood Diseases</li><li>General Report</li></ul></div></section>
+      </div>
+      <div class="modal" id="confirmDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmText" hidden>
+        <div class="modal-dialog"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="confirmTitle">Delete?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body"><p id="confirmText" class="mb-0"></p></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-danger" id="confirmYes">Delete</button></div>
+        </div></div>
+      </div>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+<script src="../../js/ds-dialog.js"></script>
+<script>
+/* Delete a column (confirmed), or try to delete the data source: refused while reports use it. */
+(function () {
+  var dlg = document.getElementById('confirmDialog'), yes = document.getElementById('confirmYes'), text = document.getElementById('confirmText'), title = document.getElementById('confirmTitle'), status = document.getElementById('colStatus');
+  var opener = null, onYes = null;
+  function open(t, msg, canDelete, from, fn) { title.textContent = t; text.textContent = msg; yes.hidden = !canDelete; opener = from; onYes = fn; dsDialog.show(dlg); (canDelete ? yes : dlg.querySelector('[data-close]')).focus(); }
+  function close() { dsDialog.hide(dlg); if (opener && document.contains(opener)) opener.focus(); }
+  document.getElementById('colTable').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-delete-column]'); if (!b) return;
+    var name = b.getAttribute('data-delete-column');
+    open('Delete column?', 'Delete the column ' + name + '? Reports that show it lose it.', true, b, function () {
+      var tr = b.closest('tr'), next = tr.nextElementSibling || tr.previousElementSibling;
+      tr.remove(); dsDialog.hide(dlg);
+      status.textContent = 'Column ' + name + ' deleted.'; status.hidden = false;
+      var f = next && next.querySelector('[data-delete-column]'); (f || status).focus();
+    });
+  });
+  document.getElementById('deleteSource').addEventListener('click', function (e) {
+    var n = document.querySelectorAll('.rp-reports li').length;
+    open('Data source in use', 'This data source cannot be deleted while ' + n + ' reports use it. Move or delete those reports first.', false, e.currentTarget, null);
+  });
+  yes.addEventListener('click', function () { if (onYes) onYes(); });
+  dlg.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', close); });
+  dlg.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+    if (e.key !== 'Tab') return;
+    var f = Array.prototype.filter.call(dlg.querySelectorAll('button'), function (x) { return !x.hidden; });
+    if (e.shiftKey && (document.activeElement === f[0] || document.activeElement === dlg)) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+  });
+})();
+</script>
+</body>
+</html>

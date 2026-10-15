@@ -183,6 +183,15 @@
         { code: 'EPS-5', title: 'Guest without User', pin: { sel: '#PatientViewGuest' }, ask: true,
           text: 'Can an operation be on for Guest while it is off for User? The Requires rules cover User only, so this form does not stop it.' }
       ] },
+    { id: 'view-data-source', title: 'View Data Source', priority: 'Report Management (priority 5)', status: 'ready',
+      notes: [
+        { code: 'DS-1', title: 'Columns', pin: { sel: '#colsTitle' },
+          text: 'Each column with its title, codeset, type, and whether it is offered as an advanced filter and in column selection. Each has Edit and Delete; Delete asks first.' },
+        { code: 'DS-2', title: 'Reports that use it', pin: { sel: '#repTitle' },
+          text: 'The reports built on this data source.' },
+        { code: 'DS-3', title: 'Deleting a data source in use', pin: { sel: '#deleteSource' }, ask: true,
+          text: 'This template refuses to delete a data source while reports use it, and says how many. Is that the rule, or should deleting it also remove or move those reports?' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },
