@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage Value Sets - Page Management - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<link rel="stylesheet" href="../phase2/island.css"><!-- Phase 2 styles for .ds-phase2, only in this layout -->
+<script src="../../js/app-frame.js" defer></script>
+<script src="../../js/ds-dialog.js"></script>
+<script src="../../js/list-filters.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }   /* the column never grows past the page: a wide Phase 2 chip is squeezed, as in Phase 2, instead of widening it */
+  .ds-toolbar .form-control { width: 280px; }
+  @media (max-width: 820px) {
+    .ds-toolbar .form-control { width: 100%; }
+    .page-body { padding: 16px; }
+  }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb"><li class="breadcrumb-item"><a href="system-management.html">System Management</a></li><li class="breadcrumb-item active" aria-current="page">Manage Value Sets</li></ol>
+        </nav>
+        <h1 class="display-6 mb-0 mt-2">Manage Value Sets</h1>
+      </div>
+      <div class="page-body">
+        <!-- Manage Value Sets modernizes ManageCodeSet.do (ViewValueSetLib): the answer lists that questions use. Same queue contract as Manage Pages. The sample is the first 20 of the library; the server pages the rest. DEV: Import uploads a value set file. -->
+        <div class="ds-toolbar">
+          <input class="form-control rounded-pill" type="search" id="filterInput" aria-label="Filter value sets" placeholder="Search to filter..." aria-describedby="filterStatus">
+          <span class="ms-auto"></span>
+          <a class="btn btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
+          <a class="btn btn-outline-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#upload_file"/></svg>Import</a>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+        </div>
+        <!-- Column filter chips: Phase 2's queue chips, in Phase 2's order (the chips, Filter, then "| Reset" while a
+             filter is applied). DEV: build this with the Phase 3 queue component in the app
+             (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
+        <div class="ds-phase2">
+          <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="valueSetTable" data-noun="value sets">
+            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Type">
+              <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="vsType">
+                <span id="vsType-chipLabel">Type</span>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="vsType-subMenu" aria-label="Edit Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+              </div>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="vsType-subMenu"></div>
+            </div>
+            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Status">
+              <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="vsStatus">
+                <span id="vsStatus-chipLabel">Status</span>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="vsStatus-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+              </div>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="vsStatus-subMenu"></div>
+            </div>
+            <div id="filtersButtonDiv">
+              <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="filterButtonId" class="chip-button btn-outline-dark rounded-pill dropdown-toggle d-flex align-items-center bg-primary chip badge me-2 ps-3 filter-chip" id="filtersId">
+                <span aria-hidden="true" class="material-symbols-rounded text me-1" style="font-size: 24px;">filter_alt</span>
+                <span class="me-2" style="font-size: 14px;">Filter</span>
+              </button>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="filterButtonId"></div>
+            </div>
+            <div id="clearFiltersDiv" style="margin-top: 5px">| <button type="button" class="btn btn-link p-0 text-decoration-none align-baseline" id="clearFilters">Reset</button></div>
+          </div>
+        </div>
+        <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+        <div class="ds-table-frame">
+          <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Manage Value Sets table, scrolls horizontally when zoomed">
+          <table class="table ds-table" id="valueSetTable">
+            <caption class="visually-hidden">Value set library. Column headers with buttons are sortable.</caption>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col"><button class="ds-sort-btn" data-sort="1">Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Value Set Code <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">Value Set Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">Value Set Description <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th></tr></thead>
+            <tbody>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View 3RDGEN_CEPH"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 3RDGEN_CEPH"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>LOCAL</td><td>3RDGEN_CEPH</td><td>3rd generation cephalosporin set</td><td>3rd generation cephalosporins</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View 730_JUSTIFICATION"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 730_JUSTIFICATION"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>LOCAL</td><td>730_JUSTIFICATION</td><td>730_JUSTIFICATION</td><td>Justification for 730 case classification</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View 900_RESULT_PROVIDED"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 900_RESULT_PROVIDED"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>LOCAL</td><td>900_RESULT_PROVIDED</td><td>900 Result Provide</td><td>Value set to indicate whether or not HIV testing result was provided to the client.</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View 900_TEST_RESULTS"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 900_TEST_RESULTS"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>LOCAL</td><td>900_TEST_RESULTS</td><td>900 Test Results</td><td>Result of 900 test at this event.</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View 900_TST_AT_EVENT"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 900_TST_AT_EVENT"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>LOCAL</td><td>900_TST_AT_EVENT</td><td>900 Test at Event</td><td>Indicates whether or not an HIV test was conducted at the event.</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View ABD_IMAGING_RSLT_MIS"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit ABD_IMAGING_RSLT_MIS"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>LOCAL</td><td>ABD_IMAGING_RSLT_MIS</td><td>Abdominal Imaging Result (MIS)</td><td>Created to support data collection for multisystem inflammatory syndrome secondary to COVID.</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View ABD_IMAGING_TYPE_MIS"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit ABD_IMAGING_TYPE_MIS"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>LOCAL</td><td>ABD_IMAGING_TYPE_MIS</td><td>Abdominal Imaging Type (MIS)</td><td>Created to support data collection for multisystem inflammatory syndrome secondary to COVID.</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View ACT_CD_SYS"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit ACT_CD_SYS"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>SYS</td><td>ACT_CD_SYS</td><td>NBS Act Coding System</td><td>NBS Act Coding System</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View ACT_CLS"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit ACT_CLS"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>SYS</td><td>ACT_CLS</td><td>NBS Act Class</td><td>HL7 Act Class</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View ACT_ENCOUNTER_CODE"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit ACT_ENCOUNTER_CODE"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>PHIN</td><td>ACT_ENCOUNTER_CODE</td><td>Act Encounter Code</td><td>Act Encounter Code that is used to define patient encounter.</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View ACT_MOOD"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit ACT_MOOD"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>SYS</td><td>ACT_MOOD</td><td>NBS Act Mode</td><td>HL7 Act Mode</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View ACT_OBJ_ST"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit ACT_OBJ_ST"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>LOCAL</td><td>ACT_OBJ_ST</td><td>Result status (HL7)</td><td>The status of the results. This field is required when the OBR segment is contained in a message. Uses HL7 2.5 Table 0123-Result Status.</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View ACT_PRIORITY"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit ACT_PRIORITY"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>LOCAL</td><td>ACT_PRIORITY</td><td>Referral Priority (HL7)</td><td>Urgency of the referral.</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View ADD_RSN"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit ADD_RSN"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>SYS</td><td>ADD_RSN</td><td>NBS Add Reason</td><td>NBS Add Reason</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View AFMPATHOGEN"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit AFMPATHOGEN"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>LOCAL</td><td>AFMPATHOGEN</td><td>AFM Pathogen tests</td><td>AFM Pathogen tests</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View PHVS_AGEUNIT_UCUM"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit PHVS_AGEUNIT_UCUM"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>PHIN</td><td>PHVS_AGEUNIT_UCUM</td><td>Age Units</td><td>Units of measure for age.</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View AGE_UNIT_SHORT"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit AGE_UNIT_SHORT"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>LOCAL</td><td>AGE_UNIT_SHORT</td><td>Age Units Short List</td><td>Units of measure for age (short list).</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View AI_AUTH"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit AI_AUTH"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>SYS</td><td>AI_AUTH</td><td>NBS Act ID Assigning Authority</td><td>NBS Act ID Assigning Authority</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View AI_TYPE"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit AI_TYPE"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>SYS</td><td>AI_TYPE</td><td>NBS Act ID Type</td><td>NBS Act ID Type</td><td><span class="badge text-bg-success">Active</span></td></tr>
+              <tr><td class="ds-row-actions"><a href="#" aria-label="View ALRT_PUBLIC_HEALTH_EVENT"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit ALRT_PUBLIC_HEALTH_EVENT"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Local</td><td>ALRT_PUBLIC_HEALTH_EVENT</td><td>ALRT_PUBLIC_HEALTH_EVENT</td><td>Public health events answer list, e.g. Lab Report, Morbidity Report, Case Report (SNOMED-derived)</td><td><span class="badge text-bg-success">Active</span></td></tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="ds-table-footer">
+            <span class="ds-page-summary" id="pageSummary">Items 1 - 20 of 20</span>
+            <nav aria-label="Pagination">
+              <ul class="pagination mb-0">
+                <li class="page-item"><button type="button" class="page-link disabled" aria-label="Previous page" disabled>Previous</button></li>
+                <li class="page-item"><button type="button" class="page-link active" aria-current="page" aria-label="Page 1">1</button></li>
+                <li class="page-item"><button type="button" class="page-link disabled" aria-label="Next page" disabled>Next</button></li>
+              </ul>
+            </nav>
+            <div class="ds-page-size">
+              <select class="form-select" id="pageSize"><option>5</option><option selected>25</option><option>50</option><option>100</option></select>
+              <label for="pageSize">Items per page</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+<script>
+/* Working reference implementations. Same contracts as the Algorithm Library
+   template. DEV: keep the aria updates and announcements when wiring HTMX. */
+(function () {
+  var table = document.getElementById('valueSetTable');
+  var status = document.getElementById('filterStatus');
+  var tbody = table.tBodies[0];
+
+  /* Sort: aria-sort exclusively on the sorted th, order announced. */
+  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var th = btn.closest('th');
+      var col = +btn.dataset.sort;
+      var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
+      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
+      th.setAttribute('aria-sort', dir);
+      var rows = Array.prototype.slice.call(tbody.rows);
+      rows.sort(function (a, b) {
+        var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();
+        return dir === 'ascending' ? x.localeCompare(y) : y.localeCompare(x);
+      });
+      rows.forEach(function (r) { tbody.appendChild(r); });
+      status.textContent = 'Sorted by ' + btn.textContent.trim() + ', ' + dir;
+    });
+  });
+
+  /* Text filter: announce the result count, never move focus. */
+  var filter = document.getElementById('filterInput');
+  var t;
+  filter.addEventListener('input', function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      var q = filter.value.trim().toLowerCase();
+      var shown = 0, total = 0;   /* rows a column filter chip removed are not counted */
+      Array.prototype.forEach.call(tbody.rows, function (r) {
+        var hit = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+        r.hidden = !hit;
+        if (!r.classList.contains('ds-row-filtered')) { total++; if (hit) shown++; }
+      });
+      status.textContent = q ? (shown + ' of ' + total + ' value sets shown') : '';
+    }, 300);
+  });
+
+  /* Column filter chips and Reset: js/list-filters.js. */
+})();
+</script>
+</body>
+</html>

@@ -286,6 +286,24 @@
         { code: 'LC-2', title: 'Links', pin: { sel: '#resultsTable' }, after: 'search',
           text: 'Each link shows the condition code, the LOINC code, and the disease name.' }
       ] },
+    { id: 'manage-value-sets', title: 'Manage Value Sets', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'VS-1', title: 'Library', pin: { sel: '#valueSetTable' },
+          text: 'Type, code, name, description, and status for each value set, with View and Edit, as in the current library.' },
+        { code: 'VS-2', title: 'Filters', pin: { sel: '#filterChipsDiv' },
+          text: 'Type and Status are filters, as in the Phase 2 queues; Filter adds the other columns.' },
+        { code: 'VS-3', title: 'Type values', pin: { sel: '#vsType' }, ask: true,
+          text: 'The current library has both LOCAL and Local as types. Are they the same type?' }
+      ] },
+    { id: 'manage-templates', title: 'Manage Templates', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'TP-1', title: 'Library', pin: { sel: '#templateTable' },
+          text: 'Name, description, last updated and by whom, source, and status for each template, with View.' },
+        { code: 'TP-2', title: 'Toolbar', pin: { sel: 'main .ds-toolbar' },
+          text: 'The import and export log, Import, Print, and Download. The current library has no Add New.' },
+        { code: 'TP-3', title: 'Filters', pin: { sel: '#filterChipsDiv' },
+          text: 'Source and Status are filters, as in the Phase 2 queues; Filter adds the other columns.' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },

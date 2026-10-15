@@ -56,6 +56,8 @@
       { title: 'Lab Result - SNOMED Link', href: 'screens/link-result-snomed.html', ext: true, icon: 'open_in_new' },
       { title: 'Lab Test - LOINC Link', href: 'screens/link-test-loinc.html', ext: true, icon: 'open_in_new' },
       { title: 'LOINC - Condition Link', href: 'screens/link-loinc-condition.html', ext: true, icon: 'open_in_new' },
+      { title: 'Manage Value Sets', href: 'screens/manage-value-sets.html', ext: true, icon: 'open_in_new' },
+      { title: 'Manage Templates', href: 'screens/manage-templates.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Questions', href: 'screens/manage-questions.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Users', href: 'screens/manage-users.html', ext: true, icon: 'open_in_new' },
       { title: 'Edit User', href: 'screens/edit-user.html', ext: true, icon: 'open_in_new' },
