@@ -114,6 +114,21 @@
         { code: 'WV-3', title: 'One page, read only', pin: { sel: 'h2', text: 'Basic Criteria' },
           text: 'The same sections as Add, on one page instead of tabs, with the criteria as tables.' }
       ] },
+    { id: 'view-page', title: 'View Page', priority: 'Page Builder (priority 3)', status: 'ready',
+      notes: [
+        { code: 'VP-1', title: 'Actions by page state', pin: { sel: '.vp-toolbar' },
+          text: 'A published page offers Create new draft and Save as template. A draft offers Edit, Publish, and Delete draft. Page details, rules, history, and metadata are always there.' },
+        { code: 'VP-2', title: 'Page details', pin: { sel: '#detailsBtn' },
+          text: 'Event type, name, description, related conditions, data mart name, and status, in a dialog.' },
+        { code: 'VP-3', title: 'Questions read only', pin: { sel: '.vp-q' },
+          text: 'Each question shows its label and type, with Required and any rule that shows or hides it as text. The current screen draws every question as a disabled form control.' },
+        { code: 'VP-4', title: 'Sections and subsections', pin: { sel: '[data-collapse-subs]' },
+          text: 'Each section and subsection opens and closes. Collapse subsections closes every subsection in a section at once.' },
+        { code: 'VP-5', title: 'Tabs', pin: { sel: '#tCase' },
+          text: 'Patient, Case Info, Contact Tracing, Contact Records, and Supplemental Info, as the page defines them.' },
+        { code: 'VP-6', title: 'Back to top', pin: { sel: '.vp-section-head' }, ask: true,
+          text: 'The current screen has a Back to top link on every section. This template leaves it out, since sections close and the page header is always reachable. Is Back to top still needed?' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },
