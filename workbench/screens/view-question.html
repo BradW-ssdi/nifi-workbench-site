@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>View Question - Page Management - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<script src="../../js/app-frame.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; max-width: 1028px; }   /* 980px of content plus the padding */
+  /* Conditional sections hide with the hidden attribute; keep display utilities off them (Bootstrap's are !important) */
+  [hidden] { display: none !important; }
+  @media (max-width: 820px) {
+    .page-body { padding: 16px; }
+  }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb"><li class="breadcrumb-item"><a href="system-management.html">System Management</a></li><li class="breadcrumb-item"><a href="manage-questions.html">Manage Questions</a></li><li class="breadcrumb-item active" aria-current="page">View Question</li></ol>
+        </nav>
+        <h1 class="display-6 mb-0 mt-2">View Question</h1>
+        <p class="mb-0 mt-2 d-flex flex-wrap align-items-center gap-2"><span class="fw-semibold">Streptomycin (10109)</span><span class="badge text-bg-success" id="statusBadge">Active</span></p>
+      </div>
+      <div class="page-body">
+        <!-- View Question modernizes LoadManageQuestions.do (viewQuestionLoad): the question's sections, read only. Make Inactive asks
+             first (js/ds-status.js). DEV: the sections follow the data type; this sample is a coded question. -->
+        <div class="alert alert-success" id="statusDone" role="status" tabindex="-1" hidden></div>
+        <div class="d-flex flex-wrap gap-2 justify-content-end mb-3">
+          <button type="button" class="btn btn-outline-primary rounded-pill" id="toggleStatus" data-status-toggle data-status-noun="question" data-status-name="Streptomycin (10109)" aria-haspopup="dialog">Make Inactive</button>
+          <a class="btn btn-primary rounded-pill" href="edit-question.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg>Edit</a>
+        </div>
+        <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Basic Information</h2>
+          <div class="card-body"><dl class="ds-dl"><div><dt>Question Type</dt><dd>PHIN Standard</dd></div><div><dt>Unique ID</dt><dd>10109</dd></div><div><dt>Unique Name</dt><dd>Streptomycin</dd></div><div><dt>Status</dt><dd>Active</dd></div><div><dt>Subgroup</dt><dd>Treatment Information</dd></div><div><dt>Description</dt><dd>Streptomycin</dd></div><div><dt>Data Type</dt><dd>Coded</dd></div><div><dt>Value Set</dt><dd>Yes No Unknown (YNU)</dd></div><div><dt>Default Value</dt><dd>None</dd></div><div><dt>Allow for Entry of Other Value</dt><dd>No</dd></div></dl></div></section>
+        <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">User Interface</h2>
+          <div class="card-body"><dl class="ds-dl"><div><dt>Label on Screen</dt><dd>Streptomycin</dd></div><div><dt>Tool Tip</dt><dd>Streptomycin</dd></div><div><dt>Display Control</dt><dd>Single-Select (Drop down)</dd></div></dl></div></section>
+        <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Data Mart</h2>
+          <div class="card-body"><dl class="ds-dl"><div><dt>Default Label in Report</dt><dd>Streptomycin</dd></div><div><dt>Default RDB Table Name</dt><dd>D_INV_TREATMENT</dd></div><div><dt>RDB Column Name</dt><dd>TRT_STREPTOMYCIN_IND</dd></div><div><dt>Data Mart Column Name</dt><dd>STREPTOMYCIN_IND</dd></div></dl></div></section>
+        <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Messaging</h2>
+          <div class="card-body"><dl class="ds-dl"><div><dt>Included in Message</dt><dd>Yes</dd></div><div><dt>Message Variable ID</dt><dd>10109</dd></div><div><dt>Label in Message</dt><dd>Streptomycin</dd></div><div><dt>Code System Name</dt><dd>RxNorm</dd></div><div><dt>Required in Message</dt><dd>No</dd></div><div><dt>HL7 Data Type</dt><dd>CWE</dd></div><div><dt>HL7 Segment</dt><dd>OBX-3.0</dd></div><div><dt>Group Number (Order Group ID)</dt><dd>2</dd></div></dl></div></section>
+        <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Administrative</h2>
+          <div class="card-body"><dl class="ds-dl"><div><dt>Administrative Comments</dt><dd>Created for implementing DRAFT Tuberculosis and LTBI message mapping guide (MMG) internal version 79 dated 09/18/2018</dd></div></dl></div></section>
+      </div>
+      <div class="modal" id="statusDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="statusTitle" aria-describedby="statusText" hidden>
+        <div class="modal-dialog"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="statusTitle">Make this question inactive?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body"><p id="statusText" class="mb-0">Streptomycin (10109) will be inactive.</p></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="statusYes">Make Inactive</button></div>
+        </div></div>
+      </div>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+<script src="../../js/ds-dialog.js"></script>
+<script src="../../js/ds-status.js"></script>
+</body>
+</html>

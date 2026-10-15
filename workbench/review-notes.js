@@ -368,6 +368,48 @@
         { code: 'PC-4', title: 'Failed runs', pin: { sel: '#logTable' }, ask: true,
           text: 'A failed run logs a system error (for example NEDSSAppException ERR109). What should the log say to an administrator instead?' }
       ] },
+    { id: 'view-question', title: 'View Question', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'VQ-1', title: 'Sections', pin: { sel: 'main .ds-form-section h2' },
+          text: 'Basic Information, User Interface, Data Mart, Messaging, and Administrative, as on the current screen. The sample is the first question in the library, a coded one.' },
+        { code: 'VQ-2', title: 'Make Inactive', pin: { sel: '#toggleStatus' },
+          text: 'Asks first, then shows the new status at the top of the page.' },
+        { code: 'VQ-3', title: 'Other data types', pin: { sel: 'main h1' }, ask: true,
+          text: 'Date, numeric, and text questions show other fields (mask, length, range, units). Do you need a template for each type, or is the coded one enough to build from?' }
+      ] },
+    { id: 'edit-question', title: 'Edit Question', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'EQ-1', title: 'What can change', pin: { sel: 'main .ds-form-section .ds-dl' },
+          text: 'The type, ID, name, data type, value set, and data mart table and column are shown read only, as on the current screen. Everything else can change.' },
+        { code: 'EQ-2', title: 'Messaging', pin: { sel: '#included-Y' },
+          text: 'The messaging fields show only while Included in Message is Yes.' },
+        { code: 'EQ-3', title: 'Required', pin: { sel: '.legend-note' },
+          text: 'The same required fields as the current screen.' }
+      ] },
+    { id: 'view-value-set', title: 'View Value Set', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'VV-1', title: 'Concepts', pin: { sel: '#conceptTable' },
+          text: 'Every concept in the value set: local code, display name, concept code and name, code system, status, and effective dates.' },
+        { code: 'VV-2', title: 'Add and edit in a dialog', pin: { sel: '#addConcept' },
+          text: 'Add New Concept and Edit on a row open the concept form in a dialog, as the current screen opens it in a pop-up window. The local code cannot change once added.' },
+        { code: 'VV-3', title: 'Short display name length', pin: { sel: '#addConcept' }, ask: true,
+          text: 'The current Add Concept form takes 256 characters for Short Display Name; Edit Concept takes 100. Which is right? This template uses 100.' }
+      ] },
+    { id: 'edit-value-set', title: 'Edit Value Set', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'EV-1', title: 'What can change', pin: { sel: '#vsName' },
+          text: 'Name and description. The type and code cannot change, as on the current screen.' }
+      ] },
+    { id: 'view-system', title: 'View System', priority: 'Messaging', status: 'ready',
+      notes: [
+        { code: 'VS2-1', title: 'Same sections as the form', pin: { sel: 'main .ds-form-section h2' },
+          text: 'System, Facility, and Exchange, read only. The sample is the one system in the local library.' }
+      ] },
+    { id: 'edit-system', title: 'Edit System', priority: 'Messaging', status: 'ready',
+      notes: [
+        { code: 'ES-1', title: 'The Add System form, filled in', pin: { sel: '#displayName' },
+          text: 'Every name and identifier takes up to 100 characters, as on the current screen.' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },

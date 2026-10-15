@@ -804,12 +804,36 @@
         </div>
       </div>
     </div>
-    <details class="wb-a11y"><summary>Accessibility: 508 / WCAG AA</summary><ul>
+        <div class="wb-example" data-js="wbStatusJs">
+      <h3>Make Inactive (<code>js/ds-status.js</code>)</h3>
+      <div class="wb-canvas d-grid gap-3">
+        <div class="d-flex flex-wrap align-items-center gap-2"><span class="fw-semibold">Streptomycin (10109)</span><span class="badge text-bg-success">Active</span>
+          <button type="button" class="btn btn-outline-primary rounded-pill ms-auto" aria-haspopup="dialog">Make Inactive</button></div>
+        <div style="position:relative;min-height:270px;background:#8a8f94">
+          <div class="modal show d-block position-absolute" role="dialog" aria-modal="true" aria-labelledby="wbStatusTitle" aria-describedby="wbStatusText" tabindex="-1">
+            <div class="modal-dialog"><div class="modal-content">
+              <div class="modal-header"><h4 class="modal-title h5" id="wbStatusTitle">Make this question inactive?</h4><button type="button" class="btn-close" aria-label="Close"></button></div>
+              <div class="modal-body"><p id="wbStatusText" class="mb-0">Streptomycin (10109) will be inactive.</p></div>
+              <div class="modal-footer"><button class="btn btn-outline-primary">Cancel</button><button class="btn btn-primary">Make Inactive</button></div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/plain" id="wbStatusJs">
+      <!-- js/ds-status.js wires these by id; one per page. -->
+      <button type="button" data-status-toggle data-status-noun="question" data-status-name="Streptomycin (10109)" aria-haspopup="dialog">Make Inactive</button>
+      <span class="badge text-bg-success" id="statusBadge">Active</span>
+      <div class="alert alert-success" id="statusDone" role="status" tabindex="-1" hidden></div>
+      <!-- #statusDialog (ds-dialog markup) with #statusTitle, #statusText, and the confirm button #statusYes -->
+    </script>
+<details class="wb-a11y"><summary>Accessibility: 508 / WCAG AA</summary><ul>
       <li>All three variants keep the base contract: <code>role="dialog" aria-modal="true"</code>, <code>aria-labelledby</code> on the visible title, labeled close button, focus trap + return.</li>
       <li>Search Results: the table keeps full semantics inside the dialog (caption, <code>scope="col"</code>, a named header for the Select column) and scrolls inside <code>.ds-table-scroll</code>.</li>
       <li>Each row's Select action names its row ("Select Austin Public Health Lab"). Ambiguous repeated links fail 2.4.4.</li>
       <li>Chained dialogs (Find, then Results) move focus to the new dialog's title on swap and announce the result count via a live region.</li>
-    </ul></details>
+          <li>Make Inactive: the button says what it will do, and the dialog asks it as a question and names the item. Confirming changes the status badge and the button in place and moves focus to a message at the top of the page ("The question is now inactive."), so screen reader users hear the result. Cancel, Close, and Escape return focus to the button.</li>
+</ul></details>
   </section>
 
   <section class="wb-section" id="repeating-block">

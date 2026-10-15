@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edit Question - Page Management - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<script src="../../js/app-frame.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; max-width: 1028px; }   /* 980px of content plus the padding */
+  /* Conditional sections hide with the hidden attribute; keep display utilities off them (Bootstrap's are !important) */
+  [hidden] { display: none !important; }
+  @media (max-width: 820px) {
+    .page-body { padding: 16px; }
+  }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb"><li class="breadcrumb-item"><a href="system-management.html">System Management</a></li><li class="breadcrumb-item"><a href="manage-questions.html">Manage Questions</a></li><li class="breadcrumb-item active" aria-current="page">Edit Question</li></ol>
+        </nav>
+        <h1 class="display-6 mb-0 mt-2">Edit Question</h1>
+        <p class="mb-0 mt-2 d-flex flex-wrap align-items-center gap-2"><span class="fw-semibold">Streptomycin (10109)</span><span class="badge text-bg-success" id="statusBadge">Active</span></p>
+      </div>
+      <div class="page-body">
+        <!-- Edit Question modernizes LoadManageQuestions.do (editQuestionLoad). What cannot change once a question exists (its
+             type, ID, name, data type, value set, and data mart table and column) is shown read only above each section's
+             fields. The Messaging fields show only while Included in Message is Yes. DEV: the fields follow the data type
+             (a date question has a mask and future dates; a numeric one has a mask, length, range, and units); this sample is
+             a coded question. The server sends the full Code System Name list. -->
+        <p class="legend-note"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
+        <div class="ds-error-summary" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
+          <h2 id="errorSummaryTitle">There is a problem</h2>
+          <ul id="errorList"></ul>
+        </div>
+        <div id="formStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+        <form id="questionForm" data-ds-form data-saved="Question saved." novalidate>
+          <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Basic Information</h2>
+            <div class="card-body d-grid gap-3">
+              <dl class="ds-dl"><div><dt>Question Type</dt><dd>PHIN Standard</dd></div><div><dt>Unique ID</dt><dd>10109</dd></div><div><dt>Unique Name</dt><dd>Streptomycin</dd></div><div><dt>Status</dt><dd>Active</dd></div><div><dt>Subgroup</dt><dd>Treatment Information</dd></div><div><dt>Data Type</dt><dd>Coded</dd></div><div><dt>Value Set</dt><dd>Yes No Unknown (YNU)</dd></div></dl>
+              <div class="ds-entry-grid"><div class="ds-field ds-field-wide"><label class="ds-required" for="description">Description</label><textarea class="form-control" id="description" name="description" rows="2" required data-errmsg="Enter a description">Streptomycin</textarea><span class="invalid-feedback" id="description-error" hidden></span></div><div class="ds-field"><label for="defaultValue">Default Value</label><select class="form-select" id="defaultValue" name="defaultValue"><option value="">None</option><option>No</option><option>Unknown</option><option>Yes</option></select><span class="invalid-feedback" id="defaultValue-error" hidden></span></div><fieldset class="ds-field ds-radio-group"><legend class="ds-required">Allow for Entry of Other Value</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="radio" name="allowOther" id="allowOther-Y" value="Yes" required data-errmsg="Choose whether other values can be entered"> Yes</label><label class="ds-check"><input class="form-check-input" type="radio" name="allowOther" id="allowOther-N" value="No" checked> No</label></div><span class="invalid-feedback" id="allowOther-Y-error" hidden></span></fieldset></div>
+            </div></section>
+          <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">User Interface</h2>
+            <div class="card-body d-grid gap-3">
+              <div class="ds-entry-grid"><div class="ds-field"><label class="ds-required" for="questionLabel">Label on Screen</label><input class="form-control" id="questionLabel" name="questionLabel" type="text" autocomplete="off" maxlength="100" required data-errmsg="Enter the label on screen" value="Streptomycin"><span class="invalid-feedback" id="questionLabel-error" hidden></span></div><div class="ds-field"><label class="ds-required" for="displayControl">Display Control</label><select class="form-select" id="displayControl" name="displayControl" required data-errmsg="Choose a display control"><option value="">Select one</option><option selected>Single-Select (Drop down)</option><option>Multi-Select (List Box)</option><option>READONLY SINGLE-SELECT SAVE</option><option>READONLY MULTI-SELECT SAVE</option><option>READONLY SINGLE-SELECT NO SAVE</option><option>READONLY MULTI-SELECT NO SAVE</option><option>Code Lookup</option></select><span class="invalid-feedback" id="displayControl-error" hidden></span></div><div class="ds-field ds-field-wide"><label class="ds-required" for="toolTip">Tool Tip</label><textarea class="form-control" id="toolTip" name="toolTip" rows="2" required data-errmsg="Enter a tool tip">Streptomycin</textarea><span class="invalid-feedback" id="toolTip-error" hidden></span></div></div>
+            </div></section>
+          <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Data Mart</h2>
+            <div class="card-body d-grid gap-3">
+              <dl class="ds-dl"><div><dt>Default RDB Table Name</dt><dd>D_INV_TREATMENT</dd></div><div><dt>RDB Column Name</dt><dd>TRT_STREPTOMYCIN_IND</dd></div></dl>
+              <div class="ds-entry-grid"><div class="ds-field"><label class="ds-required" for="reportLabel">Default Label in Report</label><input class="form-control" id="reportLabel" name="reportLabel" type="text" autocomplete="off" maxlength="50" required data-errmsg="Enter the default label in report" value="Streptomycin"><span class="invalid-feedback" id="reportLabel-error" hidden></span></div><div class="ds-field"><label for="martColumn">Data Mart Column Name</label><input class="form-control" id="martColumn" name="martColumn" type="text" autocomplete="off" maxlength="21" value="STREPTOMYCIN_IND"><span class="invalid-feedback" id="martColumn-error" hidden></span></div></div>
+            </div></section>
+          <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Messaging</h2>
+            <div class="card-body d-grid gap-3">
+              <div class="ds-entry-grid"><fieldset class="ds-field ds-radio-group"><legend class="ds-required">Included in Message</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="radio" name="included" id="included-Y" value="Yes" checked required data-errmsg="Choose whether the question is in the message"> Yes</label><label class="ds-check"><input class="form-check-input" type="radio" name="included" id="included-N" value="No"> No</label></div><span class="invalid-feedback" id="included-Y-error" hidden></span></fieldset><div class="ds-field-wide ds-entry-grid" data-show-when="included=Yes"><div class="ds-field"><label class="ds-required" for="msgVariable">Message Variable ID</label><input class="form-control" id="msgVariable" name="msgVariable" type="text" autocomplete="off" maxlength="50" required data-errmsg="Enter the message variable ID" value="10109"><span class="invalid-feedback" id="msgVariable-error" hidden></span></div><div class="ds-field"><label class="ds-required" for="msgLabel">Label in Message</label><input class="form-control" id="msgLabel" name="msgLabel" type="text" autocomplete="off" maxlength="100" required data-errmsg="Enter the label in message" value="Streptomycin"><span class="invalid-feedback" id="msgLabel-error" hidden></span></div><div class="ds-field"><label class="ds-required" for="codeSystem">Code System Name</label><select class="form-select" id="codeSystem" name="codeSystem" required data-errmsg="Choose a code system"><option value="">Select one</option><option>Abnormal flags (HL7)</option><option>Accept/application acknowledgment conditions</option><option>Acknowledgment code (HL7)</option><option>Act Code (HL7)</option><option>Act Priority (HL7)</option><option>Action Code (HL7)</option><option>ActMood (HL7)</option><option>ActReason</option><option>ActStatus</option><option>Additive (HL7)</option><option>Address Type (HL7)</option><option>Address Use (HL7)</option><option>Administration device (HL7)</option><option>Administration method (HL7)</option><option>Administrative sex (HL7)</option><option>AdministrativeGender</option><option>Admission level of care code (HL7)</option><option>Admission type (HL7)</option><option>Admit source (HL7)</option><option>Allergen type (HL7)</option><option>Allergy severity (HL7)</option><option>Alternate character set handling scheme (HL7)</option><option>Alternate character sets (HL7)</option><option>Application Error Code (HL7)</option><option>Authorization Mode (HL7)</option><option>BioSense RT observations (Census) - CDC</option><option>Birth Defects Diagnostic Confirmation (HL7)</option><option>Birth Defects Laterality at Diagnosis (HL7)</option><option>Body Site (HL7)</option><option>CDC GS1 VIS BarCodes</option><option>Check Digit Scheme (HL7)</option><option>Coding System (HL7)</option><option>Comment type (HL7)</option><option>Completion Status for Valid Values (HL7)</option><option>Confidentiality code (HL7)</option><option>ConfidentialityCode (HL7)</option><option>Contact Role (HL7)</option><option>Country (FIPS 10-4)</option><option>Country (ISO 3166-1)</option><option>Degree (HL7)</option><option>Diagnosis priority (HL7)</option><option>Diagnosis type (HL7)</option><option>Diagnostic service section ID (HL7)</option><option>Discharge disposition (HL7)</option><option>Document availability status (HL7)</option><option>EducationLevel</option><option>Emergency Department Acuity - CDC</option><option>Encoding (HL7)</option><option>Entity Code (HL7)</option><option>Entity Handling (HL7)</option><option>EntityNamePartQualifier (HL7)</option><option>EntityNameUse (HL7)</option><option>EPA SRS</option><option>Error Severity (HL7)</option><option>Ethnic Group (HL7)</option><option>Event Consequence (HL7)</option><option>Event Reason (HL7)</option><option>Event Reported to (HL7)</option><option>Event Type (HL7)</option><option selected>RxNorm</option></select><span class="invalid-feedback" id="codeSystem-error" hidden></span></div><fieldset class="ds-field ds-radio-group"><legend class="ds-required">Required in Message</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="radio" name="reqInMsg" id="reqInMsg-Y" value="Yes" required data-errmsg="Choose whether the question is required in the message"> Yes</label><label class="ds-check"><input class="form-check-input" type="radio" name="reqInMsg" id="reqInMsg-N" value="No" checked> No</label></div><span class="invalid-feedback" id="reqInMsg-Y-error" hidden></span></fieldset><div class="ds-field"><label class="ds-required" for="hl7Type">HL7 Data Type</label><select class="form-select" id="hl7Type" name="hl7Type" required data-errmsg="Choose an HL7 data type"><option value="">Select one</option><option>CE</option><option selected>CWE</option><option>CX</option><option>DT</option><option>HD</option><option>ID</option><option>IS</option><option>NM</option><option>SN</option><option>ST</option><option>TS</option><option>TX</option><option>XPN</option><option>XTN</option></select><span class="invalid-feedback" id="hl7Type-error" hidden></span></div></div></div>
+            </div></section>
+          <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Administrative</h2>
+            <div class="card-body d-grid gap-3">
+              <div class="ds-entry-grid"><div class="ds-field ds-field-wide"><label for="adminComment">Administrative Comments</label><textarea class="form-control" id="adminComment" name="adminComment" rows="2">Created for implementing DRAFT Tuberculosis and LTBI message mapping guide (MMG) internal version 79 dated 09/18/2018</textarea><span class="invalid-feedback" id="adminComment-error" hidden></span></div></div>
+            </div></section>
+          <div class="ds-form-footer" style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg)">
+            <a class="btn btn-outline-primary" href="view-question.html">Cancel</a>
+            <button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#save"/></svg>Submit</button>
+          </div>
+        </form>
+      </div>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+<script src="../../js/ds-dialog.js"></script>
+<script src="../../js/ds-form.js"></script>
+</body>
+</html>
