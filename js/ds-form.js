@@ -17,7 +17,9 @@
    - Lookups ([data-lookup]): a read-only field with Search and Clear. Search opens a dialog with a filter box and a
      list of options; Select fills the field and returns focus to Search.
    - Validation on Submit: required controls that are visible, and every repeating table marked data-min="1".
-     The error summary links focus the control and switch to its tab first. On success the form's data-saved
+     A field with data-not-in="a|b|c" rejects a value already in use (any case); data-not-in-msg is the message, and
+     {value} in it is replaced with what was entered. DEV: the server makes the same check.
+     The error summary lists problems in form order; its links focus the control and switch to its tab first. On success the form's data-saved
      message is announced (DEV: post the form). */
 (function () {
   'use strict';
@@ -403,11 +405,21 @@
       var empty = f.type === 'radio' ? !$$('[name="' + f.name + '"]', form).some(function (r) { return r.checked; }) : !f.value.trim();
       if (empty && !bad.some(function (b) { return b.f.name && b.f.name === f.name && f.type === 'radio'; })) { setError(f, f.getAttribute('data-errmsg')); bad.push({ f: f, msg: f.getAttribute('data-errmsg') }); }
     });
+    $$('[data-not-in]', form).forEach(function (f) {
+      if (!visible(f) || bad.some(function (b) { return b.f === f; })) return;
+      clearError(f);
+      var v = f.value.trim();
+      if (v && f.getAttribute('data-not-in').split('|').some(function (x) { return x.toLowerCase() === v.toLowerCase(); })) {
+        var msg = f.getAttribute('data-not-in-msg').replace('{value}', v);
+        setError(f, msg); bad.push({ f: f, msg: msg });
+      }
+    });
     $$('[data-repeat][data-min]', form).forEach(function (block) {
       if (!visible(block) || block._rows().length >= +block.getAttribute('data-min')) return;
       var target = $('[data-lookup-search], [data-entry] select, [data-entry] input', block);
       bad.push({ f: target, msg: block.getAttribute('data-min-msg') });
     });
+    bad.sort(function (a, b) { return a.f === b.f ? 0 : (a.f.compareDocumentPosition(b.f) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1); });
     markTabs(bad);
     if (!bad.length) { summary.hidden = true; say(form.getAttribute('data-saved') || 'Algorithm saved.'); /* DEV: post the form; on success go to the View screen with a success alert. */ return; }
     bad.forEach(function (b) {

@@ -306,6 +306,26 @@
         { code: 'TP-3', title: 'Filters', pin: { sel: '#filterChipsDiv' },
           text: 'Source and Status are filters, as in the Phase 2 queues; Filter adds the other columns.' }
       ] },
+    { id: 'manage-page-porting', title: 'Page Porting', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'PL-1', title: 'Port library', pin: { sel: '#mapTable' },
+          text: 'Each map shows its event type, name, the page it ports from and to, its mapping status, the condition ported, and when.' },
+        { code: 'PL-2', title: 'Where it opens', pin: { sel: 'main .breadcrumb' },
+          text: 'Opened from Manage Pages (Page Porting), as the current screen is.' },
+        { code: 'PL-3', title: 'Port Page', pin: { sel: 'main .ds-toolbar .btn-primary' },
+          text: 'Starts a new map: map details, then questions, answers, review, and the condition to port.' }
+      ] },
+    { id: 'port-page', title: 'Port Page', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'PP-1', title: 'Steps', pin: { sel: '.pp-steps' },
+          text: 'Porting has five steps. This is the first; the step list shows where you are.' },
+        { code: 'PP-2', title: 'Map name', pin: { sel: '#mapName' },
+          text: 'Required, up to 100 characters, and not the name of an existing map, as on the current screen.' },
+        { code: 'PP-3', title: 'Page details', pin: { sel: '#fromDetails' },
+          text: 'Choosing a page shows its description, message mapping guide, and related conditions, as the current screen does.' },
+        { code: 'PP-4', title: 'Same page twice?', pin: { sel: '#toPage' }, ask: true,
+          text: 'Can the From and To pages be the same page? This template does not check.' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },
