@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage Local Lab Tests - Case Report and Laboratory - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<script src="../../js/app-frame.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; max-width: 1028px; }   /* 980px of content plus the padding */
+  .legend-note { color: var(--bs-secondary-color); font-size: 0.75rem; }
+  .legend-note .req { color: var(--bs-form-invalid-color); }
+  .apply-group { display: flex; gap: 12px 28px; flex-wrap: wrap; }
+  .ds-field-wide { max-width: none; }
+  .ds-radio-group { border: 0; margin: 0; padding: 0; min-width: 0; max-width: none; }
+  .ds-radio-group legend, fieldset.ds-field legend { font-size: inherit; font-weight: 500; margin-bottom: 6px; float: none; }
+  fieldset.ds-field { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .ds-check-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 8px 20px; padding: 10px 12px; border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius); max-height: 220px; overflow: auto; }
+  .ds-check-list-tall { grid-template-columns: minmax(0, 1fr); max-height: 360px; }
+  .ds-entry-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 14px 20px; align-items: start; }
+  .ds-entry-grid > .ds-field-wide { grid-column: 1 / -1; }
+  .ds-repeat { display: grid; gap: 14px; }
+  .ds-repeat-entry { display: grid; gap: 14px; padding: 16px; border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius-lg); }
+  .ds-empty { margin: 0; padding: 16px; text-align: center; color: var(--bs-secondary-color); }
+  .ds-label { font-weight: 500; }
+  .ds-tab-next { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+  /* Conditional sections hide with the hidden attribute; keep display utilities off them (Bootstrap's are !important) */
+  [hidden] { display: none !important; }
+  .ds-stack { display: grid; gap: 16px; }
+  @media (max-width: 820px) {
+    .page-body { padding: 16px; }
+  }
+  .page-body { max-width: none; }
+  .cs-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .cs-results-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  .cs-results-head h2 { flex: 1 1 auto; margin: 0; font-size: 1.25rem; }
+  .cs-results-head h2:focus { outline: none; }
+  .cs-results-head h2:focus-visible { outline: 2px solid var(--bs-focus-ring-color); outline-offset: 2px; }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb"><li class="breadcrumb-item"><a href="system-management.html">System Management</a></li><li class="breadcrumb-item active" aria-current="page">Manage Local Lab Tests</li></ol>
+        </nav>
+        <h1 class="display-6 mb-0 mt-2">Manage Local Lab Tests</h1>
+      </div>
+      <div class="page-body d-grid gap-3">
+        <!-- Manage Local Lab Tests modernizes LDLabTests.do: test codes a lab defines for itself. Lab Name and Test Type are required, and a code or a description. -->
+        <div class="ds-error-summary mb-0" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
+          <h2 id="errorSummaryTitle">There is a problem</h2>
+          <ul id="errorList"></ul>
+        </div>
+        <div id="searchStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+        <form id="searchForm" data-ds-search data-noun="local lab test" data-nouns="local lab tests" data-either="ltCode,ltDesc" data-either-msg="Enter a lab test code or a lab test description" novalidate>
+          <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Find a local lab test</h2>
+            <div class="card-body d-grid gap-3">
+              <p class="form-text mb-0" id="criteriaHint">Choose the lab and the test type, then enter a lab test code or a description. The sample results are ten of the Default Manual Lab's resulted tests.</p>
+              <div class="ds-entry-grid"><div class="ds-field"><label class="ds-required" for="ltLab">Lab Name</label><select class="form-select" id="ltLab" data-match="labId" required data-errmsg="Choose a lab"><option value="">Select a lab</option><option value="DEFAULT">Default Manual Lab</option><option value="11D0990760">LAB CORP OF AMERICA ATHENS-PSC, 1000 HAWTHORNE AVE SUITE D, ATHENS, GA 30606, 7065469822</option><option value="11D0990761">LAB CORP OF AMERICA ROSWELL-PSC, 1295 HEMBREE RD SUITE 203, ROSWELL, GA 30076, 7704109586</option><option value="11D0885498">LABCORP OF AMERICA HOLDINGS DS, 1506 CHATTANOOGA ROAD STE B, DALTON, GA 30720, 3362291127</option><option value="11D0703709">LABCORP OF AMERICA HOLDINGS DS, 181-A UPPER RIVERDALE RD, RIVERDALE, GA 30274, 7709070447</option><option value="11D0703705">LABCORP OF AMERICA HOLDINGS DS, 478 PEACHTREE RD STE 711, ATLANTA, GA 30308, 4045235277</option><option value="11D0264622">LABCORP OF AMERICA HOLDINGS DS, 5205 WATERS AVE, SAVANNAH, GA 31404, 9123527700</option><option value="11D0872094">LABCORP OF AMERICA HOLDINGS DS, 575 PROFESSIONAL DR SUITE 110, LAWRENCEVILLE, GA 30045, 7709624847</option><option value="11D0858217">LABCORP OF AMERICA HOLDINGS DS, 803 N JEFFERSON ST STE B, ALBANY, GA 31701, 9124363111</option><option value="11D0872078">LABCORP OF AMERICA HOLDINGS DS, 840 CHURCH STREET EXT, MARIETTA, GA 30067, 7704190343</option></select><span class="invalid-feedback" id="ltLab-error" hidden></span></div><div class="ds-field"><label class="ds-required" for="ltType">Test Type</label><select class="form-select" id="ltType" data-match="testType" required data-errmsg="Choose a test type"><option value="">Select a test type</option><option>Ordered</option><option>Resulted</option></select><span class="invalid-feedback" id="ltType-error" hidden></span></div><div class="ds-field"><label for="ltCode">Lab Test Code</label><input class="form-control" id="ltCode" type="text" autocomplete="off" data-match="code"><span class="invalid-feedback" id="ltCode-error" hidden></span></div><div class="ds-field ds-field-wide"><label for="ltDesc">Lab Test Description</label><div class="ds-op-field"><select class="form-select" id="ltDesc-op" data-op-for="ltDesc" aria-label="Lab Test Description operator"><option value="CT" selected>Contains</option><option value="=">Equal</option></select><input class="form-control" id="ltDesc" type="text" autocomplete="off" data-match="description"></div><span class="invalid-feedback" id="ltDesc-error" hidden></span></div></div>
+              <div class="cs-actions"><button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
+                <button class="btn btn-outline-primary" type="reset">Clear</button></div>
+            </div></section>
+        </form>
+        <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
+          <div class="cs-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
+            <a class="btn btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New Lab Test</a></div>
+          <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
+            <table class="table ds-table" id="resultsTable" data-columns="[&quot;code&quot;, &quot;description&quot;, &quot;labId&quot;, &quot;testType&quot;]" data-actions="[{&quot;label&quot;: &quot;View&quot;, &quot;icon&quot;: &quot;visibility&quot;, &quot;href&quot;: &quot;#&quot;}, {&quot;label&quot;: &quot;Edit&quot;, &quot;icon&quot;: &quot;edit&quot;, &quot;href&quot;: &quot;#&quot;}]" data-row-label="code"><caption class="visually-hidden">Local lab tests found</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">Lab Test Code</th><th scope="col">Lab Test Description</th><th scope="col">Lab ID</th><th scope="col">Test Type</th></tr></thead><tbody></tbody></table></div></div>
+          <p class="ds-empty" id="noResults" hidden>No local lab tests match these criteria. Check the spelling, or search with less.</p>
+        </section>
+      </div>
+      <script type="application/json" id="searchData">[{"code": "T-TX0001", "description": "14-3-3 Ag", "labId": "DEFAULT", "testType": "Resulted"}, {"code": "T-50030", "description": "17-Ketosteroids, Total, Urine", "labId": "DEFAULT", "testType": "Resulted"}, {"code": "T-50040", "description": "45RA - Result", "labId": "DEFAULT", "testType": "Resulted"}, {"code": "T-50055", "description": "5-HIAA Quant, Urine", "labId": "DEFAULT", "testType": "Resulted"}, {"code": "T-50060", "description": "5-Hydroxyindoleacetic Acid (HIAA), Quant., Urine", "labId": "DEFAULT", "testType": "Resulted"}, {"code": "T-50045", "description": "5\u00b4 Nucleotidase", "labId": "DEFAULT", "testType": "Resulted"}, {"code": "T-50065", "description": "6-Acetylmorphine, Urine (6-Monoacetylmorphine Hero", "labId": "DEFAULT", "testType": "Resulted"}, {"code": "T-50070", "description": "ABACAVIR", "labId": "DEFAULT", "testType": "Resulted"}, {"code": "30303-2", "description": "ABACAVIR", "labId": "DEFAULT", "testType": "Resulted"}, {"code": "T-50075", "description": "ABO Grouping", "labId": "DEFAULT", "testType": "Resulted"}]</script>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+<script src="../../js/ds-search.js"></script>
+</body>
+</html>

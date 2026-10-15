@@ -249,6 +249,43 @@
         { code: 'AS-4', title: 'Edit', pin: { sel: 'main h1' },
           text: 'Edit uses this form, filled in.' }
       ] },
+    { id: 'manage-local-lab-results', title: 'Manage Local Lab Results', priority: 'Lab Management', status: 'ready',
+      notes: [
+        { code: 'LR-1', title: 'Required', pin: { sel: '#lrLab' },
+          text: 'Lab Name is required, and a lab result code or a description, as on the current screen.' },
+        { code: 'LR-2', title: 'Results', pin: { sel: '#resultsTable' }, after: 'search',
+          text: 'Each result shows its code, description, and lab, with View and Edit.' },
+        { code: 'LR-3', title: 'Lab list', pin: { sel: '#lrLab' }, ask: true,
+          text: 'The current lab list shows each lab with its address, cut off. Is the name enough to tell labs apart, or do users need the address?' }
+      ] },
+    { id: 'manage-local-lab-tests', title: 'Manage Local Lab Tests', priority: 'Lab Management', status: 'ready',
+      notes: [
+        { code: 'LT-1', title: 'Required', pin: { sel: '#ltType' },
+          text: 'Lab Name and Test Type (Ordered or Resulted) are required, and a lab test code or a description.' },
+        { code: 'LT-2', title: 'Results', pin: { sel: '#resultsTable' }, after: 'search',
+          text: 'Each test shows its code, description, lab, and test type, with View and Edit.' }
+      ] },
+    { id: 'link-result-snomed', title: 'Lab Result - SNOMED Link', priority: 'Lab Management', status: 'ready',
+      notes: [
+        { code: 'RS-1', title: 'Lab result', pin: { sel: '#lrsCode' },
+          text: 'Lab Result Code is required. On the current screen it is picked from a search, which also sets the lab.' },
+        { code: 'RS-2', title: 'Links', pin: { sel: '#resultsTable' }, after: 'search',
+          text: 'Each link shows the lab result code, its lab, and the SNOMED code it means.' }
+      ] },
+    { id: 'link-test-loinc', title: 'Lab Test - LOINC Link', priority: 'Lab Management', status: 'ready',
+      notes: [
+        { code: 'TL-1', title: 'Lab test', pin: { sel: '#ltlCode' },
+          text: 'Lab Test Code is required. On the current screen it is picked from a search, which also sets the lab.' },
+        { code: 'TL-2', title: 'Links', pin: { sel: '#resultsTable' }, after: 'search',
+          text: 'Each link shows the lab test code, its lab, and the LOINC code it means.' }
+      ] },
+    { id: 'link-loinc-condition', title: 'LOINC - Condition Link', priority: 'Lab Management', status: 'ready',
+      notes: [
+        { code: 'LC-1', title: 'Criteria', pin: { sel: '#lcLoinc' },
+          text: 'A LOINC code or a condition is required.' },
+        { code: 'LC-2', title: 'Links', pin: { sel: '#resultsTable' }, after: 'search',
+          text: 'Each link shows the condition code, the LOINC code, and the disease name.' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },
