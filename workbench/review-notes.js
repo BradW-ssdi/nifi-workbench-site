@@ -368,6 +368,17 @@
         { code: 'PC-4', title: 'Failed runs', pin: { sel: '#logTable' }, ask: true,
           text: 'A failed run logs a system error (for example NEDSSAppException ERR109). What should the log say to an administrator instead?' }
       ] },
+    { id: 'add-question', title: 'Add Question', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'AQ-1', title: 'Data type decides the fields', pin: { sel: '#dataType' },
+          text: 'Coded: value set, default value from it, and whether other values are allowed. Date: mask and whether future dates are allowed. Numeric: mask, length, default, minimum, maximum, and related units. Text: mask, length, and default. As on the current screen.' },
+        { code: 'AQ-2', title: 'Display Control', pin: { sel: '#displayControl' },
+          text: 'Lists the controls for the chosen data type, as the current screen does.' },
+        { code: 'AQ-3', title: 'Already used', pin: { sel: '#uniqueId' },
+          text: 'The unique ID, unique name, data mart column name, and RDB column name (with the subgroup) cannot repeat another question, as on the current screen.' },
+        { code: 'AQ-4', title: 'Mask names', pin: { sel: '#dataType' }, ask: true,
+          text: 'The current text masks show their patterns in the name, for example Census Tract (^(\d{4}|...)$). Should the list show only the plain names?' }
+      ] },
     { id: 'view-question', title: 'View Question', priority: 'Page Management', status: 'ready',
       notes: [
         { code: 'VQ-1', title: 'Sections', pin: { sel: 'main .ds-form-section h2' },
