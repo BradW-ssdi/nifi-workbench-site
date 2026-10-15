@@ -227,6 +227,28 @@
         { code: 'BI-4', title: 'Inactive on arrival?', pin: { sel: '#status' }, ask: true,
           text: 'Should the library show only Active templates when it opens, as this template does, or everything?' }
       ] },
+    { id: 'manage-systems', title: 'Manage Sending and Receiving Systems', priority: 'Messaging', status: 'ready',
+      notes: [
+        { code: 'SY-1', title: 'Systems', pin: { sel: '#systemTable' },
+          text: 'Application name, display name, facility, the report type it sends or receives, and whether it sends, receives, and allows transfers.' },
+        { code: 'SY-2', title: 'Filters', pin: { sel: '#filterChipsDiv' },
+          text: 'Report Type, Sender, and Recipient are filters, as in the Phase 2 queues; Filter adds the other columns.' },
+        { code: 'SY-3', title: 'Add New System', pin: { sel: 'main .ds-toolbar .btn-primary' },
+          text: 'The current screen puts the Create System form under the list. Here it opens on its own page.' },
+        { code: 'SY-4', title: 'Sample rows', pin: { sel: '#systemTable tbody tr:nth-child(2)' }, ask: true,
+          text: 'The local library holds one system. The other rows are samples. Which columns matter most when a state has dozens of senders?' }
+      ] },
+    { id: 'add-system', title: 'Add System', priority: 'Messaging', status: 'ready',
+      notes: [
+        { code: 'AS-1', title: 'Required fields', pin: { sel: '.legend-note' },
+          text: 'Every field the current screen requires is required here: report type, names, OIDs, facility, and the four Yes or No questions.' },
+        { code: 'AS-2', title: 'Errors', pin: { sel: '#errorSummary' }, after: 'submit',
+          text: 'Submitting with gaps lists each one at the top. Each link moves to its field.' },
+        { code: 'AS-3', title: 'Derived jurisdiction', pin: { sel: '#deriveJurisdiction-Y' },
+          text: 'When Yes, a Workflow Decision Support algorithm tries to derive the jurisdiction of case reports from this sender.' },
+        { code: 'AS-4', title: 'Edit', pin: { sel: 'main h1' },
+          text: 'Edit uses this form, filled in.' }
+      ] },
     { id: 'edit-page', title: 'Edit Page: drag and drop', priority: 'Proof of concept, Page Builder (priority 3)', status: 'ready',
       notes: [
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },

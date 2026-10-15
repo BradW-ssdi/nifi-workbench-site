@@ -49,6 +49,8 @@
       { title: 'Manage Trigger Codes', href: 'screens/manage-trigger-codes.html', ext: true, icon: 'open_in_new' },
       { title: 'ELR Activity Log', href: 'screens/manage-elr-activity-log.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Bulk Import Templates', href: 'screens/manage-bulk-import-templates.html', ext: true, icon: 'open_in_new' },
+      { title: 'Manage Sending and Receiving Systems', href: 'screens/manage-systems.html', ext: true, icon: 'open_in_new' },
+      { title: 'Add System', href: 'screens/add-system.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Questions', href: 'screens/manage-questions.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Users', href: 'screens/manage-users.html', ext: true, icon: 'open_in_new' },
       { title: 'Edit User', href: 'screens/edit-user.html', ext: true, icon: 'open_in_new' },
@@ -351,3 +353,12 @@ function wbMatrices() {
   });
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wbMatrices); else wbMatrices();
+
+/* Specimen fields follow global rule 16 as the screens do (js/app-frame.js): Chrome brings the caret of a focused text
+   field into view, not the field, so a tall field near the bottom edge stays cut off. Bring the whole field in. */
+document.addEventListener('focusin', function (e) {
+  var el = e.target;
+  if (!el.matches || !el.matches('textarea, input, select')) return;
+  var r = el.getBoundingClientRect();
+  if (r.bottom > window.innerHeight || r.top < 0) el.scrollIntoView({ block: 'nearest' });
+});
