@@ -65,6 +65,7 @@
       { title: 'Port Page: Review Mapping', href: 'screens/port-review-mapping.html', ext: true, icon: 'open_in_new' },
       { title: 'Port Page: Port Condition', href: 'screens/port-condition.html', ext: true, icon: 'open_in_new' },
       { title: 'Add Question', href: 'screens/add-question.html', ext: true, icon: 'open_in_new' },
+      { title: 'View Template', href: 'screens/view-template.html', ext: true, icon: 'open_in_new' },
       { title: 'View Question', href: 'screens/view-question.html', ext: true, icon: 'open_in_new' },
       { title: 'Edit Question', href: 'screens/edit-question.html', ext: true, icon: 'open_in_new' },
       { title: 'View Value Set', href: 'screens/view-value-set.html', ext: true, icon: 'open_in_new' },

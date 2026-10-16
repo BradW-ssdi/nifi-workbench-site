@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>View Template - Page Management - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<link rel="stylesheet" href="../phase2/island.css"><!-- Phase 2 styles for .ds-phase2, only in this layout -->
+<script src="../../js/app-frame.js" defer></script>
+<script src="../../js/ds-dialog.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  [hidden] { display: none !important; }
+  .page-body { padding: 24px; display: grid; gap: 16px; }
+  .vp-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 24px; }
+  .vp-head .vp-titles { flex: 1 1 320px; min-width: 0; }
+  .vp-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+  .vp-toolbar .vp-spacer { flex: 1 1 auto; }
+  .vp-tabs { margin-bottom: 4px; }
+  .vp-section { border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius-lg); background: var(--bs-body-bg); min-width: 0; }
+  .vp-section-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 10px 16px; background: var(--ds-table-header-bg, var(--bs-secondary-bg)); border-radius: var(--bs-border-radius-lg) var(--bs-border-radius-lg) 0 0; }
+  .vp-section-head h2, .vp-sub h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+  .vp-section-head h2 { flex: 1 1 auto; }
+  /* on the grey header the link blue is 3.2:1; these keep their underline and take the emphasis color */
+  .vp-section-head .ds-disclosure, .vp-section-head .btn-link { color: var(--bs-emphasis-color); }
+  .vp-section-body { display: grid; gap: 12px; padding: 12px; }
+  .vp-sub { border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius); min-width: 0; }
+  .vp-sub > h3 { padding: 8px 12px; border-bottom: 1px solid var(--bs-border-color); }
+  .vp-sub > h3:has(+ [hidden]) { border-bottom: 0; }
+  .vp-qs { list-style: none; margin: 0; padding: 4px 12px; }
+  .vp-q { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 8px 0; border-bottom: 1px solid var(--bs-border-color-translucent); }
+  .vp-q:last-child { border-bottom: 0; }
+  .vp-q .vp-label { flex: 1 1 14rem; min-width: 0; overflow-wrap: break-word; }
+  .vp-q .vp-type { flex: none; font-size: 13px; color: var(--bs-secondary-color); }
+  .vp-q .vp-rule { flex: 1 0 100%; font-size: 13px; color: var(--bs-secondary-color); margin: 0; }
+  .ds-empty { margin: 0; padding: 24px; text-align: center; color: var(--bs-secondary-color); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius-lg); }
+  .vp-details { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 16px; margin: 0; }
+  .vp-details dt { font-weight: 600; }
+  .vp-details dd { margin: 0; overflow-wrap: break-word; }
+  @media (max-width: 480px) { .vp-details { grid-template-columns: minmax(0, 1fr); } .vp-details dd { margin-bottom: 8px; } }
+  @media (max-width: 820px) { .page-body { padding: 16px; } }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header vp-head">
+        <div class="vp-titles">
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="system-management.html">System Management</a></li>
+              <li class="breadcrumb-item"><a href="manage-templates.html">Manage Templates</a></li>
+              <li class="breadcrumb-item active" aria-current="page">View Template</li>
+            </ol>
+          </nav>
+          <h1 class="display-6 mb-0 mt-2">View Template</h1>
+          <p class="mb-0 mt-2 d-flex flex-wrap align-items-center gap-2"><span class="fw-semibold">Acute Flaccid Myelitis Prod</span><span class="badge text-bg-success" id="statusBadge">Active</span><span class="text-body-secondary">Investigation template</span></p>
+        </div>
+      </div>
+      <div class="page-body">
+        <!-- View Template modernizes PreviewTemplate.do (viewTemplate), opened from View on Manage Templates: the template's
+             structure, read only, as View Page shows a page. Make Inactive asks first (js/ds-status.js).
+             DEV: View Rules goes to the template's rules; Export saves the template as a file to import elsewhere. -->
+        <div class="alert alert-success mb-0" id="statusDone" role="status" tabindex="-1" hidden></div>        <div class="vp-toolbar" role="group" aria-label="Template actions">
+          <a class="btn btn-outline-primary rounded-pill" href="#">View rules</a>
+          <span class="vp-spacer"></span>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print template"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
+          <button type="button" class="btn btn-outline-primary rounded-pill"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg>Export</button>
+          <button type="button" class="btn btn-outline-primary rounded-pill" id="toggleStatus" data-status-toggle data-status-noun="template" data-status-name="Acute Flaccid Myelitis Prod" aria-haspopup="dialog">Make Inactive</button>
+        </div>
+        <ul class="nav nav-underline vp-tabs" role="tablist" aria-label="Page tabs"><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="true" id="tPatient" aria-controls="pPatient">Patient</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tCase" aria-controls="pCase" tabindex="-1">Case Info</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tContact" aria-controls="pContact" tabindex="-1">Contact Tracing</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tRecords" aria-controls="pRecords" tabindex="-1">Contact Records</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tSupp" aria-controls="pSupp" tabindex="-1">Supplemental Info</button></li></ul>
+        <div id="pPatient" role="tabpanel" aria-labelledby="tPatient" class="vp-panel" style="display:grid;gap:16px">
+          <section class="vp-section" aria-labelledby="vs1"><div class="vp-section-head"><h2><button type="button" class="ds-disclosure" id="vs1" aria-expanded="true" aria-controls="vb2"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg>Patient Information</button></h2><button type="button" class="btn btn-link p-0" data-collapse-subs="vb2" aria-controls="vb2">Collapse subsections<span class="visually-hidden"> in Patient Information</span></button></div><div class="vp-section-body" id="vb2"><section class="vp-sub" aria-labelledby="vh3"><h3><button type="button" class="ds-disclosure" id="vh3" aria-expanded="true" aria-controls="vq4"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg>General Information</button></h3><ul class="vp-qs" id="vq4" aria-labelledby="vh3"><li class="vp-q"><span class="vp-label">Information As of Date <span class="badge text-bg-secondary">Required</span></span><span class="vp-type">Date</span></li><li class="vp-q"><span class="vp-label">Comments</span><span class="vp-type">Text area</span></li></ul></section><section class="vp-sub" aria-labelledby="vh5"><h3><button type="button" class="ds-disclosure" id="vh5" aria-expanded="true" aria-controls="vq6"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg>Name Information</button></h3><ul class="vp-qs" id="vq6" aria-labelledby="vh5"><li class="vp-q"><span class="vp-label">Name Information As Of Date</span><span class="vp-type">Date</span></li><li class="vp-q"><span class="vp-label">First Name</span><span class="vp-type">Text</span></li><li class="vp-q"><span class="vp-label">Middle Name</span><span class="vp-type">Text</span></li><li class="vp-q"><span class="vp-label">Last Name</span><span class="vp-type">Text</span></li><li class="vp-q"><span class="vp-label">Suffix</span><span class="vp-type">Coded</span></li></ul></section><section class="vp-sub" aria-labelledby="vh7"><h3><button type="button" class="ds-disclosure" id="vh7" aria-expanded="true" aria-controls="vq8"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg>Other Personal Details</button></h3><ul class="vp-qs" id="vq8" aria-labelledby="vh7"><li class="vp-q"><span class="vp-label">Other Personal Details As Of Date</span><span class="vp-type">Date</span></li><li class="vp-q"><span class="vp-label">Date of Birth</span><span class="vp-type">Date</span></li><li class="vp-q"><span class="vp-label">Reported Age</span><span class="vp-type">Number</span></li><li class="vp-q"><span class="vp-label">Reported Age Units</span><span class="vp-type">Coded</span></li><li class="vp-q"><span class="vp-label">Current Sex</span><span class="vp-type">Coded</span></li><li class="vp-q"><span class="vp-label">Mortality Information As Of Date</span><span class="vp-type">Date</span></li><li class="vp-q"><span class="vp-label">Is the patient deceased?</span><span class="vp-type">Coded</span></li><li class="vp-q"><span class="vp-label">Deceased Date</span><span class="vp-type">Date</span><p class="vp-rule">Shown when Is the patient deceased? is Yes.</p></li><li class="vp-q"><span class="vp-label">Marital Status As Of Date</span><span class="vp-type">Date</span></li><li class="vp-q"><span class="vp-label">Marital Status</span><span class="vp-type">Coded</span></li></ul></section><section class="vp-sub" aria-labelledby="vh9"><h3><button type="button" class="ds-disclosure" id="vh9" aria-expanded="true" aria-controls="vq10"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg>Reporting Address for Case Counting</button></h3><ul class="vp-qs" id="vq10" aria-labelledby="vh9"><li class="vp-q"><span class="vp-label">Address Information As Of Date</span><span class="vp-type">Date</span></li><li class="vp-q"><span class="vp-label">Street Address 1</span><span class="vp-type">Text</span></li><li class="vp-q"><span class="vp-label">Street Address 2</span><span class="vp-type">Text</span></li><li class="vp-q"><span class="vp-label">City</span><span class="vp-type">Text</span></li><li class="vp-q"><span class="vp-label">State</span><span class="vp-type">Coded</span></li><li class="vp-q"><span class="vp-label">Zip</span><span class="vp-type">Text</span></li><li class="vp-q"><span class="vp-label">County</span><span class="vp-type">Coded</span></li></ul></section></div></section><section class="vp-section" aria-labelledby="vs11"><div class="vp-section-head"><h2><button type="button" class="ds-disclosure" id="vs11" aria-expanded="true" aria-controls="vb12"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg>Ethnicity and Race</button></h2><button type="button" class="btn btn-link p-0" data-collapse-subs="vb12" aria-controls="vb12">Collapse subsections<span class="visually-hidden"> in Ethnicity and Race</span></button></div><div class="vp-section-body" id="vb12"><section class="vp-sub" aria-labelledby="vh13"><h3><button type="button" class="ds-disclosure" id="vh13" aria-expanded="true" aria-controls="vq14"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg>Ethnicity and Race Information</button></h3><ul class="vp-qs" id="vq14" aria-labelledby="vh13"><li class="vp-q"><span class="vp-label">Ethnicity</span><span class="vp-type">Coded</span></li><li class="vp-q"><span class="vp-label">Race</span><span class="vp-type">Coded, multiple</span></li></ul></section></div></section>
+        </div>
+        <div id="pCase" role="tabpanel" aria-labelledby="tCase" hidden><p class="ds-empty">Case Info tab (not part of this template; same structure as Patient).</p></div><div id="pContact" role="tabpanel" aria-labelledby="tContact" hidden><p class="ds-empty">Contact Tracing tab (not part of this template; same structure as Patient).</p></div><div id="pRecords" role="tabpanel" aria-labelledby="tRecords" hidden><p class="ds-empty">Contact Records tab (not part of this template; same structure as Patient).</p></div><div id="pSupp" role="tabpanel" aria-labelledby="tSupp" hidden><p class="ds-empty">Supplemental Info tab (not part of this template; same structure as Patient).</p></div>
+      </div>
+
+      <div class="modal" id="statusDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="statusTitle" aria-describedby="statusText" hidden>
+        <div class="modal-dialog"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="statusTitle">Make this template inactive?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body"><p id="statusText" class="mb-0">Acute Flaccid Myelitis Prod will be inactive.</p></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="statusYes">Make Inactive</button></div>
+        </div></div>
+      </div>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+
+<!-- Create-draft confirmation (replaces the legacy window.confirm on Edit of a
+     published page). Standard dialog contract: trap, Esc, focus returns. -->
+<div class="modal" id="draftModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="dmTitle" aria-describedby="dmDesc" hidden>
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="dmTitle">Create a draft?</h2>
+          <button type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0" id="dmDesc" style="margin:0"></p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-primary" data-close>Cancel</button>
+          <button class="btn btn-primary" id="dmConfirm">Create draft</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* View Template: section and subsection disclosures, Collapse subsections, and tabs. Make Inactive: js/ds-status.js. */
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); }, $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function setOpen(btn, open) { btn.setAttribute('aria-expanded', String(open)); document.getElementById(btn.getAttribute('aria-controls')).hidden = !open; }
+  document.addEventListener('click', function (e) {
+    var d = e.target.closest('.ds-disclosure[aria-controls]');
+    if (d) { setOpen(d, d.getAttribute('aria-expanded') !== 'true'); return; }
+    var c = e.target.closest('[data-collapse-subs]');
+    if (c) {
+      var body = document.getElementById(c.getAttribute('data-collapse-subs')), subs = $$('.vp-sub .ds-disclosure', body);
+      var anyOpen = subs.some(function (b) { return b.getAttribute('aria-expanded') === 'true'; });
+      subs.forEach(function (b) { setOpen(b, !anyOpen); });
+      c.firstChild.nodeValue = anyOpen ? 'Expand subsections' : 'Collapse subsections';
+    }
+  });
+  /* Tabs */
+  var tabs = $$('[role="tab"]');
+  tabs.forEach(function (t, i) {
+    function sel(tab) { tabs.forEach(function (x) { var on = x === tab; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; }); tab.focus(); }
+    t.addEventListener('click', function () { sel(t); });
+    t.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') sel(tabs[(i + 1) % tabs.length]); if (e.key === 'ArrowLeft') sel(tabs[(i - 1 + tabs.length) % tabs.length]); });
+  });
+})();
+</script>
+<script src="../../js/ds-status.js"></script>
+</body>
+</html>

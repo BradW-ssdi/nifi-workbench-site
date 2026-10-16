@@ -68,7 +68,7 @@
         <h1 class="display-6 mb-0 mt-2">Manage Laboratories</h1>
       </div>
       <div class="page-body d-grid gap-3">
-        <!-- Manage Laboratories modernizes Laboratories.do. Lab name is required. Criteria first, then results: js/ds-search.js. -->
+        <!-- Manage Laboratories modernizes Laboratories.do. Lab name is required. Criteria first, then results: js/ds-search.js. View, Edit, and Add New Lab open dialogs (js/ds-record.js). -->
         <div class="ds-error-summary mb-0" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
           <h2 id="errorSummaryTitle">There is a problem</h2>
           <ul id="errorList"></ul>
@@ -85,13 +85,40 @@
         </form>
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
           <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
-            <a class="btn btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New Lab</a></div>
+            <button type="button" class="btn btn-primary" data-record="add" aria-haspopup="dialog"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New Lab</button></div>
           <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
-            <table class="table ds-table" id="resultsTable" data-columns="[&quot;labId&quot;, &quot;name&quot;]" data-actions="[{&quot;label&quot;: &quot;View&quot;, &quot;icon&quot;: &quot;visibility&quot;, &quot;href&quot;: &quot;#&quot;}, {&quot;label&quot;: &quot;Edit&quot;, &quot;icon&quot;: &quot;edit&quot;, &quot;href&quot;: &quot;#&quot;}]" data-row-label="name"><caption class="visually-hidden">Laboratories found</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">Lab ID</th><th scope="col">Lab Name</th></tr></thead><tbody></tbody></table></div></div>
+            <table class="table ds-table" id="resultsTable" data-columns="[&quot;labId&quot;, &quot;name&quot;]" data-actions="[{&quot;label&quot;: &quot;View&quot;, &quot;icon&quot;: &quot;visibility&quot;, &quot;dialog&quot;: &quot;view&quot;}, {&quot;label&quot;: &quot;Edit&quot;, &quot;icon&quot;: &quot;edit&quot;, &quot;dialog&quot;: &quot;edit&quot;}]" data-row-label="name" data-row-key="labId"><caption class="visually-hidden">Laboratories found</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">Lab ID</th><th scope="col">Lab Name</th></tr></thead><tbody></tbody></table></div></div>
           <p class="ds-empty" id="noResults" hidden>No laboratories match these criteria. Check the spelling, or search with less.</p>
         </section>
       </div>
-      <script type="application/json" id="searchData">[{"labId": "DEFAULT", "name": "Default Manual Lab"}, {"labId": "11D0990760", "name": "LAB CORP OF AMERICA ATHENS-PSC, 1000 HAWTHORNE AVE SUITE D, ATHENS, GA 30606, 7065469822"}, {"labId": "11D0990761", "name": "LAB CORP OF AMERICA ROSWELL-PSC, 1295 HEMBREE RD SUITE 203, ROSWELL, GA 30076, 7704109586"}, {"labId": "11D0885498", "name": "LABCORP OF AMERICA HOLDINGS DS, 1506 CHATTANOOGA ROAD STE B, DALTON, GA 30720, 3362291127"}, {"labId": "11D0703709", "name": "LABCORP OF AMERICA HOLDINGS DS, 181-A UPPER RIVERDALE RD, RIVERDALE, GA 30274, 7709070447"}, {"labId": "11D0703705", "name": "LABCORP OF AMERICA HOLDINGS DS, 478 PEACHTREE RD STE 711, ATLANTA, GA 30308, 4045235277"}, {"labId": "11D0264622", "name": "LABCORP OF AMERICA HOLDINGS DS, 5205 WATERS AVE, SAVANNAH, GA 31404, 9123527700"}, {"labId": "11D0872094", "name": "LABCORP OF AMERICA HOLDINGS DS, 575 PROFESSIONAL DR SUITE 110, LAWRENCEVILLE, GA 30045, 7709624847"}, {"labId": "11D0858217", "name": "LABCORP OF AMERICA HOLDINGS DS, 803 N JEFFERSON ST STE B, ALBANY, GA 31701, 9124363111"}, {"labId": "11D0872078", "name": "LABCORP OF AMERICA HOLDINGS DS, 840 CHURCH STREET EXT, MARIETTA, GA 30067, 7704190343"}]</script>
+      <script type="application/json" id="searchData">[{"labId": "DEFAULT", "name": "Default Manual Lab", "codingSystem": "NBS", "codingSystemDesc": "NEDSS Base System", "authority": "2.16.840.1.114222", "authorityDesc": "Centers for Disease Control", "electronic": "No"}, {"labId": "11D0990760", "name": "LAB CORP OF AMERICA ATHENS-PSC, 1000 HAWTHORNE AVE SUITE D, ATHENS, GA 30606, 7065469822", "codingSystem": "L", "codingSystemDesc": "Local", "authority": "CLIA", "authorityDesc": "Clinical Laboratory Improvement Act", "electronic": "Yes"}, {"labId": "11D0990761", "name": "LAB CORP OF AMERICA ROSWELL-PSC, 1295 HEMBREE RD SUITE 203, ROSWELL, GA 30076, 7704109586", "codingSystem": "L", "codingSystemDesc": "Local", "authority": "CLIA", "authorityDesc": "Clinical Laboratory Improvement Act", "electronic": "Yes"}, {"labId": "11D0885498", "name": "LABCORP OF AMERICA HOLDINGS DS, 1506 CHATTANOOGA ROAD STE B, DALTON, GA 30720, 3362291127", "codingSystem": "L", "codingSystemDesc": "Local", "authority": "CLIA", "authorityDesc": "Clinical Laboratory Improvement Act", "electronic": "Yes"}, {"labId": "11D0703709", "name": "LABCORP OF AMERICA HOLDINGS DS, 181-A UPPER RIVERDALE RD, RIVERDALE, GA 30274, 7709070447", "codingSystem": "L", "codingSystemDesc": "Local", "authority": "CLIA", "authorityDesc": "Clinical Laboratory Improvement Act", "electronic": "Yes"}, {"labId": "11D0703705", "name": "LABCORP OF AMERICA HOLDINGS DS, 478 PEACHTREE RD STE 711, ATLANTA, GA 30308, 4045235277", "codingSystem": "L", "codingSystemDesc": "Local", "authority": "CLIA", "authorityDesc": "Clinical Laboratory Improvement Act", "electronic": "Yes"}, {"labId": "11D0264622", "name": "LABCORP OF AMERICA HOLDINGS DS, 5205 WATERS AVE, SAVANNAH, GA 31404, 9123527700", "codingSystem": "L", "codingSystemDesc": "Local", "authority": "CLIA", "authorityDesc": "Clinical Laboratory Improvement Act", "electronic": "Yes"}, {"labId": "11D0872094", "name": "LABCORP OF AMERICA HOLDINGS DS, 575 PROFESSIONAL DR SUITE 110, LAWRENCEVILLE, GA 30045, 7709624847", "codingSystem": "L", "codingSystemDesc": "Local", "authority": "CLIA", "authorityDesc": "Clinical Laboratory Improvement Act", "electronic": "Yes"}, {"labId": "11D0858217", "name": "LABCORP OF AMERICA HOLDINGS DS, 803 N JEFFERSON ST STE B, ALBANY, GA 31701, 9124363111", "codingSystem": "L", "codingSystemDesc": "Local", "authority": "CLIA", "authorityDesc": "Clinical Laboratory Improvement Act", "electronic": "Yes"}, {"labId": "11D0872078", "name": "LABCORP OF AMERICA HOLDINGS DS, 840 CHURCH STREET EXT, MARIETTA, GA 30067, 7704190343", "codingSystem": "L", "codingSystemDesc": "Local", "authority": "CLIA", "authorityDesc": "Clinical Laboratory Improvement Act", "electronic": "Yes"}]</script>
+      <div id="recordStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+      <div class="modal" id="viewDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="viewTitle" hidden>
+        <div class="modal-dialog modal-lg"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="viewTitle">View Lab</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body"><dl class="ds-dl" id="viewList"></dl></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Close</button><button type="button" class="btn btn-primary" id="viewEdit">Edit</button></div>
+        </div></div>
+      </div>
+      <div class="modal" id="formDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="formTitle" hidden>
+        <div class="modal-dialog modal-lg"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="formTitle">Add Lab</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body d-grid gap-3">
+            <p class="legend-note mb-0"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
+            <div class="ds-entry-grid">
+              <dl class="ds-dl" id="rf-labId-ro" hidden><div><dt>Lab ID</dt><dd></dd></div></dl><div class="ds-field"><label class="ds-required" for="rf-labId">Lab ID</label><input class="form-control" id="rf-labId" type="text" autocomplete="off" maxlength="20"><span class="invalid-feedback" id="rf-labId-error" hidden></span></div>
+              <div class="ds-field"><label class="ds-required" for="rf-name">Lab Name</label><input class="form-control" id="rf-name" type="text" autocomplete="off" maxlength="100"><span class="invalid-feedback" id="rf-name-error" hidden></span></div>
+              <div class="ds-field"><label class="ds-required" for="rf-codingSystem">Coding System</label><input class="form-control" id="rf-codingSystem" type="text" autocomplete="off" maxlength="20"><span class="invalid-feedback" id="rf-codingSystem-error" hidden></span></div>
+              <div class="ds-field"><label class="ds-required" for="rf-codingSystemDesc">Coding System Description</label><input class="form-control" id="rf-codingSystemDesc" type="text" autocomplete="off" maxlength="100"><span class="invalid-feedback" id="rf-codingSystemDesc-error" hidden></span></div>
+              <div class="ds-field ds-field-wide"><label class="ds-required" for="rf-authority">Assigning Authority</label><input class="form-control" id="rf-authority" type="text" autocomplete="off" maxlength="300"><span class="invalid-feedback" id="rf-authority-error" hidden></span></div>
+              <div class="ds-field"><label class="ds-required" for="rf-authorityDesc">Assigning Authority Description</label><input class="form-control" id="rf-authorityDesc" type="text" autocomplete="off" maxlength="100"><span class="invalid-feedback" id="rf-authorityDesc-error" hidden></span></div>
+              <div class="ds-field"><label class="ds-required" for="rf-electronic">Electronic Lab</label><select class="form-select" id="rf-electronic"><option value="">Select one</option><option>No</option><option>Yes</option></select><span class="invalid-feedback" id="rf-electronic-error" hidden></span></div>
+            </div>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="formSave">Save</button></div>
+        </div></div>
+      </div>
+      <script type="application/json" id="recordSpec">{"noun": "Lab", "key": "labId", "keyLabel": "Lab ID", "fields": [{"key": "labId", "label": "Lab ID", "type": "text", "required": true, "ml": 20, "keyField": true}, {"key": "name", "label": "Lab Name", "type": "text", "required": true, "ml": 100}, {"key": "codingSystem", "label": "Coding System", "type": "text", "required": true, "ml": 20}, {"key": "codingSystemDesc", "label": "Coding System Description", "type": "text", "required": true, "ml": 100}, {"key": "authority", "label": "Assigning Authority", "type": "text", "required": true, "ml": 300}, {"key": "authorityDesc", "label": "Assigning Authority Description", "type": "text", "required": true, "ml": 100}, {"key": "electronic", "label": "Electronic Lab", "type": "select", "required": true, "article": "whether it is an"}]}</script>
     </main>
 <!-- app-frame:bottom -->
   <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
@@ -107,5 +134,7 @@
 </div>
 <!-- /app-frame:bottom -->
 <script src="../../js/ds-search.js"></script>
+<script src="../../js/ds-dialog.js"></script>
+<script src="../../js/ds-record.js"></script>
 </body>
 </html>

@@ -16,7 +16,11 @@
      after a search and says how many were found; the count is also written to the status region (#searchStatus).
      No match shows #noResults instead of the table.
    - Rows: the result rows come from the server. Here they come from the JSON in #searchData; each row's actions are
-     links named for the row (data-row-label="<key>").
+     links named for the row (data-row-label="<key>"). An action with "dialog" (view or edit) is a button instead,
+     data-record="<dialog>" with data-key="<row key>" (data-row-key on the table, or the row label), for
+     js/ds-record.js. Each row carries data-key.
+   - window.dsSearch: { data, label, rows() (the rows shown), add(row), refresh() } so js/ds-record.js can show a saved
+     or added row without a new search.
    - Clear empties the criteria, hides the results, and says so; focus stays on Clear. */
 (function () {
   'use strict';
@@ -30,7 +34,7 @@
   var summary = $('#errorSummary'), list = $('#errorList');
   var noun = form.getAttribute('data-noun'), nouns = form.getAttribute('data-nouns');
   var cols = JSON.parse(table.getAttribute('data-columns')), actions = JSON.parse(table.getAttribute('data-actions') || '[]');
-  var labelKey = table.getAttribute('data-row-label');
+  var labelKey = table.getAttribute('data-row-label'), rowKey = table.getAttribute('data-row-key') || labelKey;
 
   function setError(f, msg) {
     var err = document.getElementById(f.id + '-error'), d = (f.getAttribute('aria-describedby') || '').split(' ').filter(function (x) { return x && (!err || x !== err.id); });
@@ -77,9 +81,13 @@
   }
   function render(rows) {
     tbody.innerHTML = rows.map(function (r) {
-      var label = esc(r[labelKey]);
-      var acts = actions.map(function (a) { return '<a href="' + esc(a.href) + '" aria-label="' + esc(a.label) + ' ' + label + '"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#' + a.icon + '"/></svg></a>'; }).join('');
-      return '<tr>' + (actions.length ? '<td class="ds-row-actions">' + acts + '</td>' : '') + cols.map(function (c, i) { return (i === 0 ? '<th scope="row">' : '<td>') + (r[c] ? esc(r[c]) : '<span class="visually-hidden">None</span>') + (i === 0 ? '</th>' : '</td>'); }).join('') + '</tr>';
+      var label = esc(r[labelKey]), key = esc(r[rowKey]);
+      var acts = actions.map(function (a) {
+        var icon = '<svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#' + a.icon + '"/></svg>';
+        if (a.dialog) return '<button type="button" class="btn btn-link p-0" data-record="' + a.dialog + '" data-key="' + key + '" aria-haspopup="dialog" aria-label="' + esc(a.label) + ' ' + label + '">' + icon + '</button>';
+        return '<a href="' + esc(a.href) + '" aria-label="' + esc(a.label) + ' ' + label + '">' + icon + '</a>';
+      }).join('');
+      return '<tr data-key="' + key + '">' + (actions.length ? '<td class="ds-row-actions">' + acts + '</td>' : '') + cols.map(function (c, i) { return (i === 0 ? '<th scope="row">' : '<td>') + (r[c] ? esc(r[c]) : '<span class="visually-hidden">None</span>') + (i === 0 ? '</th>' : '</td>'); }).join('') + '</tr>';
     }).join('');
   }
   form.addEventListener('submit', function (e) {
@@ -99,16 +107,26 @@
     }
     summary.hidden = true;
     /* DEV: the server searches; these rows stand in for its results. */
-    var rows = data.filter(match), n = rows.length;
-    render(rows);
+    shown = data.filter(match);
+    show();
+    status.textContent = title.textContent.replace('Search results: ', '') + '.';
+    title.focus();
+  });
+  var shown = [];
+  function show() {
+    var n = shown.length;
+    render(shown);
     results.hidden = false;
     table.closest('.ds-table-frame').hidden = n === 0;
     none.hidden = n > 0;
-    var said = n === 0 ? 'No ' + nouns + ' found' : n + ' ' + (n === 1 ? noun : nouns) + ' found';
-    title.textContent = 'Search results: ' + said;
-    status.textContent = said + '.';
-    title.focus();
-  });
+    title.textContent = 'Search results: ' + (n === 0 ? 'No ' + nouns + ' found' : n + ' ' + (n === 1 ? noun : nouns) + ' found');
+  }
+  window.dsSearch = {
+    data: data, label: labelKey, key: rowKey,
+    rows: function () { return shown; },
+    add: function (row) { data.push(row); shown.push(row); show(); },
+    refresh: show
+  };
   form.addEventListener('reset', function () {
     setTimeout(function () {
       fields().concat($$('[required]', form)).forEach(function (f) { setError(f, ''); });

@@ -202,6 +202,8 @@
           text: 'The description matches as Contains or Equal, as today.' },
         { code: 'LM-3', title: 'Results', pin: { sel: '#searchForm button[type=submit]' }, after: 'search',
           text: 'Results show under the criteria with how many were found, Edit on each row, and Add New.' },
+        { code: 'LM-5', title: 'Edit and Add in a dialog', pin: { sel: '#searchForm button[type=submit]' }, after: 'search',
+          text: 'Edit on a row and Add New open the record in a dialog over the results, so the search stays in place. The current screens show the form under the results on the same page. Manage LOINCs, Laboratories, Local Lab Results, Local Lab Tests, and Trigger Codes also have View.' },
         { code: 'LM-4', title: 'Show a list first?', pin: { sel: '#snomedCode' }, ask: true,
           text: 'Should these screens list the codes on arrival, with the criteria as filters (as the queue screens do), instead of waiting for a search? SNOMED and LOINC tables are large, which is likely why the current screens ask first.' }
       ] },
@@ -259,6 +261,13 @@
           text: 'Each result shows its code, description, and lab, with View and Edit.' },
         { code: 'LR-3', title: 'Lab list', pin: { sel: '#lrLab' }, ask: true,
           text: 'The current lab list shows each lab with its address, cut off. Is the name enough to tell labs apart, or do users need the address?' }
+      ] },
+    { id: 'manage-trigger-codes', title: 'Manage Trigger Codes', priority: 'Case Reporting', status: 'ready',
+      notes: [
+        { code: 'TC-1', title: 'View and Edit', pin: { sel: '#searchForm button[type=submit]' }, after: 'search',
+          text: 'View and Edit show the trigger code in a dialog. On the current screen they open empty, so this follows the Add New form: coding system, code, display name, default condition, and version ID.' },
+        { code: 'TC-2', title: 'Condition list', pin: { sel: '#tcCondition' }, ask: true,
+          text: 'The current Default Condition list shows names only. This template adds the condition code, as the results do, for example Hepatitis A, acute (10110). Keep the code?' }
       ] },
     { id: 'manage-local-lab-tests', title: 'Manage Local Lab Tests', priority: 'Lab Management', status: 'ready',
       notes: [
@@ -367,6 +376,13 @@
           text: 'The run log shows a pre-run before each conversion. Must the pre-run be repeated before every conversion, as this template asks?' },
         { code: 'PC-4', title: 'Failed runs', pin: { sel: '#logTable' }, ask: true,
           text: 'A failed run logs a system error (for example NEDSSAppException ERR109). What should the log say to an administrator instead?' }
+      ] },
+    { id: 'view-template', title: 'View Template', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'VT-1', title: 'Same preview as View Page', pin: { sel: '.vp-tabs' },
+          text: 'The tabs, sections, subsections, and questions of the template, read only, as View Page shows a page and as the current screen previews a template.' },
+        { code: 'VT-2', title: 'Actions', pin: { sel: '.vp-toolbar' },
+          text: 'View rules, Print, Export, and Make Inactive, as on the current screen. Make Inactive asks first.' }
       ] },
     { id: 'add-question', title: 'Add Question', priority: 'Page Management', status: 'ready',
       notes: [

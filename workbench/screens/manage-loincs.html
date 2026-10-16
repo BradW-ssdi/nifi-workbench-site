@@ -68,7 +68,7 @@
         <h1 class="display-6 mb-0 mt-2">Manage LOINCs</h1>
       </div>
       <div class="page-body d-grid gap-3">
-        <!-- Manage LOINCs modernizes ManageLoincs.do. Criteria first, then results: js/ds-search.js. -->
+        <!-- Manage LOINCs modernizes ManageLoincs.do. Criteria first, then results: js/ds-search.js. View, Edit, and Add New LOINC open dialogs (js/ds-record.js), as the current screen shows them under the results. -->
         <div class="ds-error-summary mb-0" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
           <h2 id="errorSummaryTitle">There is a problem</h2>
           <ul id="errorList"></ul>
@@ -85,13 +85,44 @@
         </form>
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
           <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
-            <a class="btn btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New LOINC</a></div>
+            <button type="button" class="btn btn-primary" data-record="add" aria-haspopup="dialog"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New LOINC</button></div>
           <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
-            <table class="table ds-table" id="resultsTable" data-columns="[&quot;code&quot;, &quot;component&quot;]" data-actions="[{&quot;label&quot;: &quot;View&quot;, &quot;icon&quot;: &quot;visibility&quot;, &quot;href&quot;: &quot;#&quot;}, {&quot;label&quot;: &quot;Edit&quot;, &quot;icon&quot;: &quot;edit&quot;, &quot;href&quot;: &quot;#&quot;}]" data-row-label="code"><caption class="visually-hidden">Loincs found</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">LOINC Code</th><th scope="col">LOINC Component Name</th></tr></thead><tbody></tbody></table></div></div>
+            <table class="table ds-table" id="resultsTable" data-columns="[&quot;code&quot;, &quot;component&quot;]" data-actions="[{&quot;label&quot;: &quot;View&quot;, &quot;icon&quot;: &quot;visibility&quot;, &quot;dialog&quot;: &quot;view&quot;}, {&quot;label&quot;: &quot;Edit&quot;, &quot;icon&quot;: &quot;edit&quot;, &quot;dialog&quot;: &quot;edit&quot;}]" data-row-label="code" data-row-key="code"><caption class="visually-hidden">Loincs found</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">LOINC Code</th><th scope="col">LOINC Component Name</th></tr></thead><tbody></tbody></table></div></div>
           <p class="ds-empty" id="noResults" hidden>No LOINCs match these criteria. Check the spelling, or search with less.</p>
         </section>
       </div>
-      <script type="application/json" id="searchData">[{"code": "24363-4", "component": "ACUTE HEPATITIS HCFA 2000 PANEL"}, {"code": "23033-4", "component": "DUCK HEPATITIS VIRUS 1 AB"}, {"code": "23034-2", "component": "DUCK HEPATITIS VIRUS 1 AB"}, {"code": "23035-9", "component": "DUCK HEPATITIS VIRUS 1 AG"}, {"code": "31803-0", "component": "DUCK HEPATITIS VIRUS 1 AG"}, {"code": "23036-7", "component": "DUCK HEPATITIS VIRUS 2 AB"}, {"code": "23037-5", "component": "DUCK HEPATITIS VIRUS 2 AB"}, {"code": "23038-3", "component": "DUCK HEPATITIS VIRUS 2 AG"}, {"code": "31804-8", "component": "DUCK HEPATITIS VIRUS 2 AG"}, {"code": "23039-1", "component": "DUCK HEPATITIS VIRUS 3 AB"}]</script>
+      <script type="application/json" id="searchData">[{"code": "24363-4", "component": "ACUTE HEPATITIS HCFA 2000 PANEL", "testFamily": "", "property": "-", "timeAspect": "PT", "systemCd": "SER", "scaleType": "QN", "methodType": "", "displayName": "", "relatedClass": "PANEL.MICRO", "excludePA": "Yes"}, {"code": "23033-4", "component": "DUCK HEPATITIS VIRUS 1 AB", "testFamily": "", "property": "ACNC", "timeAspect": "PT", "systemCd": "SER", "scaleType": "ORD", "methodType": "NEUT", "displayName": "", "relatedClass": "MICRO", "excludePA": "No"}, {"code": "23034-2", "component": "DUCK HEPATITIS VIRUS 1 AB", "testFamily": "", "property": "ACNC", "timeAspect": "PT", "systemCd": "SER", "scaleType": "ORD", "methodType": "", "displayName": "", "relatedClass": "MICRO", "excludePA": "No"}, {"code": "23035-9", "component": "DUCK HEPATITIS VIRUS 1 AG", "testFamily": "", "property": "ACNC", "timeAspect": "PT", "systemCd": "XXX", "scaleType": "ORD", "methodType": "NEUT", "displayName": "", "relatedClass": "MICRO", "excludePA": "No"}, {"code": "31803-0", "component": "DUCK HEPATITIS VIRUS 1 AG", "testFamily": "", "property": "ACNC", "timeAspect": "PT", "systemCd": "XXX", "scaleType": "ORD", "methodType": "", "displayName": "", "relatedClass": "MICRO", "excludePA": "No"}, {"code": "23036-7", "component": "DUCK HEPATITIS VIRUS 2 AB", "testFamily": "", "property": "ACNC", "timeAspect": "PT", "systemCd": "SER", "scaleType": "ORD", "methodType": "", "displayName": "", "relatedClass": "MICRO", "excludePA": "No"}, {"code": "23037-5", "component": "DUCK HEPATITIS VIRUS 2 AB", "testFamily": "", "property": "ACNC", "timeAspect": "PT", "systemCd": "SER", "scaleType": "ORD", "methodType": "NEUT", "displayName": "", "relatedClass": "MICRO", "excludePA": "No"}, {"code": "23038-3", "component": "DUCK HEPATITIS VIRUS 2 AG", "testFamily": "", "property": "ACNC", "timeAspect": "PT", "systemCd": "XXX", "scaleType": "ORD", "methodType": "NEUT", "displayName": "", "relatedClass": "MICRO", "excludePA": "No"}, {"code": "31804-8", "component": "DUCK HEPATITIS VIRUS 2 AG", "testFamily": "", "property": "ACNC", "timeAspect": "PT", "systemCd": "XXX", "scaleType": "ORD", "methodType": "", "displayName": "", "relatedClass": "MICRO", "excludePA": "No"}, {"code": "23039-1", "component": "DUCK HEPATITIS VIRUS 3 AB", "testFamily": "", "property": "ACNC", "timeAspect": "PT", "systemCd": "SER", "scaleType": "ORD", "methodType": "", "displayName": "", "relatedClass": "MICRO", "excludePA": "No"}]</script>
+      <div id="recordStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+      <div class="modal" id="viewDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="viewTitle" hidden>
+        <div class="modal-dialog modal-lg"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="viewTitle">View LOINC</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body"><dl class="ds-dl" id="viewList"></dl></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Close</button><button type="button" class="btn btn-primary" id="viewEdit">Edit</button></div>
+        </div></div>
+      </div>
+      <div class="modal" id="formDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="formTitle" hidden>
+        <div class="modal-dialog modal-lg"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="formTitle">Add LOINC</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body d-grid gap-3">
+            <p class="legend-note mb-0"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
+            <div class="ds-entry-grid">
+              <dl class="ds-dl" id="rf-code-ro" hidden><div><dt>LOINC Code</dt><dd></dd></div></dl><div class="ds-field"><label class="ds-required" for="rf-code">LOINC Code</label><input class="form-control" id="rf-code" type="text" autocomplete="off" maxlength="20"><span class="invalid-feedback" id="rf-code-error" hidden></span></div>
+              <div class="ds-field ds-field-wide"><label class="ds-required" for="rf-component">LOINC Component Name</label><input class="form-control" id="rf-component" type="text" autocomplete="off" maxlength="200"><span class="invalid-feedback" id="rf-component-error" hidden></span></div>
+              <div class="ds-field"><label for="rf-testFamily">Test Family</label><select class="form-select" id="rf-testFamily"><option value="">None</option><option>Culture</option><option>PCR</option></select><span class="invalid-feedback" id="rf-testFamily-error" hidden></span></div>
+              <div class="ds-field"><label for="rf-property">Property</label><input class="form-control" id="rf-property" type="text" autocomplete="off" maxlength="10"><span class="invalid-feedback" id="rf-property-error" hidden></span></div>
+              <div class="ds-field"><label for="rf-timeAspect">Time Aspect</label><input class="form-control" id="rf-timeAspect" type="text" autocomplete="off" maxlength="10"><span class="invalid-feedback" id="rf-timeAspect-error" hidden></span></div>
+              <div class="ds-field"><label for="rf-systemCd">System Code</label><input class="form-control" id="rf-systemCd" type="text" autocomplete="off" maxlength="50"><span class="invalid-feedback" id="rf-systemCd-error" hidden></span></div>
+              <div class="ds-field"><label for="rf-scaleType">Scale Type</label><input class="form-control" id="rf-scaleType" type="text" autocomplete="off" maxlength="20"><span class="invalid-feedback" id="rf-scaleType-error" hidden></span></div>
+              <div class="ds-field"><label for="rf-methodType">Method Type</label><input class="form-control" id="rf-methodType" type="text" autocomplete="off" maxlength="50"><span class="invalid-feedback" id="rf-methodType-error" hidden></span></div>
+              <div class="ds-field ds-field-wide"><label for="rf-displayName">Display Name</label><input class="form-control" id="rf-displayName" type="text" autocomplete="off" maxlength="300"><span class="invalid-feedback" id="rf-displayName-error" hidden></span></div>
+              <div class="ds-field"><label for="rf-relatedClass">Related Class Code</label><input class="form-control" id="rf-relatedClass" type="text" autocomplete="off" maxlength="50"><span class="invalid-feedback" id="rf-relatedClass-error" hidden></span></div>
+              <div class="ds-field"><label class="ds-check"><input class="form-check-input" type="checkbox" id="rf-excludePA"> Exclude from Program Area Derivation</label></div>
+            </div>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="formSave">Save</button></div>
+        </div></div>
+      </div>
+      <script type="application/json" id="recordSpec">{"noun": "LOINC", "key": "code", "keyLabel": "LOINC Code", "fields": [{"key": "code", "label": "LOINC Code", "type": "text", "required": true, "ml": 20, "keyField": true}, {"key": "component", "label": "LOINC Component Name", "type": "text", "required": true, "ml": 200}, {"key": "testFamily", "label": "Test Family", "type": "select", "required": false}, {"key": "property", "label": "Property", "type": "text", "required": false, "ml": 10}, {"key": "timeAspect", "label": "Time Aspect", "type": "text", "required": false, "ml": 10}, {"key": "systemCd", "label": "System Code", "type": "text", "required": false, "ml": 50}, {"key": "scaleType", "label": "Scale Type", "type": "text", "required": false, "ml": 20}, {"key": "methodType", "label": "Method Type", "type": "text", "required": false, "ml": 50}, {"key": "displayName", "label": "Display Name", "type": "text", "required": false, "ml": 300}, {"key": "relatedClass", "label": "Related Class Code", "type": "text", "required": false, "ml": 50}, {"key": "excludePA", "label": "Exclude from Program Area Derivation", "type": "check", "required": false}]}</script>
     </main>
 <!-- app-frame:bottom -->
   <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
@@ -107,5 +138,7 @@
 </div>
 <!-- /app-frame:bottom -->
 <script src="../../js/ds-search.js"></script>
+<script src="../../js/ds-dialog.js"></script>
+<script src="../../js/ds-record.js"></script>
 </body>
 </html>
