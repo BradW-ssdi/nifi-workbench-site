@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NIFI DS: Components</title>
 <link rel="stylesheet" href="../css/ds.css">
-<link rel="stylesheet" href="phase2/island.css"><!-- Phase 2 styles for .ds-phase2 (the filter chips) -->
 <link rel="stylesheet" href="wb.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -516,14 +515,14 @@
         <div style="display:flex;gap:40px;flex-wrap:wrap">
           <nav class="ds-secnav" aria-label="Section navigation" style="border:1px solid var(--bs-border-color);border-radius:8px">
             <p class="ds-overline" style="padding:4px 12px 8px">Associations</p>
-            <button class="ds-secnav-group-title" aria-expanded="true" aria-controls="wbSecInv">Investigations <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
+            <button type="button" class="btn ds-secnav-group-title" aria-expanded="true" aria-controls="wbSecInv">Investigations <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
             <div id="wbSecInv" class="nav nav-pills flex-column">
               <a class="nav-link" href="#" aria-current="location">Open investigations</a>
               <a class="nav-link" href="#">Closed investigations</a>
             </div>
-            <button class="ds-secnav-group-title" style="margin-top:8px" aria-expanded="false" aria-controls="wbSecLab">Lab Reports <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#chevron_right"/></svg></button>
+            <button type="button" class="btn ds-secnav-group-title" style="margin-top:8px" aria-expanded="false" aria-controls="wbSecLab">Lab Reports <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#chevron_right"/></svg></button>
             <div id="wbSecLab" hidden></div>
-            <button class="ds-secnav-group-title is-danger" style="margin-top:8px">Required: 2 sections incomplete</button>
+            <button type="button" class="btn ds-secnav-group-title is-danger" style="margin-top:8px">Required: 2 sections incomplete</button>
           </nav>
           <p  style="max-width:420px">Items are 14/600 on the secondary surface; hover #E0E0E0,
           pressed #D5D5D5 (proposed). Sub-links 14/400, current = 600 primary. The danger group renders #FFD9D9
@@ -1061,7 +1060,7 @@
         <div style="display:grid;gap:20px;max-width:760px">
           <div class="ds-table-footer"><span class="ds-page-summary">Items 1 - 10 of 190</span><nav aria-label="Pagination, footer example"><ul class="pagination mb-0"><li class="page-item disabled"><button type="button" class="page-link" aria-label="Previous page" disabled>Previous</button></li><li class="page-item"><button type="button" class="page-link active" aria-current="page" aria-label="Page 1">1</button></li><li class="page-item"><button type="button" class="page-link" aria-label="Next page">Next</button></li></ul></nav><div class="ds-page-size"><select class="form-select" id="wbFootSize"><option selected>10</option><option>25</option></select><label for="wbFootSize">Items per page</label></div></div>
           <div class="d-flex justify-content-end gap-3 px-4 py-3 bg-body-secondary border-top"><button class="btn btn-outline-primary">Cancel</button><button class="btn btn-primary">Save</button></div>
-          <div><span class="ds-bulkbar" role="region" aria-label="Bulk actions"><span aria-live="polite">3 selected</span> <button>Assign</button><button>Export</button><button aria-label="Clear selection"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button></span></div>
+          <div><span class="ds-bulkbar" role="region" aria-label="Bulk actions"><span aria-live="polite">3 selected</span> <button type="button" class="btn btn-primary">Assign</button><button type="button" class="btn btn-link">Export</button><button type="button" class="btn btn-link" aria-label="Clear selection"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button></span></div>
         </div>
       </div>
     </div>

@@ -13544,6 +13544,13 @@ fieldset.ds-field {
   font-size: 12.8px;
 }
 
+.ds-phase2 .filterChipsDiv .remove-filter {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-radius: 6px;
+  color: #000;
+}
+
 .ds-phase2 .filterChipsDiv .chip-button.chip:hover {
   box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
 }
@@ -13567,7 +13574,7 @@ fieldset.ds-field {
   line-height: 14px;
 }
 
-.ds-phase2 #clearFiltersDiv .btn-link {
+.ds-phase2 :is(#clearFiltersDiv, .filterChipsDiv) .btn-link {
   min-height: 32px;
   border-radius: 6px;
   font-size: 16px;
@@ -13643,6 +13650,9 @@ fieldset.ds-field {
 
 :where(.ds-phase2) .bi-plus::before {
   content: "+";
+  display: inline-block;
+  min-width: 1em;
+  text-align: center;
   font-style: normal;
   font-weight: 600;
 }

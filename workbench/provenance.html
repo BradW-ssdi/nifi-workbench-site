@@ -19,6 +19,8 @@
   .prov-table td { overflow-wrap: anywhere; }
   .prov-table { table-layout: fixed; }
   .prov-table th:first-child { width: 170px; }
+  /* At phone width the fixed first column left the other two too narrow for their headers */
+  @media (max-width: 575.98px) { .prov-table th:first-child { width: 30%; } .prov-table th, .prov-table td { padding: 8px; } }
   .dup-hot { color: var(--ds-danger, #D40032); font-weight: 600; }
   .dup-ok { color: var(--ds-success, #1E9E77); font-weight: 600; }
   .prov-note { max-width: 78ch; color: var(--ds-text-muted, #5a5f66); font-size: 14px; }
