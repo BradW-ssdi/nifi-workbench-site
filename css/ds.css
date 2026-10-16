@@ -13460,6 +13460,193 @@ fieldset.ds-field {
     overflow: visible;
   }
 }
+@font-face {
+  font-family: "Material Symbols Rounded";
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(../icons/fonts/material-symbols-rounded.woff2) format("woff2");
+}
+.ds-phase2 .material-symbols-rounded {
+  font-family: "Material Symbols Rounded";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-phase2 {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.ds-phase2 .filterChipsDiv {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.ds-phase2 .filterChipsDiv .chip-button.chip {
+  min-height: 35px;
+  padding-top: 5.04px;
+  padding-bottom: 5.04px;
+  padding-right: 10.8px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: 1px solid #2c6777;
+  border-radius: 4px !important;
+  background-color: #e6f2f5;
+  color: #2c6777;
+  font-family: Inter, sans-serif;
+  font-size: 14.4px;
+  font-weight: 700;
+  line-height: 14.4px;
+  cursor: pointer;
+}
+
+.ds-phase2 .filterChipsDiv .chip-expand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 400;
+  appearance: none;
+}
+
+.ds-phase2 .filterChipsDiv .chip-expand .material-symbols-rounded {
+  display: block;
+  line-height: 18px;
+}
+
+.ds-phase2 .filterChipsDiv .chip-operator {
+  padding: 2px 6px;
+  margin-right: 10px;
+  border-color: #2c6777;
+  border-radius: 4px !important;
+  color: #2c6777;
+  font-family: Inter, sans-serif;
+  font-size: 12.8px;
+}
+
+.ds-phase2 .filterChipsDiv .chip-button.chip:hover {
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+}
+
+.ds-phase2 .filterChipsDiv .chip-button.filter-chip {
+  background-color: #fff !important;
+  font-weight: 500;
+}
+
+.ds-phase2 .filterChipsDiv .filter-chip.dropdown-toggle::after {
+  display: none;
+}
+
+.ds-phase2 .filterChipsDiv .filter-chip .material-symbols-rounded {
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.ds-phase2 .filterChipsDiv .filter-chip .me-2 {
+  font-weight: 500;
+  line-height: 14px;
+}
+
+.ds-phase2 #clearFiltersDiv .btn-link {
+  min-height: 32px;
+  border-radius: 6px;
+  font-size: 16px;
+  line-height: 24px;
+  text-decoration: underline !important;
+}
+
+.ds-phase2 .filterChipsDiv .custom-dropdown.show {
+  min-width: 250px;
+  padding: 16px;
+  border-color: rgba(0, 0, 0, 0.176);
+  border-radius: 6px;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.ds-phase2 .filterChipsDiv .custom-dropdown .submenu-operator {
+  height: 32px;
+  min-height: 0;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.ds-phase2 .filterChipsDiv .custom-dropdown input.form-control {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.ds-phase2 .filterChipsDiv .custom-dropdown .form-check {
+  min-height: 24px;
+  padding-left: 24px;
+  margin-left: 5px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.ds-phase2 .filterChipsDiv .custom-dropdown .form-check-input {
+  width: 16px;
+  height: 16px;
+  margin-top: 4px;
+  margin-left: -24px;
+  border-radius: 4px;
+}
+
+.ds-phase2 .filterChipsDiv .custom-dropdown .form-check-label {
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.ds-phase2 .filterChipsDiv .custom-dropdown .clear-selection {
+  padding: 0;
+  margin-bottom: 16px;
+  border: 0;
+  background: #fff;
+  color: #dc3545;
+  appearance: none;
+  text-align: left;
+  font-size: 14.4px;
+  line-height: 21.6px;
+}
+
+.ds-phase2 .filterChipsDiv .custom-dropdown .btn-add {
+  width: 100%;
+  min-height: 32px;
+  padding-top: 3px;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+:where(.ds-phase2) .bi-plus::before {
+  content: "+";
+  font-style: normal;
+  font-weight: 600;
+}
+
 @media (max-width: 640px) {
   .ds-phase2 .chipsWithSubMenu {
     min-width: 0;
