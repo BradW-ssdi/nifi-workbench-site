@@ -13703,6 +13703,10 @@ fieldset.ds-field {
   font-weight: 600;
 }
 
+.ds-phase2 .hiddenDynamicFilter {
+  display: none;
+}
+
 .ts-wrapper.single.form-select {
   padding: 0;
   cursor: pointer;
