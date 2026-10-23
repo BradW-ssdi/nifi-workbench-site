@@ -116,7 +116,21 @@
     });
   }
 
-  function init() { initRail(); initMenus(); initFieldReveal(); }
+  /* Chrome does not scroll a table's sideways scroller when focus lands on a control that is mostly past
+     its edge with a sliver still showing (the last column's sort button on a table a little wider than
+     the window). Scroll it in, with the 8px of scroll-padding-inline from _extensions.scss so the focus
+     outline stays clear of the edge. */
+  function initTableReveal() {
+    document.addEventListener('focusin', function (e) {
+      var el = e.target, sc = el.closest && el.closest('.ds-table-scroll');
+      if (!sc || sc === el) return;
+      var r = el.getBoundingClientRect(), s = sc.getBoundingClientRect(), pad = 8;
+      if (r.right + pad > s.right) sc.scrollLeft += Math.min(r.right + pad - s.right, r.left - pad - s.left);
+      else if (r.left - pad < s.left) sc.scrollLeft -= s.left - (r.left - pad);
+    });
+  }
+
+  function init() { initRail(); initMenus(); initFieldReveal(); initTableReveal(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();

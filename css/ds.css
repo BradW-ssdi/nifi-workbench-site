@@ -5231,9 +5231,9 @@ textarea.form-control-lg {
   --bs-modal-bg: var(--bs-body-bg);
   --bs-modal-border-color: #d0d5d7;
   --bs-modal-border-width: var(--bs-border-width);
-  --bs-modal-border-radius: 8px;
+  --bs-modal-border-radius: 12px;
   --bs-modal-box-shadow: var(--bs-box-shadow-sm);
-  --bs-modal-inner-border-radius: calc(8px - (var(--bs-border-width)));
+  --bs-modal-inner-border-radius: calc(12px - (var(--bs-border-width)));
   --bs-modal-header-padding-x: 1.5rem;
   --bs-modal-header-padding-y: 1.5rem;
   --bs-modal-header-padding: 1rem 1.5rem;
@@ -13112,6 +13112,41 @@ fieldset.ds-field {
     margin-top: 4px;
   }
 }
+.ds-modal-p2 .modal-body {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.ds-modal-p2 .ds-modal-sections-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -8px;
+}
+
+.ds-modal-p2 .modal-body > :is(.alert, .legend-note, .ds-error-summary) {
+  margin: 0;
+}
+
+.ds-modal-p2 .accordion.ds-form-accordion + .accordion.ds-form-accordion {
+  margin-top: 0;
+}
+
+.ds-modal-p2 .accordion.ds-form-accordion {
+  scroll-margin-top: 0;
+}
+
+.ds-table-settings {
+  position: relative;
+}
+
+.ds-table-settings .dropdown-menu {
+  top: calc(100% + 4px);
+  right: 0;
+  left: auto;
+  min-width: 220px;
+}
+
 [data-bs-theme=dark] .btn-primary {
   --bs-btn-bg: #47bad9;
   --bs-btn-border-color: #47bad9;
@@ -13381,6 +13416,12 @@ fieldset.ds-field {
   opacity: 1;
 }
 
+.ds-error-summary li > a {
+  display: inline-block;
+  min-height: 24px;
+  padding-block: 1.5px;
+}
+
 .form-control, .form-select, .form-check-input {
   scroll-margin: calc(var(--ds-header-height) + 16px) 0 24px;
 }
@@ -13447,6 +13488,10 @@ fieldset.ds-field {
     overflow-y: auto;
   }
 }
+.modal-body {
+  scroll-padding-block: 8px;
+}
+
 @media (max-height: 480px) {
   .modal-dialog, .modal-dialog-scrollable {
     height: auto;
@@ -13658,6 +13703,101 @@ fieldset.ds-field {
   font-weight: 600;
 }
 
+.ts-wrapper.single.form-select {
+  padding: 0;
+  cursor: pointer;
+}
+
+.ts-wrapper.single.form-select .ts-control,
+.ts-wrapper.single.form-select.input-active .ts-control,
+.ts-wrapper.single.form-select.has-items .ts-control {
+  min-height: 0;
+  padding: 0.34375rem 2.25rem 0.34375rem 0.75rem;
+  border: 0;
+  border-radius: inherit;
+  box-shadow: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: inherit;
+}
+
+.ts-wrapper.single.form-select .ts-control > input {
+  font: inherit;
+  color: inherit;
+}
+
+.ts-wrapper.single.form-select .ts-control .item {
+  color: inherit;
+}
+
+.ts-wrapper.single.form-select.focus {
+  border-color: var(--bs-focus-ring-color);
+  box-shadow: inset 0 0 0 1px var(--bs-focus-ring-color);
+  outline: 0;
+}
+
+.ts-wrapper.single.form-select.is-invalid {
+  border-color: var(--bs-form-invalid-border-color);
+  box-shadow: inset 0 0 0 1px var(--bs-form-invalid-border-color);
+}
+
+.ts-wrapper.single.form-select.is-invalid.focus {
+  border-color: var(--bs-focus-ring-color);
+  box-shadow: inset 0 0 0 1px var(--bs-focus-ring-color);
+}
+
+.ts-wrapper.single.form-select.disabled {
+  background-color: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
+  opacity: 1;
+}
+
+.ts-dropdown {
+  z-index: 1090;
+  margin-top: 2px;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  background: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  box-shadow: var(--bs-box-shadow);
+  font-size: 0.875rem;
+}
+
+.ts-dropdown .option, .ts-dropdown .no-results {
+  padding: 6px 12px;
+}
+
+.ts-dropdown .active {
+  background-color: var(--ds-tint);
+  color: var(--bs-emphasis-color);
+}
+
+.ts-dropdown .selected:not(.active) {
+  font-weight: 600;
+}
+
+.ts-dropdown [data-selectable] .highlight {
+  background: none;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+[data-bs-theme=dark] .ts-wrapper.single.form-select.focus {
+  border-color: var(--bs-focus-ring-color);
+}
+
+@media (forced-colors: active) {
+  .ts-wrapper.single.form-select.focus {
+    outline: 2px solid Highlight;
+    outline-offset: 0;
+  }
+  .ts-dropdown .active {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
 @media (max-width: 640px) {
   .ds-phase2 .chipsWithSubMenu {
     min-width: 0;

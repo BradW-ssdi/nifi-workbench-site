@@ -9,29 +9,38 @@
    Hide:   dsDialog.hide(modal)  reverses it; the caller returns focus to the opener
    Top:    dsDialog.top()        the dialog on top, or null; dsDialog.depth() how many are open
 
-   Dialogs stack (a dialog opened from a dialog): each one is a level with its own backdrop and z-index above the
-   level below, and everything outside it, including the dialog below, is inert while it is open. Hiding a dialog
-   also hides any dialog opened above it, and restores only what its own level made inert, so the dialog below
-   becomes usable again. Keep the dialogs of a page as siblings (not nested in each other's markup). */
+   Dialogs stack (a dialog opened from a dialog). As in Phase 2, the new dialog replaces the one below: the dialog
+   below is hidden while the new one is open and comes back, as it was, when the new one closes (BA review
+   2026-10-20). A confirmation (role="alertdialog", or data-ds-overlay) instead opens on top of the dialog below, which
+   stays visible but inert, with its own backdrop, so the person sees what they are confirming. Everything outside
+   the open dialog is inert. Hiding a dialog also hides any dialog opened above it, and restores only what its own
+   level made inert. Keep the dialogs of a page as siblings (not nested in each other's markup). */
 (function () {
   'use strict';
   var BASE_BACKDROP = 1050, BASE_MODAL = 1055, STEP = 20;
   var stack = [];   /* { modal, backdrop, marked: [elements this level made inert] } */
 
   function show(modal) {
-    var level = stack.length;
+    var level = stack.length, below = level ? stack[level - 1] : null;
+    var overlay = modal.getAttribute('role') === 'alertdialog' || modal.hasAttribute('data-ds-overlay');
+    var replaced = below && !overlay ? below : null;   /* the dialog below hides while this one is open */
+    if (replaced) { replaced.modal.classList.remove('show'); replaced.modal.hidden = true; }
     modal.hidden = false;
     modal.classList.add('show');
     modal.setAttribute('aria-modal', 'true');
-    var backdrop = document.createElement('div');
-    backdrop.className = 'modal-backdrop show';
-    backdrop.setAttribute('data-ds-backdrop', String(level));
+    /* one backdrop per visible layer: a dialog that replaces the one below keeps that one's backdrop */
+    var backdrop = null;
+    if (!replaced) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop show';
+      backdrop.setAttribute('data-ds-backdrop', String(level));
+      if (level) backdrop.style.zIndex = BASE_BACKDROP + STEP * level;
+      document.body.appendChild(backdrop);
+    }
     if (level) {
-      backdrop.style.zIndex = BASE_BACKDROP + STEP * level;
       modal.style.zIndex = BASE_MODAL + STEP * level;
       modal.setAttribute('data-ds-level', String(level));
     }
-    document.body.appendChild(backdrop);
     document.body.classList.add('modal-open');
     /* A lower level made every sibling of its dialog inert, including this dialog if it is a sibling. Lift that for
        this dialog and its ancestors while it is open; it goes back when this dialog closes. */
@@ -56,7 +65,7 @@
         marked.push(el);
       });
     }
-    stack.push({ modal: modal, backdrop: backdrop, marked: marked, lifted: lifted });
+    stack.push({ modal: modal, backdrop: backdrop, marked: marked, lifted: lifted, replaced: replaced });
     modal.focus();
   }
 
@@ -70,7 +79,8 @@
       el.removeAttribute('data-ds-inert');
     });
     entry.lifted.forEach(function (l) { l.el.setAttribute('data-ds-inert', l.mark); l.el.setAttribute('inert', ''); });
-    entry.backdrop.remove();
+    if (entry.backdrop) entry.backdrop.remove();
+    if (entry.replaced) { entry.replaced.modal.hidden = false; entry.replaced.modal.classList.add('show'); }
   }
 
   function hide(modal) {

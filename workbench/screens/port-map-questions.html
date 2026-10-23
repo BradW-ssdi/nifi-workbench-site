@@ -39,7 +39,7 @@
     </ul>
     <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
     <ul class="ds-nav-sub" id="navMerge" hidden>
-      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-manual" href="merge-patients-search.html">Manual Search</a></li>
       <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
     </ul>
     <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
@@ -170,8 +170,8 @@
         </div>
         <div class="ds-form-footer" style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg)">
           <a class="btn btn-outline-primary" href="port-page.html">Back</a>
-          <button type="button" class="btn btn-outline-primary" id="saveMap">Save</button>
-          <a class="btn btn-primary" href="port-map-answers.html">Map Answers</a>
+          <button type="button" class="btn btn-outline-primary" id="saveMap">Save and Continue</button>
+          <button type="button" class="btn btn-primary" id="toAnswers" data-next="port-map-answers.html">Map Answers</button>
         </div>
       </div>
       <div class="modal" id="mapDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="mapTitle" hidden>
@@ -282,6 +282,20 @@
     else { err.textContent = ''; err.hidden = true; field.removeAttribute('aria-invalid'); ids = ids.filter(function (i) { return i !== err.id; }); }
     if (ids.length) field.setAttribute('aria-describedby', ids.join(' ')); else field.removeAttribute('aria-describedby');
   }
+  /* The To Question list keeps every question whose data type the From question can be ported to (PBP Porting Guide,
+     BA answer 2026-10-23): Coded, Numeric, and Text map to any of those three; Date only to Date; Participation only to
+     Participation; a Numeric and Coded pair only to Structured Numeric. */
+  var GROUPS = { CODED: 'cnt', NUMERIC: 'cnt', TEXT: 'cnt', DATE: 'date', PARTICIPATION: 'part', STRUCTURED_NUMERIC: 'sn' };
+  function compatible(fromType, toType) { return (GROUPS[fromType] || fromType) === (GROUPS[toType] || toType); }
+  function filterTo() {
+    Array.prototype.forEach.call(to.options, function (o) {
+      if (!o.value) return;
+      var ok = compatible(q.fromType, o.getAttribute('data-type'));
+      o.hidden = !ok; o.disabled = !ok;
+    });
+    $('toQuestion-hint').textContent = (GROUPS[q.fromType] === 'cnt' ? 'Coded, Numeric, and Text questions' : q.fromType.charAt(0) + q.fromType.slice(1).toLowerCase() + ' questions only') +
+      ', as a ' + q.fromType.toLowerCase() + ' question can be ported to. Each question shows its data type.';
+  }
   function sync() {
     var yes = radio('mapQ') === 'Yes', t = target();
     $('toWrap').hidden = !yes;
@@ -294,6 +308,7 @@
     dlg.querySelector('[data-f="type"]').textContent = q.fromType;
     dlg.querySelector('[data-f="vs"]').textContent = q.fromValueSet || 'None';
     $(q.map === 'No' ? 'mapQ-N' : 'mapQ-Y').checked = true;
+    filterTo();
     to.value = q.toId || '';
     /* a question already mapped shows its answers choice; one still to map starts with none */
     $('mapA-Y').checked = !!q.toId && q.codes > 0; $('mapA-N').checked = !!q.toId && !(q.codes > 0);
@@ -345,7 +360,14 @@
     if (e.shiftKey && (document.activeElement === f[0] || document.activeElement === dlg)) { e.preventDefault(); f[f.length - 1].focus(); }
     else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
   });
+  /* Save and Continue keeps the mapping so far, to finish later; Map Answers saves it and, once every question is
+     mapped, goes to Map Answers (PBP Porting Guide, BA answer 2026-10-23). DEV: both post the mapping. */
   $('saveMap').addEventListener('click', function () { say('Mapping saved. ' + remaining() + ' questions left to map.'); });
+  $('toAnswers').addEventListener('click', function () {
+    var left = remaining();
+    if (left) { say('Mapping saved. Map the ' + left + (left === 1 ? ' question' : ' questions') + ' left before mapping answers.'); return; }
+    location.href = this.getAttribute('data-next');
+  });
 })();
 </script>
 </body>

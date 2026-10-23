@@ -4,11 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NIFI DS: Components</title>
+<link rel="stylesheet" href="vendor/tom-select/tom-select.min.css">
 <link rel="stylesheet" href="../css/ds.css">
 <link rel="stylesheet" href="wb.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="wb.js"></script>
+<script src="vendor/tom-select/tom-select.complete.min.js" defer></script>
+<script src="../js/ds-typeahead.js" defer></script>
 </head>
 <body class="ds wb">
 <main class="wb-main">
@@ -629,7 +632,7 @@
   </section>
 
   <section class="wb-section" id="pickers">
-    <h2>Multi-select &amp; datepicker</h2>
+    <h2>Multi-select, type-ahead select &amp; datepicker</h2>
     <div class="wb-example">
       <h3>Form: Multi-Select (chips) · Datepicker</h3>
       <div class="wb-canvas">
@@ -655,6 +658,21 @@
       <li>The chip container is a labeled group; keyboard users can reach and remove every chip. Values must also be removable from the dropdown itself.</li>
       <li>Date format lives in persistent help text tied by <code>aria-describedby</code>. A placeholder disappears on input, so it fails as the only format cue (3.3.2).</li>
       <li>Typing the date directly is always allowed; the calendar popup is optional.</li>
+    </ul></details>
+    <div class="wb-example">
+      <h3>Form: Type-ahead single select</h3>
+      <div class="wb-canvas">
+        <div class="ds-field" style="max-width:360px">
+          <label for="wbProgramArea">Program Area</label>
+          <select class="form-select" id="wbProgramArea" name="programArea" data-ds-typeahead><option value="">Select</option><option value="AR/MDRO">Antibiotic Resistance/MDRO</option><option value="CEDS">General Communicable Disease</option><option value="COVID-19">COVID-19</option><option value="HANSENS">Hansen&#39;s disease (leprosy)</option><option value="HEP">Hepatitis</option><option value="HIV/AIDS">HIV/AIDS</option><option value="HST">HIV Surveillance</option><option value="IDEAS">IDEAS - Infectious Disease</option><option value="IDEAS_FB">IDEAS - Foodborne</option><option value="IDEAS_HEPC">IDEAS - Hepatitis C</option><option value="IMM">Varicella</option><option value="IMM_R">Immunizations</option><option value="LEAD">Childhood Lead Poisoning</option><option value="OTHER">Other Diseases</option><option value="SST">STD Surveillance</option><option value="STD">Sexually Transmitted Disease</option><option value="TB">Tuberculosis</option><option value="ZCD">Rabies</option><option value="ZCD_R">Zoonosis</option></select>
+        </div>
+      </div>
+    </div>
+    <details class="wb-a11y"><summary>Accessibility: 508 / WCAG AA (type-ahead select)</summary><ul>
+      <li>A <code>&lt;select class="form-select" data-ds-typeahead&gt;</code> becomes Phase 2's Tom Select combobox (<code>js/ds-typeahead.js</code>). Typing filters the list to the options that contain the text; the select keeps the options, the value, and the name. Use it for long single-choice lists (Coding System on Add Condition has hundreds).</li>
+      <li>In the app Phase 2's <code>makeTomSelect(id, 1)</code> builds it, with Phase 2's fixes: the label stays on the select and names the combobox, clicking the label goes to the combobox, and the list renders on <code>&lt;body&gt;</code> so no table or dialog clips it.</li>
+      <li>Added: the number of matching options is announced while typing ("12 options.", "No matching options."); a validation error on the select (<code>aria-invalid</code>, <code>aria-describedby</code>) shows on the combobox; an error summary link that focuses the select lands on the combobox.</li>
+      <li>Keyboard: type to filter, Down and Up move through the options (<code>aria-activedescendant</code>), Enter chooses, Escape closes the list, Tab moves on. The matched text is bold and underlined, not only colored.</li>
     </ul></details>
   </section>
 

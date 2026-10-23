@@ -56,6 +56,7 @@
       { title: 'Lab Result - SNOMED Link', href: 'screens/link-result-snomed.html', ext: true, icon: 'open_in_new' },
       { title: 'Lab Test - LOINC Link', href: 'screens/link-test-loinc.html', ext: true, icon: 'open_in_new' },
       { title: 'LOINC - Condition Link', href: 'screens/link-loinc-condition.html', ext: true, icon: 'open_in_new' },
+      { title: 'Manage Notices', href: 'screens/manage-notices.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Value Sets', href: 'screens/manage-value-sets.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Templates', href: 'screens/manage-templates.html', ext: true, icon: 'open_in_new' },
       { title: 'Page Porting', href: 'screens/manage-page-porting.html', ext: true, icon: 'open_in_new' },
@@ -79,7 +80,8 @@
       { title: 'Manage Permission Sets', href: 'screens/manage-permission-sets.html', ext: true, icon: 'open_in_new' },
       { title: 'Edit Permission Set', href: 'screens/edit-permission-set.html', ext: true, icon: 'open_in_new' },
       { title: 'View Permission Set', href: 'screens/view-permission-set.html', ext: true, icon: 'open_in_new' },
-      { title: 'Merge Patients: Manual', href: 'screens/merge-patients.html', ext: true, icon: 'open_in_new' },
+      { title: 'Merge Patients: Find Patient', href: 'screens/merge-patients-search.html', ext: true, icon: 'open_in_new' },
+      { title: 'Merge Patients: Candidate List', href: 'screens/merge-patients.html', ext: true, icon: 'open_in_new' },
       { title: 'Merge Patients: System Identified', href: 'screens/merge-system-identified.html', ext: true, icon: 'open_in_new' }
     ]}
   ];

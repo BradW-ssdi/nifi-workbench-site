@@ -16,16 +16,6 @@
     .page-body { padding: 16px; }
   }
   [hidden] { display: none !important; }
-  .cd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 14px 20px; }
-  fieldset.cd-yn { border: 0; margin: 0; padding: 0; min-width: 0; }
-  fieldset.cd-yn legend { font-size: inherit; font-weight: 500; margin-bottom: 6px; float: none; }
-  .cd-yn-opts { display: flex; gap: 20px; }
-  .form-control[readonly] { background-color: var(--bs-secondary-bg); }
-  /* A stacked dialog is offset down a little so the edge of the dialog below shows: there is something underneath */
-  @media (min-width: 641px) {
-    .modal[data-ds-level="1"] .modal-dialog { margin-top: 3rem; }
-    .modal[data-ds-level="2"] .modal-dialog { margin-top: 4.5rem; }
-  }
 </style>
 </head>
 <body data-nav-section="system-management">
@@ -49,7 +39,7 @@
     </ul>
     <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
     <ul class="ds-nav-sub" id="navMerge" hidden>
-      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-manual" href="merge-patients-search.html">Manual Search</a></li>
       <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
     </ul>
     <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
@@ -82,11 +72,13 @@
         <h1 class="display-6 mb-0 mt-2">Condition Library</h1>
       </div>
       <div class="page-body">
-        <!-- POC (BA review 2026-10-08): Add, View, and Edit Condition as dialogs over the library, with Edit opening on top
-             of View. The rules for dialogs on dialogs are in the script below and in js/ds-dialog.js. -->
+        <!-- POC (BA review 2026-10-08 and 2026-10-20): Add, View, and Edit Condition as dialogs over the library. The
+             dialogs follow Phase 2's modal design, and a dialog opened from a dialog replaces it. Rules are in the script
+             below and in js/ds-dialog.js. -->
         <div class="alert alert-info mb-0">
-          <b>Proof of concept: dialogs on dialogs.</b> View a condition, then Edit it: the edit form opens on top of the
-          view, and Cancel with unsaved changes asks first, on top of the form. Add New opens the same form.
+          <b>Proof of concept: dialogs on dialogs.</b> View a condition, then Edit it: the edit form replaces the view,
+          and Cancel or Save brings the view back. Cancel with unsaved changes asks first, on top of the form. Add New
+          opens the add form.
         </div>
         <div class="alert alert-success mb-0" role="status" id="pageSaved" hidden></div>
         <!-- Post-action feedback. DEV: rendered by the server after a create;
@@ -287,69 +279,691 @@
       </div>
 
       <!-- ============================ Dialogs (siblings, inside main) ============================ -->
-      <div class="modal" id="viewDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="viewTitle" aria-describedby="viewName" hidden>
+      <div class="modal ds-modal-p2" id="viewDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="viewTitle" aria-describedby="viewName" hidden>
         <div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content">
-          <div class="modal-header"><div><h2 class="modal-title h5" id="viewTitle">View Condition</h2><p class="mb-0 small text-body-secondary" id="viewName"></p></div>
-            <button type="button" class="btn-close" data-close aria-label="Close"></button></div>
-          <div class="modal-body d-grid gap-3">
-            <div class="alert alert-success mb-0" role="status" id="viewSaved" hidden></div>
-            <section aria-labelledby="vDetails"><h3 class="h6" id="vDetails">Condition Details</h3><dl class="ds-dl" id="viewDetails"></dl></section>
-            <section aria-labelledby="vBehavior"><h3 class="h6" id="vBehavior">Condition Behavior</h3><dl class="ds-dl" id="viewBehavior"></dl></section>
+          <div class="modal-header bg-body-secondary">
+            <div><h2 class="modal-title h5" id="viewTitle">View Condition</h2><p class="mb-0 small text-body-secondary" id="viewName"></p></div>
+            <button type="button" class="btn-close" data-dismiss aria-label="Close"></button>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Close</button>
-            <button type="button" class="btn btn-primary" id="viewEdit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg>Edit</button></div>
+          <div class="modal-body bg-body-secondary">
+            <div class="alert alert-success" role="status" id="viewSaved" hidden></div>
+            <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0 text-decoration-none" data-toggle-all aria-controls="viewDialog">Collapse All</button></div>
+        <section class="accordion ds-form-accordion" id="v-details" aria-labelledby="v-detailsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="v-detailsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-detailsBody">Condition Details</button></h3>
+            <div class="accordion-collapse collapse show" id="v-detailsBody">
+              <div class="accordion-body">
+              <div class="row g-2 align-items-center" data-row="codingSystem">
+                <span class="col-md-5 col-form-label text-md-end" id="v-codingSystem-label">Coding System:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-codingSystem" aria-labelledby="v-codingSystem-label v-codingSystem"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="conditionCode">
+                <span class="col-md-5 col-form-label text-md-end" id="v-conditionCode-label">Condition Code:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-conditionCode" aria-labelledby="v-conditionCode-label v-conditionCode"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="conditionName">
+                <span class="col-md-5 col-form-label text-md-end" id="v-conditionName-label">Condition Name:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-conditionName" aria-labelledby="v-conditionName-label v-conditionName"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="programArea">
+                <span class="col-md-5 col-form-label text-md-end" id="v-programArea-label">Program Area:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-programArea" aria-labelledby="v-programArea-label v-programArea"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="conditionFamily">
+                <span class="col-md-5 col-form-label text-md-end" id="v-conditionFamily-label">Condition Family:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-conditionFamily" aria-labelledby="v-conditionFamily-label v-conditionFamily"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="coinfectionGroup">
+                <span class="col-md-5 col-form-label text-md-end" id="v-coinfectionGroup-label">Co-infection Group:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-coinfectionGroup" aria-labelledby="v-coinfectionGroup-label v-coinfectionGroup"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="page">
+                <span class="col-md-5 col-form-label text-md-end" id="v-page-label">Investigation Page:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-page" aria-labelledby="v-page-label v-page"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="status">
+                <span class="col-md-5 col-form-label text-md-end" id="v-status-label">Status:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-status" aria-labelledby="v-status-label v-status"></span></div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="v-behavior" aria-labelledby="v-behaviorHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="v-behaviorHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-behaviorBody">Condition Behavior</button></h3>
+            <div class="accordion-collapse collapse show" id="v-behaviorBody">
+              <div class="accordion-body">
+              <div class="row g-2 align-items-center" data-row="nnd">
+                <span class="col-md-5 col-form-label text-md-end" id="v-nnd-label">CDC Reportable Condition (NND):</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-nnd" aria-labelledby="v-nnd-label v-nnd"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="morbidity">
+                <span class="col-md-5 col-form-label text-md-end" id="v-morbidity-label">Reportable through Morbidity Reports:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-morbidity" aria-labelledby="v-morbidity-label v-morbidity"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="summary">
+                <span class="col-md-5 col-form-label text-md-end" id="v-summary-label">Reportable in Aggregate (Summary):</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-summary" aria-labelledby="v-summary-label v-summary"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="contactTracing">
+                <span class="col-md-5 col-form-label text-md-end" id="v-contactTracing-label">Utilizes Contact Tracing Module:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-contactTracing" aria-labelledby="v-contactTracing-label v-contactTracing"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="autoInfectious">
+                <span class="col-md-5 col-form-label text-md-end" id="v-autoInfectious-label">Auto-Calculation of Infectious Period:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-autoInfectious" aria-labelledby="v-autoInfectious-label v-autoInfectious"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="daysBefore">
+                <span class="col-md-5 col-form-label text-md-end" id="v-daysBefore-label">Days Before Onset:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-daysBefore" aria-labelledby="v-daysBefore-label v-daysBefore"></span></div>
+              </div>
+              <div class="row g-2 align-items-center" data-row="daysAfter">
+                <span class="col-md-5 col-form-label text-md-end" id="v-daysAfter-label">Days After Onset:</span>
+                <div class="col-md-5"><span class="ds-field-value" id="v-daysAfter" aria-labelledby="v-daysAfter-label v-daysAfter"></span></div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </section>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-dismiss>Close</button><button type="button" class="btn btn-primary" id="viewEdit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg>Edit</button></div>
         </div></div>
       </div>
 
-      <div class="modal" id="formDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="formTitle" aria-describedby="formContext" hidden>
+      <div class="modal ds-modal-p2" id="addDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="addTitle" aria-describedby="addContext" hidden>
         <div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content">
-          <div class="modal-header"><div><h2 class="modal-title h5" id="formTitle">Edit Condition</h2><p class="mb-0 small text-body-secondary" id="formContext"></p></div>
-            <button type="button" class="btn-close" data-cancel aria-label="Cancel"></button></div>
-          <form class="modal-body d-grid gap-3" id="condForm" novalidate>
-            <p class="legend-note mb-0"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
-            <div class="ds-error-summary" id="formErrors" role="alert" aria-labelledby="formErrorsTitle" tabindex="-1" hidden><h3 id="formErrorsTitle" class="h6">There is a problem</h3><ul id="formErrorList"></ul></div>
-            <section class="d-grid gap-3" aria-labelledby="fDetails"><h3 class="h6 mb-0" id="fDetails">Condition Details</h3>
-              <div class="cd-grid">
-                <div class="ds-field"><label class="ds-required" for="cfCoding">Coding System</label><select class="form-select" id="cfCoding" required data-errmsg="Choose a coding system"><option value="">Select a coding system</option><option>NBS Condition Code (2.16.840.1.114222.4.5.277)</option><option>SNOMED CT (2.16.840.1.113883.6.96)</option></select><span class="invalid-feedback" id="cfCoding-error" hidden></span></div>
-                <div class="ds-field"><label class="ds-required" for="cfCode">Condition Code</label><input class="form-control" id="cfCode" type="text" required data-errmsg="Enter a condition code" aria-describedby="cfCode-hint"><span class="form-text" id="cfCode-hint">The code cannot change after the condition is added.</span><span class="invalid-feedback" id="cfCode-error" hidden></span></div>
-                <div class="ds-field"><label class="ds-required" for="cfName">Condition Name</label><input class="form-control" id="cfName" type="text" required data-errmsg="Enter a condition name"><span class="invalid-feedback" id="cfName-error" hidden></span></div>
-                <div class="ds-field"><label class="ds-required" for="cfProgram">Program Area</label><select class="form-select" id="cfProgram" required data-errmsg="Choose a program area"><option value="">Select a program area</option><option>ARBO</option><option>BMIRD</option><option>GCD</option><option>HEP</option><option>HIV</option><option>STD</option><option>TB</option><option>VPD</option><option>ENV</option></select><span class="invalid-feedback" id="cfProgram-error" hidden></span></div>
-                <div class="ds-field"><label for="cfFamily">Condition Family</label><select class="form-select" id="cfFamily"><option value="">None</option><option>Arboviral</option><option>Bacterial</option><option>Bioterror</option><option>Environmental</option><option>Foodborne</option><option>Fungal</option><option>Hepatitis</option><option>Parasitic</option><option>Respiratory</option><option>STD</option><option>Tuberculosis</option><option>Viral</option></select><span class="invalid-feedback" id="cfFamily-error" hidden></span></div>
-                <div class="ds-field"><label for="cfCoinf">Co-infection Group</label><select class="form-select" id="cfCoinf"><option value="">None</option><option>Hepatitis</option><option>COVID-19</option><option>STD/HIV</option><option>Tuberculosis</option></select><span class="invalid-feedback" id="cfCoinf-error" hidden></span></div>
+          <div class="modal-header bg-body-secondary">
+            <div><h2 class="modal-title h5" id="addTitle">Add Condition</h2><p class="mb-0 small text-body-secondary" id="addContext"></p></div>
+            <button type="button" class="btn-close" data-dismiss aria-label="Close"></button>
+          </div>
+          <div class="modal-body bg-body-secondary">
+            <p class="legend-note"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
+            <div class="ds-error-summary" id="addErrors" role="alert" aria-labelledby="addErrorsTitle" tabindex="-1" hidden><h3 id="addErrorsTitle" class="h6">Please fix the following errors:</h3><ul id="addErrorList"></ul></div>
+            <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0 text-decoration-none" data-toggle-all aria-controls="addDialog">Collapse All</button></div>
+        <form id="addForm" novalidate>
+        <section class="accordion ds-form-accordion" id="a-details" aria-labelledby="a-detailsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="a-detailsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-detailsBody">Condition Details</button></h3>
+            <div class="accordion-collapse collapse show" id="a-detailsBody">
+              <div class="accordion-body">
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="a-codingSystem"><span class="ds-required-mark" aria-hidden="true">*</span>Coding System:</label>
+              <div class="col-md-5">
+                <select class="form-select" id="a-codingSystem" name="codingSystem" required>
+                  <option value="">Select</option>
+                  <option value="2.16.840.1.113883.12.78">Abnormal flags (HL7)</option>
+                  <option value="2.16.840.1.113883.12.155">Accept/application acknowledgment conditions</option>
+                  <option value="2.16.840.1.113883.12.8">Acknowledgment code (HL7)</option>
+                  <option value="2.16.840.1.113883.5.4">Act Code (HL7)</option>
+                  <option value="2.16.840.1.113883.5.7">Act Priority (HL7)</option>
+                  <option value="2.16.840.1.113883.12.323">Action Code (HL7)</option>
+                  <option value="2.16.840.1.113883.5.1001">ActMood (HL7)</option>
+                  <option value="2.16.840.1.113883.5.8">ActReason</option>
+                  <option value="2.16.840.1.113883.5.14">ActStatus</option>
+                  <option value="2.16.840.1.113883.12.371">Additive (HL7)</option>
+                  <option value="2.16.840.1.113883.12.190">Address Type (HL7)</option>
+                  <option value="2.16.840.1.113883.5.1119">Address Use (HL7)</option>
+                  <option value="2.16.840.1.113883.12.164">Administration device (HL7)</option>
+                  <option value="2.16.840.1.113883.12.165">Administration method (HL7)</option>
+                  <option value="2.16.840.1.113883.12.1">Administrative sex (HL7)</option>
+                  <option value="2.16.840.1.113883.5.1">AdministrativeGender</option>
+                  <option value="2.16.840.1.113883.12.432">Admission level of care code (HL7)</option>
+                  <option value="2.16.840.1.113883.12.7">Admission type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.23">Admit source (HL7)</option>
+                  <option value="2.16.840.1.113883.12.127">Allergen type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.128">Allergy severity (HL7)</option>
+                  <option value="2.16.840.1.113883.12.356">Alternate character set handling scheme (HL7)</option>
+                  <option value="2.16.840.1.113883.12.211">Alternate character sets (HL7)</option>
+                  <option value="2.16.840.1.113883.12.533">Application Error Code (HL7)</option>
+                  <option value="1.2.840.10065">ASTM International</option>
+                  <option value="2.16.840.1.113883.12.483">Authorization Mode (HL7)</option>
+                  <option value="2.16.840.1.114222.4.5.261">BioSense RT observations (Census) - CDC</option>
+                  <option value="2.16.840.1.113883.10.14.90">Birth Defects Diagnostic Confirmation (HL7)</option>
+                  <option value="2.16.840.1.113883.10.14.92">Birth Defects Laterality at Diagnosis (HL7)</option>
+                  <option value="2.16.840.1.113883.12.163">Body Site (HL7)</option>
+                  <option value="2.16.840.1.114222.4.5.307">CDC GS1 VIS BarCodes</option>
+                  <option value="2.16.840.1.114222">Centers for Disease Control and Prevention</option>
+                  <option value="2.16.840.1.113883.12.61">Check Digit Scheme (HL7)</option>
+                  <option value="2.16.840.1.113883.12.396">Coding System (HL7)</option>
+                  <option value="2.16.840.1.113883.12.364">Comment type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.322">Completion Status for Valid Values (HL7)</option>
+                  <option value="2.16.840.1.113883.12.177">Confidentiality code (HL7)</option>
+                  <option value="2.16.840.1.113883.5.25">ConfidentialityCode (HL7)</option>
+                  <option value="2.16.840.1.113883.12.131">Contact Role (HL7)</option>
+                  <option value="2.16.840.1.114222.4.5.300">Country (FIPS 10-4)</option>
+                  <option value="1.0.3166.1">Country (ISO 3166-1)</option>
+                  <option value="2.16.840.1.113883.12.360">Degree (HL7)</option>
+                  <option value="2.16.840.1.113883.12.359">Diagnosis priority (HL7)</option>
+                  <option value="2.16.840.1.113883.12.52">Diagnosis type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.74">Diagnostic service section ID (HL7)</option>
+                  <option value="2.16.840.1.113883.12.112">Discharge disposition (HL7)</option>
+                  <option value="2.16.840.1.113883.12.273">Document availability status (HL7)</option>
+                  <option value="2.16.840.1.113883.5.1077">EducationLevel</option>
+                  <option value="2.16.840.1.114222.4.5.250">Emergency Department Acuity - CDC</option>
+                  <option value="2.16.840.1.113883.12.299">Encoding (HL7)</option>
+                  <option value="2.16.840.1.113883.5.1060">Entity Code (HL7)</option>
+                  <option value="2.16.840.1.113883.5.42">Entity Handling (HL7)</option>
+                  <option value="2.16.840.1.113883.5.43">EntityNamePartQualifier (HL7)</option>
+                  <option value="2.16.840.1.113883.5.45">EntityNameUse (HL7)</option>
+                  <option value="2.16.840.1.113883.6.275">EPA SRS</option>
+                  <option value="2.16.840.1.113883.12.516">Error Severity (HL7)</option>
+                  <option value="2.16.840.1.113883.12.189">Ethnic Group (HL7)</option>
+                  <option value="2.16.840.1.113883.12.240">Event Consequence (HL7)</option>
+                  <option value="2.16.840.1.113883.12.62">Event Reason (HL7)</option>
+                  <option value="2.16.840.1.113883.12.236">Event Reported to (HL7)</option>
+                  <option value="2.16.840.1.113883.12.3">Event Type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.532">Expanded Yes No Indicator (HL7)</option>
+                  <option value="2.16.840.1.113883.12.485">Extended Priority Codes (HL7)</option>
+                  <option value="2.16.840.1.113883.12.64">Financial Class (HL7)</option>
+                  <option value="2.16.840.1.113883.6.92">FIPS 5-2 (State)</option>
+                  <option value="2.16.840.1.113883.6.93">FIPS 6-4 (County)</option>
+                  <option value="2.16.840.1.113883.13.250">GEC Country Codes</option>
+                  <option value="2.16.840.1.114222.4.5.317">Geographic Regions (CDC)</option>
+                  <option value="2.16.840.1.113883">Health Level Seven</option>
+                  <option value="2.16.840.1.113883.5.53">Healthcare Provider Taxonomy (HIPAA)</option>
+                  <option value="2.16.840.1.113883.6.259">Healthcare Service Location (HL7)</option>
+                  <option value="2.16.840.1.114222.4.5.320">ICD-10 Place of Occurrence</option>
+                  <option value="2.16.840.1.113883.6.90">ICD-10-CM Diagnosis</option>
+                  <option value="2.16.840.1.113883.6.4">ICD-10-PCS Procedure</option>
+                  <option value="2.16.840.1.113883.6.104">ICD-9 CM, Volume 3</option>
+                  <option value="2.16.840.1.113883.6.103">ICD-9-CM, Volume 12</option>
+                  <option value="2.16.840.1.113883.12.203">Identifier Type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.445">Identity Reliability Code (HL7)</option>
+                  <option value="2.16.840.1.114222.4.5.293">Immunization Information Source</option>
+                  <option value="2.16.840.1.113883.12.441">Immunization Registry Status (HL7)</option>
+                  <option value="2.16.840.1.113883.6.85">Industry (NAICS)</option>
+                  <option value="2.16.840.1.113883.6.232">Industry (SIC)</option>
+                  <option value="2.16.840.1.114222.4.5.313">Industry CDC Census 2002</option>
+                  <option value="2.16.840.1.114222.4.5.315">Industry CDC Census 2010</option>
+                  <option value="2.16.840.1.113883.6.3">International Classification of Diseases revision 10 (ICD 10 - WHO)</option>
+                  <option value="1.0.3166.2">ISO 3166-2 Country Subdivision</option>
+                  <option value="2.16.840.1.113883.6.100">ISO 639-2 Language</option>
+                  <option value="2.16.840.1.114222.4.5.289">Lab Result (PHLIP)</option>
+                  <option value="2.16.840.1.114222.4.5.288">Lab Test (PHLIP)</option>
+                  <option value="2.16.840.1.113883.5.60">LanguageAbilityMode</option>
+                  <option value="2.16.840.1.113883.5.61">LanguageAbilityProficiency (HL7)</option>
+                  <option value="2.16.840.1.113883.4.291">LanguaL</option>
+                  <option value="L">Local</option>
+                  <option value="2.16.840.1.113883.6.1">LOINC</option>
+                  <option value="2.16.840.1.113883.12.227">Manufacturers of vaccines (MVX)</option>
+                  <option value="2.16.840.1.113883.12.2">Marital status (HL7)</option>
+                  <option value="2.16.840.1.113883.5.2">MaritalStatus</option>
+                  <option value="2.16.840.1.113883.12.357">Message error condition codes (HL7)</option>
+                  <option value="2.16.840.1.113883.12.354">Message Structure (HL7)</option>
+                  <option value="2.16.840.1.113883.12.76">Message Type (HL7)</option>
+                  <option value="2.16.840.1.114222.4.5.303">Method of Race and Ethnicity Data Collection</option>
+                  <option value="2.16.840.1.114222.4.5.308">Mexican Health Jurisdictions (BIDS)</option>
+                  <option value="2.16.840.1.113883.6.10">MIME Media Type IANA</option>
+                  <option value="2.16.840.1.113883.3.520.3.14">NAACCR Behavior Code</option>
+                  <option value="2.16.840.1.113883.3.520.3.11">NAACCR Cancer Status</option>
+                  <option value="2.16.840.1.113883.3.520.3.3">NAACCR Diagnostic Confirmation</option>
+                  <option value="2.16.840.1.113883.3.520.3.15">NAACCR Grade</option>
+                  <option value="2.16.840.1.113883.3.50.3.1">NAACCR Laterality at Diagnosis</option>
+                  <option value="2.16.840.1.113883.3.520.3.12">NAACCR Quality of Survival</option>
+                  <option value="2.16.840.1.113883.3.520.3.13">NAACCR Screening Result</option>
+                  <option value="2.16.840.1.113883.3.520.3.10">NAACCR TNM Clinical Stage Descriptor</option>
+                  <option value="2.16.840.1.113883.3.520.3.4">NAACCR TNM Clinical Staged By</option>
+                  <option value="2.16.840.1.113883.3.520.3.5">NAACCR TNM Edition Number</option>
+                  <option value="2.16.840.1.113883.3.520.3.17">NAACCR TNM Pathologic Staged By</option>
+                  <option value="2.16.840.1.113883.12.465">Name Address Representation (HL7)</option>
+                  <option value="2.16.840.1.113883.12.444">Name Assembly Order (HL7)</option>
+                  <option value="2.16.840.1.113883.12.200">Name type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.80">Nature of abnormal testing (HL7)</option>
+                  <option value="2.16.840.1.113883.3.26.1.1">NCI Thesaurus</option>
+                  <option value="2.16.840.1.113883.6.69">NDC-FDA Drug Registration and Listing System</option>
+                  <option value="2.16.840.1.113883.3.26.1.5">NDF-RT (Drug Classification)</option>
+                  <option value="2.16.840.1.114222.4.5.1">NEDSS Base System</option>
+                  <option value="2.16.840.1.113883.6.277">NHSN Local Coding System</option>
+                  <option value="2.16.840.1.114222.4.5.277">Notifiable Event (Disease/Condition) Code List</option>
+                  <option value="2.16.840.1.113883.6.101">NUCC Provider Codes</option>
+                  <option value="2.16.840.1.113883.5.1008">NullFlavor</option>
+                  <option value="2.16.840.1.113883.12.507">Observation Result Handling (HL7)</option>
+                  <option value="2.16.840.1.113883.12.85">Observation result status (HL7)</option>
+                  <option value="2.16.840.1.113883.5.83">ObservationInterpretation</option>
+                  <option value="2.16.840.1.113883.5.84">ObservationMethod</option>
+                  <option value="1.0.3166.3">Obsolete Country Codes (ISO 3166-3)</option>
+                  <option value="2.16.840.1.113883.6.243">Occupation (SOC 2000)</option>
+                  <option value="2.16.840.1.114222.4.5.312">Occupation CDC Census 2002</option>
+                  <option value="2.16.840.1.114222.4.5.314">Occupation CDC Census 2010</option>
+                  <option value="2.16.840.1.113883.12.119">Order control codes (HL7)</option>
+                  <option value="2.16.840.1.113883.12.38">Order status (HL7)</option>
+                  <option value="2.16.840.1.113883.12.482">Order Type (HL7)</option>
+                  <option value="2.16.840.1.114222.4.5.305">Organization unit (PHLIP)</option>
+                  <option value="2.16.840.1.113883.12.406">Organization Unit Type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.204">Organizational name type (HL7)</option>
+                  <option value="2.16.840.1.113883.5.88">Participation Function (HL7)</option>
+                  <option value="2.16.840.1.113883.5.1064">Participation Mode (HL7)</option>
+                  <option value="2.16.840.1.113883.5.90">Participation Type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.4">Patient class (HL7)</option>
+                  <option value="2.16.840.1.114222.4.5.323">PH Emergency Preparedness</option>
+                  <option value="2.16.840.1.114222.4.5.17">PH_ANATOMIC_SITE</option>
+                  <option value="2.16.840.1.114222.4.5.131">PH_BM_IS_NSNT_RSN</option>
+                  <option value="2.16.840.1.114222.4.5.39">PH_BM_UNDERL_CAUSE</option>
+                  <option value="2.16.840.1.114222.4.5.122">PH_CDC_NULL_CDC</option>
+                  <option value="2.16.840.1.114222.4.5.103">PH_DRKWATERSRC</option>
+                  <option value="2.16.840.1.114222.4.5.185">PH_FB_TYPHOID_CARRIER</option>
+                  <option value="2.16.840.1.114222.4.5.105">PH_FOODPREPTYPE</option>
+                  <option value="2.16.840.1.114222.4.5.101">PH_INVSGTNSTATUS</option>
+                  <option value="2.16.840.1.114222.4.5.152">PH_NIP_TET_INJURY</option>
+                  <option value="2.16.840.1.114222.4.5.88">PH_SPECMN_SRC</option>
+                  <option value="2.16.840.1.114222.4.5.104">PH_WATERSOURCE</option>
+                  <option value="2.16.840.1.114222.4.5.93">PH_YNU</option>
+                  <option value="2.16.840.1.113883.12.480">Pharmacy Order Types (HL7)</option>
+                  <option value="2.16.840.1.114222.4.5.112">PHCDC_AR_TYPE</option>
+                  <option value="2.16.840.1.114222.4.5.182">PHCSFB_CDCLAB</option>
+                  <option value="2.16.840.1.114222.4.5.191">PHCSFB_CHOLERAR</option>
+                  <option value="2.16.840.1.114222.4.5.186">PHCSFB_FOOD</option>
+                  <option value="2.16.840.1.114222.4.5.183">PHCSFB_FRESHFISH</option>
+                  <option value="2.16.840.1.114222.4.5.189">PHCSFB_INTERVIEW</option>
+                  <option value="2.16.840.1.114222.4.5.184">PHCSFB_INTLDOM</option>
+                  <option value="2.16.840.1.114222.4.5.192">PHCSFB_ISOLATAV</option>
+                  <option value="2.16.840.1.114222.4.5.190">PHCSFB_ISOLATNO</option>
+                  <option value="2.16.840.1.114222.4.5.187">PHCSFB_MANUFACTOBJ</option>
+                  <option value="2.16.840.1.114222.4.5.188">PHCSFB_WOUND</option>
+                  <option value="2.16.840.1.114222.4.5.232">PHIN Questions</option>
+                  <option value="2.16.840.1.114222.4.5.274">PHIN VS (CDC Local Coding System)</option>
+                  <option value="2.16.840.1.114222.4.10.4">PHINMsgMapID</option>
+                  <option value="2.16.840.1.114222.4.5.292">Physical Status Classification (ASA)</option>
+                  <option value="2.16.840.1.113883.6.317">Populated Places (NCHS)</option>
+                  <option value="2.16.840.1.113883.12.185">Preferred method of contact (HL7)</option>
+                  <option value="2.16.840.1.113883.12.287">Problem Goal Action Code (HL7)</option>
+                  <option value="2.16.840.1.113883.12.103">Processing ID (HL7)</option>
+                  <option value="2.16.840.1.113883.12.207">Processing mode (HL7)</option>
+                  <option value="2.16.840.1.113883.12.429">Production class Code (HL7)</option>
+                  <option value="2.16.840.1.113883.12.443">Provider Role (HL7)</option>
+                  <option value="2.16.840.1.113883.12.215">Publicity Code (HL7)</option>
+                  <option value="2.16.840.1.113883.12.126">Quantity Limited Request (HL7)</option>
+                  <option value="2.16.840.1.113883.12.471">Query Name (HL7)</option>
+                  <option value="2.16.840.1.113883.12.91">Query Priority (HL7)</option>
+                  <option value="2.16.840.1.113883.12.208">Query Response Status (HL7)</option>
+                  <option value="2.16.840.1.113883.6.238">Race &amp; Ethnicity - CDC</option>
+                  <option value="2.16.840.1.113883.12.5">Race (HL7)</option>
+                  <option value="2.16.840.1.113883.12.282">Referral disposition (HL7)</option>
+                  <option value="2.16.840.1.113883.12.280">Referral priority (HL7)</option>
+                  <option value="2.16.840.1.113883.12.336">Referral reason (HL7)</option>
+                  <option value="2.16.840.1.113883.12.63">Relationship (HL7)</option>
+                  <option value="2.16.840.1.113883.12.6">Religion (HL7)</option>
+                  <option value="2.16.840.1.113883.5.1076">Religious Affiliation (HL7)</option>
+                  <option value="2.16.840.1.113883.12.121">Response flag (HL7)</option>
+                  <option value="2.16.840.1.113883.12.123">Result status (HL7)</option>
+                  <option value="2.16.840.1.113883.12.489">Risk Codes (HL7)</option>
+                  <option value="2.16.840.1.114222.4.5.304">Role (PHLIP)</option>
+                  <option value="2.16.840.1.113883.5.110">RoleClass</option>
+                  <option value="2.16.840.1.113883.5.111">RoleCode</option>
+                  <option value="2.16.840.1.113883.12.162">Route of administration (HL7)</option>
+                  <option value="2.16.840.1.113883.5.112">RouteOfAdministration</option>
+                  <option value="2.16.840.1.113883.6.88">RxNorm</option>
+                  <option value="2.16.840.1.113883.6.96">SNOMED-CT</option>
+                  <option value="2.16.840.1.113883.12.105">Source of Comment (HL7)</option>
+                  <option value="2.16.840.1.113883.3.221.5">Source of Payment Typology (PHDSC)</option>
+                  <option value="2.16.840.1.113883.12.265">Specialty type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.65">Specimen Action Code (HL7)</option>
+                  <option value="2.16.840.1.113883.12.492">Specimen Appropriateness (HL7)</option>
+                  <option value="2.16.840.1.113883.12.494">Specimen Child Role (HL7)</option>
+                  <option value="2.16.840.1.113883.12.488">Specimen Collection Method (HL7)</option>
+                  <option value="2.16.840.1.113883.12.493">Specimen Condition (HL7)</option>
+                  <option value="2.16.840.1.113883.12.491">Specimen quality (HL7)</option>
+                  <option value="2.16.840.1.113883.12.490">Specimen Reject Reason (HL7)</option>
+                  <option value="2.16.840.1.113883.12.369">Specimen Role (HL7)</option>
+                  <option value="2.16.840.1.113883.12.70">Specimen Source (HL7)</option>
+                  <option value="2.16.840.1.113883.12.487">Specimen Type (HL7)</option>
+                  <option value="2.16.840.1.113883.5.129">SpecimenType</option>
+                  <option value="2.16.840.1.114222.4.5.291">SSI Event Details Detected</option>
+                  <option value="2.16.840.1.114222.4.5.294">Substance Refusal Reason (NIP)</option>
+                  <option value="2.16.840.1.113883.12.202">Telecommunication equipment type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.201">Telecommunication use code (HL7)</option>
+                  <option value="2.16.840.1.113883.15.6">TNM 7. Edition</option>
+                  <option value="2.16.840.1.113883.12.472">TQ Conjunction ID (HL7)</option>
+                  <option value="2.16.840.1.113883.12.373">Treatment (HL7)</option>
+                  <option value="2.16.840.1.113883.12.191">Type of referenced data (HL7)</option>
+                  <option value="2.16.840.1.113883.6.245">U.S. Board on Geographic Names (USGS - GNIS)</option>
+                  <option value="2.16.840.1.113883.6.310">U.S. Census Industry Code (2007)</option>
+                  <option value="2.16.840.1.113883.6.240">U.S. Census Occupation Code (2010)</option>
+                  <option value="2.16.840.1.113883.6.8">UCUM - Unified Code for Units of Measure</option>
+                  <option value="2.16.840.1.113883.6.86">UMLS</option>
+                  <option value="2.16.840.1.113883.4.9">Unique Ingredient Identifier (UNII)</option>
+                  <option value="2.16.840.1.113883.12.301">Universal ID type (HL7)</option>
+                  <option value="2.16.840.1.113883.3.5.14.3">USDA Subject Descriptor</option>
+                  <option value="2.16.840.1.113883.3.5.14.4">USDA Subject Function</option>
+                  <option value="2.16.840.1.113883.12.292">Vaccines administered (CVX)</option>
+                  <option value="2.16.840.1.113883.12.125">Value type (HL7)</option>
+                  <option value="2.16.840.1.113883.12.104">Version ID (HL7)</option>
+                  <option value="2.16.840.1.113883.12.326">Visit Indicator (HL7)</option>
+                  <option value="2.16.840.1.114222.4.5.290">Wound Classification (NHSN ACS)</option>
+                  <option value="2.16.840.1.113883.12.136">Yes/No Indicator (HL7)</option>
+                </select>
+                <span class="invalid-feedback" id="a-codingSystem-error" hidden></span>
               </div>
-            </section>
-            <section class="d-grid gap-3" aria-labelledby="fBehavior"><h3 class="h6 mb-0" id="fBehavior">Condition Behavior</h3>
-              <div class="cd-grid">
-                <fieldset class="ds-field cd-yn"><legend>CDC Reportable Condition (NND)</legend><div class="cd-yn-opts">
-                  <label class="ds-check"><input class="form-check-input" type="radio" name="nnd" id="cf-nnd-Y" value="Yes"> Yes</label>
-                  <label class="ds-check"><input class="form-check-input" type="radio" name="nnd" id="cf-nnd-N" value="No" checked> No</label></div></fieldset>
-                <fieldset class="ds-field cd-yn"><legend>Reportable through Morbidity Reports</legend><div class="cd-yn-opts">
-                  <label class="ds-check"><input class="form-check-input" type="radio" name="morbidity" id="cf-morbidity-Y" value="Yes"> Yes</label>
-                  <label class="ds-check"><input class="form-check-input" type="radio" name="morbidity" id="cf-morbidity-N" value="No" checked> No</label></div></fieldset>
-                <fieldset class="ds-field cd-yn"><legend>Reportable in Aggregate (Summary)</legend><div class="cd-yn-opts">
-                  <label class="ds-check"><input class="form-check-input" type="radio" name="summary" id="cf-summary-Y" value="Yes"> Yes</label>
-                  <label class="ds-check"><input class="form-check-input" type="radio" name="summary" id="cf-summary-N" value="No" checked> No</label></div></fieldset>
-                <fieldset class="ds-field cd-yn"><legend>Utilizes Contact Tracing Module</legend><div class="cd-yn-opts">
-                  <label class="ds-check"><input class="form-check-input" type="radio" name="contactTracing" id="cf-contactTracing-Y" value="Yes"> Yes</label>
-                  <label class="ds-check"><input class="form-check-input" type="radio" name="contactTracing" id="cf-contactTracing-N" value="No" checked> No</label></div></fieldset>
-                <fieldset class="ds-field cd-yn"><legend>Auto-Calculation of Infectious Period</legend><div class="cd-yn-opts">
-                  <label class="ds-check"><input class="form-check-input" type="radio" name="autoInfectious" id="cf-autoInfectious-Y" value="Yes"> Yes</label>
-                  <label class="ds-check"><input class="form-check-input" type="radio" name="autoInfectious" id="cf-autoInfectious-N" value="No" checked> No</label></div></fieldset>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="a-conditionCode"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Code:</label>
+              <div class="col-md-5">
+                <input class="form-control" id="a-conditionCode" name="conditionCode" type="text" autocomplete="off" maxlength="16" required aria-describedby="a-conditionCode-help">
+                <span class="form-text" id="a-conditionCode-help">Letters and numbers only, up to 16 characters.</span>
+                <span class="invalid-feedback" id="a-conditionCode-error" hidden></span>
               </div>
-              <div class="cd-grid" id="onsetDays" hidden>
-                <div class="ds-field"><label class="ds-required" for="cfBefore">Days Before Onset</label><input class="form-control" id="cfBefore" type="number" min="0" required data-errmsg="Enter the days before onset"><span class="invalid-feedback" id="cfBefore-error" hidden></span></div>
-                <div class="ds-field"><label class="ds-required" for="cfAfter">Days After Onset</label><input class="form-control" id="cfAfter" type="number" min="0" required data-errmsg="Enter the days after onset"><span class="invalid-feedback" id="cfAfter-error" hidden></span></div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="a-conditionName"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Name:</label>
+              <div class="col-md-5">
+                <input class="form-control" id="a-conditionName" name="conditionName" type="text" autocomplete="off" maxlength="50" required aria-describedby="a-conditionName-help">
+                <span class="form-text" id="a-conditionName-help">Up to 50 characters.</span>
+                <span class="invalid-feedback" id="a-conditionName-error" hidden></span>
               </div>
-            </section>
-          </form>
-          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-cancel>Cancel</button>
-            <button type="submit" form="condForm" class="btn btn-primary"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#save"/></svg>Save</button></div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="a-programArea"><span class="ds-required-mark" aria-hidden="true">*</span>Program Area:</label>
+              <div class="col-md-5">
+                <select class="form-select" id="a-programArea" name="programArea" required>
+                  <option value="">Select</option>
+                  <option value="AR/MDRO">Antibiotic Resistance/MDRO</option>
+                  <option value="CEDS">General Communicable Disease</option>
+                  <option value="COVID-19">COVID-19</option>
+                  <option value="HANSENS">Hansen&#x27;s disease (leprosy)</option>
+                  <option value="HEP">Hepatitis</option>
+                  <option value="HIV/AIDS">HIV/AIDS</option>
+                  <option value="HST">HIV Surveillance</option>
+                  <option value="IDEAS">IDEAS - Infectious Disease</option>
+                  <option value="IDEAS_FB">IDEAS - Foodborne</option>
+                  <option value="IDEAS_HEPC">IDEAS - Hepatitis C</option>
+                  <option value="IDEAS_HEP_OTH">IDEAS - Hepatitis A, D, E, Other</option>
+                  <option value="IDEAS_R">IDEAS - Meningitis/Invasive Respiratory</option>
+                  <option value="IDEAS_WB">IDEAS - Waterborne</option>
+                  <option value="IMM">Varicella</option>
+                  <option value="IMM_R">Immunizations</option>
+                  <option value="LEAD">Childhood Lead Poisoning</option>
+                  <option value="OTHER">Other Diseases</option>
+                  <option value="SST">STD Surveillance</option>
+                  <option value="STD">Sexually Transmitted Disease</option>
+                  <option value="TB">Tuberculosis</option>
+                  <option value="ZCD">Rabies</option>
+                  <option value="ZCD_R">Zoonosis </option>
+                </select>
+                <span class="invalid-feedback" id="a-programArea-error" hidden></span>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="a-conditionFamily">Condition Family:</label>
+              <div class="col-md-5">
+                <select class="form-select" id="a-conditionFamily" name="conditionFamily">
+                  <option value="">None</option>
+                  <option value="ARBO">Arboviral</option>
+                  <option value="BioThreat">BioThreat</option>
+                  <option value="Chagas">Chagas</option>
+                  <option value="ENVT">Environmental Health</option>
+                  <option value="FOOD">Foodborne</option>
+                  <option value="Generic">Generic</option>
+                  <option value="HANTA">Hantavirus</option>
+                  <option value="HCID">HCID</option>
+                  <option value="Helminths">Helminths</option>
+                  <option value="Hepatitis">Hepatitis</option>
+                  <option value="MDRO">MDRO</option>
+                  <option value="Polio">Polio</option>
+                  <option value="Rabies">Rabies</option>
+                  <option value="TICK">Tickborne</option>
+                  <option value="TB">Tuberculosis</option>
+                  <option value="VECTOR">Vectorborne, other</option>
+                  <option value="VISA">VISA\VRSA</option>
+                  <option value="WestNile">West Nile</option>
+                </select>
+                <span class="invalid-feedback" id="a-conditionFamily-error" hidden></span>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="a-coinfectionGroup">Co-infection Group:</label>
+              <div class="col-md-5">
+                <select class="form-select" id="a-coinfectionGroup" name="coinfectionGroup" disabled aria-describedby="a-coinfectionGroup-help">
+                  <option value="">None</option>
+                  <option value="STD_HIV_GROUP">STD HIV Co-Infection Group</option>
+                </select>
+                <span class="form-text" id="a-coinfectionGroup-help">Available only for the Sexually Transmitted Disease and HIV/AIDS program areas.</span>
+                <span class="invalid-feedback" id="a-coinfectionGroup-error" hidden></span>
+              </div>
+            </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="accordion ds-form-accordion" id="a-behavior" aria-labelledby="a-behaviorHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="a-behaviorHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-behaviorBody">Condition Behavior</button></h3>
+            <div class="accordion-collapse collapse show" id="a-behaviorBody">
+              <div class="accordion-body">
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="a-nnd-label">CDC Reportable Condition (NND):</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="a-nnd-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="nnd" id="a-nnd-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="nnd" id="a-nnd-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="a-morbidity-label">Reportable through Morbidity Reports:</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="a-morbidity-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="morbidity" id="a-morbidity-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="morbidity" id="a-morbidity-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="a-summary-label">Reportable in Aggregate (Summary):</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="a-summary-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="summary" id="a-summary-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="summary" id="a-summary-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="a-contactTracing-label">Utilizes Contact Tracing Module:</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="a-contactTracing-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="contactTracing" id="a-contactTracing-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="contactTracing" id="a-contactTracing-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="a-autoInfectious-label">Auto-Calculation of Infectious Period:</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="a-autoInfectious-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="autoInfectious" id="a-autoInfectious-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="autoInfectious" id="a-autoInfectious-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="a-daysBefore"><span class="ds-required-mark" aria-hidden="true">*</span>Days Before Onset:</label>
+              <div class="col-md-5">
+                <input class="form-control ds-input-short" id="a-daysBefore" name="daysBefore" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="a-daysBefore-help">
+                <span class="form-text" id="a-daysBefore-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
+                <span class="invalid-feedback" id="a-daysBefore-error" hidden></span>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="a-daysAfter"><span class="ds-required-mark" aria-hidden="true">*</span>Days After Onset:</label>
+              <div class="col-md-5">
+                <input class="form-control ds-input-short" id="a-daysAfter" name="daysAfter" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="a-daysAfter-help">
+                <span class="form-text" id="a-daysAfter-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
+                <span class="invalid-feedback" id="a-daysAfter-error" hidden></span>
+              </div>
+            </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        </form>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-dismiss>Cancel</button><button type="submit" form="addForm" class="btn btn-primary"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#save"/></svg>Submit</button></div>
+        </div></div>
+      </div>
+
+      <div class="modal ds-modal-p2" id="editDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="editTitle" aria-describedby="editContext" hidden>
+        <div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content">
+          <div class="modal-header bg-body-secondary">
+            <div><h2 class="modal-title h5" id="editTitle">Edit Condition</h2><p class="mb-0 small text-body-secondary" id="editContext"></p></div>
+            <button type="button" class="btn-close" data-dismiss aria-label="Close"></button>
+          </div>
+          <div class="modal-body bg-body-secondary">
+            <p class="legend-note"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
+            <div class="ds-error-summary" id="editErrors" role="alert" aria-labelledby="editErrorsTitle" tabindex="-1" hidden><h3 id="editErrorsTitle" class="h6">Please fix the following errors:</h3><ul id="editErrorList"></ul></div>
+            <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0 text-decoration-none" data-toggle-all aria-controls="editDialog">Collapse All</button></div>
+        <form id="editForm" novalidate>
+        <section class="accordion ds-form-accordion" id="e-details" aria-labelledby="e-detailsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="e-detailsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-detailsBody">Condition Details</button></h3>
+            <div class="accordion-collapse collapse show" id="e-detailsBody">
+              <div class="accordion-body">
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="e-codingSystem-label">Coding System:</span>
+              <div class="col-md-5"><span class="ds-field-value" id="e-codingSystem-value">Notifiable Event (Disease/Condition) Code List</span></div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="e-conditionCode-label">Condition Code:</span>
+              <div class="col-md-5"><span class="ds-field-value" id="e-conditionCode-value">10311</span></div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="e-conditionName"><span class="ds-required-mark" aria-hidden="true">*</span>Condition Name:</label>
+              <div class="col-md-5">
+                <input class="form-control" id="e-conditionName" name="conditionName" type="text" autocomplete="off" maxlength="50" value="Syphilis, primary" required aria-describedby="e-conditionName-help">
+                <span class="form-text" id="e-conditionName-help">Up to 50 characters.</span>
+                <span class="invalid-feedback" id="e-conditionName-error" hidden></span>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="e-programArea-label">Program Area:</span>
+              <div class="col-md-5"><span class="ds-field-value" id="e-programArea-value">Sexually Transmitted Disease</span></div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="e-conditionFamily">Condition Family:</label>
+              <div class="col-md-5">
+                <select class="form-select" id="e-conditionFamily" name="conditionFamily">
+                  <option value="">None</option>
+                  <option value="ARBO">Arboviral</option>
+                  <option value="BioThreat">BioThreat</option>
+                  <option value="Chagas">Chagas</option>
+                  <option value="ENVT">Environmental Health</option>
+                  <option value="FOOD">Foodborne</option>
+                  <option value="Generic">Generic</option>
+                  <option value="HANTA">Hantavirus</option>
+                  <option value="HCID">HCID</option>
+                  <option value="Helminths">Helminths</option>
+                  <option value="Hepatitis">Hepatitis</option>
+                  <option value="MDRO">MDRO</option>
+                  <option value="Polio">Polio</option>
+                  <option value="Rabies">Rabies</option>
+                  <option value="TICK">Tickborne</option>
+                  <option value="TB">Tuberculosis</option>
+                  <option value="VECTOR">Vectorborne, other</option>
+                  <option value="VISA">VISA\VRSA</option>
+                  <option value="WestNile">West Nile</option>
+                </select>
+                <span class="invalid-feedback" id="e-conditionFamily-error" hidden></span>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="e-coinfectionGroup">Co-infection Group:</label>
+              <div class="col-md-5">
+                <select class="form-select" id="e-coinfectionGroup" name="coinfectionGroup" aria-describedby="e-coinfectionGroup-help">
+                  <option value="">None</option>
+                  <option value="STD_HIV_GROUP" selected>STD HIV Co-Infection Group</option>
+                </select>
+                <span class="form-text" id="e-coinfectionGroup-help">Available only for the Sexually Transmitted Disease and HIV/AIDS program areas.</span>
+                <span class="invalid-feedback" id="e-coinfectionGroup-error" hidden></span>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="e-status-label">Status:</span>
+              <div class="col-md-5"><span class="ds-field-value" id="e-status-value"><span class="badge text-bg-success">Active</span></span></div>
+            </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="accordion ds-form-accordion" id="e-behavior" aria-labelledby="e-behaviorHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="e-behaviorHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-behaviorBody">Condition Behavior</button></h3>
+            <div class="accordion-collapse collapse show" id="e-behaviorBody">
+              <div class="accordion-body">
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="e-nnd-label">CDC Reportable Condition (NND):</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="e-nnd-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="nnd" id="e-nnd-y" value="Y" checked> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="nnd" id="e-nnd-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="e-morbidity-label">Reportable through Morbidity Reports:</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="e-morbidity-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="morbidity" id="e-morbidity-y" value="Y" checked> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="morbidity" id="e-morbidity-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="e-summary-label">Reportable in Aggregate (Summary):</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="e-summary-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="summary" id="e-summary-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="summary" id="e-summary-n" value="N" checked> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="e-contactTracing-label">Utilizes Contact Tracing Module:</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="e-contactTracing-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="contactTracing" id="e-contactTracing-y" value="Y" checked> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="contactTracing" id="e-contactTracing-n" value="N"> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <span class="col-md-5 col-form-label text-md-end" id="e-autoInfectious-label">Auto-Calculation of Infectious Period:</span>
+              <div class="col-md-5">
+                <div class="d-flex flex-wrap column-gap-4 row-gap-2 py-1" role="radiogroup" aria-labelledby="e-autoInfectious-label">
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="autoInfectious" id="e-autoInfectious-y" value="Y"> Yes</label>
+                  <label class="ds-check"><input class="form-check-input" type="radio" name="autoInfectious" id="e-autoInfectious-n" value="N" checked> No</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="e-daysBefore"><span class="ds-required-mark" aria-hidden="true">*</span>Days Before Onset:</label>
+              <div class="col-md-5">
+                <input class="form-control ds-input-short" id="e-daysBefore" name="daysBefore" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="e-daysBefore-help">
+                <span class="form-text" id="e-daysBefore-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
+                <span class="invalid-feedback" id="e-daysBefore-error" hidden></span>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label class="col-md-5 col-form-label text-md-end" for="e-daysAfter"><span class="ds-required-mark" aria-hidden="true">*</span>Days After Onset:</label>
+              <div class="col-md-5">
+                <input class="form-control ds-input-short" id="e-daysAfter" name="daysAfter" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="e-daysAfter-help">
+                <span class="form-text" id="e-daysAfter-help">Whole number from 0 to 999. Required when Auto-Calculation of Infectious Period is Yes.</span>
+                <span class="invalid-feedback" id="e-daysAfter-error" hidden></span>
+              </div>
+            </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        </form>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-dismiss>Cancel</button><button type="submit" form="editForm" class="btn btn-primary"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#save"/></svg>Submit</button></div>
         </div></div>
       </div>
 
       <div class="modal" id="discardDialog" tabindex="-1" role="alertdialog" aria-modal="true" aria-labelledby="discardTitle" aria-describedby="discardText" hidden>
         <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
-          <div class="modal-header"><h2 class="modal-title h5" id="discardTitle">Discard your changes?</h2></div>
+          <div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="discardTitle">Discard your changes?</h2></div>
           <div class="modal-body"><p class="mb-0" id="discardText"></p></div>
           <div class="modal-footer"><button type="button" class="btn btn-outline-primary" id="keepEditing">Keep editing</button>
             <button type="button" class="btn btn-danger" id="discardYes">Discard changes</button></div>
@@ -417,150 +1031,235 @@
 
 </script>
 <script>
-/* POC: dialogs on dialogs (Add, View, Edit Condition).
-   Rules shown here, for every stacked dialog:
-   - A dialog opened from a dialog sits on top with its own backdrop; the dialog below stays visible but inert (no
-     pointer, no keyboard, hidden from screen readers) until the top one closes (js/ds-dialog.js).
-   - Escape closes only the top dialog. On a form with unsaved changes it asks first (Discard your changes?).
-   - Closing a dialog returns focus to the control that opened it, in the dialog or page below.
-   - Saving in a stacked form updates what is underneath (the View dialog and the table row) and says so where focus
-     lands. At most three levels: page, then View, then Edit, then a confirmation.
-   - At 640px and below dialogs keep the design system's small-screen size (12px margin, up to 90% of the height, the
-     body scrolls); a stacked dialog is as wide as the one beneath, so it covers it. */
+/* POC: dialogs on dialogs (Add, View, Edit Condition), Phase 2 modal design.
+   - A dialog opened from a dialog replaces it: Edit hides View, and Cancel or Submit brings View back, as it was
+     (js/ds-dialog.js). A confirmation (Discard your changes?) opens on top of the form instead, so the form stays in view.
+   - Each dialog's sections are accordions, with Collapse All / Expand All. A section with an error opens.
+   - Escape closes only the top dialog. On a form with unsaved changes it asks first.
+   - Closing a dialog returns focus to the control that opened it, on the page or in the dialog it comes back to.
+   - Submit in Edit from View returns to View with the saved values and says so; from the list, the row updates.
+   - The fields, option lists, and rules are the Add Condition and Edit Condition templates' own: required fields,
+     letters and numbers in the code, no < > " & in the name, days 0 to 999 only when the infectious period is
+     calculated, and the co-infection group only for STD and HIV/AIDS. */
 (function () {
   'use strict';
   function $(s, r) { return (r || document).querySelector(s); }
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
   var openers = new Map();
-  var view = $('#viewDialog'), formDlg = $('#formDialog'), discard = $('#discardDialog'), form = $('#condForm');
-  var tbody = $('#condTable tbody'), pageStatus = $('#filterStatus');
-  var BEHAVIOR = {};   /* per condition name: behavior answers (sample) */
-  var current = null, mode = null, dirty = false, fromView = false;
+  var view = $('#viewDialog'), addDlg = $('#addDialog'), editDlg = $('#editDialog'), discard = $('#discardDialog');
+  var tbody = $('#condTable tbody');
+  var SAVED = {};   /* per condition code: what was submitted (sample) */
+  var current = null, dirty = false, fromView = false, formDlg = null;
 
   function open(dlg, opener) { openers.set(dlg, opener); dsDialog.show(dlg); }
   function close(dlg) { dsDialog.hide(dlg); var o = openers.get(dlg); if (o && document.contains(o)) o.focus(); }
 
+  /* ---- accordions and Collapse All, in every dialog ---- */
+  function setSection(btn, on) {
+    btn.setAttribute('aria-expanded', String(on)); btn.classList.toggle('collapsed', !on);
+    document.getElementById(btn.getAttribute('aria-controls')).classList.toggle('show', on);
+  }
+  function syncAll(dlg) {
+    var any = $$('.accordion-button', dlg).some(function (b) { return b.getAttribute('aria-expanded') === 'true'; });
+    $('[data-toggle-all]', dlg).textContent = any ? 'Collapse All' : 'Expand All';
+  }
+  [view, addDlg, editDlg].forEach(function (dlg) {
+    dlg.addEventListener('click', function (e) {
+      var b = e.target.closest('.accordion-button');
+      if (b) { setSection(b, b.getAttribute('aria-expanded') !== 'true'); syncAll(dlg); return; }
+      var all = e.target.closest('[data-toggle-all]');
+      if (all) { var on = all.textContent === 'Expand All'; $$('.accordion-button', dlg).forEach(function (x) { setSection(x, on); }); syncAll(dlg); }
+    });
+  });
+  function openAll(dlg) { $$('.accordion-button', dlg).forEach(function (x) { setSection(x, true); }); syncAll(dlg); $('.modal-body', dlg).scrollTop = 0; }
+
+  /* ---- the row's condition ---- */
   function rowData(tr) {
-    var c = tr.cells;
-    return { tr: tr, name: c[1].textContent.trim(), code: c[2].textContent.trim(), program: c[3].textContent.trim(), family: c[4].textContent.trim(),
-             coinf: c[5].textContent.replace('None', '').trim(), nnd: c[6].textContent.trim(), page: c[7].textContent.replace(/Needs publish|None/g, '').trim(),
-             status: c[8].textContent.trim(), infectious: c[9].textContent.trim() };
+    var c = tr.cells, t = function (i) { return c[i].textContent.replace(/\s+/g, ' ').trim(); };
+    var d = { tr: tr, name: t(1), code: t(2), program: t(3), family: t(4), coinf: t(5).replace('None', '').trim(), nnd: t(6),
+      page: t(7).replace(/Needs publish|None/g, '').trim(), status: t(8), infectious: t(9) };
+    var saved = SAVED[d.code] || {};
+    d.morbidity = saved.morbidity || 'Y'; d.summary = saved.summary || 'N';
+    d.contactTracing = saved.contactTracing || (d.program === 'STD' || d.program === 'TB' ? 'Y' : 'N');
+    d.autoInfectious = d.infectious === 'Yes' ? 'Y' : 'N';
+    d.daysBefore = saved.daysBefore || (d.autoInfectious === 'Y' ? '14' : ''); d.daysAfter = saved.daysAfter || (d.autoInfectious === 'Y' ? '21' : '');
+    return d;
   }
-  function behaviorOf(d) {
-    return BEHAVIOR[d.code] || { nnd: d.nnd === 'Yes' ? 'Yes' : 'No', morbidity: 'Yes', summary: 'No', contactTracing: d.program === 'STD' || d.program === 'TB' ? 'Yes' : 'No',
-      autoInfectious: d.infectious === 'Yes' ? 'Yes' : 'No', before: d.infectious === 'Yes' ? '14' : '', after: d.infectious === 'Yes' ? '21' : '' };
-  }
-  function dl(el, pairs) { el.innerHTML = pairs.map(function (p) { return '<div><dt>' + p[0] + '</dt><dd>' + (p[1] ? String(p[1]).replace(/</g, '&lt;') : 'None') + '</dd></div>'; }).join(''); }
+  var YN = { Y: 'Yes', N: 'No', Yes: 'Yes', No: 'No' };
   function fillView(d) {
-    var b = behaviorOf(d);
     $('#viewName').textContent = d.name + ' (' + d.code + ')';
-    dl($('#viewDetails'), [['Coding System', 'NBS Condition Code'], ['Condition Code', d.code], ['Condition Name', d.name], ['Program Area', d.program], ['Condition Family', d.family], ['Co-infection Group', d.coinf], ['Investigation Page', d.page], ['Status', d.status]]);
-    dl($('#viewBehavior'), [['CDC Reportable Condition (NND)', b.nnd], ['Reportable through Morbidity Reports', b.morbidity], ['Reportable in Aggregate (Summary)', b.summary], ['Utilizes Contact Tracing Module', b.contactTracing], ['Auto-Calculation of Infectious Period', b.autoInfectious]].concat(b.autoInfectious === 'Yes' ? [['Days Before Onset', b.before], ['Days After Onset', b.after]] : []));
+    var v = { codingSystem: 'NBS Condition Code', conditionCode: d.code, conditionName: d.name, programArea: d.program, conditionFamily: d.family,
+      coinfectionGroup: d.coinf, page: d.page, status: d.status, nnd: YN[d.nnd], morbidity: YN[d.morbidity], summary: YN[d.summary],
+      contactTracing: YN[d.contactTracing], autoInfectious: YN[d.autoInfectious], daysBefore: d.daysBefore, daysAfter: d.daysAfter };
+    Object.keys(v).forEach(function (k) {
+      var el = $('#v-' + k); el.textContent = v[k] || 'None';
+      el.closest('[data-row]').hidden = (k === 'daysBefore' || k === 'daysAfter') && d.autoInfectious !== 'Y';
+    });
   }
 
   /* ---- View ---- */
   tbody.addEventListener('click', function (e) {
     var btn = e.target.closest('button'); if (!btn) return;
     current = rowData(btn.closest('tr'));
-    if (btn.hasAttribute('data-view')) { $('#viewSaved').hidden = true; fillView(current); open(view, btn); }
-    if (btn.hasAttribute('data-edit')) { openForm('edit', btn, false); }
+    if (btn.hasAttribute('data-view')) { $('#viewSaved').hidden = true; fillView(current); openAll(view); open(view, btn); }
+    if (btn.hasAttribute('data-edit')) openEdit(btn, false);
   });
-  $$('[data-close]', view).forEach(function (b) { b.addEventListener('click', function () { close(view); }); });
-  $('#viewEdit').addEventListener('click', function (e) { openForm('edit', e.currentTarget, true); });
-  $('#addBtn').addEventListener('click', function (e) { current = null; openForm('add', e.currentTarget, false); });
+  $$('[data-dismiss]', view).forEach(function (b) { b.addEventListener('click', function () { close(view); }); });
+  $('#viewEdit').addEventListener('click', function (e) { openEdit(e.currentTarget, true); });
+  $('#addBtn').addEventListener('click', function (e) { current = null; openAdd(e.currentTarget); });
 
-  /* ---- Add / Edit form ---- */
-  function setRadio(name, v) { var r = $('input[name="' + name + '"][value="' + v + '"]', form); if (r) r.checked = true; }
-  function radio(name) { var r = $('input[name="' + name + '"]:checked', form); return r ? r.value : 'No'; }
-  function syncOnset() { $('#onsetDays').hidden = radio('autoInfectious') !== 'Yes'; }
-  function openForm(m, opener, stacked) {
-    mode = m; fromView = stacked; dirty = false;
-    form.reset(); $$('[aria-invalid]', form).forEach(function (f) { f.removeAttribute('aria-invalid'); });
-    $$('.invalid-feedback', form).forEach(function (x) { x.hidden = true; });
-    $('#formErrors').hidden = true;
-    $('#formTitle').textContent = m === 'add' ? 'Add Condition' : 'Edit Condition';
-    $('#formContext').textContent = m === 'add' ? 'A new condition for the library.' : (stacked ? 'Editing ' + current.name + '. The view stays open behind this form.' : 'Editing ' + current.name + '.');
-    var code = $('#cfCode');
-    code.readOnly = m === 'edit';
-    if (m === 'edit') {
-      var b = behaviorOf(current);
-      $('#cfCoding').selectedIndex = 1; code.value = current.code; $('#cfName').value = current.name;
-      $('#cfProgram').value = current.program; $('#cfFamily').value = current.family; $('#cfCoinf').value = current.coinf;
-      ['nnd', 'morbidity', 'summary', 'contactTracing', 'autoInfectious'].forEach(function (k) { setRadio(k, b[k]); });
-      $('#cfBefore').value = b.before; $('#cfAfter').value = b.after;
-    }
-    syncOnset();
-    open(formDlg, opener);
+  /* ---- the forms ---- */
+  function f(dlg, id) { return document.getElementById((dlg === addDlg ? 'a-' : 'e-') + id); }
+  function setRadio(dlg, name, v) { var r = $('input[name="' + name + '"][value="' + v + '"]', dlg); if (r) r.checked = true; }
+  function radio(dlg, name) { var r = $('input[name="' + name + '"]:checked', dlg); return r ? r.value : ''; }
+  function choose(sel, value, label) {   /* select by value or label; a sample value missing from the list is added */
+    if (!sel || sel.tagName !== 'SELECT') return;
+    var o = $$('option', sel).filter(function (x) { return value && (x.value === value || x.textContent.trim() === value || x.textContent.trim().indexOf(label || value) === 0); })[0];
+    if (!o && value) { o = document.createElement('option'); o.value = value; o.textContent = value; sel.appendChild(o); }
+    sel.value = o ? o.value : '';
   }
-  form.addEventListener('input', function () { dirty = true; });
-  form.addEventListener('change', function () { dirty = true; syncOnset(); });
+  function setValue(el, v) { if (!el) return; if (el.classList.contains('ds-field-value')) el.textContent = v || 'None'; else el.value = v || ''; }
+  function syncDeps(dlg) {
+    var on = radio(dlg, 'autoInfectious') === 'Y';
+    ['daysBefore', 'daysAfter'].forEach(function (k) { var el = f(dlg, k); el.disabled = !on; if (!on) { el.value = ''; clearError(el); } });
+    var prog = f(dlg, 'programArea') || f(dlg, 'programArea-value'), coinf = f(dlg, 'coinfectionGroup');
+    var p = prog.tagName === 'SELECT' ? prog.value : prog.textContent.trim();
+    var allowed = ['STD', 'HIV/AIDS'].indexOf(p) !== -1;
+    coinf.disabled = !allowed; if (!allowed) coinf.value = '';
+  }
+  function resetForm(dlg) {
+    var form = $('form', dlg); form.reset();
+    $$('[aria-invalid]', form).forEach(clearError);
+    $('.ds-error-summary', dlg).hidden = true;
+    dirty = false; formDlg = dlg;
+  }
+  function openAdd(opener) {
+    resetForm(addDlg); fromView = false;
+    $('#addContext').textContent = 'A new condition for the library.';
+    syncDeps(addDlg); openAll(addDlg); open(addDlg, opener);
+  }
+  function openEdit(opener, stacked) {
+    resetForm(editDlg); fromView = stacked;
+    var d = current;
+    $('#editContext').textContent = 'Editing ' + d.name + ' (' + d.code + ').';
+    setValue(f(editDlg, 'codingSystem-value'), 'NBS Condition Code'); setValue(f(editDlg, 'conditionCode-value'), d.code);
+    setValue(f(editDlg, 'programArea-value'), d.program); setValue(f(editDlg, 'status-value'), d.status);
+    f(editDlg, 'conditionName').value = d.name;
+    choose(f(editDlg, 'conditionFamily'), d.family); choose(f(editDlg, 'coinfectionGroup'), d.coinf ? 'STD_HIV_GROUP' : '');
+    ['nnd', 'morbidity', 'summary', 'contactTracing', 'autoInfectious'].forEach(function (k) { setRadio(editDlg, k, d[k] === 'Yes' ? 'Y' : d[k] === 'No' ? 'N' : d[k]); });
+    syncDeps(editDlg);
+    f(editDlg, 'daysBefore').value = d.daysBefore; f(editDlg, 'daysAfter').value = d.daysAfter;
+    openAll(editDlg); open(editDlg, opener);
+  }
+  [addDlg, editDlg].forEach(function (dlg) {
+    var form = $('form', dlg);
+    form.addEventListener('input', function (e) { dirty = true; if (e.target.getAttribute('aria-invalid') === 'true') clearError(e.target); });
+    form.addEventListener('change', function (e) { dirty = true; syncDeps(dlg); if (e.target.getAttribute('aria-invalid') === 'true') clearError(e.target); });
+    $$('[data-dismiss]', dlg).forEach(function (b) { b.addEventListener('click', function (e) { cancelForm(e.currentTarget); }); });
+    form.addEventListener('submit', function (e) { e.preventDefault(); submit(dlg); });
+  });
 
   function cancelForm(opener) {
     if (!dirty) { close(formDlg); return; }
-    $('#discardText').textContent = mode === 'add' ? 'The new condition is not saved.' : 'Your changes to ' + current.name + ' are not saved.';
+    $('#discardText').textContent = formDlg === addDlg ? 'The new condition is not saved.' : 'Your changes to ' + current.name + ' are not saved.';
     open(discard, opener);
   }
-  $$('[data-cancel]', formDlg).forEach(function (b) { b.addEventListener('click', function (e) { cancelForm(e.currentTarget); }); });
   $('#keepEditing').addEventListener('click', function () { close(discard); });
   $('#discardYes').addEventListener('click', function () { dsDialog.hide(discard); dirty = false; close(formDlg); });
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var bad = [];
-    $$('[required]', form).forEach(function (f) {
-      var err = $('#' + f.id + '-error');
-      if (f.closest('[hidden]') || f.value.trim()) { f.removeAttribute('aria-invalid'); if (err) err.hidden = true; return; }
-      f.setAttribute('aria-invalid', 'true'); err.textContent = f.getAttribute('data-errmsg'); err.hidden = false;
-      f.setAttribute('aria-describedby', ((f.getAttribute('aria-describedby') || '') + ' ' + err.id).trim());
-      bad.push(f);
+  /* ---- validation: the Add and Edit Condition templates' rules ---- */
+  function errorOf(el) { return document.getElementById(el.id + '-error'); }
+  function setError(el, msg) {
+    var err = errorOf(el); err.textContent = msg; err.hidden = false;
+    el.setAttribute('aria-invalid', 'true');
+    var ids = (el.getAttribute('aria-describedby') || '').split(' ').filter(Boolean);
+    if (ids.indexOf(err.id) === -1) ids.push(err.id);
+    el.setAttribute('aria-describedby', ids.join(' '));
+  }
+  function clearError(el) {
+    var err = errorOf(el); el.removeAttribute('aria-invalid'); if (!err) return;
+    err.hidden = true; err.textContent = '';
+    var ids = (el.getAttribute('aria-describedby') || '').split(' ').filter(function (i) { return i && i !== err.id; });
+    if (ids.length) el.setAttribute('aria-describedby', ids.join(' ')); else el.removeAttribute('aria-describedby');
+  }
+  function validate(dlg) {
+    var errors = [];
+    function need(id, msg) { var el = f(dlg, id); if (el && !el.disabled && (el.tagName === 'INPUT' || el.tagName === 'SELECT') && !el.value.trim()) errors.push([el, msg]); return el; }
+    need('codingSystem', 'Select a coding system');
+    var code = need('conditionCode', 'Enter a condition code');
+    if (code && code.tagName === 'INPUT' && code.value.trim() && !/^[A-Za-z0-9]+$/.test(code.value.trim())) errors.push([code, 'Condition code can only use letters and numbers']);
+    var name = need('conditionName', 'Enter a condition name');
+    if (name.value.trim() && /[<>"&]/.test(name.value)) errors.push([name, 'Condition name cannot use < > " or &']);
+    need('programArea', 'Select a program area');
+    [['daysBefore', 'before'], ['daysAfter', 'after']].forEach(function (p) {
+      var el = f(dlg, p[0]); if (el.disabled) return;
+      if (!el.value.trim()) errors.push([el, 'Enter the days ' + p[1] + ' onset']);
+      else if (!/^[0-9]{1,3}$/.test(el.value.trim())) errors.push([el, 'Days ' + p[1] + ' onset must be a whole number from 0 to 999']);
     });
-    var list = $('#formErrorList'); list.innerHTML = '';
-    if (bad.length) {
-      bad.forEach(function (f) { var li = document.createElement('li'), a = document.createElement('a'); a.href = '#' + f.id; a.textContent = f.getAttribute('data-errmsg'); a.addEventListener('click', function (ev) { ev.preventDefault(); f.focus(); }); li.appendChild(a); list.appendChild(li); });
-      $('#formErrors').hidden = false; $('#formErrors').focus(); return;
+    return errors;
+  }
+  function submit(dlg) {
+    var form = $('form', dlg), summary = $('.ds-error-summary', dlg), list = $('ul', summary);
+    $$('[aria-invalid]', form).forEach(clearError);
+    var errors = validate(dlg);
+    if (errors.length) {
+      list.innerHTML = '';
+      errors.forEach(function (p) {
+        setError(p[0], p[1]);
+        var li = document.createElement('li'), a = document.createElement('a');
+        a.href = '#' + p[0].id; a.textContent = p[1];
+        a.addEventListener('click', function (e) { e.preventDefault(); setSection($('.accordion-button', p[0].closest('.ds-form-accordion')), true); syncAll(dlg); p[0].focus(); });
+        li.appendChild(a); list.appendChild(li);
+      });
+      errors.forEach(function (p) { setSection($('.accordion-button', p[0].closest('.ds-form-accordion')), true); }); syncAll(dlg);
+      summary.hidden = false; $('.modal-body', dlg).scrollTop = 0; summary.focus();
+      return;
     }
-    var d = { name: $('#cfName').value.trim(), code: $('#cfCode').value.trim(), program: $('#cfProgram').value, family: $('#cfFamily').value, coinf: $('#cfCoinf').value };
-    var b = { nnd: radio('nnd'), morbidity: radio('morbidity'), summary: radio('summary'), contactTracing: radio('contactTracing'), autoInfectious: radio('autoInfectious'), before: $('#cfBefore').value, after: $('#cfAfter').value };
-    BEHAVIOR[d.code] = b;
-    var tr;
-    if (mode === 'add') {
+    var add = dlg === addDlg, tr;
+    var d = { name: f(dlg, 'conditionName').value.trim(), family: f(dlg, 'conditionFamily').value, coinf: f(dlg, 'coinfectionGroup').value ? 'STD/HIV' : '',
+      nnd: radio(dlg, 'nnd') || 'N', morbidity: radio(dlg, 'morbidity') || 'N', summary: radio(dlg, 'summary') || 'N', contactTracing: radio(dlg, 'contactTracing') || 'N',
+      autoInfectious: radio(dlg, 'autoInfectious') || 'N', daysBefore: f(dlg, 'daysBefore').value.trim(), daysAfter: f(dlg, 'daysAfter').value.trim() };
+    if (add) {
+      d.code = f(dlg, 'conditionCode').value.trim(); d.program = f(dlg, 'programArea').value;
       tr = tbody.rows[0].cloneNode(true); tr.classList.remove('is-flagged');
       tbody.insertBefore(tr, tbody.rows[0]);
       tr.cells[7].innerHTML = '<span class="visually-hidden">None</span>'; tr.cells[8].innerHTML = '<span class="badge text-bg-success">Active</span>';
-    } else { tr = current.tr; }
-    tr.cells[1].textContent = d.name; tr.cells[2].textContent = d.code; tr.cells[3].textContent = d.program; tr.cells[4].textContent = d.family;
-    tr.cells[5].innerHTML = d.coinf ? d.coinf.replace(/</g, '&lt;') : '<span class="visually-hidden">None</span>';
-    tr.cells[6].textContent = b.nnd; tr.cells[9].textContent = b.autoInfectious;
+      tr.cells[2].textContent = d.code; tr.cells[3].textContent = d.program;
+    } else { tr = current.tr; d.code = current.code; }
+    SAVED[d.code] = d;
+    var famOpt = $('option[value="' + d.family + '"]', f(dlg, 'conditionFamily'));
+    tr.cells[1].textContent = d.name; tr.cells[4].textContent = d.family ? famOpt.textContent.trim() : '';
+    tr.cells[5].innerHTML = d.coinf ? d.coinf : '<span class="visually-hidden">None</span>';
+    tr.cells[6].textContent = YN[d.nnd]; tr.cells[9].textContent = YN[d.autoInfectious];
     $('[data-view]', tr).setAttribute('aria-label', 'View ' + d.name); $('[data-edit]', tr).setAttribute('aria-label', 'Edit ' + d.name);
     dirty = false;
+    dsDialog.hide(dlg);
     if (fromView) {
-      /* back to the View dialog, which shows the saved values and says so */
-      dsDialog.hide(formDlg);
+      /* View comes back with the saved values and says so */
       current = rowData(tr); fillView(current);
-      var saved = $('#viewSaved'); saved.hidden = false; saved.textContent = 'Changes saved.';
+      var saved = $('#viewSaved'); saved.hidden = false; saved.textContent = 'Changes to ' + d.name + ' saved.';
       $('#viewEdit').focus();
     } else {
-      dsDialog.hide(formDlg);
-      var msg = mode === 'add' ? 'Condition ' + d.name + ' was added.' : 'Changes to ' + d.name + ' saved.';
-      var ps = $('#pageSaved'); ps.hidden = false; ps.textContent = msg;
-      $(mode === 'add' ? '[data-view]' : '[data-edit]', tr).focus();
+      var ps = $('#pageSaved'); ps.hidden = false; ps.textContent = add ? 'Condition ' + d.name + ' was added.' : 'Changes to ' + d.name + ' saved.';
+      $(add ? '[data-view]' : '[data-edit]', tr).focus();
     }
-  });
+  }
 
   /* ---- Escape closes only the top dialog; Tab stays in it ---- */
   window.addEventListener('keydown', function (e) {
     var top = dsDialog.top(); if (!top) return;
     if (e.key === 'Escape') {
       e.stopPropagation(); e.preventDefault();
-      if (top === formDlg) cancelForm($('[data-cancel].btn-close', formDlg));
-      else if (top === discard) close(discard);
+      if (top === addDlg || top === editDlg) cancelForm($('.btn-close', top));
       else close(top);
     }
     if (e.key === 'Tab') {
-      var f = $$('input:not([type=hidden]), select, textarea, button, [href]', top).filter(function (el) { return !el.disabled && el.offsetParent && !(el.type === 'radio' && !el.checked && $$('input[name="' + el.name + '"]:checked', top).length); });
-      if (!f.length) return;
-      if (e.shiftKey && (document.activeElement === f[0] || document.activeElement === top)) { e.preventDefault(); f[f.length - 1].focus(); }
-      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      var items = $$('input:not([type=hidden]), select, textarea, button, a[href], [tabindex="0"]', top).filter(function (el) {
+        return !el.disabled && el.getClientRects().length && !el.closest('.collapse:not(.show)') && !(el.type === 'radio' && !el.checked && $$('input[name="' + el.name + '"]:checked', top).length);
+      });
+      if (!items.length) return;
+      if (e.shiftKey && (document.activeElement === items[0] || document.activeElement === top)) { e.preventDefault(); items[items.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === items[items.length - 1]) { e.preventDefault(); items[0].focus(); }
     }
   }, true);
 })();

@@ -38,6 +38,17 @@
   .rv-note-head code { margin-left: auto; font-size: 12px; }
   .rv-num { flex: none; width: 24px; height: 24px; border-radius: 50%; background: #B35C00; color: #fff; font-weight: 700; font-size: 12px; line-height: 24px; text-align: center; }
   .rv-note-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  /* BA feedback (review-feedback.js) */
+  .rv-fb { padding: 12px 16px; border-bottom: 1px solid var(--bs-border-color); background: var(--bs-tertiary-bg); }
+  .rv-fb-who .form-control { max-width: 320px; }
+  .rv-fb-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
+  .rv-fb-list[hidden] { display: none; }
+  .rv-fb-item { padding: 8px 10px; border: 1px solid var(--bs-border-color); border-left: 4px solid var(--bs-primary); border-radius: var(--bs-border-radius); background: var(--bs-body-bg); }
+  .rv-fb-item.is-done { border-left-color: var(--bs-success); }
+  .rv-fb-item:focus { outline: 3px solid var(--bs-primary); outline-offset: 1px; }
+  .rv-fb-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-bottom: 4px; font-size: 13px; }
+  .rv-fb-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .rv-fb-form { margin-top: 8px; padding: 10px; border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius); background: var(--bs-body-bg); }
   @media (max-width: 1200px) { .rv-layout { grid-template-columns: minmax(0, 1fr); } .rv-notes { max-height: none; } }
   @media (forced-colors: active) { .rv-num { border: 1px solid CanvasText; } }
 </style>
@@ -54,9 +65,12 @@ use Show on template to find each one on the screen. The full process, from Read
 <ol class="rv-steps">
   <li>Pick a template from the table. Templates for November 1 come first, in roadmap order.</li>
   <li>Check each note against the business rules. A note marked <strong>Question for BA</strong> needs an answer.</li>
-  <li>For a change or an answer, use Copy reference on the note and paste it into your comment on the template's Jira story, so
-  the comment points at one note (for example "Merge Patients: Manual Search, note MP-5").</li>
-  <li>When the notes are right, comment <strong>Approved</strong> on the story. Design then marks the template Approved here,
+  <li>For a change, an answer, or an action, use Add feedback on the note (or Add feedback on the whole template). It is
+  saved as a comment on the template's Jira story and shows here under the note. An action has an owner and a due date
+  and can be marked done. If feedback here is not connected yet, use Copy reference on the note and paste it into your
+  comment on the story (for example "Merge Patients: Manual Search, note MP-5").</li>
+  <li>When the notes are right, add feedback on the whole template with the type <strong>Approval</strong> (or comment
+  <strong>Approved</strong> on the story). Design then marks the template Approved here,
   with the date, and it goes to development.</li>
 </ol>
 </section>
@@ -65,7 +79,7 @@ use Show on template to find each one on the screen. The full process, from Read
 <h2 id="rvListTitle">Templates</h2>
 <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Templates, scrolls sideways">
 <table class="table rv-table mb-0">
-  <thead><tr><th scope="col">Template</th><th scope="col">Scope</th><th scope="col">Status</th><th scope="col">Notes</th><th scope="col">Decisions</th></tr></thead>
+  <thead><tr><th scope="col">Template</th><th scope="col">Scope</th><th scope="col">Status</th><th scope="col">Notes</th><th scope="col">Decisions</th><th scope="col">Open actions</th></tr></thead>
   <tbody id="rvRows"></tbody>
 </table>
 </div></div>
@@ -89,5 +103,6 @@ use Show on template to find each one on the screen. The full process, from Read
 </main>
 <script src="review-notes.js"></script>
 <script src="review.js"></script>
+<script src="review-feedback.js"></script>
 </body>
 </html>

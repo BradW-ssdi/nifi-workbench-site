@@ -6,6 +6,8 @@
 <title>System Identified Merge Queue - Merge Patients - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/merge-patients.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,6 +21,10 @@
   @media (max-width: 820px) {
     .page-body { padding: 16px; }
   }
+  /* View Patient: the section links beside the events, as in Phase 2's Patient Events; above them on narrow screens */
+  .pv-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .pv-nav { position: sticky; top: 0; background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius-lg); padding: 8px; }
+  @media (max-width: 768px) { .pv-layout { grid-template-columns: minmax(0, 1fr); } .pv-nav { position: static; } }
 </style>
 </head>
 <body data-nav-current="merge-system">
@@ -42,7 +48,7 @@
     </ul>
     <button type="button" class="ds-nav-item ds-nav-group has-current" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
     <ul class="ds-nav-sub" id="navMerge" hidden>
-      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-manual" href="merge-patients-search.html">Manual Search</a></li>
       <li><a data-nav-id="merge-system" aria-current="page" href="merge-system-identified.html">System Identified</a></li>
     </ul>
     <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
@@ -105,6 +111,13 @@
           <a class="btn btn-outline-primary" id="exitBtn" href="home.html">Exit merge</a>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+          <div class="ds-table-settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg></button>
+            <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="candTable">
+              <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
+              <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
+            </div>
+          </div>
         </div>
         <div id="status" class="visually-hidden" role="status" aria-live="polite"></div>
 
@@ -115,7 +128,7 @@
             <span class="small text-body-secondary" style="margin-left:auto">Identified 09/10/2026 by nightly matching</span>
           </div>
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Candidate group table, scrolls horizontally when zoomed">
-          <table class="table ds-table" id="candTable">
+          <table class="table ds-table tableCompact" id="candTable">
             <caption class="visually-hidden">Candidate group 3. Use the Merge column to choose records to combine or remove, and the Surviving ID column to choose which record survives.</caption>
             <thead>
               <tr>
@@ -133,7 +146,7 @@
               <tr>
                 <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10023451" aria-label="Select Maria Garcia, patient ID 10023451"></td>
                 <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10023451" aria-label="Surviving ID: Maria Garcia, patient ID 10023451"></td>
-                <td><a href="#">10023451</a></td>
+                <td><a href="#" data-view-patient="10023451" aria-haspopup="dialog">10023451</a></td>
                 <td>Garcia, Maria L</td>
                 <td>42<span class="ds-cell-sub">03/14/1984 · Female</span></td>
                 <td>1204 Riverside Dr<span class="ds-cell-sub">Austin, TX 78704</span></td>
@@ -143,7 +156,7 @@
               <tr>
                 <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10087719" aria-label="Select Maria Garcia, patient ID 10087719"></td>
                 <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10087719" aria-label="Surviving ID: Maria Garcia, patient ID 10087719"></td>
-                <td><a href="#">10087719</a></td>
+                <td><a href="#" data-view-patient="10087719" aria-haspopup="dialog">10087719</a></td>
                 <td>Garcia, Maria</td>
                 <td>42<span class="ds-cell-sub">03/14/1984 · Female</span></td>
                 <td>1204 Riverside Drive<span class="ds-cell-sub">Austin, TX 78704</span></td>
@@ -153,7 +166,7 @@
               <tr>
                 <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10091008" aria-label="Select Maria Garcia-Lopez, patient ID 10091008"></td>
                 <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10091008" aria-label="Surviving ID: Maria Garcia-Lopez, patient ID 10091008"></td>
-                <td><a href="#">10091008</a></td>
+                <td><a href="#" data-view-patient="10091008" aria-haspopup="dialog">10091008</a></td>
                 <td>Garcia-Lopez, Maria</td>
                 <td>42<span class="ds-cell-sub">03/14/1984 · Female</span></td>
                 <td>1204 Riverside Dr<span class="ds-cell-sub">Austin, TX 78704</span></td>
@@ -207,6 +220,75 @@
     </div>
   </div>
 </div>
+<!-- merge:dialogs -->
+<!-- View Patient: read only, as Phase 2's Patient Events dialog (pagedataentry/contactrecords/patientEventsModal.html):
+     the patient summary, then the patient's events by type as accordions, with section links beside them.
+     DEV: load the content with hx-get when a patient ID is chosen, as Patient Events does. -->
+<div class="modal ds-modal-p2" id="patientDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="pvName" aria-describedby="pvContext" hidden>
+  <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
+    <div class="modal-header bg-body-secondary">
+      <div><h2 class="modal-title h5" id="pvName">Patient</h2><p class="mb-0 small text-body-secondary" id="pvContext"></p></div>
+      <div class="d-flex align-items-center gap-2 ms-auto">
+        <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="pvPrint" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
+        <button type="button" class="btn-close" data-dismiss aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="modal-body bg-body-secondary">
+      <div class="card"><div class="card-body"><dl class="ds-dl mb-0" id="pvSummary"></dl></div></div>
+      <div class="pv-layout">
+        <nav class="ds-secnav pv-nav" aria-label="Patient events"><p class="ds-overline px-2 mb-2">Events</p><div class="nav nav-pills flex-column" id="pvNav"><a class="nav-link" href="#pv-investigations">Investigations</a><a class="nav-link" href="#pv-labReports">Lab Reports</a><a class="nav-link" href="#pv-morbidityReports">Morbidity Reports</a><a class="nav-link" href="#pv-vaccinations">Vaccinations</a><a class="nav-link" href="#pv-treatments">Treatments</a><a class="nav-link" href="#pv-documents">Documents</a><a class="nav-link" href="#pv-contactRecords">Contact Records</a></div></nav>
+        <div class="d-grid gap-3">
+          <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0 text-decoration-none" data-toggle-all aria-controls="patientDialog">Collapse All</button></div>
+        <section class="accordion ds-form-accordion" id="pv-investigations" aria-labelledby="pv-investigationsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-investigationsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-investigations-collapse">Investigations <span class="ms-1 fw-normal" id="pv-investigations-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-investigations-collapse"><div class="accordion-body" id="pv-investigations-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-labReports" aria-labelledby="pv-labReportsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-labReportsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-labReports-collapse">Lab Reports <span class="ms-1 fw-normal" id="pv-labReports-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-labReports-collapse"><div class="accordion-body" id="pv-labReports-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-morbidityReports" aria-labelledby="pv-morbidityReportsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-morbidityReportsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-morbidityReports-collapse">Morbidity Reports <span class="ms-1 fw-normal" id="pv-morbidityReports-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-morbidityReports-collapse"><div class="accordion-body" id="pv-morbidityReports-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-vaccinations" aria-labelledby="pv-vaccinationsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-vaccinationsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-vaccinations-collapse">Vaccinations <span class="ms-1 fw-normal" id="pv-vaccinations-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-vaccinations-collapse"><div class="accordion-body" id="pv-vaccinations-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-treatments" aria-labelledby="pv-treatmentsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-treatmentsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-treatments-collapse">Treatments <span class="ms-1 fw-normal" id="pv-treatments-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-treatments-collapse"><div class="accordion-body" id="pv-treatments-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-documents" aria-labelledby="pv-documentsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-documentsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-documents-collapse">Documents <span class="ms-1 fw-normal" id="pv-documents-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-documents-collapse"><div class="accordion-body" id="pv-documents-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-contactRecords" aria-labelledby="pv-contactRecordsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-contactRecordsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-contactRecords-collapse">Contact Records <span class="ms-1 fw-normal" id="pv-contactRecords-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-contactRecords-collapse"><div class="accordion-body" id="pv-contactRecords-body"></div></div>
+          </div>
+        </section>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-dismiss>Close</button></div>
+  </div></div>
+</div>
+<script type="application/json" id="patientData">{"10023451":{"name":"Maria L Garcia","sex":"Female","dob":"03/14/1984","age":"42 years","address":"1204 Riverside Dr, Austin, TX 78704","phone":"(512) 555-0142","email":"mgarcia@example.com","investigations":[["CAS10023451TX01","Hepatitis B, acute","Open","02/03/2026"]],"labReports":[["OBS20031TX01","Hepatitis B surface antigen","Positive","01/28/2026"],["OBS20032TX01","ALT","210 U/L (high)","01/28/2026"]],"vaccinations":[["Hepatitis B vaccine, adult","05/12/2019"]],"documents":[["DOC50001TX01","Electronic lab report","01/28/2026"]]},"10087719":{"name":"Maria Garcia","sex":"Female","dob":"03/14/1984","age":"42 years","address":"1204 Riverside Drive, Austin, TX 78704","phone":"(512) 555-0142","email":"","labReports":[["OBS20101TX01","Hepatitis B core IgM","Positive","02/01/2026"]]},"10091008":{"name":"Maria Garcia-Lopez","sex":"Female","dob":"03/14/1984","age":"42 years","address":"880 Oltorf St, Austin, TX 78741","phone":"","email":"maria.gl@example.com","morbidityReports":[["MOR30044TX01","Influenza","12/09/2025"]],"contactRecords":[["CON40007TX01","CAS10002204TX01","11/20/2025"]]},"10105532":{"name":"Mario Garcia","sex":"Male","dob":"07/02/1987","age":"39 years","address":"4410 Burnet Rd, Austin, TX 78756","phone":"(512) 555-0199","email":"","treatments":[["Doxycycline, 100 mg","08/14/2025"]]}}</script>
+<!-- /merge:dialogs -->
 <script>
 /* Working reference implementations of the queue contracts. */
 (function () {

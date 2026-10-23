@@ -39,7 +39,7 @@
     </ul>
     <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
     <ul class="ds-nav-sub" id="navMerge" hidden>
-      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-manual" href="merge-patients-search.html">Manual Search</a></li>
       <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
     </ul>
     <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
@@ -134,6 +134,21 @@
 <script>
 /* The details under a page choice follow the choice (data-details-for). DEV: the server sends these with the page list. */
 (function () {
+  /* The From and To pages must be different pages (BA answer 2026-10-23). As on the current screen, the page chosen as
+     From is not offered as To; if it was already the To page, To is emptied and that is announced.
+     DEV: the server also refuses a map whose pages have the same wa_template_uid. */
+  var from = document.getElementById('fromPage'), to = document.getElementById('toPage'), status = document.getElementById('formStatus');
+  function syncPages() {
+    Array.prototype.forEach.call(to.options, function (o) { var same = !!o.value && o.value === from.value; o.hidden = same; o.disabled = same; });
+    if (to.value && to.value === from.value) {
+      to.value = '';
+      to.dispatchEvent(new Event('change', { bubbles: true }));
+      status.textContent = '';
+      setTimeout(function () { status.textContent = 'The To page cannot be the From page. Choose another To page.'; }, 50);
+    }
+  }
+  from.addEventListener('change', syncPages);
+  syncPages();
   Array.prototype.forEach.call(document.querySelectorAll('[data-details-for]'), function (dl) {
     var sel = document.getElementById(dl.getAttribute('data-details-for'));
     function show() {

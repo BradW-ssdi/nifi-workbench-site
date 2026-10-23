@@ -40,20 +40,31 @@
   ];
 
   var T = [
-    { id: 'merge-patients', title: 'Merge Patients: Manual Search', priority: 'November 1, priority 1', status: 'ready',
+    { id: 'merge-patients-search', title: 'Merge Patients: Find Patient', priority: 'November 1, priority 1', status: 'ready',
+      decision: { date: '2026-10-20', text: 'Manual search becomes a search dialog over Home, the candidate list, and a read-only View Patient dialog (BA review meeting).' },
       notes: [
-        { code: 'MP-1', title: 'Search criteria', pin: { sel: '#searchForm' },
-          text: 'Every Find Patient field from the current merge search: name, date of birth (Equal or Between), sex, street, city, state, zip, and patient IDs. Name and address fields take an operator (Starts With, Contains, Equal, Not Equal, Sounds Like for names).' },
-        { code: 'MP-2', title: 'Advanced search', pin: { sel: '#msAdvancedToggle' },
-          text: 'ID Type, ID Number, Phone, Email, Ethnicity and Race, closed until opened.' },
-        { code: 'MP-3', title: 'Search messages', pin: { sel: '#searchForm button[type=submit]' },
-          text: 'Searching with nothing entered shows an error. No match shows "No patients match these criteria". Clear empties every field.' },
+        { code: 'MP-1', title: 'Search criteria', pin: { sel: '#msLast' },
+          text: 'A dialog over Home, opened from Merge Patients > Manual Search, in the layout of the Phase 2 patient search. Every Find Patient field from the current merge search: name, date of birth (Equal or Between), sex, street, city, state, zip, and patient IDs. Name and address fields take an operator (Starts With, Contains, Equal, Not Equal, Sounds Like for names).' },
+        { code: 'MP-2', title: 'Advanced search', pin: { sel: '#msAdvancedHeading' },
+          text: 'Identifier type and number, Phone, Email, Ethnicity, and Race, in a section that starts closed.' },
+        { code: 'MP-3', title: 'Search messages', pin: { sel: '#searchDialog button[type=submit]' },
+          text: 'Searching with nothing entered shows an error in the dialog. Search opens the candidate list; no match shows "No patients match these criteria". Clear empties every field.' }
+      ] },
+    { id: 'merge-patients', title: 'Merge Patients: Candidate List', priority: 'November 1, priority 1', status: 'ready',
+      decision: { date: '2026-10-20', text: 'The candidate list is its own template, a queue table with Table Settings; the rules stay on the page; the survivor is a radio button (BA review meeting).' },
+      notes: [
+        { code: 'MP-8', title: 'Refine Search and New Search', pin: { sel: '[data-open-search="refine"]' },
+          text: 'The search that produced the list is shown above it. Refine Search opens the search dialog with those criteria; New Search opens it empty. Searching from the dialog updates the list.' },
         { code: 'MP-4', title: 'Choose records to merge', pin: { sel: '#selectAll' },
-          text: 'Select two or more records. The header box selects all candidates.' },
+          text: 'Select two or more records. The header box selects all candidates. Merge is in the bar that appears once a record is selected.' },
         { code: 'MP-5', title: 'Surviving record', pin: { sel: 'input[name="survivor"]' },
           text: 'One record survives. Marking the Surviving ID is optional; with none marked, the oldest patient ID survives. Marking a survivor also selects it for merge.' },
         { code: 'MP-6', title: 'Merge rules on screen', pin: { sel: '.alert-info' },
           text: 'The rules are written above the table. In the current system they were only in button tooltips.' },
+        { code: 'MP-9', title: 'View Patient', pin: { sel: '[data-view-patient]' },
+          text: 'A patient ID opens a read-only dialog, as Patient Events does from contact record search: the patient summary, then investigations, lab reports, morbidity reports, vaccinations, treatments, documents, and contact records, each with its count.' },
+        { code: 'MP-10', title: 'Queue tools', pin: { sel: '#tableSettingsBtn' },
+          text: 'As on every queue: Search to filter, sorting, Print, Download, Table Settings (Compact Rows), and pagination.' },
         { code: 'MP-7', title: 'Confirm before merging', pin: { sel: '#candTable' }, after: 'select records and choose Merge',
           text: 'Merge lists the records and which one survives, and asks for confirmation. After the merge the surviving patient opens.' }
       ] },
@@ -66,11 +77,15 @@
         { code: 'MS-3', title: 'Merge and Remove from merge', pin: { sel: '#candTable' },
           text: 'Act on the selected records, with the same rules as the manual search: two or more records, one survivor.' },
         { code: 'MS-4', title: 'No merge and Skip', pin: { sel: '#noMergeBtn' },
-          text: 'Act on the whole group. Merge, Remove from merge and No merge ask for confirmation; Skip does not.' },
+          text: 'Act on the whole group. Merge, Remove from merge and No merge ask for confirmation; Skip does not. Skip stays until the research task decides whether it is still needed (BA review 2026-10-20).' },
         { code: 'MS-5', title: 'Exit merge', pin: { sel: '#exitBtn' },
           text: 'Leaves the queue without acting on the group, releases the group if it was held, and goes to Home.' },
         { code: 'MS-6', title: 'After an action', pin: { sel: '#groupPos' },
-          text: 'The next group loads and a message says what happened and which group is showing.' }
+          text: 'The next group loads and a message says what happened and which group is showing.' },
+        { code: 'MS-7', title: 'View Patient', pin: { sel: '[data-view-patient]' },
+          text: 'A patient ID opens the same read-only View Patient dialog as the candidate list.' },
+        { code: 'MS-8', title: 'Table Settings', pin: { sel: '#tableSettingsBtn' },
+          text: 'Table Settings (Compact Rows), which was missing, as on every queue.' }
       ] },
     { id: 'system-management', title: 'System Management main menu', priority: 'November 1', status: 'ready',
       decision: { date: '2026-10-08', text: 'Layout chosen in BA review: side nav of modules beside a card for every module.' },
@@ -87,8 +102,8 @@
           text: 'Manage Alerts, Manage User Email, Epi-Link (Lot Number) Management and Manage HIV Partner Services File are Nice to Have and not in the menu. Manage Notices is under Page Management, after Manage Pages.' },
         { code: 'SM-6', title: 'Reset Lab Mapping Cache', pin: { sel: 'button[data-opens="resetCacheDialog"]' },
           text: 'Runs an action instead of opening a page, so it asks for confirmation first. After the reset, a message at the top of the page says it was done.' },
-        { code: 'SM-7', title: 'Restart after a reset?', pin: { sel: 'button[data-opens="resetCacheDialog"]' }, ask: true,
-          text: 'The current screen says to restart the server for the reset to take effect. Is that still true? If so, the message should say so.' }
+        { code: 'SM-7', title: 'Restart after a reset', pin: { sel: 'button[data-opens="resetCacheDialog"]' },
+          text: 'As on the current screen, the reset takes effect after the application server (WildFly) restarts, and both the confirmation and the message after the reset say so (BA answers, 2026-10-23).' }
       ] },
     { id: 'wds-algorithm-library', title: 'WDS: Algorithm Library', priority: 'November 1, priority 2', status: 'ready',
       notes: [
@@ -239,13 +254,13 @@
           text: 'Report Type, Sender, and Recipient are filters, as in the Phase 2 queues; Filter adds the other columns.' },
         { code: 'SY-3', title: 'Add New System', pin: { sel: 'main .ds-toolbar .btn-primary' },
           text: 'The current screen puts the Create System form under the list. Here it opens on its own page.' },
-        { code: 'SY-4', title: 'Sample rows', pin: { sel: '#systemTable tbody tr:nth-child(2)' }, ask: true,
-          text: 'The local library holds one system. The other rows are samples. Which columns matter most when a state has dozens of senders?' }
+        { code: 'SY-4', title: 'Same as the current screen', pin: { sel: '#systemTable tbody tr:nth-child(2)' },
+          text: 'The list keeps the current screen\'s columns, and what matters most is that Add New requires the same fields the current screen does (BA answers, 2026-10-23). The local library holds one system; the other rows are samples.' }
       ] },
     { id: 'add-system', title: 'Add System', priority: 'Messaging', status: 'ready',
       notes: [
         { code: 'AS-1', title: 'Required fields', pin: { sel: '.legend-note' },
-          text: 'Every field the current screen requires is required here: report type, names, OIDs, facility, and the four Yes or No questions.' },
+          text: 'Every field the current screen requires is required here: report type, names, OIDs, facility, and the four Yes or No questions. These matter most (BA answers, 2026-10-23).' },
         { code: 'AS-2', title: 'Errors', pin: { sel: '#errorSummary' }, after: 'submit',
           text: 'Submitting with gaps lists each one at the top. Each link moves to its field.' },
         { code: 'AS-3', title: 'Derived jurisdiction', pin: { sel: '#deriveJurisdiction-Y' },
@@ -260,7 +275,7 @@
         { code: 'LR-2', title: 'Results', pin: { sel: '#resultsTable' }, after: 'search',
           text: 'Each result shows its code, description, and lab, with View and Edit.' },
         { code: 'LR-3', title: 'Lab list', pin: { sel: '#lrLab' }, ask: true,
-          text: 'The current lab list shows each lab with its address, cut off. Is the name enough to tell labs apart, or do users need the address?' }
+          text: 'The lab needs its name and something that tells similar labs apart, the address or the CLIA number (BA answers, 2026-10-23). Here each lab shows its CLIA number, and the address and phone show under the field once a lab is chosen. Which one to show is still open, for PI planning.' }
       ] },
     { id: 'manage-trigger-codes', title: 'Manage Trigger Codes', priority: 'Case Reporting', status: 'ready',
       notes: [
@@ -274,7 +289,9 @@
         { code: 'LT-1', title: 'Required', pin: { sel: '#ltType' },
           text: 'Lab Name and Test Type (Ordered or Resulted) are required, and a lab test code or a description.' },
         { code: 'LT-2', title: 'Results', pin: { sel: '#resultsTable' }, after: 'search',
-          text: 'Each test shows its code, description, lab, and test type, with View and Edit.' }
+          text: 'Each test shows its code, description, lab, and test type, with View and Edit.' },
+        { code: 'LT-3', title: 'Lab list', pin: { sel: '#ltLab' }, ask: true,
+          text: 'The same lab list as Manage Local Lab Results: the name with its CLIA number, and the address under the field. Address or CLIA number is still open, for PI planning.' }
       ] },
     { id: 'link-result-snomed', title: 'Lab Result - SNOMED Link', priority: 'Lab Management', status: 'ready',
       notes: [
@@ -297,6 +314,23 @@
         { code: 'LC-2', title: 'Links', pin: { sel: '#resultsTable' }, after: 'search',
           text: 'Each link shows the condition code, the LOINC code, and the disease name.' }
       ] },
+    { id: 'manage-notices', title: 'Manage Notices', priority: 'Page Management', status: 'ready',
+      notes: [
+        { code: 'MN-1', title: 'Where notices show', pin: { sel: '#noticeTable' },
+          text: 'The notices in the Notices card on Home, in display order. Today they are the Home Page entry of Custom Fields Admin (Manage Pages, then the Custom Fields Admin link, then Home Page) (BA answers, 2026-10-23).' },
+        { code: 'MN-2', title: 'Types', pin: { sel: '#noticeTable thead' },
+          text: 'The three types the current screen offers: Subheading (there "Subheading (for display only)"), Text (there "Comments (Read only text)"), and Hyperlink.' },
+        { code: 'MN-3', title: 'Link URL required?', pin: { sel: '#addNotice' }, ask: true,
+          text: 'Type, notice text, and display order are required, as on the current screen. Here a Hyperlink also needs its link URL; the current screen does not require it, so a link can be saved with nothing to open. Keep it required?' },
+        { code: 'MN-4', title: 'Tooltips', pin: { sel: '#addNotice' }, ask: true,
+          text: 'On Home today a tooltip shows only on a Text notice, and only while the pointer rests on it; keyboard and screen reader users never get it, and a Subheading\'s tooltip never shows. Keep Tooltip as it is, show its text on Home, or drop it?' },
+        { code: 'MN-5', title: 'Display order', pin: { sel: '#noticeTable tbody tr:nth-child(2)' }, ask: true,
+          text: 'Display order is typed, as on the current screen; equal numbers keep the order they were added (two notices share 1 today). Would moving a notice up or down be easier than typing numbers?' },
+        { code: 'MN-6', title: 'Delete', pin: { sel: '#noticeTable tbody tr:nth-child(1) [data-act="delete"]' },
+          text: 'Delete asks first. The current screen keeps a deleted notice as inactive; it no longer shows on Home or here.' },
+        { code: 'MN-7', title: 'Preview on Home', pin: { sel: '#previewNotices' },
+          text: 'Shows the Notices card as Home will show it, as the current screen\'s Preview does.' }
+      ] },
     { id: 'manage-value-sets', title: 'Manage Value Sets', priority: 'Page Management', status: 'ready',
       notes: [
         { code: 'VS-1', title: 'Library', pin: { sel: '#valueSetTable' },
@@ -304,7 +338,7 @@
         { code: 'VS-2', title: 'Filters', pin: { sel: '#filterChipsDiv' },
           text: 'Type and Status are filters, as in the Phase 2 queues; Filter adds the other columns.' },
         { code: 'VS-3', title: 'Type values', pin: { sel: '#vsType' }, ask: true,
-          text: 'The current library has both LOCAL and Local as types. Are they the same type?' }
+          text: 'The current library has both LOCAL and Local as types. Are they the same type? Still open (asked again 2026-10-23).' }
       ] },
     { id: 'manage-templates', title: 'Manage Templates', priority: 'Page Management', status: 'ready',
       notes: [
@@ -332,8 +366,8 @@
           text: 'Required, up to 100 characters, and not the name of an existing map, as on the current screen.' },
         { code: 'PP-3', title: 'Page details', pin: { sel: '#fromDetails' },
           text: 'Choosing a page shows its description, message mapping guide, and related conditions, as the current screen does.' },
-        { code: 'PP-4', title: 'Same page twice?', pin: { sel: '#toPage' }, ask: true,
-          text: 'Can the From and To pages be the same page? This template does not check.' }
+        { code: 'PP-4', title: 'Different pages', pin: { sel: '#toPage' },
+          text: 'The From and To pages must be different pages (BA answers, 2026-10-23). The page chosen as From is not offered as To; choosing the To page as From empties To and says so.' }
       ] },
     { id: 'port-map-questions', title: 'Port Page: Map Questions', priority: 'Page Management', status: 'ready',
       notes: [
@@ -343,10 +377,10 @@
           text: 'The current statuses: Auto-Mapped, Complete, and Mapping Needed; (R) marks a question in a repeating block. Filter by status to see what is left.' },
         { code: 'MQ-3', title: 'Map in a dialog', pin: { sel: '[data-map="VAR212"]' },
           text: 'Map opens a dialog for that question, instead of loading it into a form on the page as the current screen does. Choose the To question, or that it is not ported; for coded questions, whether to map the answers too; for a repeating To question, which repeat.' },
-        { code: 'MQ-4', title: 'Which To questions?', pin: { sel: '[data-map="VAR212"]' }, ask: true,
-          text: 'Should the To Question list show only questions of the same data type, or all of them as this template does?' },
-        { code: 'MQ-5', title: 'Save', pin: { sel: '#saveMap' }, ask: true,
-          text: 'The current screen has Save and Continue and Map Answers. Here Save keeps the map to finish later and Map Answers moves on. Is that what Save and Continue does today?' }
+        { code: 'MQ-4', title: 'Which To questions', pin: { sel: '[data-map="VAR212"]' },
+          text: 'The To Question list keeps every data type the From question can be ported to, by the Porting Guide\'s rules (BA answers, 2026-10-23): Coded, Numeric, and Text to any of those three; Date only to Date; Participation only to Participation; Numeric and Coded only to Structured Numeric. The hint under the list says which types it shows.' },
+        { code: 'MQ-5', title: 'Save and Continue', pin: { sel: '#saveMap' },
+          text: 'Save and Continue saves the mapping so far, to finish later. Map Answers saves it and goes to Map Answers once every question is mapped; with questions left it says how many (BA answers, 2026-10-23).' }
       ] },
     { id: 'port-map-answers', title: 'Port Page: Map Answers', priority: 'Page Management', status: 'ready',
       notes: [
@@ -364,7 +398,7 @@
         { code: 'RM-2', title: 'Export Map', pin: { sel: 'main .ds-toolbar .btn-outline-primary' },
           text: 'Saves the map as a file, to import on another system.' },
         { code: 'RM-3', title: 'Technical columns', pin: { sel: '#reviewTable thead' }, ask: true,
-          text: 'The current screen also lists value sets, DB locations, translation flags, and the answer group number. Which of those do reviewers use?' }
+          text: 'Answer Group is kept: it matters for questions in a repeating block (BA answers, 2026-10-23). The current screen also lists value sets, DB locations, and translation flags. Whether reviewers use those is still open; a screenshot of the current screen was asked for.' }
       ] },
     { id: 'port-condition', title: 'Port Page: Port Condition', priority: 'Page Management', status: 'ready',
       notes: [
@@ -372,10 +406,10 @@
           text: 'Get the case count, run the pre-run check, then convert. Doing a step too early says what comes first, in the error summary.' },
         { code: 'PC-2', title: 'Confirm', pin: { sel: '#runConv' },
           text: 'Run Conversion asks first, and lists what cannot be done until every case is ported, as the current pop-up does.' },
-        { code: 'PC-3', title: 'Pre-run each time?', pin: { sel: '#preRun' }, ask: true,
-          text: 'The run log shows a pre-run before each conversion. Must the pre-run be repeated before every conversion, as this template asks?' },
-        { code: 'PC-4', title: 'Failed runs', pin: { sel: '#logTable' }, ask: true,
-          text: 'A failed run logs a system error (for example NEDSSAppException ERR109). What should the log say to an administrator instead?' }
+        { code: 'PC-3', title: 'Pre-run each time', pin: { sel: '#preRun' },
+          text: 'The pre-run check is needed before every conversion (BA answers, 2026-10-23).' },
+        { code: 'PC-4', title: 'Failed runs', pin: { sel: '#logTable' },
+          text: 'A failed run gives the administrator a clear reason (BA answers, 2026-10-23): what happened and what to do, in plain words, with the system code under it for support. For example ERR109 means a case was changed by another user during the conversion.' }
       ] },
     { id: 'view-template', title: 'View Template', priority: 'Page Management', status: 'ready',
       notes: [
@@ -442,31 +476,67 @@
         { code: 'EP-1', title: 'Three ways to move', pin: { sel: '.pb-q .pb-handle' },
           text: 'Drag by the handle; or on the handle press Enter, move with the arrow keys, Enter again to drop; or use the Move menu. Each move says where the item landed.' },
         { code: 'EP-2', title: 'Move menu', pin: { sel: '.pb-q .pb-move' },
-          text: 'Move up, Move down, and Move to, which picks the destination subsection and position from lists.' },
+          text: 'Move up, Move down, and Move to, which picks the tab, the destination, and the position from lists, then asks to confirm, as the current Relocate does.' },
         { code: 'EP-3', title: 'Undo', pin: { sel: '.pb-tabs' }, after: 'move an item',
           text: 'After each move a message says what moved and where, with Undo.' },
         { code: 'EP-4', title: 'Saving', pin: { sel: '.pb-section' },
           text: 'Each move saves as it happens. If a save fails the item goes back and the error shows. Only a draft page can be edited.' },
-        { code: 'EP-5', title: 'Moving between tabs', pin: { sel: '#tCase' }, ask: true,
-          text: 'Should a question or subsection be able to move to another tab? The proof of concept keeps moves within the open tab.' },
-        { code: 'EP-6', title: 'Fixed questions', pin: { sel: '.pb-sub' }, ask: true,
-          text: 'Are there questions or subsections that must not move, for example standard questions a page needs in place? Those would show no handle.' }
+        { code: 'EP-5', title: 'Moving between tabs', pin: { sel: '#t1' },
+          text: 'As in the current page builder, Move to can send a question to a subsection, a subsection to a section, or a section to another tab. Drag and the keyboard stay on the open tab. After a move to another tab, that tab opens on the moved item.' },
+        { code: 'EP-6', title: 'Repeating blocks', pin: { sel: '#p0 .pb-sub[data-block] .pb-row' },
+          text: 'A repeating block has its own background and a Repeating block label. As in the current page builder, a question in a repeating block moves only within it, and other questions cannot be dragged into one. Move to applies the current Relocate checks: a published question stays in its block, and a question can go into a block only if it is not published and is stored as an answer.' },
+        { code: 'EP-7', title: 'Indicators', pin: { sel: '.pb-legend' },
+          text: 'Each question shows the Standard question (S) or Published (P) indicator, as the current page builder does, with its identifier after the label. The legend above the tabs explains them.' },
+        { code: 'EP-8', title: 'Confirm before Move to', pin: { sel: '.pb-q .pb-move' }, after: 'choose Move to and then Move',
+          text: 'Move to asks to confirm before it moves, naming the item, the destination, and the tab, as the current Relocate asks "Please press OK to confirm the relocate operation." Back returns to the choices. Drag, the keyboard, and Move up or down do not ask, as in the current page builder, and each move can be undone.' },
+        { code: 'EP-9', title: 'Rearranging tabs', pin: { sel: '.pb-tabs' }, ask: true,
+          text: 'The current page builder can also reorder tabs. This proof of concept leaves that out, because the Phase 3 Edit Page is not expected to use tabs. Is that right?' },
+        { code: 'EP-10', title: 'Fixed questions', pin: { sel: '.pb-sub' }, ask: true,
+          text: 'Beyond the repeating block rules, are there questions or subsections that must not move, for example standard questions a page needs in place? Those would show no handle.' }
+      ] },
+    { id: 'manage-conditions', title: 'Queue component: Manage Conditions', priority: 'Proof of concept, queues (all November 1 queues use it)', status: 'ready',
+      notes: [
+        { code: 'QC-1', title: 'Real data, every page', pin: { sel: '#pageSummary' },
+          text: 'The library holds all 263 conditions from the current system. Search, filters, sorting, and paging work across all of them, as the server does, not only on the rows shown. It opens filtered to Status: Active.' },
+        { code: 'QC-2', title: 'Filter chips as in Phase 2', pin: { sel: '#mc-programArea' },
+          text: 'Program Area, Condition Family, Status, and NND are always shown. Each menu has the operator (equals or not equals), a search box, Select All, Blanks, the values, Clear selection, and Update. Update with nothing checked is not allowed.' },
+        { code: 'QC-3', title: 'Changing the operator on a chip', pin: { sel: '#mc-status-chipOperator' },
+          text: 'On a chip with a filter applied, changing equals to not equals updates the table right away, as in Phase 2.' },
+        { code: 'QC-4', title: 'Filter adds more columns', pin: { sel: '#filtersId' },
+          text: 'Filter lists the columns without a standard chip (Coinfection Group, Investigation Page, Infectious Period, Needs publish). Checking one adds its chip, after the others, with its menu open; its close button removes the chip and its filter.' },
+        { code: 'QC-5', title: 'Reset', pin: { sel: '#clearFilters' },
+          text: 'Reset clears every filter (Status too), the search, the sort, and the page size, and shows the whole library again. It shows only while something is applied.' },
+        { code: 'QC-6', title: 'Sorting and paging', pin: { sel: '#conditionName' },
+          text: 'A sortable column sorts ascending, then descending. Filtering, searching, or sorting goes back to page 1 and keeps the page size; paging keeps the filters and the sort. Up to five page numbers show around the current page, as in Phase 2.' },
+        { code: 'QC-7', title: 'Table Settings', pin: { sel: '#tableSettingsBtn' }, ask: true,
+          text: 'Table Settings has Compact Rows, as on Phase 2 queues, kept for the session. Phase 2 starts with compact rows on; this template starts at the standard row height. Which should Phase 3 queues start with?' }
       ] },
     { id: 'manage-conditions-dialogs', title: 'Conditions: dialog on dialog', priority: 'Proof of concept', status: 'ready',
       notes: [
         { code: 'CD-1', title: 'View in a dialog', pin: { sel: '#condTable tbody tr [data-view]' },
-          text: 'View opens over the list, so the list stays where it was.' },
-        { code: 'CD-2', title: 'Edit on top of View', pin: { sel: '#condTable' }, after: 'View, then Edit',
-          text: 'Edit opens on top of View. Escape or Cancel closes only Edit and returns to View; Save returns to View with the changes and a confirmation.' },
+          text: 'View opens over the list, so the list stays where it was. Its sections are accordions, as in the Phase 2 dialogs, with Collapse All.' },
+        { code: 'CD-2', title: 'Edit replaces View', pin: { sel: '#condTable' }, after: 'View, then Edit',
+          text: 'Edit opens from View and View hides while Edit is open (one dialog on screen at a time). Cancel or Escape brings View back as it was; Submit brings it back with the changes and a confirmation.' },
         { code: 'CD-3', title: 'Unsaved changes', pin: { sel: '#addBtn' },
-          text: 'Closing a changed form asks whether to discard the changes. Keep editing returns to the form with the changes kept.' },
+          text: 'Closing a changed form asks whether to discard the changes. The question opens on top of the form, which stays in view. Keep editing returns to the form with the changes kept.' },
         { code: 'CD-4', title: 'Dialog or page', pin: { sel: '#addBtn' }, ask: true,
-          text: 'The condition form is long. Should Add and Edit Condition be dialogs in production, or stay full pages (the Add and Edit Condition templates)? Dialogs suit short forms.' }
+          text: 'The condition form is long. Should Add and Edit Condition be dialogs in production, or stay full pages (the Add and Edit Condition templates)? Dialogs suit short forms.' },
+        { code: 'CD-5', title: 'Same fields and rules as the pages', pin: { sel: '#addBtn' }, after: 'Add New',
+          text: 'The Add and Edit dialogs use the fields, option lists, and rules of the Add Condition and Edit Condition templates: Edit shows the coding system, code, program area, and status read only; the co-infection group is only for STD and HIV/AIDS; the days are required only when the infectious period is calculated.' }
       ] }
   ];
 
   window.REVIEW = {
     status: { draft: 'Draft', ready: 'Ready for BA review', changes: 'Changes requested', approved: 'Approved' },
-    templates: T
+    templates: T,
+    /* Feedback on this page is saved as comments on Jira stories, through the proxy in tools/ba-review-proxy (see its
+       README). proxy: the service's /api/feedback address; empty means not connected yet. issues: template id to its
+       Jira story; a template without one uses defaultIssue. Every story here must also be in the proxy's ISSUES. */
+    jira: {
+      site: 'https://hhsc-pha.atlassian.net',
+      proxy: '',
+      defaultIssue: '',
+      issues: {}
+    }
   };
 })();

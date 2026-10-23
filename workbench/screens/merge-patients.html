@@ -6,6 +6,8 @@
 <title>Merge Candidate List - Merge Patients - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/merge-patients.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,6 +21,10 @@
   @media (max-width: 820px) {
     .page-body { padding: 16px; }
   }
+  /* View Patient: the section links beside the events, as in Phase 2's Patient Events; above them on narrow screens */
+  .pv-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .pv-nav { position: sticky; top: 0; background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius-lg); padding: 8px; }
+  @media (max-width: 768px) { .pv-layout { grid-template-columns: minmax(0, 1fr); } .pv-nav { position: static; } }
 </style>
 </head>
 <body data-nav-current="merge-manual">
@@ -42,7 +48,7 @@
     </ul>
     <button type="button" class="ds-nav-item ds-nav-group has-current" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
     <ul class="ds-nav-sub" id="navMerge" hidden>
-      <li><a data-nav-id="merge-manual" aria-current="page" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-manual" aria-current="page" href="merge-patients-search.html">Manual Search</a></li>
       <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
     </ul>
     <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
@@ -90,61 +96,32 @@
           <ul id="errorList"></ul>
         </div>
 
-        <!-- Search criteria: the legacy Find Patient form (person/jsp, workflow MergePatientManual) with every legacy
-             field. Names and operator values match Phase 2's patient search (personSearch.*, SW / CT / = / != / SL),
-             so the form posts what the existing person search reads. DEV: submit with hx-post and swap the results
-             card; keep the criteria filled in after a search. -->
-        <section class="card ds-form-section">
-          <h2 class="card-header h6 mb-0 fw-semibold">Search Criteria</h2>
-          <form class="card-body d-grid gap-3" id="searchForm" novalidate>
-            <p class="form-text mb-0" id="searchHint">Enter at least one criterion. The more you enter, the faster the search and the shorter the list.</p>
-            <div class="search-grid">
-              <div class="ds-field"><label for="msLast">Last Name</label>
-                <div class="ds-op-field"><select class="form-select" id="msLastOp" name="personSearch.lastNameOperator" aria-label="Last Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select><input class="form-control" id="msLast" name="personSearch.lastName" type="text" value="Garcia" autocomplete="off"></div></div>
-              <div class="ds-field"><label for="msFirst">First Name</label>
-                <div class="ds-op-field"><select class="form-select" id="msFirstOp" name="personSearch.firstNameOperator" aria-label="First Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select><input class="form-control" id="msFirst" name="personSearch.firstName" type="text" autocomplete="off"></div></div>
-              <div class="ds-field"><label for="msDob">Date of Birth</label>
-                <div class="ds-op-field"><select class="form-select" id="msDobOp" name="personSearch.birthTimeOperator" aria-label="Date of Birth operator" aria-controls="msDobTo"><option value="=" selected>Equal</option><option value="BET">Between</option></select><div class="ds-datefield"><input class="form-control" id="msDob" name="personSearch.birthTime" type="text" inputmode="numeric" aria-describedby="msDobFmt"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div><span class="ds-op-and" id="msDobAnd" hidden>and</span><div class="ds-datefield" id="msDobToWrap" hidden><input class="form-control" id="msDobTo" name="personSearch.birthTimeTo" type="text" inputmode="numeric" aria-label="Date of Birth, end of range" aria-describedby="msDobFmt"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div></div>
-                <span class="form-text" id="msDobFmt">Format: MM/DD/YYYY</span></div>
-              <div class="ds-field"><label for="msSex">Current Sex</label><select class="form-select" id="msSex" name="personSearch.currentSex"><option value="">Any</option><option value="F">Female</option><option value="M">Male</option><option value="U">Unknown</option></select></div>
-              <div class="ds-field"><label for="msStreet">Street Address</label>
-                <div class="ds-op-field"><select class="form-select" id="msStreetOp" name="personSearch.streetAddr1Operator" aria-label="Street Address operator"><option value="CT">Contains</option><option value="=" selected>Equal</option><option value="!=">Not Equal</option></select><input class="form-control" id="msStreet" name="personSearch.streetAddr1" type="text" autocomplete="off"></div></div>
-              <div class="ds-field"><label for="msCity">City</label>
-                <div class="ds-op-field"><select class="form-select" id="msCityOp" name="personSearch.cityDescTxtOperator" aria-label="City operator"><option value="CT">Contains</option><option value="=" selected>Equal</option><option value="!=">Not Equal</option></select><input class="form-control" id="msCity" name="personSearch.cityDescTxt" type="text" autocomplete="off"></div></div>
-              <div class="ds-field"><label for="msState">State</label><select class="form-select" id="msState" name="personSearch.state"><option value="">Any</option><option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option><option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option><option>District of Columbia</option><option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option><option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option><option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option><option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option><option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option><option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option><option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option><option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option><option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option></select></div>
-              <div class="ds-field"><label for="msZip">Zip</label><input class="form-control" id="msZip" name="personSearch.zipCd" type="text" inputmode="numeric" autocomplete="off"></div>
-              <div class="ds-field ds-field-wide"><label for="msId">Patient IDs</label><input class="form-control" id="msId" name="personSearch.localID" type="text" autocomplete="off" aria-describedby="msIdHint">
-                <span class="form-text" id="msIdHint">Separate IDs with commas, semicolons, or spaces.</span></div>
-            </div>
-            <div>
-              <button type="button" class="ds-disclosure" id="msAdvancedToggle" aria-expanded="false" aria-controls="msAdvanced"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg>Advanced search</button>
-            </div>
-            <div class="search-grid" id="msAdvanced" role="group" aria-labelledby="msAdvancedToggle" hidden>
-              <div class="ds-field"><label for="msIdType">ID Type</label><select class="form-select" id="msIdType" name="personSearch.typeCd"><option value="">Any</option><option>Account number</option><option>Alternate person number</option><option>CHIP Identification number</option><option>Driver's license number</option><option>ImmTrac ID</option><option>Immunization Registry ID</option><option>Medicaid number</option><option>Medical record number</option><option>Medicare number</option><option>Mother's identifier</option><option>National unique individual identifier</option><option>Other</option><option>Partner Services Patient Number</option><option>Patient External Identifier</option><option>Patient internal identifier</option><option>Person number</option><option>Prison identification number</option><option>Social Security</option><option>Visa/Passport</option><option>WIC identifier</option></select></div>
-              <div class="ds-field"><label for="msIdNum">ID Number</label><input class="form-control" id="msIdNum" name="personSearch.rootExtensionTxt" type="text" autocomplete="off"></div>
-              <div class="ds-field"><label for="msPhone">Phone</label><input class="form-control" id="msPhone" name="personSearch.phoneNbrTxt" type="tel" autocomplete="off"></div>
-              <div class="ds-field"><label for="msEmail">Email</label><input class="form-control" id="msEmail" name="personSearch.emailAddress" type="email" autocomplete="off"></div>
-              <div class="ds-field"><label for="msEthnicity">Ethnicity</label><select class="form-select" id="msEthnicity" name="personSearch.ethnicGroupInd"><option value="">Any</option><option>Hispanic or Latino</option><option>Not Hispanic or Latino</option><option>Unknown</option></select></div>
-              <div class="ds-field"><label for="msRace">Race</label><select class="form-select" id="msRace" name="personSearch.raceCd"><option value="">Any</option><option>American Indian or Alaska Native</option><option>Asian</option><option>Black or African American</option><option>Multi-Race</option><option>Native Hawaiian or Other Pacific Islander</option><option>Not asked</option><option>Other</option><option>Refused to answer</option><option>Unknown</option><option>White</option></select></div>
-            </div>
-            <div style="display:flex;gap:12px;flex-wrap:wrap">
-              <button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
-              <button class="btn btn-outline-primary" type="reset">Clear</button>
-            </div>
-          </form>
-        </section>
 
+<!-- merge:toolbar -->
+        <!-- The search that produced this list, with Refine Search (the dialog with these criteria) and New Search (an
+             empty dialog). DEV: render the criteria from the request. -->
         <div class="ds-toolbar">
-          <span class="fw-semibold" id="resultCount">4 candidates found</span>
+          <input class="form-control rounded-pill" type="search" id="filterInput" aria-label="Filter candidates" placeholder="Search to filter..." aria-describedby="status">
           <span class="ms-auto"></span>
+          <button type="button" class="btn btn-outline-primary" data-open-search="refine" aria-haspopup="dialog">Refine Search</button>
+          <button type="button" class="btn btn-outline-primary" data-open-search="new" aria-haspopup="dialog">New Search</button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+          <div class="ds-table-settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg></button>
+            <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="candTable">
+              <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
+              <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
+            </div>
+          </div>
         </div>
+        <p class="mb-0"><span class="fw-semibold" id="resultCount">4 candidates found</span> <span class="text-body-secondary" id="criteriaSummary">for Last Name starts with Garcia</span></p>
+<!-- /merge:toolbar -->
         <div id="status" class="visually-hidden" role="status" aria-live="polite"></div>
 
         <div class="ds-table-frame">
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Merge candidates table, scrolls horizontally when zoomed">
-          <table class="table ds-table" id="candTable">
+          <table class="table ds-table tableCompact" id="candTable">
             <caption class="visually-hidden">Merge candidates. Use the Merge column to choose records to combine and the Surviving ID column to choose which record survives.</caption>
             <thead>
               <tr>
@@ -165,7 +142,7 @@
               <tr data-id="10023451">
                 <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10023451" aria-label="Merge Maria Garcia, patient ID 10023451"></td>
                 <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10023451" aria-label="Surviving ID: Maria Garcia, patient ID 10023451"></td>
-                <td><a href="#">10023451</a></td>
+                <td><a href="#" data-view-patient="10023451" aria-haspopup="dialog">10023451</a></td>
                 <td>Garcia, Maria L</td>
                 <td>42<span class="ds-cell-sub">03/14/1984 · Female</span></td>
                 <td>1204 Riverside Dr<span class="ds-cell-sub">Austin, TX 78704</span></td>
@@ -175,7 +152,7 @@
               <tr data-id="10087719">
                 <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10087719" aria-label="Merge Maria Garcia, patient ID 10087719"></td>
                 <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10087719" aria-label="Surviving ID: Maria Garcia, patient ID 10087719"></td>
-                <td><a href="#">10087719</a></td>
+                <td><a href="#" data-view-patient="10087719" aria-haspopup="dialog">10087719</a></td>
                 <td>Garcia, Maria</td>
                 <td>42<span class="ds-cell-sub">03/14/1984 · Female</span></td>
                 <td>1204 Riverside Drive<span class="ds-cell-sub">Austin, TX 78704</span></td>
@@ -185,7 +162,7 @@
               <tr data-id="10091008">
                 <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10091008" aria-label="Merge Maria Garcia-Lopez, patient ID 10091008"></td>
                 <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10091008" aria-label="Surviving ID: Maria Garcia-Lopez, patient ID 10091008"></td>
-                <td><a href="#">10091008</a></td>
+                <td><a href="#" data-view-patient="10091008" aria-haspopup="dialog">10091008</a></td>
                 <td>Garcia-Lopez, Maria</td>
                 <td>42<span class="ds-cell-sub">03/14/1984 · Female</span></td>
                 <td>880 Oltorf St<span class="ds-cell-sub">Austin, TX 78741</span></td>
@@ -195,7 +172,7 @@
               <tr data-id="10105532">
                 <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10105532" aria-label="Merge Mario Garcia, patient ID 10105532"></td>
                 <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10105532" aria-label="Surviving ID: Mario Garcia, patient ID 10105532"></td>
-                <td><a href="#">10105532</a></td>
+                <td><a href="#" data-view-patient="10105532" aria-haspopup="dialog">10105532</a></td>
                 <td>Garcia, Mario</td>
                 <td>39<span class="ds-cell-sub">07/02/1987 · Male</span></td>
                 <td>4410 Burnet Rd<span class="ds-cell-sub">Austin, TX 78756</span></td>
@@ -206,6 +183,20 @@
           </table>
           <p class="ds-empty" id="noResults" hidden>No patients match these criteria. Check the spelling, change an operator, or enter fewer criteria.</p>
           </div>
+<!-- merge:footer -->
+          <!-- Table footer, as on every queue: the server pages the candidates. -->
+          <div class="ds-table-footer">
+            <span class="ds-page-summary" id="pageSummary">Items 1 - 4 of 4</span>
+            <nav aria-label="Pagination">
+              <ul class="pagination mb-0">
+                <li class="page-item"><button type="button" class="page-link disabled" aria-label="Previous page" disabled>Previous</button></li>
+                <li class="page-item active"><button type="button" class="page-link active" aria-current="page" aria-label="Page 1">1</button></li>
+                <li class="page-item"><button type="button" class="page-link disabled" aria-label="Next page" disabled>Next</button></li>
+              </ul>
+            </nav>
+            <div class="ds-page-size"><select class="form-select" id="pageSize"><option>5</option><option selected>25</option><option>50</option><option>100</option></select><label for="pageSize">Items per page</label></div>
+          </div>
+<!-- /merge:footer -->
         </div>
       </div>
     </main>
@@ -249,6 +240,178 @@
     </div>
   </div>
 </div>
+<!-- merge:dialogs -->
+<!-- Find Patient: Phase 2's patient search layout (patients/advancedSearchModal.html, Patient tab), with the fields of
+     the current merge search (person/jsp, workflow MergePatientManual). Names and operator values are Phase 2's
+     (personSearch.*, SW / CT / = / != / SL), so the form posts what the existing person search reads. -->
+<div class="modal ds-modal-p2" id="searchDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="searchTitle" aria-describedby="searchContext" hidden>
+  <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
+    <div class="modal-header bg-body-secondary">
+      <div><h2 class="modal-title h5" id="searchTitle">Merge Patients: Find Patient</h2><p class="mb-0 small text-body-secondary" id="searchContext">Search for the patient records to merge.</p></div>
+      <button type="button" class="btn-close" data-dismiss aria-label="Close"></button>
+    </div>
+    <form class="modal-body bg-body-secondary" id="searchForm" novalidate>
+          <p class="form-text mb-0" id="searchHint">Enter at least one criterion. The more you enter, the faster the search and the shorter the list.</p>
+          <div class="ds-error-summary" id="searchErrors" role="alert" aria-labelledby="searchErrorsTitle" tabindex="-1" hidden><h3 id="searchErrorsTitle" class="h6">Please fix the following errors:</h3><ul><li><a href="#msLast" onclick="event.preventDefault();document.getElementById('msLast').focus()">Enter at least one search criterion</a></li></ul></div>
+          <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0 text-decoration-none" data-toggle-all aria-controls="searchDialog">Collapse All</button></div>
+          <section class="accordion ds-form-accordion" id="msGeneral" aria-labelledby="msGeneralHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="msGeneralHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="msGeneralBody">General Search</button></h3>
+              <div class="accordion-collapse collapse show" id="msGeneralBody">
+                <div class="accordion-body">
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msLast">Last Name:</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msLastOp" name="personSearch.lastNameOperator" data-default="SW" aria-label="Last Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msLast" name="personSearch.lastName" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msFirst">First Name:</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msFirstOp" name="personSearch.firstNameOperator" data-default="SW" aria-label="First Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msFirst" name="personSearch.firstName" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msDob">Date of Birth:</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msDobOp" name="personSearch.birthTimeOperator" data-default="=" aria-label="Date of Birth operator"><option value="=" selected>Equal</option><option value="BET">Between</option></select></div>
+                <div class="col-md-6"><div class="d-flex flex-wrap align-items-center gap-2"><div class="ds-datefield"><input class="form-control" id="msDob" name="personSearch.birthTime" type="text" inputmode="numeric" aria-describedby="msDobFmt"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div><span class="ds-op-and" id="msDobAnd" hidden>and</span><div class="ds-datefield" id="msDobToWrap" hidden><input class="form-control" id="msDobTo" name="personSearch.birthTimeTo" type="text" inputmode="numeric" aria-label="Date of Birth, end of range" aria-describedby="msDobFmt"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div></div><span class="form-text" id="msDobFmt">Format: MM/DD/YYYY</span></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msSex">Current Sex:</label>
+                <div class="col-md-6"><select class="form-select" id="msSex" name="personSearch.currentSex"><option value="">Any</option><option value="F">Female</option><option value="M">Male</option><option value="U">Unknown</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msStreet">Street Address:</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msStreetOp" name="personSearch.streetAddr1Operator" data-default="=" aria-label="Street Address operator"><option value="CT">Contains</option><option value="=" selected>Equal</option><option value="!=">Not Equal</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msStreet" name="personSearch.streetAddr1" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msCity">City:</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msCityOp" name="personSearch.cityDescTxtOperator" data-default="=" aria-label="City operator"><option value="CT">Contains</option><option value="=" selected>Equal</option><option value="!=">Not Equal</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msCity" name="personSearch.cityDescTxt" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msState">State:</label>
+                <div class="col-md-6"><select class="form-select" id="msState" name="personSearch.state"><option value="">Any</option><option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option><option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option><option>District of Columbia</option><option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option><option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option><option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option><option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option><option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option><option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option><option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option><option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option><option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msZip">Zip:</label>
+                <div class="col-md-6"><input class="form-control" id="msZip" name="personSearch.zipCd" type="text" inputmode="numeric" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msId">Patient ID(s):</label>
+                <div class="col-md-6"><input class="form-control" id="msId" name="personSearch.localID" type="text" autocomplete="off" aria-describedby="msIdHint"><span class="form-text" id="msIdHint">Separate IDs with commas, semicolons, or spaces.</span></div>
+              </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="msAdvanced" aria-labelledby="msAdvancedHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="msAdvancedHeading"><button type="button" class="accordion-button collapsed" aria-expanded="false" aria-controls="msAdvancedBody">Advanced Search</button></h3>
+              <div class="accordion-collapse collapse" id="msAdvancedBody">
+                <div class="accordion-body">
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msIdType">Identifier Type:</label>
+                <div class="col-md-6"><select class="form-select" id="msIdType" name="personSearch.typeCd"><option value="">Any</option><option>Account number</option><option>Alternate person number</option><option>CHIP Identification number</option><option>Driver&#39;s license number</option><option>ImmTrac ID</option><option>Immunization Registry ID</option><option>Medicaid number</option><option>Medical record number</option><option>Medicare number</option><option>Mother&#39;s identifier</option><option>National unique individual identifier</option><option>Other</option><option>Partner Services Patient Number</option><option>Patient External Identifier</option><option>Patient internal identifier</option><option>Person number</option><option>Prison identification number</option><option>Social Security</option><option>Visa/Passport</option><option>WIC identifier</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msIdNum">Identifier:</label>
+                <div class="col-md-6"><input class="form-control" id="msIdNum" name="personSearch.rootExtensionTxt" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msPhone">Phone:</label>
+                <div class="col-md-6"><input class="form-control" id="msPhone" name="personSearch.phoneNbrTxt" type="tel" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msEmail">Email:</label>
+                <div class="col-md-6"><input class="form-control" id="msEmail" name="personSearch.emailAddress" type="email" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msEthnicity">Ethnicity:</label>
+                <div class="col-md-6"><select class="form-select" id="msEthnicity" name="personSearch.ethnicGroupInd"><option value="">Any</option><option>Hispanic or Latino</option><option>Not Hispanic or Latino</option><option>Unknown</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msRace">Race:</label>
+                <div class="col-md-6"><select class="form-select" id="msRace" name="personSearch.raceCd"><option value="">Any</option><option>American Indian or Alaska Native</option><option>Asian</option><option>Black or African American</option><option>Multi-Race</option><option>Native Hawaiian or Other Pacific Islander</option><option>Not asked</option><option>Other</option><option>Refused to answer</option><option>Unknown</option><option>White</option></select></div>
+              </div>
+                </div>
+              </div>
+            </div>
+          </section>
+    </form>
+    <div class="modal-footer">
+      <button type="reset" form="searchForm" class="btn btn-outline-primary">Clear</button>
+      <button type="submit" form="searchForm" class="btn btn-primary"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
+    </div>
+  </div></div>
+</div>
+<!-- View Patient: read only, as Phase 2's Patient Events dialog (pagedataentry/contactrecords/patientEventsModal.html):
+     the patient summary, then the patient's events by type as accordions, with section links beside them.
+     DEV: load the content with hx-get when a patient ID is chosen, as Patient Events does. -->
+<div class="modal ds-modal-p2" id="patientDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="pvName" aria-describedby="pvContext" hidden>
+  <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
+    <div class="modal-header bg-body-secondary">
+      <div><h2 class="modal-title h5" id="pvName">Patient</h2><p class="mb-0 small text-body-secondary" id="pvContext"></p></div>
+      <div class="d-flex align-items-center gap-2 ms-auto">
+        <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="pvPrint" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
+        <button type="button" class="btn-close" data-dismiss aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="modal-body bg-body-secondary">
+      <div class="card"><div class="card-body"><dl class="ds-dl mb-0" id="pvSummary"></dl></div></div>
+      <div class="pv-layout">
+        <nav class="ds-secnav pv-nav" aria-label="Patient events"><p class="ds-overline px-2 mb-2">Events</p><div class="nav nav-pills flex-column" id="pvNav"><a class="nav-link" href="#pv-investigations">Investigations</a><a class="nav-link" href="#pv-labReports">Lab Reports</a><a class="nav-link" href="#pv-morbidityReports">Morbidity Reports</a><a class="nav-link" href="#pv-vaccinations">Vaccinations</a><a class="nav-link" href="#pv-treatments">Treatments</a><a class="nav-link" href="#pv-documents">Documents</a><a class="nav-link" href="#pv-contactRecords">Contact Records</a></div></nav>
+        <div class="d-grid gap-3">
+          <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0 text-decoration-none" data-toggle-all aria-controls="patientDialog">Collapse All</button></div>
+        <section class="accordion ds-form-accordion" id="pv-investigations" aria-labelledby="pv-investigationsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-investigationsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-investigations-collapse">Investigations <span class="ms-1 fw-normal" id="pv-investigations-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-investigations-collapse"><div class="accordion-body" id="pv-investigations-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-labReports" aria-labelledby="pv-labReportsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-labReportsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-labReports-collapse">Lab Reports <span class="ms-1 fw-normal" id="pv-labReports-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-labReports-collapse"><div class="accordion-body" id="pv-labReports-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-morbidityReports" aria-labelledby="pv-morbidityReportsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-morbidityReportsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-morbidityReports-collapse">Morbidity Reports <span class="ms-1 fw-normal" id="pv-morbidityReports-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-morbidityReports-collapse"><div class="accordion-body" id="pv-morbidityReports-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-vaccinations" aria-labelledby="pv-vaccinationsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-vaccinationsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-vaccinations-collapse">Vaccinations <span class="ms-1 fw-normal" id="pv-vaccinations-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-vaccinations-collapse"><div class="accordion-body" id="pv-vaccinations-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-treatments" aria-labelledby="pv-treatmentsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-treatmentsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-treatments-collapse">Treatments <span class="ms-1 fw-normal" id="pv-treatments-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-treatments-collapse"><div class="accordion-body" id="pv-treatments-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-documents" aria-labelledby="pv-documentsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-documentsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-documents-collapse">Documents <span class="ms-1 fw-normal" id="pv-documents-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-documents-collapse"><div class="accordion-body" id="pv-documents-body"></div></div>
+          </div>
+        </section>
+        <section class="accordion ds-form-accordion" id="pv-contactRecords" aria-labelledby="pv-contactRecordsHeading">
+          <div class="accordion-item">
+            <h3 class="accordion-header" id="pv-contactRecordsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-contactRecords-collapse">Contact Records <span class="ms-1 fw-normal" id="pv-contactRecords-count"></span></button></h3>
+            <div class="accordion-collapse collapse show" id="pv-contactRecords-collapse"><div class="accordion-body" id="pv-contactRecords-body"></div></div>
+          </div>
+        </section>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-dismiss>Close</button></div>
+  </div></div>
+</div>
+<script type="application/json" id="patientData">{"10023451":{"name":"Maria L Garcia","sex":"Female","dob":"03/14/1984","age":"42 years","address":"1204 Riverside Dr, Austin, TX 78704","phone":"(512) 555-0142","email":"mgarcia@example.com","investigations":[["CAS10023451TX01","Hepatitis B, acute","Open","02/03/2026"]],"labReports":[["OBS20031TX01","Hepatitis B surface antigen","Positive","01/28/2026"],["OBS20032TX01","ALT","210 U/L (high)","01/28/2026"]],"vaccinations":[["Hepatitis B vaccine, adult","05/12/2019"]],"documents":[["DOC50001TX01","Electronic lab report","01/28/2026"]]},"10087719":{"name":"Maria Garcia","sex":"Female","dob":"03/14/1984","age":"42 years","address":"1204 Riverside Drive, Austin, TX 78704","phone":"(512) 555-0142","email":"","labReports":[["OBS20101TX01","Hepatitis B core IgM","Positive","02/01/2026"]]},"10091008":{"name":"Maria Garcia-Lopez","sex":"Female","dob":"03/14/1984","age":"42 years","address":"880 Oltorf St, Austin, TX 78741","phone":"","email":"maria.gl@example.com","morbidityReports":[["MOR30044TX01","Influenza","12/09/2025"]],"contactRecords":[["CON40007TX01","CAS10002204TX01","11/20/2025"]]},"10105532":{"name":"Mario Garcia","sex":"Male","dob":"07/02/1987","age":"39 years","address":"4410 Burnet Rd, Austin, TX 78756","phone":"(512) 555-0199","email":"","treatments":[["Doxycycline, 100 mg","08/14/2025"]]}}</script>
+<!-- /merge:dialogs -->
 <script>
 /* Working reference implementations of the selection + merge contracts. */
 (function () {
@@ -353,25 +516,20 @@
     });
   });
 
-  /* --- Search form ------------------------------------------------------------
-     Between shows the second date. Advanced search is a disclosure. Search with no criteria shows the error
-     summary. This template filters its sample rows by name and patient ID to show the result and empty states;
-     DEV: hx-post the form and swap the results card, announce the count from the response. */
-  var form = document.getElementById('searchForm');
-  var dobOp = document.getElementById('msDobOp');
-  function syncDob() {
-    var between = dobOp.value === 'BET';
-    document.getElementById('msDobAnd').hidden = !between;
-    document.getElementById('msDobToWrap').hidden = !between;
-    if (!between) document.getElementById('msDobTo').value = '';
-  }
-  dobOp.addEventListener('change', syncDob);
-  var advToggle = document.getElementById('msAdvancedToggle'), adv = document.getElementById('msAdvanced');
-  advToggle.addEventListener('click', function () {
-    var open = advToggle.getAttribute('aria-expanded') !== 'true';
-    advToggle.setAttribute('aria-expanded', String(open));
-    adv.hidden = !open;
-  });
+})();
+</script>
+<!-- merge:search -->
+<script>
+/* The candidate list answers the Find Patient dialog's Search (js/merge-patients.js): the sample rows are filtered by
+   name and patient ID to show the result and empty states, and the "Search to filter" box narrows what is listed.
+   DEV: hx-post the criteria and swap the table; announce the count from the response. */
+(function () {
+  var tbody = document.getElementById('candTable').tBodies[0], status = document.getElementById('status');
+  var OPS = { SW: 'starts with', CT: 'contains', '=': 'is', '!=': 'is not', SL: 'sounds like', BET: 'between' };
+  var LABELS = { 'personSearch.lastName': 'Last Name', 'personSearch.firstName': 'First Name', 'personSearch.birthTime': 'Date of Birth', 'personSearch.currentSex': 'Current Sex',
+    'personSearch.streetAddr1': 'Street Address', 'personSearch.cityDescTxt': 'City', 'personSearch.state': 'State', 'personSearch.zipCd': 'Zip', 'personSearch.localID': 'Patient ID',
+    'personSearch.typeCd': 'Identifier Type', 'personSearch.rootExtensionTxt': 'Identifier', 'personSearch.phoneNbrTxt': 'Phone', 'personSearch.emailAddress': 'Email',
+    'personSearch.ethnicGroupInd': 'Ethnicity', 'personSearch.raceCd': 'Race' };
   function matches(op, value, q) {
     value = value.toLowerCase(); q = q.toLowerCase();
     if (op === 'CT') return value.indexOf(q) !== -1;
@@ -379,48 +537,39 @@
     if (op === '!=') return value !== q;
     return value.indexOf(q) === 0;
   }
-  /* Clear empties every criterion (not back to the values the page loaded with) and puts operators back to their
-     defaults; the results stay until the next search. */
-  form.addEventListener('reset', function () {
-    setTimeout(function () {
-      form.querySelectorAll('input').forEach(function (el) { el.value = ''; });
-      form.querySelectorAll('select:not([name$="Operator"])').forEach(function (el) { el.value = ''; });
-      syncDob();
-      summary.hidden = true;
-      status.textContent = 'Search criteria cleared.';
-    }, 0);
-  });
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var filled = Array.prototype.some.call(form.querySelectorAll('input:not([type=checkbox]), select:not([name$="Operator"])'), function (el) { return el.value.trim() !== ''; });
-    list.innerHTML = '';
-    if (!filled) {
-      var li = document.createElement('li'), a = document.createElement('a');
-      a.href = '#msLast'; a.textContent = 'Enter at least one search criterion';
-      a.addEventListener('click', function (ev) { ev.preventDefault(); document.getElementById('msLast').focus(); });
-      li.appendChild(a); list.appendChild(li);
-      summary.hidden = false; summary.focus();
-      return;
-    }
-    summary.hidden = true;
-    var last = document.getElementById('msLast').value.trim(), first = document.getElementById('msFirst').value.trim();
-    var ids = document.getElementById('msId').value.split(/[\s,;]+/).filter(Boolean);
-    var shown = 0;
+  function filterText() {
+    var t = document.getElementById('filterInput').value.trim().toLowerCase();
+    Array.prototype.forEach.call(tbody.rows, function (r) { r.classList.toggle('d-none', !!t && r.textContent.toLowerCase().indexOf(t) === -1); });
+  }
+  function search(q) {
+    var last = q.get('personSearch.lastName') || '', first = q.get('personSearch.firstName') || '';
+    var ids = (q.get('personSearch.localID') || '').split(/[\s,;]+/).filter(Boolean), shown = 0;
     Array.prototype.forEach.call(tbody.rows, function (row) {
       var parts = row.cells[3].textContent.trim().split(/,\s*/);
-      var ok = (!last || matches(document.getElementById('msLastOp').value, parts[0], last)) &&
-               (!first || matches(document.getElementById('msFirstOp').value, parts[1] || '', first)) &&
+      var ok = (!last || matches(q.get('personSearch.lastNameOperator') || 'SW', parts[0], last)) &&
+               (!first || matches(q.get('personSearch.firstNameOperator') || 'SW', parts[1] || '', first)) &&
                (!ids.length || ids.indexOf(row.getAttribute('data-id')) !== -1);
-      row.hidden = !ok;
-      if (ok) shown++;
+      row.hidden = !ok; if (ok) shown++;
     });
+    var crit = [];
+    q.forEach(function (v, k) { if (LABELS[k]) crit.push(LABELS[k] + ' ' + (OPS[q.get(k + 'Operator')] || 'is') + ' ' + v); });
     document.getElementById('noResults').hidden = shown !== 0;
     var text = shown === 0 ? 'No patients match these criteria' : shown + (shown === 1 ? ' candidate found' : ' candidates found');
     document.getElementById('resultCount').textContent = text;
+    document.getElementById('pageSummary').textContent = 'Items ' + (shown ? 1 : 0) + ' - ' + shown + ' of ' + shown;
+    document.getElementById('criteriaSummary').textContent = crit.length ? 'for ' + crit.join(', ') : '';
     status.textContent = text + '.';
-  });
-
+    filterText();
+  }
+  var t;
+  document.getElementById('filterInput').addEventListener('input', function () { clearTimeout(t); t = setTimeout(filterText, 300); });
+  window.mergeCandidates = { search: search };
+  var q = new URLSearchParams(location.search);
+  if (!q.toString()) { q.set('personSearch.lastName', 'Garcia'); q.set('personSearch.lastNameOperator', 'SW'); }
+  search(q);
+  status.textContent = '';
 })();
 </script>
+<!-- /merge:search -->
 </body>
 </html>

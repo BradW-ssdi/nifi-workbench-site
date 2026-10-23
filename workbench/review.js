@@ -16,7 +16,8 @@
     var here = t === current;
     return '<tr' + (here ? ' class="is-selected"' : '') + '><th scope="row"><a href="?t=' + t.id + '#review"' + (here ? ' aria-current="page"' : '') + '>' + esc(t.title) + '</a></th>' +
       '<td>' + esc(t.priority) + '</td><td>' + badge(t.status) + '</td><td>' + t.notes.length + '</td>' +
-      '<td>' + (t.decision ? esc(t.decision.date + ': ' + t.decision.text) : '<span class="text-body-secondary">None yet</span>') + '</td></tr>';
+      '<td>' + (t.decision ? esc(t.decision.date + ': ' + t.decision.text) : '<span class="text-body-secondary">None yet</span>') + '</td>' +
+      '<td data-open-actions="' + t.id + '"></td></tr>';
   }).join('');
 
   /* ---- the template under review ---- */
@@ -26,6 +27,7 @@
   var frame = $('#rvFrame'), live = $('#rvStatus');
   frame.title = 'Template: ' + current.title;
   function say(t) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 30); }
+  R.current = current; R.say = say;   /* for review-feedback.js */
 
   $('#rvNotes').innerHTML = current.notes.map(function (n, i) {
     return '<li class="rv-note" id="note-' + n.code + '" tabindex="-1">' +

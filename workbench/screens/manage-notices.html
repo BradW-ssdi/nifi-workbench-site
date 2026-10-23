@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage Notices - Page Management - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<script src="../../js/app-frame.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; max-width: 1028px; }   /* 980px of content plus the padding */
+  /* Conditional sections hide with the hidden attribute; keep display utilities off them (Bootstrap's are !important) */
+  [hidden] { display: none !important; }
+  @media (max-width: 820px) {
+    .page-body { padding: 16px; }
+  }
+  .mn-text { min-width: 16rem; overflow-wrap: anywhere; }
+  .mn-link { overflow-wrap: anywhere; }
+  /* The Notices card on Home, for Preview: the same card and list as the Home template */
+  .notice-list { list-style: none; margin: 0; padding: 0; }
+  .notice-list li { padding: 9px 0; border-bottom: 1px solid var(--bs-border-color); font-size: 0.875rem; overflow-wrap: anywhere; }
+  .notice-list li:last-child { border-bottom: 0; }
+  .notice-list .mn-sub { font-weight: 600; padding-bottom: 0; border-bottom: 0; }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients-search.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb"><li class="breadcrumb-item"><a href="system-management.html">System Management</a></li><li class="breadcrumb-item active" aria-current="page">Manage Notices</li></ol>
+        </nav>
+        <h1 class="display-6 mb-0 mt-2">Manage Notices</h1>
+      </div>
+      <div class="page-body d-grid gap-3">
+        <!-- Manage Notices modernizes the Home Page entry of the legacy Custom Fields Admin (LDFLoad.do, PageID 300,
+             businessObjectNm HOME; add, view, and edit at LocalFields.do). Each notice is a row of NBS_ui_metadata with
+             ldf_page_id 300. Type is nbs_ui_component_uid: 1011 Subheading, 1014 Text (the current screen calls it
+             Comments, read only text), 1003 Hyperlink. DEV: the server builds the Notices card on Home from the active
+             rows in display order (home.html, th:utext into .notices-table); a Hyperlink keeps its URL in
+             question_tool_tip as "url(url)"; Delete sets record_status_cd to Inactive. -->
+        <p class="mb-0">Notices show on Home, in the Notices card, in display order.</p>
+        <div class="ds-toolbar">
+          <button type="button" class="btn btn-primary" id="addNotice" aria-haspopup="dialog"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add Notice</button>
+          <button type="button" class="btn btn-outline-primary" id="previewNotices" aria-haspopup="dialog"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg>Preview on Home</button>
+        </div>
+        <div id="noticeStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+        <div class="ds-table-frame">
+          <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Notices table, scrolls horizontally when zoomed">
+          <table class="table ds-table" id="noticeTable">
+            <caption class="visually-hidden">Notices on Home, in display order</caption>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">Display Order</th><th scope="col">Type</th><th scope="col">Notice</th><th scope="col">Link</th></tr></thead>
+            <tbody>
+              <tr data-id="1183449"><td class="ds-row-actions"><button type="button" data-act="view" data-id="1183449" aria-haspopup="dialog" aria-label="View notice NEDSS Portal:"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></button><button type="button" data-act="edit" data-id="1183449" aria-haspopup="dialog" aria-label="Edit notice NEDSS Portal:"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button><button type="button" data-act="delete" data-id="1183449" aria-haspopup="dialog" aria-label="Delete notice NEDSS Portal:"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><td>1</td><td>Subheading</td><td class="mn-text">NEDSS Portal:</td><td><span class="visually-hidden">None</span></td></tr>
+              <tr data-id="1186137"><td class="ds-row-actions"><button type="button" data-act="view" data-id="1186137" aria-haspopup="dialog" aria-label="View notice New UI"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></button><button type="button" data-act="edit" data-id="1186137" aria-haspopup="dialog" aria-label="Edit notice New UI"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button><button type="button" data-act="delete" data-id="1186137" aria-haspopup="dialog" aria-label="Delete notice New UI"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><td>1</td><td>Subheading</td><td class="mn-text">New UI</td><td><span class="visually-hidden">None</span></td></tr>
+              <tr data-id="1183450"><td class="ds-row-actions"><button type="button" data-act="view" data-id="1183450" aria-haspopup="dialog" aria-label="View notice NEDSS login page will be disabled on..."><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></button><button type="button" data-act="edit" data-id="1183450" aria-haspopup="dialog" aria-label="Edit notice NEDSS login page will be disabled on..."><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button><button type="button" data-act="delete" data-id="1183450" aria-haspopup="dialog" aria-label="Delete notice NEDSS login page will be disabled on..."><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><td>2</td><td>Text</td><td class="mn-text">NEDSS login page will be disabled on October 2, 2025. After that date, all users are required to log in to NEDSS through the NEDSS Portal login page.</td><td><span class="visually-hidden">None</span></td></tr>
+              <tr data-id="1183451"><td class="ds-row-actions"><button type="button" data-act="view" data-id="1183451" aria-haspopup="dialog" aria-label="View notice Portal Login Page (remember to..."><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></button><button type="button" data-act="edit" data-id="1183451" aria-haspopup="dialog" aria-label="Edit notice Portal Login Page (remember to..."><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button><button type="button" data-act="delete" data-id="1183451" aria-haspopup="dialog" aria-label="Delete notice Portal Login Page (remember to..."><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><td>3</td><td>Hyperlink</td><td class="mn-text">Portal Login Page (remember to bookmark):</td><td><a class="mn-link" href="https://newNEDSSportal.com" target="_blank" rel="noopener">https://newNEDSSportal.com<span class="visually-hidden"> (opens in a new tab)</span></a></td></tr>
+              <tr data-id="1183452"><td class="ds-row-actions"><button type="button" data-act="view" data-id="1183452" aria-haspopup="dialog" aria-label="View notice NEDSS Offline:"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></button><button type="button" data-act="edit" data-id="1183452" aria-haspopup="dialog" aria-label="Edit notice NEDSS Offline:"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button><button type="button" data-act="delete" data-id="1183452" aria-haspopup="dialog" aria-label="Delete notice NEDSS Offline:"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><td>4</td><td>Subheading</td><td class="mn-text">NEDSS Offline:</td><td><span class="visually-hidden">None</span></td></tr>
+              <tr data-id="1183453"><td class="ds-row-actions"><button type="button" data-act="view" data-id="1183453" aria-haspopup="dialog" aria-label="View notice NEDSS will be offline beginning..."><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></button><button type="button" data-act="edit" data-id="1183453" aria-haspopup="dialog" aria-label="Edit notice NEDSS will be offline beginning..."><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button><button type="button" data-act="delete" data-id="1183453" aria-haspopup="dialog" aria-label="Delete notice NEDSS will be offline beginning..."><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td><td>5</td><td>Text</td><td class="mn-text">NEDSS will be offline beginning 9/30/2025 5:00pm CST to 10/1/2025 8:00am CST.</td><td><span class="visually-hidden">None</span></td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+        <p class="mb-0" id="noNotices" hidden>No notices. Home shows an empty Notices card.</p>
+      </div>
+      <div class="modal" id="viewDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="viewTitle" hidden>
+        <div class="modal-dialog modal-lg"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="viewTitle">View Notice</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body"><dl class="ds-dl" id="viewList"></dl></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Close</button><button type="button" class="btn btn-primary" id="viewEdit">Edit</button></div>
+        </div></div>
+      </div>
+      <div class="modal" id="noticeDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="noticeTitle" hidden>
+        <div class="modal-dialog modal-lg"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="noticeTitle">Add Notice</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body d-grid gap-3">
+            <p class="legend-note mb-0"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
+            <div class="ds-entry-grid">
+              <div class="ds-field ds-field-wide" id="nType-field"><label class="ds-required" for="nType">Type</label><select class="form-select" id="nType" aria-describedby="nType-hint"><option value="">Select a type</option><option>Subheading</option><option>Text</option><option>Hyperlink</option></select><span class="form-text" id="nType-hint">Subheading: a bold line that starts a group of notices. Text: a message. Hyperlink: text followed by a link.</span><span class="invalid-feedback" id="nType-error" hidden></span></div>
+              <div class="ds-field ds-field-wide" id="nLabel-field"><label class="ds-required" for="nLabel">Notice text</label><textarea class="form-control" id="nLabel" rows="3" maxlength="300"></textarea><span class="form-text" id="nLabel-hint">Up to 300 characters.</span><span class="invalid-feedback" id="nLabel-error" hidden></span></div>
+              <div class="ds-field ds-field-wide" id="nOrder-field"><label class="ds-required" for="nOrder">Display order</label><input class="form-control" id="nOrder" type="text" inputmode="numeric" maxlength="5" autocomplete="off" aria-describedby="nOrder-hint"><span class="form-text" id="nOrder-hint">Notices show from the lowest number up. Notices with the same number show in the order they were added.</span><span class="invalid-feedback" id="nOrder-error" hidden></span></div>
+              <div class="ds-field ds-field-wide" id="nUrl-field" hidden><label class="ds-required" for="nUrl">Link URL</label><input class="form-control" id="nUrl" type="url" maxlength="2000" autocomplete="off" aria-describedby="nUrl-hint"><span class="form-text" id="nUrl-hint">Starts with https:// or http://. The link opens in a new tab.</span><span class="invalid-feedback" id="nUrl-error" hidden></span></div>
+              <div class="ds-field ds-field-wide" id="nTip-field" hidden><label for="nTip">Tooltip</label><textarea class="form-control" id="nTip" rows="2" maxlength="2000" aria-describedby="nTip-hint"></textarea><span class="form-text" id="nTip-hint">Shows when the pointer rests on the notice.</span><span class="invalid-feedback" id="nTip-error" hidden></span></div>
+              <div class="ds-field ds-field-wide" id="nComment-field"><label for="nComment">Comments</label><textarea class="form-control" id="nComment" rows="2" maxlength="2000" aria-describedby="nComment-hint"></textarea><span class="form-text" id="nComment-hint">For administrators. Not shown on Home.</span><span class="invalid-feedback" id="nComment-error" hidden></span></div>
+            </div>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="noticeSave">Save</button></div>
+        </div></div>
+      </div>
+      <div class="modal" id="deleteDialog" tabindex="-1" role="alertdialog" aria-modal="true" aria-labelledby="deleteTitle" aria-describedby="deleteText" hidden>
+        <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="deleteTitle">Delete this notice?</h2></div>
+          <div class="modal-body"><p class="mb-0" id="deleteText"></p></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-danger" id="deleteYes">Delete notice</button></div>
+        </div></div>
+      </div>
+      <div class="modal" id="previewDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="previewTitle" hidden>
+        <div class="modal-dialog modal-lg"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="previewTitle">Preview on Home</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body">
+            <!-- The Notices card as Home shows it. DEV: in the app this is the Notices card of home.html. -->
+            <div class="card shadow-sm ds-card-warnhead">
+              <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#error"/></svg><h3 class="h5 mb-0">Notices</h3></div>
+              <div class="card-body"><ul class="notice-list" id="previewList"></ul></div>
+            </div>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-primary" data-close>Close</button></div>
+        </div></div>
+      </div>
+      <script type="application/json" id="noticeData">[{"id": 1183449, "type": "Subheading", "order": 1, "label": "NEDSS Portal:", "url": "", "tooltip": "", "comment": ""}, {"id": 1186137, "type": "Subheading", "order": 1, "label": "New UI", "url": "", "tooltip": "The new homepage is live!", "comment": ""}, {"id": 1183450, "type": "Text", "order": 2, "label": "NEDSS login page will be disabled on October 2, 2025. After that date, all users are required to log in to NEDSS through the NEDSS Portal login page.", "url": "", "tooltip": "", "comment": ""}, {"id": 1183451, "type": "Hyperlink", "order": 3, "label": "Portal Login Page (remember to bookmark):", "url": "https://newNEDSSportal.com", "tooltip": "", "comment": ""}, {"id": 1183452, "type": "Subheading", "order": 4, "label": "NEDSS Offline:", "url": "", "tooltip": "", "comment": ""}, {"id": 1183453, "type": "Text", "order": 5, "label": "NEDSS will be offline beginning 9/30/2025 5:00pm CST to 10/1/2025 8:00am CST.", "url": "", "tooltip": "", "comment": ""}]</script>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+<script src="../../js/ds-dialog.js"></script>
+<script>
+/* Manage Notices: add, view, edit, and delete the notices on Home, and preview the Notices card.
+   - The table is the notices in display order (then in the order they were added). Each row's View, Edit, and Delete
+     open a dialog; Add Notice opens the same form empty; Preview on Home shows the card as Home will.
+   - The form shows Link URL for a Hyperlink and Tooltip for the other types, as the current screen does. Save checks
+     the required fields: each message sits under its field and focus goes to the first problem; a message clears as
+     soon as its field is edited. A good save updates or adds the row, says so, and returns focus to the row's Edit
+     (the new row's View after Add).
+   - Delete asks first. After it, focus goes to the row that took its place, or to Add Notice when none is left.
+   - Cancel, Close, and Escape return focus to the control that opened the dialog; Tab stays in the dialog.
+   DEV: the server saves, numbers, and deletes notices; the ids here stand in for nbs_ui_metadata_uid. */
+(function () {
+  'use strict';
+  function $(id) { return document.getElementById(id); }
+  var data = JSON.parse($('noticeData').textContent);
+  var tbody = document.querySelector('#noticeTable tbody'), status = $('noticeStatus');
+  var viewDlg = $('viewDialog'), formDlg = $('noticeDialog'), delDlg = $('deleteDialog'), prevDlg = $('previewDialog');
+  var opener = null, current = null, nextId = -1;
+  var F = { type: $('nType'), label: $('nLabel'), order: $('nOrder'), url: $('nUrl'), tip: $('nTip'), comment: $('nComment') };
+
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function say(m) { status.textContent = ''; setTimeout(function () { status.textContent = m; }, 60); }
+  function short(s) {
+    s = String(s).replace(/\s+/g, ' ').trim();
+    if (s.length <= 40) return s;
+    var cut = s.slice(0, 40), sp = cut.lastIndexOf(' ');
+    return (sp > 20 ? cut.slice(0, sp) : cut) + '...';
+  }
+  function icon(n) { return '<svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#' + n + '"/></svg>'; }
+  function sorted() { return data.slice().sort(function (a, b) { return a.order - b.order || (a.added || 0) - (b.added || 0) || a.id - b.id; }); }
+  function find(id) { return data.filter(function (n) { return String(n.id) === String(id); })[0]; }
+  function linkHtml(n) {
+    return '<a class="mn-link" href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.url) + '<span class="visually-hidden"> (opens in a new tab)</span></a>';
+  }
+
+  function render() {
+    tbody.innerHTML = sorted().map(function (n) {
+      var name = esc(short(n.label));
+      var acts = [['view', 'View', 'visibility'], ['edit', 'Edit', 'edit'], ['delete', 'Delete', 'delete']].map(function (a) {
+        return '<button type="button" data-act="' + a[0] + '" data-id="' + n.id + '" aria-haspopup="dialog" aria-label="' + a[1] + ' notice ' + name + '">' + icon(a[2]) + '</button>';
+      }).join('');
+      return '<tr data-id="' + n.id + '"><td class="ds-row-actions">' + acts + '</td><td>' + n.order + '</td><td>' + esc(n.type) + '</td><td class="mn-text">' + esc(n.label) +
+        '</td><td>' + (n.url ? linkHtml(n) : '<span class="visually-hidden">None</span>') + '</td></tr>';
+    }).join('');
+    var none = !data.length;
+    document.querySelector('#noticeTable').closest('.ds-table-frame').hidden = none;
+    $('noNotices').hidden = !none;
+  }
+  function rowButton(id, act) { return tbody.querySelector('[data-act="' + act + '"][data-id="' + id + '"]'); }
+
+  /* dialogs */
+  function show(dlg, from) { if (from !== undefined) opener = from; dsDialog.show(dlg); }
+  function close(dlg, back) { dsDialog.hide(dlg); if (back !== false && opener && document.contains(opener)) opener.focus(); }
+
+  function openView(n, from) {
+    current = n;
+    var items = [['Type', n.type], ['Notice text', n.label], ['Display order', n.order]];
+    if (n.type === 'Hyperlink') items.push(['Link URL', n.url]); else items.push(['Tooltip', n.tooltip]);
+    items.push(['Comments', n.comment]);
+    $('viewList').innerHTML = items.map(function (i) {
+      var v = i[1] === '' || i[1] == null ? 'None' : i[1];
+      return '<div><dt>' + esc(i[0]) + '</dt><dd class="mn-text">' + (i[0] === 'Link URL' && n.url ? linkHtml(n) : esc(v)) + '</dd></div>';
+    }).join('');
+    show(viewDlg, from);
+  }
+
+  function setError(el, msg) {
+    var err = $(el.id + '-error');
+    var ids = (el.getAttribute('aria-describedby') || '').split(' ').filter(function (i) { return i && i !== err.id; });
+    err.textContent = msg || ''; err.hidden = !msg;
+    if (msg) { el.setAttribute('aria-invalid', 'true'); ids.push(err.id); } else el.removeAttribute('aria-invalid');
+    if (ids.length) el.setAttribute('aria-describedby', ids.join(' ')); else el.removeAttribute('aria-describedby');
+  }
+  function syncType() {
+    var link = F.type.value === 'Hyperlink';
+    $('nUrl-field').hidden = !link;
+    $('nTip-field').hidden = link || !F.type.value;
+  }
+  function openForm(n, from) {
+    current = n;
+    $('noticeTitle').textContent = n ? 'Edit Notice' : 'Add Notice';
+    Object.keys(F).forEach(function (k) { setError(F[k], ''); });
+    F.type.value = n ? n.type : '';
+    F.label.value = n ? n.label : '';
+    F.order.value = n ? n.order : (data.length ? Math.max.apply(null, data.map(function (x) { return x.order; })) + 1 : 1);
+    F.url.value = n ? n.url : '';
+    F.tip.value = n ? n.tooltip : '';
+    F.comment.value = n ? n.comment : '';
+    syncType();
+    show(formDlg, from);
+    F.type.focus();
+  }
+  function check() {
+    var bad = [], url = F.url.value.trim();
+    function need(el, ok, msg) { setError(el, ok ? '' : msg); if (!ok) bad.push(el); }
+    need(F.type, !!F.type.value, 'Choose a type');
+    need(F.label, !!F.label.value.trim(), 'Enter the notice text');
+    need(F.order, /^\d{1,5}$/.test(F.order.value.trim()), F.order.value.trim() ? 'Enter the display order as a whole number' : 'Enter a display order');
+    if (F.type.value === 'Hyperlink') need(F.url, /^https?:\/\/\S+$/i.test(url), url ? 'Enter a link URL that starts with https:// or http://' : 'Enter the link URL');
+    else setError(F.url, '');
+    return bad;
+  }
+  function save() {
+    var bad = check();
+    if (bad.length) { bad[0].focus(); return; }
+    var link = F.type.value === 'Hyperlink';
+    var rec = current || { id: nextId--, added: Date.now() };
+    rec.type = F.type.value; rec.label = F.label.value.trim(); rec.order = parseInt(F.order.value, 10);
+    rec.url = link ? F.url.value.trim() : ''; rec.tooltip = link ? '' : F.tip.value.trim(); rec.comment = F.comment.value.trim();
+    var added = !current;
+    if (added) data.push(rec);
+    render();
+    close(formDlg, false);
+    var to = rowButton(rec.id, added ? 'view' : 'edit');
+    opener = to; if (to) to.focus();
+    say(added ? 'Notice added.' : 'Notice saved.');
+  }
+
+  function openDelete(n, from) {
+    current = n;
+    $('deleteText').textContent = '"' + short(n.label) + '" is removed from Home.';
+    show(delDlg, from);
+    delDlg.querySelector('[data-close]').focus();
+  }
+  function remove() {
+    var list = sorted(), i = list.indexOf(current);
+    data.splice(data.indexOf(current), 1);
+    render();
+    close(delDlg, false);
+    var next = sorted()[Math.min(i, data.length - 1)];
+    var to = next ? rowButton(next.id, 'view') : $('addNotice');
+    opener = to; to.focus();
+    say('Notice deleted. ' + data.length + (data.length === 1 ? ' notice' : ' notices') + ' left.');
+  }
+
+  function openPreview(from) {
+    $('previewList').innerHTML = sorted().map(function (n) {
+      if (n.type === 'Subheading') return '<li class="mn-sub">' + esc(n.label) + '</li>';
+      if (n.type === 'Hyperlink') return '<li>' + esc(n.label) + ' ' + linkHtml(n) + '</li>';
+      return '<li>' + esc(n.label) + '</li>';
+    }).join('') || '<li>No notices.</li>';
+    show(prevDlg, from);
+    prevDlg.querySelector('.modal-footer [data-close]').focus();
+  }
+
+  tbody.addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-act]');
+    if (!b) return;
+    var n = find(b.getAttribute('data-id'));
+    if (b.getAttribute('data-act') === 'view') openView(n, b);
+    else if (b.getAttribute('data-act') === 'edit') openForm(n, b);
+    else openDelete(n, b);
+  });
+  $('addNotice').addEventListener('click', function () { openForm(null, this); });
+  $('previewNotices').addEventListener('click', function () { openPreview(this); });
+  $('viewEdit').addEventListener('click', function () { var n = current; dsDialog.hide(viewDlg); openForm(n); });
+  $('noticeSave').addEventListener('click', save);
+  $('deleteYes').addEventListener('click', remove);
+  F.type.addEventListener('change', function () { setError(F.type, ''); syncType(); });
+  /* a field's error clears as soon as it is edited (input, not change, so Save does not move mid-click) */
+  formDlg.addEventListener('input', function (ev) { if (ev.target.getAttribute('aria-invalid') === 'true') setError(ev.target, ''); });
+  [viewDlg, formDlg, delDlg, prevDlg].forEach(function (d) {
+    Array.prototype.forEach.call(d.querySelectorAll('[data-close]'), function (b) { b.addEventListener('click', function () { close(d); }); });
+  });
+  document.addEventListener('keydown', function (ev) {
+    var top = dsDialog.top();
+    if (!top || [viewDlg, formDlg, delDlg, prevDlg].indexOf(top) < 0) return;
+    if (ev.key === 'Escape') { ev.preventDefault(); close(top); return; }
+    if (ev.key !== 'Tab') return;
+    var f = Array.prototype.slice.call(top.querySelectorAll('button, input, select, textarea, a[href]')).filter(function (el) { return !el.disabled && el.offsetParent; });
+    if (!f.length) return;
+    if (ev.shiftKey && (document.activeElement === f[0] || document.activeElement === top)) { ev.preventDefault(); f[f.length - 1].focus(); }
+    else if (!ev.shiftKey && document.activeElement === f[f.length - 1]) { ev.preventDefault(); f[0].focus(); }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

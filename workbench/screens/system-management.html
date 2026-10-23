@@ -76,7 +76,7 @@
     </ul>
     <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
     <ul class="ds-nav-sub" id="navMerge" hidden>
-      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-manual" href="merge-patients-search.html">Manual Search</a></li>
       <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
     </ul>
     <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
@@ -178,7 +178,7 @@
             <li data-find-item data-find-count data-find-text="manage bulk import templates page management"><a class="menu-link" href="manage-bulk-import-templates.html"><span>Manage Bulk Import Templates</span></a></li>
             <li data-find-item data-find-count data-find-text="manage conditions page management"><a class="menu-link" href="manage-conditions.html"><span>Manage Conditions</span></a></li>
             <li data-find-item data-find-count data-find-text="manage pages page management"><a class="menu-link" href="manage-pages.html"><span>Manage Pages</span></a></li>
-            <li data-find-item data-find-count data-find-text="manage notices page management"><a class="menu-link" href="#"><span>Manage Notices</span></a></li>
+            <li data-find-item data-find-count data-find-text="manage notices page management"><a class="menu-link" href="manage-notices.html"><span>Manage Notices</span></a></li>
             <li data-find-item data-find-count data-find-text="manage questions page management"><a class="menu-link" href="manage-questions.html"><span>Manage Questions</span></a></li>
             <li data-find-item data-find-count data-find-text="manage templates page management"><a class="menu-link" href="manage-templates.html"><span>Manage Templates</span></a></li>
             <li data-find-item data-find-count data-find-text="manage value sets page management"><a class="menu-link" href="manage-value-sets.html"><span>Manage Value Sets</span></a></li>
@@ -215,7 +215,7 @@
   <div class="modal" id="resetCacheDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="resetCacheTitle" aria-describedby="resetCacheText" hidden>
     <div class="modal-dialog"><div class="modal-content">
       <div class="modal-header"><h2 class="modal-title h5" id="resetCacheTitle">Reset the lab mapping cache?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
-      <div class="modal-body"><p id="resetCacheText" class="mb-0">The lab test program area mappings are loaded again.</p></div>
+      <div class="modal-body"><p id="resetCacheText" class="mb-0">The lab test program area mappings are loaded again. The application server must then be restarted for the change to take effect.</p></div>
       <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="resetCacheYes">Reset Cache</button></div>
     </div></div>
   </div>
@@ -334,7 +334,10 @@
   Array.prototype.forEach.call(dlg.querySelectorAll('[data-close]'), function (b) { b.addEventListener('click', function () { close(true); }); });
   document.getElementById('resetCacheYes').addEventListener('click', function () {
     close(false);
-    done.textContent = 'The lab mapping cache was reset.';
+    /* As the current screen says (ResetCacheAction): the reset takes effect after a restart (BA answer 2026-10-23: as legacy).
+       DEV: on failure show the current screen's messages, in the same place: "The lab mapping cache could not be reset.
+       Contact your SRT administrator." or, for a database error, "A database error stopped the reset. Try again." */
+    done.textContent = 'The lab test program area mapping cache was reset. Restart the application server (WildFly) for the change to take effect.';
     done.hidden = false;
     done.focus();
   });

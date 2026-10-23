@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merge Patients: Find Patient - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<script src="../../js/app-frame.js" defer></script>
+<script src="../../js/ds-dialog.js"></script>
+<script src="../../js/merge-patients.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 24px; align-items: start; }
+  .col { display: grid; gap: 24px; min-width: 0; }
+  .search-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+  .search-grid .ds-field { max-width: none; }
+  .queue-list { list-style: none; margin: 0; padding: 0; }
+  .queue-list a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 4px; color: var(--bs-link-color); text-decoration: none; border-bottom: 1px solid var(--bs-border-color); }
+  .queue-list li:last-child a { border-bottom: 0; }
+  .queue-list a:hover { text-decoration: underline; }
+  .queue-count { flex: none; background: var(--bs-secondary-bg); color: var(--bs-body-color); border-radius: 999px; font: 600 12px/1 var(--bs-body-font-family); padding: 5px 10px; }
+  .notice-list { list-style: none; margin: 0; padding: 0; }
+  .notice-list li { padding: 9px 0; border-bottom: 1px solid var(--bs-border-color); font-size: 0.875rem; }
+  .notice-list li:last-child { border-bottom: 0; }
+  .notice-date { color: var(--bs-secondary-color); font-size: 0.75rem; display: block; margin-top: 2px; }
+  @media (max-width: 1000px) { .page-body { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 820px) {
+    .page-body { padding: 16px; }
+  }
+  /* View Patient: the section links beside the events, as in Phase 2's Patient Events; above them on narrow screens */
+  .pv-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .pv-nav { position: sticky; top: 0; background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius-lg); padding: 8px; }
+  @media (max-width: 768px) { .pv-layout { grid-template-columns: minmax(0, 1fr); } .pv-nav { position: static; } }
+</style>
+</head>
+<body data-nav-current="home">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item is-active" data-nav-id="home" aria-current="page" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients-search.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item" data-nav-id="system-management" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <h1 class="display-6 mb-0">Home</h1>
+      </div>
+      <div class="page-body">
+        <div class="col">
+          <!-- Patient Search widget. This is the dashboard's primary action. -->
+          <div class="card shadow-sm ds-card-plainhead">
+            <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><h2 class="mb-0">Patient Search</h2></div>
+            <div class="card-body">
+              <ul class="nav nav-underline" role="tablist" aria-label="Search type" style="margin-bottom:16px">
+                <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="true" id="tabBasicSearch" aria-controls="panelBasicSearch">Basic</button></li>
+                <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tabAdvSearch" aria-controls="panelAdvSearch" tabindex="-1">Advanced</button></li>
+              </ul>
+              <div id="panelBasicSearch" role="tabpanel" aria-labelledby="tabBasicSearch">
+                <form novalidate>
+                  <div class="search-grid">
+                    <div class="ds-field"><label for="hsLast">Last Name</label><input class="form-control" id="hsLast" type="text" autocomplete="off"></div>
+                    <div class="ds-field"><label for="hsFirst">First Name</label><input class="form-control" id="hsFirst" type="text" autocomplete="off"></div>
+                    <div class="ds-field">
+                      <label for="hsDob">Date of Birth</label>
+                      <div class="ds-datefield"><input class="form-control" id="hsDob" type="text" inputmode="numeric" aria-describedby="hsDobFmt" style="width:100%"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div>
+                      <span class="form-text" id="hsDobFmt">Format: MM/DD/YYYY</span>
+                    </div>
+                    <div class="ds-field"><label for="hsSex">Current Sex</label><select class="form-select" id="hsSex"><option value="">Any</option><option>Female</option><option>Male</option><option>Unknown</option></select></div>
+                    <div class="ds-field"><label for="hsId">ID</label><input class="form-control" id="hsId" type="text" aria-describedby="hsIdHelp" autocomplete="off"><span class="form-text" id="hsIdHelp">Patient, event, or accession ID.</span></div>
+                  </div>
+                  <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap">
+                    <button class="btn btn-primary" type="submit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
+                    <button class="btn btn-outline-primary" type="reset">Clear</button>
+                  </div>
+                </form>
+              </div>
+              <div id="panelAdvSearch" role="tabpanel" aria-labelledby="tabAdvSearch" hidden>
+                <p  style="margin:0">Advanced search opens the full criteria form: address, race and ethnicity, identifiers, and event filters.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- My Queues: Default / Private / Public tabs, counts announced as text. -->
+          <div class="card shadow-sm ds-card-plainhead">
+            <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><h2 class="mb-0">My Queues</h2></div>
+            <div class="card-body">
+              <ul class="nav nav-underline" role="tablist" aria-label="My queues" style="margin-bottom:8px">
+                <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="true" id="tabQDefault" aria-controls="panelQDefault">Default</button></li>
+                <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tabQPrivate" aria-controls="panelQPrivate" tabindex="-1">Private</button></li>
+                <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tabQPublic" aria-controls="panelQPublic" tabindex="-1">Public</button></li>
+              </ul>
+              <div id="panelQDefault" role="tabpanel" aria-labelledby="tabQDefault">
+                <ul class="queue-list">
+                  <li><a href="wds-algorithm-library.html">Open Investigations <span class="queue-count">128<span class="visually-hidden"> items</span></span></a></li>
+                  <li><a href="#">Documents Requiring Review <span class="queue-count">42<span class="visually-hidden"> items</span></span></a></li>
+                  <li><a href="#">Documents Requiring Security Assignment <span class="queue-count">7<span class="visually-hidden"> items</span></span></a></li>
+                  <li><a href="#">Approval Queue for Initial Notifications <span class="queue-count">15<span class="visually-hidden"> items</span></span></a></li>
+                  <li><a href="#">Updated Notifications <span class="queue-count">31<span class="visually-hidden"> items</span></span></a></li>
+                  <li><a href="#">Rejected Notifications <span class="queue-count">3<span class="visually-hidden"> items</span></span></a></li>
+                </ul>
+              </div>
+              <div id="panelQPrivate" role="tabpanel" aria-labelledby="tabQPrivate" hidden>
+                <ul class="queue-list">
+                  <li><a href="#">My TB Follow-ups <span class="queue-count">9<span class="visually-hidden"> items</span></span></a></li>
+                  <li><a href="#">Region 7 Hepatitis Review <span class="queue-count">14<span class="visually-hidden"> items</span></span></a></li>
+                </ul>
+              </div>
+              <div id="panelQPublic" role="tabpanel" aria-labelledby="tabQPublic" hidden>
+                <ul class="queue-list">
+                  <li><a href="#">Statewide COVID-19 Backlog <span class="queue-count">203<span class="visually-hidden"> items</span></span></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <!-- Notices keep the warning-tinted header from the app. -->
+          <div class="card shadow-sm ds-card-warnhead">
+            <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#error"/></svg><h2 class="mb-0">Notices</h2></div>
+            <div class="card-body">
+              <ul class="notice-list">
+                <li>Scheduled maintenance Saturday 09/13, 6:00 to 8:00 AM. The system will be unavailable.<span class="notice-date">Posted 09/10/2026</span></li>
+                <li>New TB 2020 RVCT page published. Verify that open investigations transferred correctly.<span class="notice-date">Posted 09/08/2026</span></li>
+                <li>Reminder: annual security attestation due 09/30.<span class="notice-date">Posted 09/02/2026</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- My Reports: compact table, same semantics as every DS table. -->
+          <div class="card shadow-sm ds-card-plainhead">
+            <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><h2 class="mb-0">My Reports</h2></div>
+            <div class="card-body" style="padding:0">
+              <div class="ds-table-scroll" tabindex="0" role="group" aria-label="My reports table, scrolls horizontally when zoomed">
+                <table class="table ds-table">
+                  <caption class="visually-hidden">My saved reports</caption>
+                  <thead><tr><th scope="col">Report</th><th scope="col">Type</th><th scope="col">Last Run</th></tr></thead>
+                  <tbody>
+                    <tr><td><a href="#">Weekly Morbidity Summary</a></td><td>Private</td><td>09/09/2026</td></tr>
+                    <tr><td><a href="#">Region 7 Case Counts</a></td><td>Private</td><td>09/05/2026</td></tr>
+                    <tr><td><a href="#">Statewide Lab Volume</a></td><td>Public</td><td>09/01/2026</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+<!-- merge:dialogs -->
+<!-- Find Patient: Phase 2's patient search layout (patients/advancedSearchModal.html, Patient tab), with the fields of
+     the current merge search (person/jsp, workflow MergePatientManual). Names and operator values are Phase 2's
+     (personSearch.*, SW / CT / = / != / SL), so the form posts what the existing person search reads. -->
+<div class="modal ds-modal-p2" id="searchDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="searchTitle" aria-describedby="searchContext" data-open-on-load hidden>
+  <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
+    <div class="modal-header bg-body-secondary">
+      <div><h2 class="modal-title h5" id="searchTitle">Merge Patients: Find Patient</h2><p class="mb-0 small text-body-secondary" id="searchContext">Search for the patient records to merge.</p></div>
+      <button type="button" class="btn-close" data-dismiss aria-label="Close"></button>
+    </div>
+    <form class="modal-body bg-body-secondary" id="searchForm" novalidate>
+          <p class="form-text mb-0" id="searchHint">Enter at least one criterion. The more you enter, the faster the search and the shorter the list.</p>
+          <div class="ds-error-summary" id="searchErrors" role="alert" aria-labelledby="searchErrorsTitle" tabindex="-1" hidden><h3 id="searchErrorsTitle" class="h6">Please fix the following errors:</h3><ul><li><a href="#msLast" onclick="event.preventDefault();document.getElementById('msLast').focus()">Enter at least one search criterion</a></li></ul></div>
+          <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0 text-decoration-none" data-toggle-all aria-controls="searchDialog">Collapse All</button></div>
+          <section class="accordion ds-form-accordion" id="msGeneral" aria-labelledby="msGeneralHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="msGeneralHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="msGeneralBody">General Search</button></h3>
+              <div class="accordion-collapse collapse show" id="msGeneralBody">
+                <div class="accordion-body">
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msLast">Last Name:</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msLastOp" name="personSearch.lastNameOperator" data-default="SW" aria-label="Last Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msLast" name="personSearch.lastName" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msFirst">First Name:</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msFirstOp" name="personSearch.firstNameOperator" data-default="SW" aria-label="First Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msFirst" name="personSearch.firstName" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msDob">Date of Birth:</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msDobOp" name="personSearch.birthTimeOperator" data-default="=" aria-label="Date of Birth operator"><option value="=" selected>Equal</option><option value="BET">Between</option></select></div>
+                <div class="col-md-6"><div class="d-flex flex-wrap align-items-center gap-2"><div class="ds-datefield"><input class="form-control" id="msDob" name="personSearch.birthTime" type="text" inputmode="numeric" aria-describedby="msDobFmt"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div><span class="ds-op-and" id="msDobAnd" hidden>and</span><div class="ds-datefield" id="msDobToWrap" hidden><input class="form-control" id="msDobTo" name="personSearch.birthTimeTo" type="text" inputmode="numeric" aria-label="Date of Birth, end of range" aria-describedby="msDobFmt"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div></div><span class="form-text" id="msDobFmt">Format: MM/DD/YYYY</span></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msSex">Current Sex:</label>
+                <div class="col-md-6"><select class="form-select" id="msSex" name="personSearch.currentSex"><option value="">Any</option><option value="F">Female</option><option value="M">Male</option><option value="U">Unknown</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msStreet">Street Address:</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msStreetOp" name="personSearch.streetAddr1Operator" data-default="=" aria-label="Street Address operator"><option value="CT">Contains</option><option value="=" selected>Equal</option><option value="!=">Not Equal</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msStreet" name="personSearch.streetAddr1" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msCity">City:</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msCityOp" name="personSearch.cityDescTxtOperator" data-default="=" aria-label="City operator"><option value="CT">Contains</option><option value="=" selected>Equal</option><option value="!=">Not Equal</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msCity" name="personSearch.cityDescTxt" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msState">State:</label>
+                <div class="col-md-6"><select class="form-select" id="msState" name="personSearch.state"><option value="">Any</option><option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option><option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option><option>District of Columbia</option><option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option><option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option><option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option><option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option><option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option><option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option><option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option><option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option><option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msZip">Zip:</label>
+                <div class="col-md-6"><input class="form-control" id="msZip" name="personSearch.zipCd" type="text" inputmode="numeric" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msId">Patient ID(s):</label>
+                <div class="col-md-6"><input class="form-control" id="msId" name="personSearch.localID" type="text" autocomplete="off" aria-describedby="msIdHint"><span class="form-text" id="msIdHint">Separate IDs with commas, semicolons, or spaces.</span></div>
+              </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="msAdvanced" aria-labelledby="msAdvancedHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="msAdvancedHeading"><button type="button" class="accordion-button collapsed" aria-expanded="false" aria-controls="msAdvancedBody">Advanced Search</button></h3>
+              <div class="accordion-collapse collapse" id="msAdvancedBody">
+                <div class="accordion-body">
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msIdType">Identifier Type:</label>
+                <div class="col-md-6"><select class="form-select" id="msIdType" name="personSearch.typeCd"><option value="">Any</option><option>Account number</option><option>Alternate person number</option><option>CHIP Identification number</option><option>Driver&#39;s license number</option><option>ImmTrac ID</option><option>Immunization Registry ID</option><option>Medicaid number</option><option>Medical record number</option><option>Medicare number</option><option>Mother&#39;s identifier</option><option>National unique individual identifier</option><option>Other</option><option>Partner Services Patient Number</option><option>Patient External Identifier</option><option>Patient internal identifier</option><option>Person number</option><option>Prison identification number</option><option>Social Security</option><option>Visa/Passport</option><option>WIC identifier</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msIdNum">Identifier:</label>
+                <div class="col-md-6"><input class="form-control" id="msIdNum" name="personSearch.rootExtensionTxt" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msPhone">Phone:</label>
+                <div class="col-md-6"><input class="form-control" id="msPhone" name="personSearch.phoneNbrTxt" type="tel" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msEmail">Email:</label>
+                <div class="col-md-6"><input class="form-control" id="msEmail" name="personSearch.emailAddress" type="email" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msEthnicity">Ethnicity:</label>
+                <div class="col-md-6"><select class="form-select" id="msEthnicity" name="personSearch.ethnicGroupInd"><option value="">Any</option><option>Hispanic or Latino</option><option>Not Hispanic or Latino</option><option>Unknown</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msRace">Race:</label>
+                <div class="col-md-6"><select class="form-select" id="msRace" name="personSearch.raceCd"><option value="">Any</option><option>American Indian or Alaska Native</option><option>Asian</option><option>Black or African American</option><option>Multi-Race</option><option>Native Hawaiian or Other Pacific Islander</option><option>Not asked</option><option>Other</option><option>Refused to answer</option><option>Unknown</option><option>White</option></select></div>
+              </div>
+                </div>
+              </div>
+            </div>
+          </section>
+    </form>
+    <div class="modal-footer">
+      <button type="reset" form="searchForm" class="btn btn-outline-primary">Clear</button>
+      <button type="submit" form="searchForm" class="btn btn-primary"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg>Search</button>
+    </div>
+  </div></div>
+</div>
+<!-- /merge:dialogs -->
+<script>
+/* Working reference implementations. Same contracts as the other templates. */
+(function () {
+  /* Tabs (both tablists): WAI-ARIA pattern with roving tabindex. */
+  document.querySelectorAll('[role="tablist"]').forEach(function (tablist) {
+    var tabs = Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));
+    function selectTab(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      tab.focus();
+    }
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { selectTab(t); });
+      t.addEventListener('keydown', function (e) {
+        var i = tabs.indexOf(t);
+        if (e.key === 'ArrowRight') selectTab(tabs[(i + 1) % tabs.length]);
+        if (e.key === 'ArrowLeft') selectTab(tabs[(i - 1 + tabs.length) % tabs.length]);
+      });
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

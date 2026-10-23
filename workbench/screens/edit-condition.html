@@ -4,9 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Edit Condition - Page Management - NEDSS</title>
+<link rel="stylesheet" href="../vendor/tom-select/tom-select.min.css">
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
+<script src="../vendor/tom-select/tom-select.complete.min.js" defer></script>
+<script src="../../js/ds-typeahead.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -36,7 +39,7 @@
     </ul>
     <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
     <ul class="ds-nav-sub" id="navMerge" hidden>
-      <li><a data-nav-id="merge-manual" href="merge-patients.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-manual" href="merge-patients-search.html">Manual Search</a></li>
       <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
     </ul>
     <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
@@ -390,8 +393,10 @@
     errors.forEach(function (pair) {
       setError(pair[0], pair[1]);
       var li = document.createElement('li'), a = document.createElement('a');
-      a.href = '#' + pair[0].id; a.textContent = pair[1];
-      a.addEventListener('click', function (e) { e.preventDefault(); openSectionFor(pair[0]); pair[0].focus(); });
+      /* a type-ahead select's link goes to its combobox, the control people see (js/ds-typeahead.js) */
+      var target = pair[0].tomselect ? pair[0].tomselect.control_input : pair[0];
+      a.href = '#' + target.id; a.textContent = pair[1];
+      a.addEventListener('click', function (e) { e.preventDefault(); openSectionFor(pair[0]); target.focus(); });
       li.appendChild(a); list.appendChild(li);
     });
     summary.hidden = false;
