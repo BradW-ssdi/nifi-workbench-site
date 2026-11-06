@@ -6,6 +6,7 @@
 <title>Merge Candidate List - Merge Patients - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/ds-infotip.js" defer></script>
 <script src="../../js/merge-patients.js" defer></script>
 <script src="../../js/table-settings.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
@@ -78,16 +79,20 @@
             <li class="breadcrumb-item active" aria-current="page">Manual Search</li>
           </ol>
         </nav>
-        <h1 class="display-6 mb-0 mt-2">Merge Candidate List</h1>
+        <div class="ds-title-row mt-2">
+          <h1 class="display-6 mb-0">Merge Candidate List</h1>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" data-ds-infotip aria-expanded="false" aria-controls="mergeHelp" aria-label="How to merge"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#info"/></svg></button>
+        </div>
       </div>
       <div class="page-body">
-        <!-- The legacy screen hid the merge rules in button tooltips. They are
-             visible instructions here (WCAG 3.3.2). Do not put a rule only in a
-             tooltip. -->
-        <div class="alert mb-0 alert-info">
-          Select two or more candidates in the <b>Merge</b> column. Optionally mark one of them as the
-          <b>Surviving ID</b>; if none is marked, the oldest patient ID survives. The surviving record must
-          also be selected for merge.
+        <!-- The merge rules, behind the info button beside the title (BA review). The button opens and closes
+             this panel (js/ds-infotip.js); it is in the page, not a hover tooltip, so it can be read from the
+             keyboard and by a screen reader (WCAG 3.3.2, 1.4.13). The error summary repeats a rule that is
+             broken on Merge. -->
+        <div class="alert mb-0 alert-info ds-infotip-panel" id="mergeHelp" hidden>
+          To merge records, select two or more candidates in the <b>Merge</b> column. Optionally, select a
+          <b>Surviving ID</b>. If no Surviving ID is selected, then the oldest (first) patient ID will be the
+          Surviving ID.
         </div>
 
         <!-- Error summary: shown when the rules above are violated on Merge. -->
@@ -115,7 +120,19 @@
             </div>
           </div>
         </div>
-        <p class="mb-0"><span class="fw-semibold" id="resultCount">4 candidates found</span> <span class="text-body-secondary" id="criteriaSummary">for Last Name starts with Garcia</span></p>
+        <p class="mb-0 fw-semibold" id="resultCount">4 candidates found</p>
+        <!-- The search criteria as Phase 2's read-only chips (queues/queueFilterChips with chip.readOnly: gray, with
+             the -readOnly ids), in Phase 2's host (#filterChips > #filterChipsDiv). Plain text here: Phase 2 keeps a
+             select for the operator, which the keyboard can still reach and change; a read-only chip has nothing to
+             operate. The group is named, so a screen reader hears "Search criteria" before them.
+             DEV: one chip per criterion in the request, in the search form's order. -->
+        <div class="ds-phase2">
+          <div class="d-flex flex-wrap" id="filterChips">
+            <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" role="group" aria-label="Search criteria">
+              <div class="chipsWithSubMenu"><div class="chip-button chip-read-only rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="lastName-readOnly"><span id="lastName-chipLabel-readOnly">Last Name</span> <span class="chip-operator-read-only" id="lastName-chipOperator-readOnly" style="font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;">starts with</span> <span class="chip-value-read-only" id="lastName-chipValue" style="font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;">Garcia</span></div></div>
+            </div>
+          </div>
+        </div>
 <!-- /merge:toolbar -->
         <div id="status" class="visually-hidden" role="status" aria-live="polite"></div>
 
@@ -537,6 +554,29 @@
     if (op === '!=') return value !== q;
     return value.indexOf(q) === 0;
   }
+  /* the criteria as read-only chips (read_only_chip() in scripts/screens/merge-patients.py renders the same) */
+  function chips(q) {
+    var box = document.getElementById('filterChipsDiv');
+    box.innerHTML = '';
+    q.forEach(function (v, k) {
+      if (!LABELS[k] || !v) return;
+      var id = k.replace('personSearch.', ''), wrap = document.createElement('div'), chip = document.createElement('div');
+      wrap.className = 'chipsWithSubMenu';
+      chip.className = 'chip-button chip-read-only rounded-pill d-flex align-items-center chip badge me-2 ps-3';
+      chip.id = id + '-readOnly';
+      [[LABELS[k], id + '-chipLabel-readOnly', ''], [OPS[q.get(k + 'Operator')] || 'is', id + '-chipOperator-readOnly', 'chip-operator-read-only'],
+       [v, id + '-chipValue', 'chip-value-read-only']].forEach(function (part, i) {
+        var span = document.createElement('span');
+        span.textContent = part[0]; span.id = part[1];
+        if (part[2]) { span.className = part[2]; span.setAttribute('style', 'font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;'); }
+        if (i) chip.appendChild(document.createTextNode(' '));   /* a space between the parts for screen readers */
+        chip.appendChild(span);
+      });
+      wrap.appendChild(chip);
+      box.appendChild(wrap);
+    });
+    document.getElementById('filterChips').hidden = !box.children.length;
+  }
   function filterText() {
     var t = document.getElementById('filterInput').value.trim().toLowerCase();
     Array.prototype.forEach.call(tbody.rows, function (r) { r.classList.toggle('d-none', !!t && r.textContent.toLowerCase().indexOf(t) === -1); });
@@ -551,13 +591,11 @@
                (!ids.length || ids.indexOf(row.getAttribute('data-id')) !== -1);
       row.hidden = !ok; if (ok) shown++;
     });
-    var crit = [];
-    q.forEach(function (v, k) { if (LABELS[k]) crit.push(LABELS[k] + ' ' + (OPS[q.get(k + 'Operator')] || 'is') + ' ' + v); });
+    chips(q);
     document.getElementById('noResults').hidden = shown !== 0;
     var text = shown === 0 ? 'No patients match these criteria' : shown + (shown === 1 ? ' candidate found' : ' candidates found');
     document.getElementById('resultCount').textContent = text;
     document.getElementById('pageSummary').textContent = 'Items ' + (shown ? 1 : 0) + ' - ' + shown + ' of ' + shown;
-    document.getElementById('criteriaSummary').textContent = crit.length ? 'for ' + crit.join(', ') : '';
     status.textContent = text + '.';
     filterText();
   }

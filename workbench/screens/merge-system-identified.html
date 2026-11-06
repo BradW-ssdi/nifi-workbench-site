@@ -6,6 +6,7 @@
 <title>System Identified Merge Queue - Merge Patients - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/ds-infotip.js" defer></script>
 <script src="../../js/merge-patients.js" defer></script>
 <script src="../../js/table-settings.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
@@ -78,20 +79,27 @@
               <li class="breadcrumb-item active" aria-current="page">System Identified</li>
           </ol>
         </nav>
-        <h1 class="display-6 mb-0 mt-2">Merge Candidate Queue</h1>
+        <div class="ds-title-row mt-2">
+          <h1 class="display-6 mb-0">Merge Candidate Queue</h1>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" data-ds-infotip aria-expanded="false" aria-controls="mergeHelp" aria-label="How to use the merge actions"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#info"/></svg></button>
+        </div>
       </div>
       <div class="page-body">
         <!-- Post-action confirmation (legacy infoBox success). role="status":
              it confirms and the queue has already advanced. -->
         <div class="alert mb-0 alert-success" role="status" id="successBanner" hidden></div>
 
-        <!-- The four group actions were tooltip-only in the legacy screen;
-             they are visible instructions here (WCAG 3.3.2). -->
-        <div class="alert mb-0 alert-info">
-          The matching engine grouped these records as likely duplicates. <b>Merge</b> combines the selected
-          records (mark a Surviving ID or the oldest survives). <b>Remove from merge</b> flags a selected patient
-          so it is left out of future matching until the record changes. <b>No merge</b> marks the whole group as
-          not duplicates. <b>Skip</b> moves this group to the end of the queue for later review.
+        <!-- The four group actions, in the original wording, behind the info button beside the title (BA review).
+             The button opens and closes this panel (js/ds-infotip.js); it is in the page, not a hover tooltip, so
+             it can be read from the keyboard and by a screen reader (WCAG 3.3.2, 1.4.13). -->
+        <div class="alert mb-0 alert-info ds-infotip-panel" id="mergeHelp" hidden>
+          <p class="mb-2">The system identified these records as potential duplicates. You can take action using the following options:</p>
+          <ul class="mb-0">
+            <li><b>Merge:</b> To merge records, select two or more candidates in the Merge column. Optionally, select a Surviving ID. If no Surviving ID is selected, then the oldest (first) patient ID will be the Surviving ID. After making your selections, click Merge.</li>
+            <li><b>Remove from Merge:</b> To remove a patient from future merges, select a patient in the Merge column and click Remove from Merge. This will flag the patient to NOT be included in future merge logic until/unless the patient record is updated in the future.</li>
+            <li><b>No Merge:</b> Clicking this button allows you to indicate that none of the candidates in the merge group should be merged and to move to the next set of merge candidates.</li>
+            <li><b>Skip:</b> Clicking this button allows you to skip the current merge candidate list to get to the next set of merge candidates. Any skipped merge candidate groups are moved to the end of the merge candidate group queue for later review.</li>
+          </ul>
         </div>
 
         <div class="ds-error-summary" id="errorSummary" role="alert" tabindex="-1">

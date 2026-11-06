@@ -32,16 +32,22 @@
     }
     new TomSelect(sel, {
       maxItems: 1,
+      openOnFocus: false,
       maxOptions: null,
       dropdownParent: 'body',
       closeAfterSelect: false,
       onInitialize: function () {
         var id = sel.id, lbl = document.getElementById(id + '-ts-label'), ctrl = document.getElementById(id + '-ts-control');
+        /* the list opens on a click, as before, but not when the field is reached with Tab: an open list on focus
+           makes NVDA read the list and its first option instead of the combo box */
+        var ts = this;
+        ts.wrapper.addEventListener('mousedown', function () { if (!ts.isFocused) ts.__dsPointer = true; }, true);
+        ts.on('focus', function () { if (ts.__dsPointer) ts.open(); ts.__dsPointer = false; });
         if (!lbl) return;
         lbl.setAttribute('for', id);
         if (ctrl) {
           ctrl.setAttribute('aria-labelledby', lbl.id);
-          lbl.addEventListener('click', function (e) { e.preventDefault(); ctrl.focus(); });
+          lbl.addEventListener('click', function (e) { e.preventDefault(); if (!ts.isFocused) ts.__dsPointer = true; ctrl.focus(); });
         }
       }
     });

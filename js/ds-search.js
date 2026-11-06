@@ -21,7 +21,11 @@
      js/ds-record.js. Each row carries data-key.
    - window.dsSearch: { data, label, rows() (the rows shown), add(row), refresh() } so js/ds-record.js can show a saved
      or added row without a new search.
-   - Clear empties the criteria, hides the results, and says so; focus stays on Clear. */
+   - Clear empties the criteria, hides the results, and says so; focus stays on Clear.
+   - Read-only chips: a form with data-criteria-chips lists the criteria of the last search in #filterChipsDiv, as
+     Phase 2's read-only chips (gray, the -readOnly ids, as on Merge Patients). Each filled field is a chip: its label,
+     how it matched (contains, is, on or after, on or before), and its value. They show what the results are for while
+     the fields above are changed, and they go with the results on Clear. */
 (function () {
   'use strict';
   var form = document.querySelector('form[data-ds-search]');
@@ -109,10 +113,55 @@
     /* DEV: the server searches; these rows stand in for its results. */
     shown = data.filter(match);
     show();
+    chips();
     status.textContent = title.textContent.replace('Search results: ', '') + '.';
     title.focus();
   });
   var shown = [];
+  /* the criteria of the last search as read-only chips (data-criteria-chips) */
+  var chipBox = form.hasAttribute('data-criteria-chips') && document.getElementById('filterChipsDiv');
+  var CHIP_PART = 'font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;';
+  function labelOf(f) {
+    var l = form.querySelector('label[for="' + f.id + '"]');
+    return l ? l.textContent.trim() : f.getAttribute('aria-label') || f.id;
+  }
+  function criteria() {
+    var out = [], groups = {};
+    fields().forEach(function (f) {
+      var v = f.value.trim(); if (!v) return;
+      if (f.tagName === 'SELECT') { out.push([f.id, labelOf(f), 'is', f.options[f.selectedIndex].textContent.trim()]); return; }
+      if (f.hasAttribute('data-match-from')) { out.push([f.id, labelOf(f), 'on or after', v]); return; }
+      if (f.hasAttribute('data-match-to')) { out.push([f.id, labelOf(f), 'on or before', v]); return; }
+      var op = $('[data-op-for="' + f.id + '"]', form);
+      out.push([f.id, labelOf(f), op && op.value === '=' ? 'is' : 'contains', v]);
+    });
+    $$('[data-match-any]:checked', form).forEach(function (c) {
+      var k = c.getAttribute('data-match-any');
+      if (!groups[k]) { var lg = c.closest('fieldset') && $('legend', c.closest('fieldset')); groups[k] = [k, lg ? lg.textContent.trim() : k, 'is', []]; out.push(groups[k]); }
+      groups[k][3].push(c.value);
+    });
+    return out.map(function (c) { return Array.isArray(c[3]) ? [c[0], c[1], c[2], c[3].join(' or ')] : c; });
+  }
+  function chips() {
+    if (!chipBox) return;
+    chipBox.innerHTML = '';
+    criteria().forEach(function (c) {
+      var wrap = document.createElement('div'), chip = document.createElement('div');
+      wrap.className = 'chipsWithSubMenu';
+      chip.className = 'chip-button chip-read-only rounded-pill d-flex align-items-center chip badge me-2 ps-3';
+      chip.id = c[0] + '-readOnly';
+      [[c[1], c[0] + '-chipLabel-readOnly', ''], [c[2], c[0] + '-chipOperator-readOnly', 'chip-operator-read-only'], [c[3], c[0] + '-chipValue', 'chip-value-read-only']].forEach(function (part, i) {
+        var span = document.createElement('span');
+        span.textContent = part[0]; span.id = part[1];
+        if (part[2]) { span.className = part[2]; span.setAttribute('style', CHIP_PART); }
+        if (i) chip.appendChild(document.createTextNode(' '));   /* a space between the parts for screen readers */
+        chip.appendChild(span);
+      });
+      wrap.appendChild(chip);
+      chipBox.appendChild(wrap);
+    });
+    document.getElementById('filterChips').hidden = !chipBox.children.length;
+  }
   function show() {
     var n = shown.length;
     render(shown);

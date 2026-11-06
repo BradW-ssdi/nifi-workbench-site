@@ -1,12 +1,13 @@
 /*
- * Answers a Phase 3 queue's results requests in the design system templates, as the app's controller does: the
- * page's htmx posts the queue form to its results endpoint, and this returns the results fragment rendered from the
- * queue description embedded in the page (<script type="application/json" id="queueData">), with the component's
- * filter, search, sort, and page rules (QueueFilters.java, Phase3Queue.java, Phase 2's 5-page window). htmx then
+ * Answers a Phase 3 queue's requests in the design system templates, as the app's controller does: the page's htmx
+ * posts the queue form to its rows endpoint (resultsUrl, swapped into tbody.tableData) or its pagination endpoint
+ * (paginationUrl, Phase 2's queues/paginationNav, swapped into #paginationNav), and this returns that fragment
+ * rendered from the queue description embedded in the page (<script type="application/json" id="queueData">),
+ * with the component's filter, search, sort, and page rules (QueueFilters.java, Phase3Queue.java, Phase 2's 5-page window). htmx then
  * swaps it in as it would the server's response, so focus restore, events, and timing are htmx's own.
  *
  * scripts/screens/phase3-queue.py renders the same markup for the first page; tools/checks/queue-check.cjs checks
- * the two match. Only requests to the queue's resultsUrl are answered here; every other request goes out as usual.
+ * the two match. Only requests to those two endpoints are answered here; every other request goes out as usual.
  */
 (function () {
     "use strict";
@@ -78,14 +79,17 @@
         return out;
     }
 
-    /* ---------------------------------------------------------------- the results fragment (phase3-queue.py results()) */
+    /* ---------------------------------------------------------------- the fragments (phase3-queue.py rows_html(), nav()) */
 
-    function hx() { return 'hx-post="' + Q.resultsUrl + '" hx-include="#' + Q.formId + '" hx-target="#' + Q.resultsId + '" hx-swap="outerHTML"'; }
+    function hx() { return 'hx-post="' + Q.resultsUrl + '" hx-include="#' + Q.formId + '" hx-target="#' + Q.formId + ' .tableData" hx-swap="innerHTML"'; }
     function cell(c, r) {
         if (c.type === "actions") {
             var name = esc(r[Q.actions.name] || "");
-            return '<td class="ds-row-actions"><a href="' + Q.actions.view + '" aria-label="View ' + name + '"><svg class="ds-icon"><use href="' + ICON + 'visibility"/></svg></a>' +
-                '<a href="' + Q.actions.edit + '" aria-label="Edit ' + name + '"><svg class="ds-icon"><use href="' + ICON + 'edit"/></svg></a></td>';
+            var tip = function (verb) { return ' data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="' + verb + " " + esc(Q.actions.noun) + '"'; };
+            return '<td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View ' + name + '"' + tip("View") +
+                '><svg class="ds-icon" aria-hidden="true"><use href="' + ICON + 'description"/></svg></button>' +
+                '<a class="btn btn-light rounded-circle btn-sm" href="' + Q.actions.edit + '" aria-label="Edit ' + name + '"' + tip("Edit") +
+                '><svg class="ds-icon" aria-hidden="true"><use href="' + ICON + 'edit"/></svg></a></td>';
         }
         var v = r[c.field] || "", none = '<span class="visually-hidden">None</span>';
         if (c.type === "badge") { return '<td><span class="badge ' + (c.badges[v] || c.otherBadge) + '">' + esc(v) + "</span></td>"; }
@@ -95,77 +99,81 @@
         }
         return "<td>" + (v ? esc(v) : none) + "</td>";
     }
-    function results(rows, sorting, page, size) {
+    function counts(rows, page, size) {
         var total = rows.length, pages = size > 0 ? Math.ceil(total / size) : 0;
         page = pages ? Math.max(0, Math.min(page, pages - 1)) : 0;
         var start = total ? page * size : 0, end = total ? Math.min(start + size, total) : 0;
-        var parts = String(sorting).split(":"), key = parts[0], direction = (parts[1] || "").toLowerCase();
-        var heads = Q.columns.map(function (c) {
-            if (c.type === "actions") { return '<th scope="col"><span class="visually-hidden">Actions</span></th>'; }
-            if (c.sort) {
-                var st = key === c.sort ? (direction === "desc" ? "descending" : "ascending") : null;
-                var next = c.sort + (st === "ascending" ? ":desc" : ":asc");
-                return '<th scope="col"' + (st ? ' aria-sort="' + st + '"' : "") + '><button type="button" class="ds-sort-btn" id="' + c.sort + '" data-sort-next="' + next +
-                    '" onclick="phase3Queue.sort(this, \'' + Q.formId + '\')" ' + hx() + ">" + esc(c.label) + ' <svg class="ds-icon" aria-hidden="true"><use href="' + ICON + 'arrow_drop_down"/></svg></button></th>';
-            }
-            return '<th scope="col">' + esc(c.label) + "</th>";
-        }).join("");
-        var body = !total ? ['              <tr><td colspan="' + Q.columns.length + '">' + esc(Q.empty) + "</td></tr>"] :
-            rows.slice(start, end).map(function (r) {
-                return "              <tr" + (r[Q.flag] === "true" ? ' class="is-flagged"' : "") + ">" + Q.columns.map(function (c) { return cell(c, r); }).join("") + "</tr>";
-            });
-        function pg(label, aria, id, dis, onclick) {
-            return '                <li class="page-item"><button type="button" class="page-link' + (dis ? " disabled" : "") + '" id="' + id + '" aria-label="' + aria + '"' +
-                (dis ? " disabled" : "") + " " + hx() + ' onclick="' + onclick + '">' + label + "</button></li>";
-        }
-        var nav = [pg("Previous", "Previous page", "pagePrevious", page <= 0, "setActivePagePrev(this, '" + Q.formId + "')")];
-        pageWindow(page, pages).forEach(function (i) {
-            var cur = i === page;
-            nav.push('                <li class="page-item' + (cur ? " active" : "") + '"><button type="button" class="page-link' + (cur ? " active" : "") + '" id="page' + (i + 1) + '"' +
-                (cur ? ' aria-current="page"' : "") + ' aria-label="Page ' + (i + 1) + '" ' + hx() + ' onclick="setActivePage(this)">' + (i + 1) + "</button></li>");
+        return { total: total, pages: pages, page: page, start: start, end: end };
+    }
+    /* The rows endpoint: swapped into tbody.tableData. */
+    function rowsHtml(rows, page, size) {
+        var n = counts(rows, page, size);
+        if (!n.total) { return '              <tr class="text-center py-2"><td colspan="' + Q.columns.length + '">' + esc(Q.empty) + "</td></tr>"; }
+        return rows.slice(n.start, n.end).map(function (r) {
+            return "              <tr" + (r[Q.flag] === "true" ? ' class="is-flagged"' : "") + ">" + Q.columns.map(function (c) { return cell(c, r); }).join("") + "</tr>";
+        }).join("\n");
+    }
+    /* The pagination endpoint: Phase 2's queues/paginationNav, swapped into #paginationNav. */
+    function nav(rows, page, size) {
+        var n = counts(rows, page, size);
+        var tip = function (t) { return ' data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="' + t + '"'; };
+        var first = n.page <= 0, last = n.page >= n.pages - 1;
+        var out = ['                  <div class="d-flex align-items-center">',
+            '                    <span class="ms-3" id="itemsMessage" data-phase3-results-summary>Items ' + (n.total ? n.start + 1 : 0) + " - " + n.end + " of " + n.total + "</span>",
+            "                  </div>",
+            '                  <nav aria-label="Pagination" class="pagination-container" id="paginationNavBar">',
+            '                    <ul class="pagination pagination-sm justify-content-center mb-0">',
+            '                      <li class="page-item' + (first ? " disabled" : "") + '" id="previous"' + tip("Previous") + '><button type="button" class="page-link" aria-label="Previous page of results"' +
+                (first ? " disabled" : "") + " " + hx() + " onclick=\"setActivePagePrev(this, '" + Q.formId + "')\">Previous</button></li>"];
+        pageWindow(n.page, n.pages).forEach(function (i) {
+            var cur = i === n.page;
+            out.push('                      <li class="page-item number' + (cur ? " active" : "") + '"' + tip("Page " + (i + 1)) + '><button type="button" class="page-link" id="page' + (i + 1) +
+                '" aria-label="Page ' + (i + 1) + '"' + (cur ? ' aria-current="page"' : "") + " " + hx() + ' onclick="setActivePage(this)">' + (i + 1) + "</button></li>");
         });
-        nav.push(pg("Next", "Next page", "pageNext", page >= pages - 1, "setActivePageNext(this, '" + Q.formId + "')"));
         var sizes = Q.sizes.map(function (s) { return '<option value="' + s + '"' + (s === size ? " selected" : "") + ">" + s + "</option>"; }).join("");
-        return '      <div id="' + Q.resultsId + '" class="ds-table-frame">\n' +
-            '        <div class="ds-table-scroll" tabindex="0" role="group" aria-label="' + esc(Q.scrollLabel) + '">\n' +
-            '          <table class="table ds-table tableCompact" id="' + Q.tableId + '">\n' +
-            '            <caption class="visually-hidden">' + esc(Q.caption) + "</caption>\n" +
-            "            <thead><tr>" + heads + "</tr></thead>\n" +
-            '            <tbody id="' + Q.tbodyId + '">\n' + body.join("\n") + "\n            </tbody>\n" +
-            "          </table>\n        </div>\n" +
-            '        <div class="ds-table-footer">\n' +
-            '          <span class="ds-page-summary" id="pageSummary" data-phase3-results-summary>Items ' + (total ? start + 1 : 0) + " - " + end + " of " + total + "</span>\n" +
-            '          <nav aria-label="Pagination">\n            <ul class="pagination mb-0" id="paginationNav">\n' + nav.join("\n") + "\n            </ul>\n          </nav>\n" +
-            '          <div class="ds-page-size">\n            <select class="form-select" id="pageSize" hx-trigger="change" ' + hx() + ' onchange="changePageSize(this, \'' + Q.formId + '\')">' + sizes + "</select>\n" +
-            '            <label for="pageSize">Items per page</label>\n          </div>\n        </div>\n      </div>';
+        out.push('                      <li class="page-item' + (last ? " disabled" : "") + '" id="next"' + tip("Next") + '><button type="button" class="page-link" aria-label="Next page of results"' +
+                (last ? " disabled" : "") + " " + hx() + " onclick=\"setActivePageNext(this, '" + Q.formId + "')\">Next</button></li>",
+            "                    </ul>",
+            "                  </nav>",
+            '                  <div class="d-flex align-items-center me-3">',
+            '                    <div class="btn-group dropup me-2">',
+            '                      <select aria-label="Items per page" class="form-select form-select-sm" id="paginationNavBarPageSizeDropdown" hx-trigger="change" ' + hx() +
+                " onchange=\"changePageSize(this, '" + Q.formId + "')\">" + sizes + "</select>",
+            "                    </div>",
+            "                    <span>Items per page</span>",
+            "                  </div>");
+        return out.join("\n");
     }
 
-    /* The controller's results POST. params: the form's fields, as htmx sends them. */
-    function respond(params) {
+    /* The controller's two POSTs. params: the form's fields, as htmx sends them. */
+    function query(params) {
         var active = parseFiltering(params.get("filtering"));
         var sorting = params.get("sorting") || Q.defaultSorting;
         var size = parseInt(params.get("size"), 10);
         if (Q.sizes.indexOf(size) < 0) { size = Q.defaultSize; }
         var m = /'page'\s*:\s*'(-?\d+)'/.exec(params.get("paginationNbr") || "");
-        var page = m ? parseInt(m[1], 10) : 0;
-        var rows = sortRows(search(apply(Q.rows, active), params.get("localTextFilter")), sorting);
-        // The response starts at the element, as a Thymeleaf fragment does: with htmx 2.0.0 an outerHTML swap whose
-        // response starts with whitespace or a comment fires no htmx:afterSwap or htmx:afterSettle (swapOuterHTML
-        // stops at the first text node), and js/phase3-queue.js would never announce or place focus.
-        return results(rows, sorting, page, size).trim();
+        return { rows: sortRows(search(apply(Q.rows, active), params.get("localTextFilter")), sorting), page: m ? parseInt(m[1], 10) : 0, size: size };
+    }
+    function respond(params, pagination) {
+        var q = query(params);
+        return pagination ? nav(q.rows, q.page, q.size) : rowsHtml(q.rows, q.page, q.size);
     }
 
     /* ---------------------------------------------------------------- the request shim */
 
     var Real = window.XMLHttpRequest;
-    var route = new URL(Q.resultsUrl, location.href).pathname;
+    var routes = {};
+    routes[new URL(Q.resultsUrl, location.href).pathname] = false;
+    routes[new URL(Q.paginationUrl, location.href).pathname] = true;
     function Shim() {
         var x = new Real();
-        var fake = false;
+        var fake = false, pagination = false, url = null;
         var open = x.open, send = x.send, setHeader = x.setRequestHeader, mime = x.overrideMimeType;
         var getAll = x.getAllResponseHeaders, getOne = x.getResponseHeader;
-        x.open = function (method, url) {
-            fake = new URL(url, location.href).pathname === route;
+        x.open = function (method, u) {
+            url = new URL(u, location.href);
+            fake = Object.prototype.hasOwnProperty.call(routes, url.pathname);
+            pagination = fake && routes[url.pathname];
             if (!fake) { return open.apply(x, arguments); }
         };
         x.setRequestHeader = function () { if (!fake) { return setHeader.apply(x, arguments); } };
@@ -174,14 +182,14 @@
         x.getResponseHeader = function (n) { return fake ? (/content-type/i.test(n) ? "text/html" : null) : getOne.apply(x, arguments); };
         x.send = function (body) {
             if (!fake) { return send.apply(x, arguments); }
-            var html = respond(new URLSearchParams(typeof body === "string" ? body : ""));
+            var html = respond(new URLSearchParams(typeof body === "string" ? body : ""), pagination);
             setTimeout(function () {
                 Object.defineProperty(x, "readyState", { value: 4, configurable: true });
                 Object.defineProperty(x, "status", { value: 200, configurable: true });
                 Object.defineProperty(x, "statusText", { value: "OK", configurable: true });
                 Object.defineProperty(x, "response", { value: html, configurable: true });
                 Object.defineProperty(x, "responseText", { value: html, configurable: true });
-                Object.defineProperty(x, "responseURL", { value: new URL(Q.resultsUrl, location.href).href, configurable: true });
+                Object.defineProperty(x, "responseURL", { value: url.href, configurable: true });
                 x.dispatchEvent(new ProgressEvent("loadstart"));
                 if (typeof x.onload === "function") { x.onload(new ProgressEvent("load")); }
                 x.dispatchEvent(new ProgressEvent("loadend"));
@@ -190,5 +198,5 @@
         return x;
     }
     window.XMLHttpRequest = Shim;
-    window.queueServerStandin = { respond: respond, results: results, config: Q };
+    window.queueServerStandin = { respond: respond, rows: rowsHtml, nav: nav, config: Q };
 })();

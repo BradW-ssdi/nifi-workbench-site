@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
 <script src="../../js/list-filters.js" defer></script>
+<script src="../../js/ds-tooltip.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -79,11 +80,11 @@
              inactive questions: No". DEV: search and chips hx-get the table with server paging, so
              the full library never loads at once. -->
         <div class="ds-toolbar">
-          <input class="form-control rounded-pill" type="search" id="filterInput" aria-label="Search questions by ID, name, or label" placeholder="Search to filter..." aria-describedby="filterStatus">
+          <input class="form-control search" type="search" id="filterInput" aria-label="Search questions by ID, name, or label" placeholder="Search to filter..." aria-describedby="filterStatus">
           <span class="ms-auto"></span>
           <a class="btn btn-primary" href="add-question.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
-          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
-          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
         </div>
 
         <!-- Column filters as a chip row (legacy per-header popups: text on
@@ -151,7 +152,7 @@
             <!-- DEV: tbody = th:each over questions; swap this card on search. -->
             <tbody>
               <tr>
-                <td class="ds-row-actions"><a href="view-question.html" aria-label="View 10109"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="edit-question.html" aria-label="Edit 10109"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-question.html" aria-label="View 10109" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="edit-question.html" aria-label="Edit 10109" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>10109</td>
                 <td>Streptomycin</td>
@@ -161,7 +162,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 1023001"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 1023001"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 1023001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 1023001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>LOCAL</td>
                 <td>1023001</td>
                 <td>Did the patient have apnea?</td>
@@ -171,7 +172,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 102478008"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 102478008"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 102478008" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 102478008" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>102478008</td>
                 <td>Pre-Existing Condition(s)</td>
@@ -181,7 +182,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 102594003"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 102594003"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 102594003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 102594003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>102594003</td>
                 <td>Abnormal Electrocardiogram EKG</td>
@@ -191,7 +192,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 102957003"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 102957003"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 102957003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 102957003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>102957003</td>
                 <td>Neurologic Signs/Symptoms</td>
@@ -201,7 +202,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 103001002"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 103001002"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 103001002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 103001002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>103001002</td>
                 <td>Feverish</td>
@@ -211,7 +212,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 103514009"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 103514009"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 103514009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 103514009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>103514009</td>
                 <td>C. pneumoniae Result</td>
@@ -221,7 +222,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 10665004"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 10665004"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 10665004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 10665004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>10665004</td>
                 <td>Pancreatitis Indicator</td>
@@ -231,7 +232,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 110359009"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 110359009"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 110359009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 110359009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>110359009</td>
                 <td>Neuro/Intellectual Disability</td>
@@ -241,7 +242,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 11833005"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 11833005"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 11833005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 11833005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>11833005</td>
                 <td>Dry Cough</td>
@@ -251,7 +252,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 118940003"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 118940003"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 118940003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 118940003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>118940003</td>
                 <td>Nervous System Disorder Indicator</td>
@@ -261,7 +262,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 11920_8"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 11920_8"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 11920_8" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 11920_8" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>11920_8</td>
                 <td>Liver Enzyme Test AST_SGOT</td>
@@ -271,7 +272,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 119292006"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 119292006"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 119292006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 119292006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>119292006</td>
                 <td>Gastrointestinal Disorder Indicator</td>
@@ -281,7 +282,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 12063002"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 12063002"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 12063002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 12063002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>12063002</td>
                 <td>Rectal Bleeding</td>
@@ -291,7 +292,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 1221000119103"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 1221000119103"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 1221000119103" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 1221000119103" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>1221000119103</td>
                 <td>History of Tobacco Usage</td>
@@ -301,7 +302,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 127086001"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 127086001"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 127086001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 127086001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>127086001</td>
                 <td>Cervical Lymphadenopathy Indicator</td>
@@ -311,7 +312,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 128045006"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 128045006"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 128045006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 128045006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>128045006</td>
                 <td>Cellulitis</td>
@@ -321,7 +322,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 128241005"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 128241005"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 128241005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 128241005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>128241005</td>
                 <td>Hepatitis</td>
@@ -331,7 +332,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 128480004"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 128480004"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 128480004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 128480004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>128480004</td>
                 <td>Acute Hematologic Disorder</td>
@@ -341,7 +342,7 @@
               </tr>
 
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 128487001"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 128487001"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View 128487001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="Edit 128487001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>PHIN</td>
                 <td>128487001</td>
                 <td>Cardiovascular Disease</td>
@@ -349,11 +350,21 @@
                 <td>Cardiovascular disease</td>
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
+
+              <tr>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="#" aria-label="View NBS559" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit NBS559, inactive questions cannot be edited"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td>
+                <td>PHIN</td>
+                <td>NBS559</td>
+                <td>Animal Exposure</td>
+                <td>Epidemiologic Information</td>
+                <td>Animal Exposure</td>
+                <td><span class="badge text-bg-closed">Inactive</span></td>
+              </tr>
             </tbody>
           </table>
           </div>
           <div class="ds-table-footer">
-            <span class="ds-page-summary" id="pageSummary">Items 1 - 20 of 20</span>
+            <span class="ds-page-summary" id="pageSummary">Items 1 - 21 of 21</span>
             <!-- DEV: the current page gets aria-current="page"; Previous and Next get the disabled
                  ATTRIBUTE at the ends. After a page change update #pageSummary and #filterStatus. -->
             <nav aria-label="Pagination">

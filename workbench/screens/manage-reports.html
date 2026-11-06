@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage Reports - Report Management - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<script src="../../js/app-frame.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; max-width: 1028px; }   /* 980px of content plus the padding */
+  /* Conditional sections hide with the hidden attribute; keep display utilities off them (Bootstrap's are !important) */
+  [hidden] { display: none !important; }
+  @media (max-width: 820px) {
+    .page-body { padding: 16px; }
+  }
+  .ds-dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 12px 20px; margin: 0; }
+  .rp-name { overflow-wrap: anywhere; }
+  .rp-reports { columns: 2 260px; column-gap: 24px; margin: 0; padding-left: 1.25rem; }
+  .rp-reports li { break-inside: avoid; margin-bottom: 4px; }
+</style>
+</head>
+<body data-nav-section="system-management">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#menu"/></svg></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#search"/></svg><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg><span class="ds-nav-label">Data Entry</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navMerge"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#merge_type"/></svg><span class="ds-nav-label">Merge Patients</span><svg class="ds-nav-chevron" aria-hidden="true"><use href="../../icons/sprite.svg#expand_more"/></svg></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" href="merge-patients-search.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#content_paste_search"/></svg><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item is-active" data-nav-id="system-management" aria-current="true" href="system-management.html"><svg class="ds-nav-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#help"/></svg></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb"><li class="breadcrumb-item"><a href="system-management.html">System Management</a></li><li class="breadcrumb-item active" aria-current="page">Manage Reports</li></ol>
+        </nav>
+        <h1 class="display-6 mb-0 mt-2">Manage Reports</h1>
+      </div>
+      <div class="page-body" style="max-width:none">
+        <!-- Manage Reports modernizes ListReport.do: every report, with its data source, type (Custom, Graph, or Table), group (Private, Public, Template, or Reporting Facility), owner, and create date. View opens ViewReport.do (data_source_uid and report_uid) and Create Report opens NewReport.do; neither has a template yet. DEV: the legacy list sorts by any column (sortMethod) and has no paging; the local database has 2,844 reports. -->
+        <div class="ds-toolbar">
+          <input class="form-control rounded-pill" type="search" id="listFilter" data-noun="reports" aria-label="Search reports" placeholder="Search to filter..." autocomplete="off">
+          <span class="ms-auto"></span>
+          <a class="btn btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Create Report</a>
+        </div>
+        <div id="listStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+        <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Manage Reports, scrolls sideways">
+          <table class="table ds-table" id="listTable"><caption class="visually-hidden">Manage Reports</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">Report Name</th><th scope="col">Data Source Title</th><th scope="col">Type</th><th scope="col">Group</th><th scope="col">Owner</th><th scope="col">Create Date</th></tr></thead><tbody><tr><td class="ds-row-actions"><a href="#" aria-label="View Case Investigation with Rejected NNDs with Program Area and Jurisdiction Security"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Case Investigation with Rejected NNDs with Program Area and Jurisdiction Security</td><td>Case Investigation with Rejected NNDs</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>06/28/2005</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Contact Record Line List Template"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Contact Record Line List Template</td><td>Contact Record Datamart</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>12/12/2022</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View COVID Case Line List Report Template"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">COVID Case Line List Report Template</td><td>COVID Case Data Mart Extended</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>08/16/2020</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Custom Report for Disease Counts by County"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Custom Report for Disease Counts by County</td><td>Disease Counts by County</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>04/23/2004</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Custom Report for Disease Counts by County - Without Jurisdiction Security"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Custom Report for Disease Counts by County - Without Jurisdiction Security</td><td>Line List of Diseases, no Jurisdiction Security</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>10/22/2008</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Deduplication Activity Log Line Listing"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Deduplication Activity Log Line Listing</td><td>Deduplication Activity Log</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>04/22/2007</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Duplicate Investigations"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Duplicate Investigations</td><td>Texas Duplicate Investigations</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>06/02/2009</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View eICR Report"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">eICR Report</td><td>eICR datamart report</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>10/11/2022</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Event Metrics with Program Area and Jurisdiction Security"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Event Metrics with Program Area and Jurisdiction Security</td><td>Event Metrics</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>06/28/2005</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Interview Record Line List Template"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Interview Record Line List Template</td><td>Interview Record Datamart</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>12/12/2022</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of AIDS Surveillance Tracking"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of AIDS Surveillance Tracking</td><td>nbs_rdb.DM_INV_AIDS_SURV_TRACK</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>12/10/2024</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Amebiasis Investigation"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Amebiasis Investigation</td><td>nbs_rdb.DM_INV_AMEBIASIS</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>03/26/2026</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Amebic Meningitis PAM Scombroid Investigation"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Amebic Meningitis PAM Scombroid Investigation</td><td>nbs_rdb.DM_INV_AM_PAM_SFP</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>03/26/2026</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Amebic Meningitis, PAM, Scombroid Fish Poisoning"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Amebic Meningitis, PAM, Scombroid Fish Poisoning</td><td>nbs_rdb.DM_INV_AMEBIC_PAM_SCOMBROID</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>02/25/2025</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Anisakiasis and Ebola Hemorrhagic Fever"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Anisakiasis and Ebola Hemorrhagic Fever</td><td>nbs_rdb.DM_INV_ANISAKIASIS_EBOLA</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>02/22/2025</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Arbovirus Cases – NBS Security"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Arbovirus Cases – NBS Security</td><td>Arbo Datamart</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>05/13/2021</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of BMIRD Cases with NBS Security"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of BMIRD Cases with NBS Security</td><td>Line List of BMIRD Cases NBS Security</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>10/07/2011</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Botulism"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Botulism</td><td>nbs_rdb.DM_INV_LEGACY_BOTULISM</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>02/11/2025</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Botulism Investigation"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Botulism Investigation</td><td>nbs_rdb.DM_INV_BOTULISM</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>03/30/2026</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Brucellosis"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Brucellosis</td><td>nbs_rdb.DM_INV_LEGACY_BRUCELLOSIS</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>03/24/2025</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Brucellosis Investigation"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Brucellosis Investigation</td><td>nbs_rdb.DM_INV_BRUCELLOSIS</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>03/26/2026</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Campylobacteriosis"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Campylobacteriosis</td><td>nbs_rdb.DM_INV_CAMPYLOBACTERIOSIS</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>03/17/2025</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Campylobacteriosis Investigation"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Campylobacteriosis Investigation</td><td>nbs_rdb.DM_INV_CAMPYLOBACTER</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>03/30/2026</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Candida auris Investigation Page"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Candida auris Investigation Page</td><td>nbs_rdb.DM_INV_CANDIDA_AURIS</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>02/11/2021</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of CHAGAS Cases with NBS Security"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of CHAGAS Cases with NBS Security</td><td>Line List of Chagas Cases NBS Security</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>09/13/2013</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Cholera"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Cholera</td><td>nbs_rdb.DM_INV_LEGACY_CHOLERA</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>02/19/2025</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Cholera Investigation"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Cholera Investigation</td><td>nbs_rdb.DM_INV_CHOLERA</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>03/30/2026</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Creutzfeldt-Jakob Disease"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Creutzfeldt-Jakob Disease</td><td>nbs_rdb.DM_INV_LEGACY_CJD</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>02/20/2025</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Creutzfeldt-Jakob Disease Investigation"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Creutzfeldt-Jakob Disease Investigation</td><td>nbs_rdb.DM_INV_CJD</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>03/27/2026</td></tr><tr><td class="ds-row-actions"><a href="#" aria-label="View Line List of Cryptosporidiosis"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td class="rp-name">Line List of Cryptosporidiosis</td><td>nbs_rdb.DM_INV_CRYPTOSPORIDIOSIS</td><td>Custom</td><td>Template</td><td><span class="visually-hidden">None</span></td><td>03/10/2025</td></tr></tbody></table>
+          <p class="ds-empty" id="listEmpty" hidden>No reports match the search.</p></div>
+          <div class="ds-table-footer"><span class="ds-page-summary" id="listSummary">30 of 30 reports</span></div>
+        </div>
+      </div>
+    </main>
+<!-- app-frame:bottom -->
+  <footer class="ds-app-footer d-flex flex-wrap align-items-center gap-2 column-gap-4 px-4 py-3 border-top bg-body small text-body-secondary">
+    <p class="mb-0">NEDSS Base System 6.0.16 &middot; &copy; 2026 Texas Health and Human Services</p>
+    <nav aria-label="Footer" class="ms-auto">
+      <ul class="list-unstyled d-flex flex-wrap gap-4 mb-0">
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </nav>
+  </footer>
+</div>
+<!-- /app-frame:bottom -->
+<script>
+/* Search filters the table as you type and says how many rows show; focus never moves. */
+(function () {
+  var input = document.getElementById('listFilter'), status = document.getElementById('listStatus'), empty = document.getElementById('listEmpty'), summary = document.getElementById('listSummary'), t;
+  var rows = Array.prototype.slice.call(document.querySelectorAll('#listTable tbody tr')), noun = input.getAttribute('data-noun');
+  input.addEventListener('input', function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      var q = input.value.trim().toLowerCase(), n = 0;
+      rows.forEach(function (r) { var hit = !q || r.textContent.toLowerCase().indexOf(q) !== -1; r.hidden = !hit; if (hit) n++; });
+      empty.hidden = n > 0;
+      summary.textContent = n + ' of ' + rows.length + ' ' + noun;
+      status.textContent = q ? n + ' of ' + rows.length + ' ' + noun + ' shown' : '';
+    }, 300);
+  });
+})();
+</script>
+</body>
+</html>

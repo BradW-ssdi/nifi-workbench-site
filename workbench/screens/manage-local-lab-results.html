@@ -68,13 +68,13 @@
         <h1 class="display-6 mb-0 mt-2">Manage Local Lab Results</h1>
       </div>
       <div class="page-body d-grid gap-3">
-        <!-- Manage Local Lab Results modernizes ExistingLocallyDefinedLabResults.do: result codes a lab defines for itself. Lab Name is required, and a code or a description. View, Edit, and Add New Lab Result open dialogs (js/ds-record.js); a new result belongs to the lab chosen in the search. DEV: the server searches and pages the results. -->
+        <!-- Manage Local Lab Results modernizes ExistingLocallyDefinedLabResults.do: result codes a lab defines for itself. Lab Name is required, and a code or a description. View, Edit, and Add New Lab Result open dialogs (js/ds-record.js); a new result belongs to the lab chosen in the search. The criteria of the last search show as read-only chips above the results. DEV: the server searches and pages the results. -->
         <div class="ds-error-summary mb-0" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
           <h2 id="errorSummaryTitle">There is a problem</h2>
           <ul id="errorList"></ul>
         </div>
         <div id="searchStatus" class="visually-hidden" role="status" aria-live="polite"></div>
-        <form id="searchForm" data-ds-search data-noun="local lab result" data-nouns="local lab results" data-either="lrCode,lrDesc" data-either-msg="Enter a lab result code or a lab result description" novalidate>
+        <form id="searchForm" data-ds-search data-noun="local lab result" data-nouns="local lab results" data-either="lrCode,lrDesc" data-either-msg="Enter a lab result code or a lab result description" data-criteria-chips novalidate>
           <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Find a local lab result</h2>
             <div class="card-body d-grid gap-3">
               <p class="form-text mb-0" id="criteriaHint">Choose the lab, then enter a lab result code or a description. The sample results are ten of the Default Manual Lab's results.</p>
@@ -86,6 +86,14 @@
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
           <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
             <button type="button" class="btn btn-primary" data-record="add" aria-haspopup="dialog"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New Lab Result</button></div>
+          <!-- The search criteria as Phase 2's read-only chips (queues/queueFilterChips with chip.readOnly). The group is
+               named, so a screen reader hears "Search criteria" before them. DEV: one chip per criterion in the request,
+               in the form's order. -->
+          <div class="ds-phase2">
+            <div class="d-flex flex-wrap" id="filterChips" hidden>
+              <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" role="group" aria-label="Search criteria"></div>
+            </div>
+          </div>
           <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
             <table class="table ds-table" id="resultsTable" data-columns="[&quot;code&quot;, &quot;description&quot;, &quot;labId&quot;]" data-actions="[{&quot;label&quot;: &quot;View&quot;, &quot;icon&quot;: &quot;visibility&quot;, &quot;dialog&quot;: &quot;view&quot;}, {&quot;label&quot;: &quot;Edit&quot;, &quot;icon&quot;: &quot;edit&quot;, &quot;dialog&quot;: &quot;edit&quot;}]" data-row-label="code" data-row-key="code"><caption class="visually-hidden">Local lab results found</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">Lab Result Code</th><th scope="col">Lab Result Description</th><th scope="col">Lab ID</th></tr></thead><tbody></tbody></table></div></div>
           <p class="ds-empty" id="noResults" hidden>No local lab results match these criteria. Check the spelling, or search with less.</p>

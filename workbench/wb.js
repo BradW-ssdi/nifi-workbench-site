@@ -74,6 +74,7 @@
       { title: 'View System', href: 'screens/view-system.html', ext: true, icon: 'open_in_new' },
       { title: 'Edit System', href: 'screens/edit-system.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Questions', href: 'screens/manage-questions.html', ext: true, icon: 'open_in_new' },
+      { title: 'Questions: dialogs', href: 'screens/manage-questions-dialogs.html', ext: true, icon: 'open_in_new' },
       { title: 'Manage Users', href: 'screens/manage-users.html', ext: true, icon: 'open_in_new' },
       { title: 'Edit User', href: 'screens/edit-user.html', ext: true, icon: 'open_in_new' },
       { title: 'View User', href: 'screens/view-user.html', ext: true, icon: 'open_in_new' },

@@ -12,7 +12,12 @@
  * - An applied chip carries .chip-filtered, which chips.css uses to style its operator.
  * - Each change is announced in the chip row's status region, with the result count from the element marked
  *   data-phase3-results-summary.
- * - phase3Queue.sort(button, formId) for column header sort buttons rendered with data-sort-next.
+ * - The queue table is Phase 2's: every request swaps the rows (tbody.tableData) in place, and after each swap this
+ *   fires updatePaginationNav on the form's #paginationNav, which fetches Phase 2's queues/paginationNav fragment
+ *   (as Phase 2's applyListeners does). Focus and the announcement wait for that second swap, so they use the new
+ *   page buttons and the new items message.
+ * - phase3Queue.sort(button, formId) for column header sort buttons rendered with data-sort-next. The header is not
+ *   swapped, so the sort state (aria-sort, .sorted, the next sort) is moved here.
  *
  * The same file runs in the app (static/js/phase3-queue.js) and in the design system templates, where
  * js/phase2-chip-standin.js stands in for chip.js and js/queue-server-standin.js answers the requests.
@@ -24,6 +29,7 @@
     var pendingMessage = null;
     var pendingSummary = false;
     var lastTrigger = null;
+    var awaitingNav = {};
 
     function form(formId) { return document.getElementById(formId); }
     function chipRow(formId) { var f = form(formId); return f && f.querySelector("[data-phase3-queue-chips]"); }
@@ -68,6 +74,23 @@
         if (!row) { return null; }
         var buttons = row.querySelectorAll(".chipsWithSubMenu:not([hidden]) .chip-expand, #filtersId");
         return buttons.length ? buttons[0] : null;
+    }
+
+    /*
+     * The header shows the sort in the form's #sorting ("column:asc" or "column:desc"): aria-sort and .sorted on the
+     * sorted column's th (which show its caret, turned for ascending), and each button's next sort.
+     */
+    function syncSortHeader(formId) {
+        var f = form(formId);
+        if (!f) { return; }
+        var parts = (f.querySelector("#sorting").value || "").split(":");
+        var key = parts[0], desc = (parts[1] || "").toLowerCase() === "desc";
+        f.querySelectorAll("thead button[data-sort-next]").forEach(function (b) {
+            var th = b.closest("th"), on = b.id === key;
+            th.classList.toggle("sorted", on);
+            if (on) { th.setAttribute("aria-sort", desc ? "descending" : "ascending"); } else { th.removeAttribute("aria-sort"); }
+            b.setAttribute("data-sort-next", b.id + (on && !desc ? ":desc" : ":asc"));
+        });
     }
 
     /* Close button of a chip added from Filter, and unchecking it in the Filter menu. */
@@ -136,10 +159,11 @@
                 if (check) { check.checked = false; }
             }
         });
-        // Phase 2's resetSorting expects Phase 2's table header (a "<column>Column" header holding a caret icon) and
-        // throws on any other table, so the sort is reset here; the server renders the header from it.
+        // Phase 2's resetSorting expects its own header (a "<column>Column" th holding an <i> caret) and throws on
+        // these sort buttons, so the sort is reset here, and the header with it.
         var f = form(formId);
         f.querySelector("#sorting").value = f.querySelector("#originalSorting").value;
+        syncSortHeader(formId);
         f.querySelector("#paginationNbr").value = "{'page':'0'}";
         // the queue's search box (a named search input in the form; the chips' own search boxes have no name)
         f.querySelectorAll("input[type='search'][name]").forEach(function (box) { box.value = ""; });
@@ -164,18 +188,31 @@
         f.querySelector("#paginationNbr").value = "{'page':'0'}";
         var resetDiv = f.querySelector("#clearFiltersDiv");
         if (resetDiv) { resetDiv.style.display = ""; }
+        syncSortHeader(formId);
+    }
+
+    /* The control that asked for new results, found again after the pagination bar is replaced: by its id, or for
+       Phase 2's Previous and Next (no id on the button) by its li's id. */
+    function triggerOf(elt) {
+        if (!elt) { return null; }
+        if (elt.id) { return "#" + elt.id; }
+        var li = elt.closest && elt.closest("li[id]");
+        return li ? "#" + li.id + " > button" : null;
     }
 
     document.addEventListener("htmx:beforeRequest", function (evt) {
         var elt = evt.detail && evt.detail.elt;
-        lastTrigger = elt && elt.id ? elt.id : null;
-        // a sort button: the new order is announced with the result count
+        // the pagination bar fetching its own new content is the second half of a request, not a new one
+        if (elt && elt.id === "paginationNav") { return; }
+        lastTrigger = triggerOf(elt);
+        // a sort button: the new order (already in #sorting) is announced with the result count
         if (elt && elt.getAttribute && elt.getAttribute("data-sort-next")) {
-            var dir = /:desc$/.test(elt.getAttribute("data-sort-next")) ? "descending" : "ascending";
+            var sorting = elt.closest("form") && elt.closest("form").querySelector("#sorting");
+            var dir = sorting && /:desc$/.test(sorting.value) ? "descending" : "ascending";
             pendingMessage = "Sorted by " + elt.textContent.trim().replace(/\s+/g, " ") + ", " + dir + ".";
         }
         // a page button or the page size: the new range is announced
-        if (elt && elt.closest && (elt.closest(".pagination") || elt.id === "pageSize")) {
+        if (elt && elt.closest && (elt.closest(".pagination") || elt.id === "paginationNavBarPageSizeDropdown")) {
             pendingSummary = true;
         }
         // a control marked data-phase3-announce (for example a search box) has the new result count announced
@@ -205,17 +242,32 @@
         pendingMessage = applied ? "Filter applied: " + labelOf(chip.id) + " " + value.trim() + "." : "Filter cleared: " + labelOf(chip.id) + ".";
     });
 
-    document.addEventListener("htmx:afterSettle", function () {
+    /* New rows: the pagination bar fetches its new content (Phase 2's updatePaginationNav). */
+    document.addEventListener("htmx:afterSwap", function (evt) {
+        var target = evt.detail && evt.detail.target;
+        var f = target && target.classList && target.classList.contains("tableData") && target.closest("form");
+        var nav = f && f.querySelector("#paginationNav[hx-trigger]");
+        if (!nav || !f.querySelector("[data-phase3-queue-chips]") || typeof htmx === "undefined") { return; }
+        awaitingNav[f.id] = true;
+        htmx.trigger(nav, "updatePaginationNav");
+    });
+
+    document.addEventListener("htmx:afterSettle", function (evt) {
+        var target = evt.detail && evt.detail.target;
+        var settled = target && target.closest && target.closest("form");
+        // the rows are in; wait for the pagination bar, which holds the page buttons and the new items message
+        if (settled && awaitingNav[settled.id] && target.classList.contains("tableData")) { return; }
+        if (settled && target.id === "paginationNav") { delete awaitingNav[settled.id]; }
         document.querySelectorAll("[data-phase3-queue-chips]").forEach(function (row) {
             var formId = row.getAttribute("data-form-id");
             if (pendingFocus === "first") {
                 var b = firstChipButton(formId);
                 if (b) { b.focus(); }
             } else if (lastTrigger && (!document.activeElement || document.activeElement === document.body)) {
-                // htmx puts focus back on a replaced control with the same id; Previous or Next comes back disabled
-                // at the first or last page, so focus goes to the current page instead of being lost
-                var again = document.getElementById(lastTrigger);
+                // htmx puts focus back on a replaced control with the same id; Previous and Next have none, and come
+                // back disabled at the first or last page, so focus goes to the current page instead of being lost
                 var f = form(formId);
+                var again = f && f.querySelector(lastTrigger);
                 var current = f && f.querySelector(".pagination [aria-current='page']");
                 if (again && !again.disabled) { again.focus(); } else if (current) { current.focus(); }
             }

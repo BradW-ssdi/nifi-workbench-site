@@ -19,9 +19,9 @@
   .sm-nav-label { flex: 1 1 auto; min-width: 0; }
   .sm-nav-count { flex: none; min-width: 24px; padding: 0 7px; border-radius: 999px; background: var(--bs-secondary-bg); font-size: 12px; font-weight: 600; text-align: center; line-height: 20px; }
   .sm-nav-link:hover { background: var(--ds-tint); }
-  /* the module in view: weight and a bar as well as color (1.4.1) */
-  .sm-nav-link[aria-current="location"] { background: var(--ds-tint); color: var(--bs-link-color); font-weight: 600; box-shadow: inset 3px 0 0 var(--bs-primary); }
-  .sm-nav-link[aria-current="location"] .sm-nav-count { background: var(--bs-primary); color: var(--ds-on-primary); }
+  /* the chosen module: weight and a bar as well as color (1.4.1) */
+  .sm-nav-link[aria-current="true"] { background: var(--ds-tint); color: var(--bs-link-color); font-weight: 600; box-shadow: inset 3px 0 0 var(--bs-primary); }
+  .sm-nav-link[aria-current="true"] .sm-nav-count { background: var(--bs-primary); color: var(--ds-on-primary); }
   .sm-nav-link:focus-visible { outline: 2px solid var(--bs-focus-ring-color) !important; outline-offset: 2px !important; box-shadow: none !important; }
   .menu-card { scroll-margin-top: calc(var(--ds-header-height) + 16px); }
   .menu-card h2:focus { outline: none; }
@@ -29,8 +29,7 @@
   .menu-find { display: grid; gap: 6px; }
   .menu-find .form-control { width: 100%; min-height: 40px; }
   .menu-empty { margin: 0; padding: 16px; border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius-lg); color: var(--bs-secondary-color); }
-  .menu-cols { columns: 2 320px; column-gap: 20px; }
-  .menu-card { break-inside: avoid; display: inline-block; width: 100%; margin: 0 0 20px; vertical-align: top; }
+  .sm-panel { display: grid; gap: 20px; }
   .menu-card .card-header h2 { font-size: 18px; }
   .menu-list, .menu-list ul { list-style: none; margin: 0; padding: 0; }
   .menu-list { padding: 8px 0; }
@@ -104,8 +103,9 @@
   </div>
   <div class="page-body">
     <div class="alert alert-success sm-done mb-0" id="resetCacheDone" role="status" tabindex="-1" hidden></div>
-    <!-- System Management main menu: a side nav of modules beside a card for every module (the BA review chose the
-         workbench layout). The side nav jumps to a card and marks the card in view; Find a setting filters both.
+    <!-- System Management main menu, the directory layout: a side nav of modules beside the chosen module's card
+         (BA review 2026-11-03). The first module is chosen on load. A nav link shows its module's card in place of the
+         one shown and moves focus to its heading; Find a setting shows the matches of every module while it has text.
          DEV: the cards and links are permission-gated server-side; render only what the profile allows, and drop a
          module (card and nav item) that has no visible settings. Counts are the visible settings per module.
          DEV: the External Applications links take their URLs from the environment's configuration; they open in a
@@ -118,27 +118,27 @@
         </div>
         <nav class="sm-nav" aria-label="System Management modules">
           <ul>
-            <li data-nav-for="mod-decision-support"><a class="sm-nav-link" href="#mod-decision-support"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#account_tree"/></svg><span class="sm-nav-label">Decision Support</span><span class="sm-nav-count" data-count-for="mod-decision-support" aria-hidden="true">1</span><span class="visually-hidden" data-count-text-for="mod-decision-support">, 1 setting</span></a></li>
-            <li data-nav-for="mod-case-lab"><a class="sm-nav-link" href="#mod-case-lab"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#science"/></svg><span class="sm-nav-label">Case Report and Laboratory</span><span class="sm-nav-count" data-count-for="mod-case-lab" aria-hidden="true">13</span><span class="visually-hidden" data-count-text-for="mod-case-lab">, 13 settings</span></a></li>
-            <li data-nav-for="mod-messaging"><a class="sm-nav-link" href="#mod-messaging"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#mail"/></svg><span class="sm-nav-label">Messaging</span><span class="sm-nav-count" data-count-for="mod-messaging" aria-hidden="true">3</span><span class="visually-hidden" data-count-text-for="mod-messaging">, 3 settings</span></a></li>
-            <li data-nav-for="mod-page-management"><a class="sm-nav-link" href="#mod-page-management"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#article"/></svg><span class="sm-nav-label">Page Management</span><span class="sm-nav-count" data-count-for="mod-page-management" aria-hidden="true">7</span><span class="visually-hidden" data-count-text-for="mod-page-management">, 7 settings</span></a></li>
-            <li data-nav-for="mod-reports"><a class="sm-nav-link" href="#mod-reports"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#monitoring"/></svg><span class="sm-nav-label">Reports</span><span class="sm-nav-count" data-count-for="mod-reports" aria-hidden="true">3</span><span class="visually-hidden" data-count-text-for="mod-reports">, 3 settings</span></a></li>
-            <li data-nav-for="mod-security"><a class="sm-nav-link" href="#mod-security"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#admin_panel_settings"/></svg><span class="sm-nav-label">Security</span><span class="sm-nav-count" data-count-for="mod-security" aria-hidden="true">2</span><span class="visually-hidden" data-count-text-for="mod-security">, 2 settings</span></a></li>
-            <li data-nav-for="mod-external"><a class="sm-nav-link" href="#mod-external"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#open_in_new"/></svg><span class="sm-nav-label">External Applications</span><span class="sm-nav-count" data-count-for="mod-external" aria-hidden="true">2</span><span class="visually-hidden" data-count-text-for="mod-external">, 2 settings</span></a></li>
+            <li data-nav-for="mod-decision-support"><a class="sm-nav-link" href="#mod-decision-support" aria-controls="mod-decision-support" aria-current="true"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#account_tree"/></svg><span class="sm-nav-label">Decision Support</span><span class="sm-nav-count" data-count-for="mod-decision-support" aria-hidden="true">1</span><span class="visually-hidden" data-count-text-for="mod-decision-support">, 1 setting</span></a></li>
+            <li data-nav-for="mod-case-lab"><a class="sm-nav-link" href="#mod-case-lab" aria-controls="mod-case-lab"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#science"/></svg><span class="sm-nav-label">Case Report and Laboratory</span><span class="sm-nav-count" data-count-for="mod-case-lab" aria-hidden="true">13</span><span class="visually-hidden" data-count-text-for="mod-case-lab">, 13 settings</span></a></li>
+            <li data-nav-for="mod-messaging"><a class="sm-nav-link" href="#mod-messaging" aria-controls="mod-messaging"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#mail"/></svg><span class="sm-nav-label">Messaging</span><span class="sm-nav-count" data-count-for="mod-messaging" aria-hidden="true">3</span><span class="visually-hidden" data-count-text-for="mod-messaging">, 3 settings</span></a></li>
+            <li data-nav-for="mod-page-management"><a class="sm-nav-link" href="#mod-page-management" aria-controls="mod-page-management"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#article"/></svg><span class="sm-nav-label">Page Management</span><span class="sm-nav-count" data-count-for="mod-page-management" aria-hidden="true">7</span><span class="visually-hidden" data-count-text-for="mod-page-management">, 7 settings</span></a></li>
+            <li data-nav-for="mod-reports"><a class="sm-nav-link" href="#mod-reports" aria-controls="mod-reports"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#monitoring"/></svg><span class="sm-nav-label">Reports</span><span class="sm-nav-count" data-count-for="mod-reports" aria-hidden="true">3</span><span class="visually-hidden" data-count-text-for="mod-reports">, 3 settings</span></a></li>
+            <li data-nav-for="mod-security"><a class="sm-nav-link" href="#mod-security" aria-controls="mod-security"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#admin_panel_settings"/></svg><span class="sm-nav-label">Security</span><span class="sm-nav-count" data-count-for="mod-security" aria-hidden="true">2</span><span class="visually-hidden" data-count-text-for="mod-security">, 2 settings</span></a></li>
+            <li data-nav-for="mod-external"><a class="sm-nav-link" href="#mod-external" aria-controls="mod-external"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#open_in_new"/></svg><span class="sm-nav-label">External Applications</span><span class="sm-nav-count" data-count-for="mod-external" aria-hidden="true">2</span><span class="visually-hidden" data-count-text-for="mod-external">, 2 settings</span></a></li>
           </ul>
         </nav>
       </div>
       <div class="sm-cards">
         <div id="findStatus" class="visually-hidden" role="status" aria-live="polite"></div>
         <p class="menu-empty" id="findEmpty" hidden>No settings match your search. Check the spelling, or clear the search to see every setting.</p>
-        <div class="menu-cols">
+        <div class="sm-panel">
         <section class="card shadow-sm menu-card" id="mod-decision-support" aria-labelledby="h-decision-support" data-find-group>
           <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#account_tree"/></svg><h2 class="mb-0" id="h-decision-support" tabindex="-1">Decision Support Management</h2></div>
           <ul class="menu-list">
             <li data-find-item data-find-count data-find-text="manage workflow decision support decision support management"><a class="menu-link" href="wds-algorithm-library.html"><span>Manage Workflow Decision Support</span></a></li>
           </ul>
         </section>
-        <section class="card shadow-sm menu-card" id="mod-case-lab" aria-labelledby="h-case-lab" data-find-group>
+        <section class="card shadow-sm menu-card" id="mod-case-lab" aria-labelledby="h-case-lab" data-find-group hidden>
           <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#science"/></svg><h2 class="mb-0" id="h-case-lab" tabindex="-1">Case Report and Laboratory Management</h2></div>
           <ul class="menu-list">
             <li data-find-item data-find-count data-find-text="manage trigger codes for case reporting case report and laboratory management"><a class="menu-link" href="manage-trigger-codes.html"><span>Manage Trigger Codes for Case Reporting</span></a></li>
@@ -164,15 +164,15 @@
             <li data-find-item data-find-count data-find-text="reset lab mapping cache case report and laboratory management"><button type="button" class="menu-link menu-action" data-opens="resetCacheDialog" aria-haspopup="dialog"><span>Reset Lab Mapping Cache</span></button></li>
           </ul>
         </section>
-        <section class="card shadow-sm menu-card" id="mod-messaging" aria-labelledby="h-messaging" data-find-group>
+        <section class="card shadow-sm menu-card" id="mod-messaging" aria-labelledby="h-messaging" data-find-group hidden>
           <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#mail"/></svg><h2 class="mb-0" id="h-messaging" tabindex="-1">Messaging Management</h2></div>
           <ul class="menu-list">
             <li data-find-item data-find-count data-find-text="manage elr activity log messaging management"><a class="menu-link" href="manage-elr-activity-log.html"><span>Manage ELR Activity Log</span></a></li>
-            <li data-find-item data-find-count data-find-text="manage phdc activity log messaging management"><a class="menu-link" href="manage-elr-activity-log.html"><span>Manage PHDC Activity Log</span></a></li>
+            <li data-find-item data-find-count data-find-text="manage phdc activity log messaging management"><a class="menu-link" href="manage-phdc-activity-log.html"><span>Manage PHDC Activity Log</span></a></li>
             <li data-find-item data-find-count data-find-text="manage sending and receiving systems messaging management"><a class="menu-link" href="manage-systems.html"><span>Manage Sending and Receiving Systems</span></a></li>
           </ul>
         </section>
-        <section class="card shadow-sm menu-card" id="mod-page-management" aria-labelledby="h-page-management" data-find-group>
+        <section class="card shadow-sm menu-card" id="mod-page-management" aria-labelledby="h-page-management" data-find-group hidden>
           <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#article"/></svg><h2 class="mb-0" id="h-page-management" tabindex="-1">Page Management</h2></div>
           <ul class="menu-list">
             <li data-find-item data-find-count data-find-text="manage bulk import templates page management"><a class="menu-link" href="manage-bulk-import-templates.html"><span>Manage Bulk Import Templates</span></a></li>
@@ -184,25 +184,27 @@
             <li data-find-item data-find-count data-find-text="manage value sets page management"><a class="menu-link" href="manage-value-sets.html"><span>Manage Value Sets</span></a></li>
           </ul>
         </section>
-        <section class="card shadow-sm menu-card" id="mod-reports" aria-labelledby="h-reports" data-find-group>
+        <section class="card shadow-sm menu-card" id="mod-reports" aria-labelledby="h-reports" data-find-group hidden>
           <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#monitoring"/></svg><h2 class="mb-0" id="h-reports" tabindex="-1">Report Management</h2></div>
           <ul class="menu-list">
             <li data-find-item data-find-count data-find-text="manage data sources report management"><a class="menu-link" href="manage-data-sources.html"><span>Manage Data Sources</span></a></li>
-            <li data-find-item data-find-count data-find-text="manage reports report management"><a class="menu-link" href="#"><span>Manage Reports</span></a></li>
+            <li data-find-item data-find-count data-find-text="manage reports report management"><a class="menu-link" href="manage-reports.html"><span>Manage Reports</span></a></li>
             <li data-find-item data-find-count data-find-text="manage report sections report management"><a class="menu-link" href="manage-report-sections.html"><span>Manage Report Sections</span></a></li>
           </ul>
         </section>
-        <section class="card shadow-sm menu-card" id="mod-security" aria-labelledby="h-security" data-find-group>
+        <section class="card shadow-sm menu-card" id="mod-security" aria-labelledby="h-security" data-find-group hidden>
           <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#admin_panel_settings"/></svg><h2 class="mb-0" id="h-security" tabindex="-1">Security Management</h2></div>
           <ul class="menu-list">
             <li data-find-item data-find-count data-find-text="manage permission sets security management"><a class="menu-link" href="manage-permission-sets.html"><span>Manage Permission Sets</span></a></li>
             <li data-find-item data-find-count data-find-text="manage users security management"><a class="menu-link" href="manage-users.html"><span>Manage Users</span></a></li>
           </ul>
         </section>
-        <section class="card shadow-sm menu-card" id="mod-external" aria-labelledby="h-external" data-find-group>
+        <section class="card shadow-sm menu-card" id="mod-external" aria-labelledby="h-external" data-find-group hidden>
           <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon" aria-hidden="true"><use href="../../icons/sprite.svg#open_in_new"/></svg><h2 class="mb-0" id="h-external" tabindex="-1">External Applications</h2></div>
           <ul class="menu-list">
+            <!-- DEV: href is the QUESTIONNAIRE_AUTHORING_LINK setting (PropertyService.getQuestionnaireAuthoringLink()) -->
             <li data-find-item data-find-count data-find-text="questionnaire authoring external applications"><a class="menu-link" href="#" target="_blank" rel="noopener"><span>Questionnaire Authoring</span><svg class="ds-icon ds-ext-icon" aria-hidden="true"><use href="../../icons/sprite.svg#open_in_new"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+            <!-- DEV: href is the SURVEY_ADMINISTRATOR_LINK setting (PropertyService.getSurveyAdministratorLink()) followed by ?userId= and the entry ID of the signed in user -->
             <li data-find-item data-find-count data-find-text="survey administrator external applications"><a class="menu-link" href="#" target="_blank" rel="noopener"><span>Survey Administrator</span><svg class="ds-icon ds-ext-icon" aria-hidden="true"><use href="../../icons/sprite.svg#open_in_new"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
           </ul>
         </section>
@@ -264,57 +266,56 @@
 })();
 </script>
 <script>
-/* Side nav: a link moves focus to its module's heading (so the next Tab continues inside that card) and the module in
-   view is marked with aria-current="location". Find a setting hides modules with no match from the nav as well, and
-   the counts follow the matches. */
+/* Side nav (directory layout): the central panel shows the chosen module's card only. A link shows its module's
+   card in place of the one shown, marks the module with aria-current="true", puts its id in the address (so Back
+   and a shared link come to the same module), and moves focus to the card's heading, so the next Tab continues in
+   the card. On load the module in the address is chosen, or the first one.
+   While Find a setting has text, every module with a match shows (and the nav lists only those, with their match
+   counts); cleared, the chosen module shows again. Choosing a module while searching clears the search. */
 (function () {
   var links = Array.prototype.slice.call(document.querySelectorAll('.sm-nav-link'));
   var cards = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
-  /* A module chosen in the nav stays marked while its card is on screen, even when the page cannot scroll it to the
-     top (the last cards of a column). */
-  var chosen = null;
-  function mark(id) {
-    links.forEach(function (a) {
-      if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+  var find = document.getElementById('find');
+  var chosen = cards[0];
+  function searching() { return !!find.value.trim(); }
+  function show() {
+    links.forEach(function (a, i) {
+      if (cards[i] === chosen) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
     });
+    if (!searching()) cards.forEach(function (c) { c.hidden = c !== chosen; });
+  }
+  function choose(card, focus) {
+    chosen = card;
+    if (searching()) {
+      find.value = '';
+      find.dispatchEvent(new Event('search'));   /* Find a setting runs at once and un-hides every item */
+    }
+    show();
+    if (focus) {
+      card.scrollIntoView({ block: 'nearest' });
+      card.querySelector('h2').focus({ preventScroll: true });
+    }
   }
   links.forEach(function (a, i) {
     a.addEventListener('click', function (e) {
       e.preventDefault();
-      var card = cards[i];
-      card.scrollIntoView({ block: 'start' });
-      card.querySelector('h2').focus({ preventScroll: true });
-      chosen = card;
-      mark(card.id);
+      if (history.replaceState) history.replaceState(null, '', '#' + cards[i].id);
+      choose(cards[i], true);
     });
   });
-  /* The module whose top is nearest the top of the viewport, among those in view */
-  function update() {
-    if (chosen) {
-      var cr = chosen.getBoundingClientRect();
-      if (!chosen.hidden && cr.bottom > 0 && cr.top < window.innerHeight) { mark(chosen.id); return; }
-      chosen = null;
-    }
-    var best = null, bestTop = Infinity;
-    cards.forEach(function (c) {
-      if (c.hidden) return;
-      var r = c.getBoundingClientRect();
-      if (r.bottom > 80 && r.top < window.innerHeight * 0.6 && Math.abs(r.top) < bestTop) { best = c; bestTop = Math.abs(r.top); }
-    });
-    if (best) mark(best.id);
-  }
-  var scroller = document.querySelector('main');
-  [window, scroller].forEach(function (t) { if (t) t.addEventListener('scroll', function () { window.requestAnimationFrame(update); }, { passive: true }); });
-  update();
-  document.addEventListener('menu:filtered', function () {
+  function fromAddress() { return location.hash && cards.filter(function (c) { return '#' + c.id === location.hash; })[0]; }
+  var start = fromAddress();
+  if (start) choose(start, false);
+  window.addEventListener('hashchange', function () { var c = fromAddress(); if (c && c !== chosen) choose(c, false); });
+  document.addEventListener('menu:filtered', function (e) {
+    var q = e.detail && e.detail.query;
     cards.forEach(function (c, i) {
       var n = c.querySelectorAll('[data-find-count]:not([hidden])').length;
-      var li = links[i].closest('li');
-      li.hidden = c.hidden;
+      links[i].closest('li').hidden = !!q && c.hidden;
       document.querySelector('[data-count-for="' + c.id + '"]').textContent = n;
       document.querySelector('[data-count-text-for="' + c.id + '"]').textContent = ', ' + n + (n === 1 ? ' setting' : ' settings');
     });
-    update();
+    show();
   });
 })();
 </script>
