@@ -76,17 +76,18 @@
         <div class="ds-toolbar">
           <input class="form-control" type="search" id="listFilter" data-noun="data sources" data-list-text-filter aria-label="Search data sources" placeholder="Search to filter..." autocomplete="off">
           <span class="ms-auto"></span>
-          <a class="btn btn-primary" href="register-data-source.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Register Data Source</a>
+          <a class="btn btn-outline-primary" href="register-data-source.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Register Data Source</a>
         </div>
         <!-- Column filter chips (BA review: every library has them): Phase 2's queue chips, in Phase 2's order (the chips,
              Filter, then "| Reset" while a filter is applied). DEV: build this with the Phase 3 queue component in the app
              (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
         <div class="ds-phase2">
           <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="listTable" data-noun="data sources">
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Secure">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Secure" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="secure">
                 <span id="secure-chipLabel">Secure</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="secure-subMenu" aria-label="Edit Secure filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Secure filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="secure-subMenu"></div>
             </div>

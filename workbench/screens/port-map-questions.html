@@ -6,6 +6,7 @@
 <title>Map Questions - Page Management - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
 <script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,30 +83,40 @@
           <span class="ms-auto"></span>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+          <div class="ds-table-settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Table Settings"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg></button>
+            <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="questionTable">
+              <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
+              <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
+            </div>
+          </div>
         </div>
         <!-- Column filter chips: Phase 2's queue chips, in Phase 2's order (the chips, Filter, then "| Reset" while a
              filter is applied). DEV: build this with the Phase 3 queue component in the app
              (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
         <div class="ds-phase2">
           <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="questionTable" data-noun="questions">
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Status">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Status" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="qmStatus">
                 <span id="qmStatus-chipLabel">Status</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="qmStatus-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Status filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="qmStatus-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="From Data Type">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="From Data Type" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="qmType">
                 <span id="qmType-chipLabel">From Data Type</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="qmType-subMenu" aria-label="Edit From Data Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove From Data Type filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="qmType-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Map">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Map" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="qmMap">
                 <span id="qmMap-chipLabel">Map</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="qmMap-subMenu" aria-label="Edit Map filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Map filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="qmMap-subMenu"></div>
             </div>
@@ -122,9 +133,9 @@
         <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
         <div class="ds-table-frame">
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Map Questions table, scrolls horizontally when zoomed">
-          <table class="table ds-table" id="questionTable">
+          <table class="table ds-table tableCompact" id="questionTable">
             <caption class="visually-hidden">Questions on the From page and the To page question each maps to. Column headers with buttons are sortable.</caption>
-            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col"><button class="ds-sort-btn" data-sort="1">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="2">From ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">From Label <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">From Data Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Map <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">To ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="7">To Label <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="8">To Data Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th></tr></thead>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col"><button class="ds-sort-btn" data-sort="1">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="2">From ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">From Label <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">From Data Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Map <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">To ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="7">To Label <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="8">To Data Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th></tr></thead>
             <tbody>
               <tr data-q="VAR218"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR218" aria-haspopup="dialog" aria-label="Map VAR218 Manufacturer"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR218</td><td>Manufacturer</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">VAC107</td><td data-c="toLabel">Vaccine Manufacturer(1)</td><td data-c="toType">CODED</td></tr>
               <tr data-q="VAR219"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR219" aria-haspopup="dialog" aria-label="Map VAR219 Lot Number"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR219</td><td>Lot Number</td><td>TEXT</td><td data-c="map">Yes</td><td data-c="toId">VAC108</td><td data-c="toLabel">Vaccine Lot Number(1)</td><td data-c="toType">TEXT</td></tr>

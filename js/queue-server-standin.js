@@ -88,8 +88,10 @@
             var tip = function (verb) { return ' data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="' + verb + " " + esc(Q.actions.noun) + '"'; };
             return '<td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View ' + name + '"' + tip("View") +
                 '><svg class="ds-icon" aria-hidden="true"><use href="' + ICON + 'description"/></svg></button>' +
-                '<a class="btn btn-light rounded-circle btn-sm" href="' + Q.actions.edit + '" aria-label="Edit ' + name + '"' + tip("Edit") +
-                '><svg class="ds-icon" aria-hidden="true"><use href="' + ICON + 'edit"/></svg></a></td>';
+                /* Edit: a link to its page, or (no page) a button that opens the Edit dialog */
+                (Q.actions.edit ? '<a class="btn btn-light rounded-circle btn-sm" href="' + Q.actions.edit + '"' : '<button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog"') +
+                ' aria-label="Edit ' + name + '"' + tip("Edit") +
+                '><svg class="ds-icon" aria-hidden="true"><use href="' + ICON + 'edit"/></svg>' + (Q.actions.edit ? '</a>' : '</button>') + '</td>';
         }
         var v = r[c.field] || "", none = '<span class="visually-hidden">None</span>';
         if (c.type === "badge") { return '<td><span class="badge ' + (c.badges[v] || c.otherBadge) + '">' + esc(v) + "</span></td>"; }

@@ -92,24 +92,27 @@
                (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
           <div class="ds-phase2">
             <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="resultsTable" data-noun="records">
-              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Status">
+              <div class="chipsWithSubMenu" data-chip-type="D" data-column="Status" hidden>
                 <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="logStatusChip">
                   <span id="logStatusChip-chipLabel">Status</span>
                   <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="logStatusChip-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                  <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Status filter"></button>
                 </div>
                 <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="logStatusChip-subMenu"></div>
               </div>
-              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Algorithm">
+              <div class="chipsWithSubMenu" data-chip-type="D" data-column="Algorithm" hidden>
                 <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="logAlgorithmChip">
                   <span id="logAlgorithmChip-chipLabel">Algorithm</span>
                   <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="logAlgorithmChip-subMenu" aria-label="Edit Algorithm filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                  <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Algorithm filter"></button>
                 </div>
                 <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="logAlgorithmChip-subMenu"></div>
               </div>
-              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Action">
+              <div class="chipsWithSubMenu" data-chip-type="D" data-column="Action" hidden>
                 <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="logActionChip">
                   <span id="logActionChip-chipLabel">Action</span>
                   <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="logActionChip-subMenu" aria-label="Edit Action filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                  <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Action filter"></button>
                 </div>
                 <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="logActionChip-subMenu"></div>
               </div>

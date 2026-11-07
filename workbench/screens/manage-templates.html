@@ -6,6 +6,7 @@
 <title>Manage Templates - Page Management - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
 <script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,23 +76,32 @@
           <a class="btn btn-outline-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#upload_file"/></svg>Import</a>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+          <div class="ds-table-settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Table Settings"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg></button>
+            <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="templateTable">
+              <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
+              <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
+            </div>
+          </div>
         </div>
         <!-- Column filter chips: Phase 2's queue chips, in Phase 2's order (the chips, Filter, then "| Reset" while a
              filter is applied). DEV: build this with the Phase 3 queue component in the app
              (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
         <div class="ds-phase2">
           <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="templateTable" data-noun="templates">
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Source">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Source" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="tpSource">
                 <span id="tpSource-chipLabel">Source</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="tpSource-subMenu" aria-label="Edit Source filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Source filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="tpSource-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Status">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Status" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="tpStatus">
                 <span id="tpStatus-chipLabel">Status</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="tpStatus-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Status filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="tpStatus-subMenu"></div>
             </div>
@@ -108,9 +118,9 @@
         <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
         <div class="ds-table-frame">
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Manage Templates table, scrolls horizontally when zoomed">
-          <table class="table ds-table" id="templateTable">
+          <table class="table ds-table tableCompact" id="templateTable">
             <caption class="visually-hidden">Template library. Column headers with buttons are sortable.</caption>
-            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="1">Template Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="2">Template Description <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">Last Updated By <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Source <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th></tr></thead>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="1">Template Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="2">Template Description <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">Last Updated By <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Source <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th></tr></thead>
             <tbody>
               <tr><td class="ds-row-actions"><a href="view-template.html" aria-label="View Acute Flaccid Myelitis Prod"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td>Acute Flaccid Myelitis Prod</td><td>Acute Flaccid Myelitis Prod</td><td>09/20/2016</td><td>Lucia Navarro</td><td>TX.DOH.PROD.1</td><td><span class="badge text-bg-success">Active</span></td></tr>
               <tr><td class="ds-row-actions"><a href="#" aria-label="View AMEBIASIS"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td>AMEBIASIS</td><td>Amebiasis template for legacy to page builder bulk conversion.</td><td>03/26/2026</td><td>Marcus Chen</td><td>TX.DOH.PROD.1</td><td><span class="badge text-bg-success">Active</span></td></tr>

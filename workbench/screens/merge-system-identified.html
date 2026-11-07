@@ -147,8 +147,8 @@
                 <!-- Merge column (BA review): labeled "Merge", no Select All; each row's box is named for its patient. -->
                 <th scope="col" class="ds-select-col">Merge</th>
                 <th scope="col" class="ds-select-col">Surviving ID</th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="2">Patient ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="3">Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="2">Patient ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="3">Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
                 <th scope="col">Age / DOB / Sex</th>
                 <th scope="col">Address</th>
                 <th scope="col">Phone / Email</th>
@@ -246,7 +246,7 @@
     <div class="modal-header">
       <h2 class="modal-title h5" id="pvTitle">Patient Events</h2>
       <div class="d-flex align-items-center gap-2 ms-auto">
-        <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="pvPrint" aria-label="Print" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
+        <button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm" id="pvPrint" aria-label="Print" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
         <button type="button" class="btn-close" data-dismiss aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button>
       </div>
     </div>
@@ -260,7 +260,7 @@
           <nav class="pv-nav nav flex-column" id="pvNav" aria-label="Patient events"><a class="nav-link" href="#pv-investigations">Investigations</a><a class="nav-link" href="#pv-labReports">Lab Reports</a><a class="nav-link" href="#pv-morbidityReports">Morbidity Reports</a><a class="nav-link" href="#pv-vaccinations">Vaccinations</a><a class="nav-link" href="#pv-treatments">Treatments</a><a class="nav-link" href="#pv-documents">Documents</a><a class="nav-link" href="#pv-contactRecords">Contact Records</a></nav>
         </aside>
         <div class="pv-content">
-          <div class="d-flex align-items-center gap-2"><h3 class="h5 mb-0">Patient Events History</h3><button type="button" class="btn btn-link p-0 ms-auto text-decoration-none" data-toggle-all aria-controls="patientDialog">Collapse All</button></div>
+          <div class="d-flex align-items-center gap-2"><h3 class="h5 mb-0">Patient Events History</h3><button type="button" class="btn btn-link p-0 ms-auto" data-toggle-all aria-controls="patientDialog">Collapse All</button></div>
           <section class="accordion ds-form-accordion" id="pv-investigations" aria-labelledby="pv-investigationsHeading">
             <div class="accordion-item">
               <h4 class="accordion-header" id="pv-investigationsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-investigations-collapse">Investigations <span class="ms-1" id="pv-investigations-count"></span></button></h4>

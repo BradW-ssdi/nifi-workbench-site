@@ -6,6 +6,7 @@
 <title>Manage Users - Security Management - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
 <script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -79,9 +80,16 @@
         <div class="ds-toolbar">
           <input class="form-control" type="search" id="filterInput" aria-label="Filter users" placeholder="Search to filter..." aria-describedby="filterStatus">
           <span class="ms-auto"></span>
-          <a class="btn btn-primary" href="edit-user.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
+          <a class="btn btn-outline-primary" href="edit-user.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+          <div class="ds-table-settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Table Settings"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg></button>
+            <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="userTable">
+              <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
+              <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
+            </div>
+          </div>
         </div>
 
         <!-- Column filters as a chip row (legacy per-header popups: text on
@@ -96,33 +104,33 @@
              this template js/list-filters.js stands in for chip.js and js/phase3-queue.js. -->
         <div class="ds-phase2">
           <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="userTable" data-noun="users">
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Status" data-values="Active">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Status" data-values="Active">
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3 chip-filtered" id="status">
                 <span id="status-chipLabel">Status</span>
                 <div class="d-inline-block position-relative chip-op"><select class="chip-operator rounded-pill" id="status-chipOperator" style="margin-left:10px" aria-label="Status filter operator"><option value="=" selected>= (equals)</option><option value="!=">!= (not equals)</option></select></div>
                 <span id="status-chipValue" style="font-weight: normal;">Active</span>
-                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="status-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="status-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button><button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Status filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="status-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Jurisdiction">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Jurisdiction" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="jurisdiction">
                 <span id="jurisdiction-chipLabel">Jurisdiction</span>
-                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="jurisdiction-subMenu" aria-label="Edit Jurisdiction filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="jurisdiction-subMenu" aria-label="Edit Jurisdiction filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button><button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Jurisdiction filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="jurisdiction-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Program Area">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Program Area" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="programArea">
                 <span id="programArea-chipLabel">Program Area</span>
-                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="programArea-subMenu" aria-label="Edit Program Area filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="programArea-subMenu" aria-label="Edit Program Area filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button><button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Program Area filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="programArea-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Last Login">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Last Login" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="lastLogin">
                 <span id="lastLogin-chipLabel">Last Login</span>
-                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="lastLogin-subMenu" aria-label="Edit Last Login filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="lastLogin-subMenu" aria-label="Edit Last Login filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button><button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Last Login filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="lastLogin-subMenu"></div>
             </div>
@@ -141,21 +149,21 @@
 
         <div class="ds-table-frame">
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="User table, scrolls horizontally when zoomed">
-          <table class="table ds-table" id="userTable">
+          <table class="table ds-table tableCompact" id="userTable">
             <caption class="visually-hidden">Users. Column headers with buttons are sortable. Status changes are made from the View User screen.</caption>
             <thead>
               <tr>
                 <th scope="col"><span class="visually-hidden">Actions</span></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="1">User ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Last Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="3">First Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="4">Jurisdiction <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="5">Program Area <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="6">Permission Set <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="7">Role <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="8">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="9">Date Created <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="10">Last Login <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="1">User ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Last Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="3">First Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="4">Jurisdiction <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="5">Program Area <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="6">Permission Set <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="7">Role <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="8">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="9">Date Created <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="10">Last Login <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
               </tr>
             </thead>
             <!-- DEV: tbody = th:each over users. Multi-value cells (Jurisdiction,

@@ -6,6 +6,7 @@
 <title>Page Porting - Page Management - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
 <script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -74,23 +75,32 @@
           <a class="btn btn-primary" href="port-page.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Port Page</a>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+          <div class="ds-table-settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Table Settings"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg></button>
+            <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="mapTable">
+              <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
+              <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
+            </div>
+          </div>
         </div>
         <!-- Column filter chips: Phase 2's queue chips, in Phase 2's order (the chips, Filter, then "| Reset" while a
              filter is applied). DEV: build this with the Phase 3 queue component in the app
              (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
         <div class="ds-phase2">
           <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="mapTable" data-noun="maps">
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Event Type">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Event Type" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="ppEvent">
                 <span id="ppEvent-chipLabel">Event Type</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="ppEvent-subMenu" aria-label="Edit Event Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Event Type filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="ppEvent-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Mapping Status">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Mapping Status" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="ppStatus">
                 <span id="ppStatus-chipLabel">Mapping Status</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="ppStatus-subMenu" aria-label="Edit Mapping Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Mapping Status filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="ppStatus-subMenu"></div>
             </div>
@@ -107,9 +117,9 @@
         <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
         <div class="ds-table-frame">
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Page Porting table, scrolls horizontally when zoomed">
-          <table class="table ds-table" id="mapTable">
+          <table class="table ds-table tableCompact" id="mapTable">
             <caption class="visually-hidden">Port library: maps that move data from one page to another. Column headers with buttons are sortable.</caption>
-            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col"><button class="ds-sort-btn" data-sort="1">Event Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Map Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">From Page Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">To Page Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Mapping Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">Port Condition <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="7">Port Date <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th></tr></thead>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col"><button class="ds-sort-btn" data-sort="1">Event Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Map Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">From Page Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">To Page Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Mapping Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">Port Condition <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="7">Port Date <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th></tr></thead>
             <tbody>
               <tr><td class="ds-row-actions"><a href="#" aria-label="View map Measles"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td>Investigation</td><td>Measles</td><td>Measles Investigation</td><td>Measles Investigation V2</td><td><span class="badge text-bg-success">Complete</span></td><td>Measles (Rubeola)</td><td>05/05/2026</td></tr>
               <tr><td class="ds-row-actions"><a href="#" aria-label="View map Monkeypox Short"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a></td><td>Investigation</td><td>Monkeypox Short</td><td>Monkeypox</td><td>Monkeypox_Short</td><td><span class="badge text-bg-success">Complete</span></td><td>Monkeypox</td><td>08/09/2022</td></tr>

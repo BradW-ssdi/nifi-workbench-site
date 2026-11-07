@@ -6,6 +6,7 @@
 <title>WDS Algorithm Library - Decision Support - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
 <script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -76,34 +77,41 @@
         <div class="ds-toolbar">
           <input class="form-control" type="search" id="filterInput" aria-label="Filter algorithms" placeholder="Search to filter..." aria-describedby="filterStatus">
           <span class="ms-auto"></span>
-          <a class="btn btn-primary" href="wds-add-algorithm.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
+          <a class="btn btn-outline-primary" href="wds-add-algorithm.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
           <button class="btn btn-outline-primary" id="importBtn"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#upload_file"/></svg>Import</button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+          <div class="ds-table-settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Table Settings"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg></button>
+            <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="algTable">
+              <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
+              <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
+            </div>
+          </div>
         </div>
         <!-- Column filter chips (BA review: every library has them): Phase 2's queue chips, in Phase 2's order (the chips,
              Filter, then "| Reset" while a filter is applied). DEV: build this with the Phase 3 queue component in the app
              (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
         <div class="ds-phase2">
           <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="algTable" data-noun="algorithms">
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Event Type">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Event Type" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="eventType">
                 <span id="eventType-chipLabel">Event Type</span>
-                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="eventType-subMenu" aria-label="Edit Event Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="eventType-subMenu" aria-label="Edit Event Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button><button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Event Type filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="eventType-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Action">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Action" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="action">
                 <span id="action-chipLabel">Action</span>
-                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="action-subMenu" aria-label="Edit Action filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="action-subMenu" aria-label="Edit Action filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button><button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Action filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="action-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Status">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Status" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="status">
                 <span id="status-chipLabel">Status</span>
-                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="status-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="status-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button><button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Status filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="status-subMenu"></div>
             </div>
@@ -122,7 +130,7 @@
         <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
         <div class="ds-table-frame">
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Algorithm table, scrolls horizontally when zoomed">
-          <table class="table ds-table" id="algTable">
+          <table class="table ds-table tableCompact" id="algTable">
             <caption class="visually-hidden">Decision support algorithms. Column headers with buttons are sortable.</caption>
             <thead>
               <tr>
@@ -130,12 +138,12 @@
                 <!-- DEV: sorting is an action, so the control is a BUTTON.
                      On sort: set aria-sort on THIS th, remove it from the others,
                      re-render tbody, update #filterStatus. -->
-                <th scope="col"><button class="ds-sort-btn" data-sort="1">Event Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Algorithm Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="1">Event Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Algorithm Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
                 <th scope="col">Related Condition(s)/Test(s)</th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="4">Action <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="5">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="6">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="4">Action <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="5">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="6">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
               </tr>
             </thead>
             <!-- DEV: tbody is the dynamic region (th:each over algorithms). Row actions are Phase 2's row buttons

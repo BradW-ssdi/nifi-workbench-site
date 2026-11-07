@@ -60,6 +60,9 @@
     for (var node = modal; node && node !== document.body; node = node.parentElement) {
       Array.prototype.forEach.call(node.parentElement.children, function (el) {
         if (el === node || el.hasAttribute('data-ds-backdrop') || el.tagName === 'SCRIPT' || el.hasAttribute('data-ds-inert')) return;
+        /* a type-ahead's list renders on <body> (js/ds-typeahead.js); the list of a field in this dialog stays usable */
+        var list = el.classList.contains('ts-dropdown') && el.querySelector('[id$="-ts-dropdown"]');
+        if (list && modal.querySelector('#' + CSS.escape(list.id.slice(0, -'-ts-dropdown'.length)))) return;
         el.setAttribute('data-ds-inert', el.hasAttribute('inert') ? 'was' : '');
         el.setAttribute('inert', '');
         marked.push(el);

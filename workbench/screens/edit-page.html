@@ -192,7 +192,7 @@
             <p class="mb-0" id="moveWhat"></p>
             <div class="d-grid gap-3" id="moveChoose">
               <div class="ds-field" id="moveTabField"><label for="moveTab">Tab</label><select class="form-select" id="moveTab"></select></div>
-              <div class="ds-field" id="moveParentField"><label for="moveParent" id="moveParentLabel">Destination</label><select class="form-select" id="moveParent" aria-describedby="moveParentHint"></select><span class="form-text" id="moveParentHint" hidden></span></div>
+              <div class="ds-field" id="moveParentField"><label for="moveParent" id="moveParentLabel">Destination</label><select class="form-select" id="moveParent"></select></div>
               <div class="ds-field"><label for="movePos">Position</label><select class="form-select" id="movePos"></select></div>
             </div>
             <p class="mb-0 fw-semibold" id="moveConfirm" tabindex="-1" hidden></p>
@@ -486,11 +486,8 @@
     $('#moveTabField').hidden = locked;
     $('#moveParentField').hidden = kind === 'section' || locked;
     $('#moveParentLabel').textContent = kind === 'question' ? 'Subsection' : 'Section';
-    var hint = $('#moveParentHint');
-    hint.hidden = kind !== 'question' || locked;
-    hint.textContent = el.hasAttribute('data-published') || !el.hasAttribute('data-answer') ?
-      'Repeating blocks are not listed: a question that is published, or not stored as an answer, cannot be moved into one.' :
-      'Repeating blocks are marked. This question can be moved into one because it is not published yet.';
+    /* Phase 3 review, Team B: no helper text on Edit Page. The repeating blocks a question cannot move into are left out
+       of the list (a published question, or one not stored as an answer); the ones it can are marked in the list. */
     fillParents();
     setStep(false);
     dsDialog.show(dlg);

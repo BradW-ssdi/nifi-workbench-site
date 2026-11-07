@@ -43,7 +43,7 @@ actual usage in the application (error, add, info and print are used the most).<
 <div class="icon-grid" id="grid"></div>
 </section>
 <script>
-const names = ["error","add","info","print","account_tree","mail","admin_panel_settings","science","article","monitoring","open_in_new","search","edit","delete","save","close","check_circle","help","menu","home","person","settings","arrow_back","chevron_left","chevron_right","expand_more","keyboard_arrow_up","calendar_today","content_paste_search","description","download","upload_file","merge_type","more_horiz","tune","visibility","skip_next","do_not_disturb_on","logout","person_remove","call_merge","arrow_drop_down","arrow_drop_up","filter_alt","left_panel_close","left_panel_open","keyboard_arrow_down","drag_indicator"];
+const names = ["error","add","info","print","account_tree","mail","admin_panel_settings","science","article","monitoring","open_in_new","search","edit","delete","save","close","check_circle","help","menu","home","person","settings","arrow_back","chevron_left","chevron_right","expand_more","keyboard_arrow_up","calendar_today","content_paste_search","description","download","upload_file","merge_type","more_horiz","tune","visibility","skip_next","do_not_disturb_on","logout","person_remove","call_merge","caret_down_fill","arrow_drop_down","arrow_drop_up","filter_alt","left_panel_close","left_panel_open","keyboard_arrow_down","drag_indicator"];
 function render(list) {
   document.getElementById('grid').innerHTML = list.map(n =>
     `<div class="icon-cell"><svg aria-hidden="true"><use href="../icons/sprite.svg#${n}"/></svg><code>${n}</code></div>`

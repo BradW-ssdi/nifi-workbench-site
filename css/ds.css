@@ -5122,11 +5122,11 @@ textarea.form-control-lg {
   --bs-btn-close-disabled-opacity: 0.25;
   --bs-btn-close-white-filter: invert(1) grayscale(100%) brightness(200%);
   box-sizing: content-box;
-  width: 1em;
-  height: 1em;
+  width: 1rem;
+  height: 1rem;
   padding: 0.25em 0.25em;
   color: var(--bs-btn-close-color);
-  background: transparent var(--bs-btn-close-bg) center/1em auto no-repeat;
+  background: transparent var(--bs-btn-close-bg) center/1rem auto no-repeat;
   border: 0;
   border-radius: 4px;
   opacity: var(--bs-btn-close-opacity);
@@ -5225,7 +5225,7 @@ textarea.form-control-lg {
 .modal {
   --bs-modal-zindex: 1055;
   --bs-modal-width: 560px;
-  --bs-modal-padding: 1.5rem;
+  --bs-modal-padding: 1rem;
   --bs-modal-margin: 0.5rem;
   --bs-modal-color: ;
   --bs-modal-bg: var(--bs-body-bg);
@@ -5234,9 +5234,9 @@ textarea.form-control-lg {
   --bs-modal-border-radius: 12px;
   --bs-modal-box-shadow: var(--bs-box-shadow-sm);
   --bs-modal-inner-border-radius: calc(12px - (var(--bs-border-width)));
-  --bs-modal-header-padding-x: 1.5rem;
-  --bs-modal-header-padding-y: 1.5rem;
-  --bs-modal-header-padding: 1rem 1.5rem;
+  --bs-modal-header-padding-x: 1rem;
+  --bs-modal-header-padding-y: 1rem;
+  --bs-modal-header-padding: 1rem;
   --bs-modal-header-border-color: var(--bs-border-color);
   --bs-modal-header-border-width: var(--bs-border-width);
   --bs-modal-title-line-height: 1.3;
@@ -5831,8 +5831,8 @@ textarea.form-control-lg {
   --bs-offcanvas-zindex: 1045;
   --bs-offcanvas-width: 400px;
   --bs-offcanvas-height: 30vh;
-  --bs-offcanvas-padding-x: 1.5rem;
-  --bs-offcanvas-padding-y: 1.5rem;
+  --bs-offcanvas-padding-x: 1rem;
+  --bs-offcanvas-padding-y: 1rem;
   --bs-offcanvas-color: var(--bs-body-color);
   --bs-offcanvas-bg: var(--bs-body-bg);
   --bs-offcanvas-border-width: var(--bs-border-width);
@@ -11614,8 +11614,10 @@ textarea.form-control-lg {
   background: var(--ds-nav-hover-overlay);
   color: #fff;
 }
-.ds-nav-item[aria-current], .ds-nav-item.is-active {
-  background: var(--ds-nav-active-overlay);
+@media (forced-colors: active) {
+  .ds-nav-item[aria-current], .ds-nav-item.is-active {
+    border-left: 4px solid CanvasText;
+  }
 }
 
 .ds-nav-icon {
@@ -11643,11 +11645,6 @@ textarea.form-control-lg {
 
 .ds-nav-group[aria-expanded=true] .ds-nav-chevron {
   transform: rotate(180deg);
-}
-
-.ds-nav-rail:not(.is-expanded) .ds-nav-group.has-current,
-.ds-nav-group.has-current[aria-expanded=false] {
-  background: var(--ds-nav-active-overlay);
 }
 
 .ds-nav-sub {
@@ -11878,6 +11875,10 @@ textarea.form-control-lg {
 .breadcrumb .ds-icon {
   width: 16px;
   height: 16px;
+}
+
+.breadcrumb-item > a {
+  font-size: 0.875rem;
 }
 
 .ds-btn-icon {
@@ -12116,8 +12117,8 @@ textarea.form-control-lg {
 }
 
 .ds-sort-btn .ds-icon {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   flex: none;
 }
 
@@ -13251,6 +13252,52 @@ fieldset.ds-field {
     width: 100%;
   }
 }
+.ds-search-wrap {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+}
+
+.ds-search-wrap > input {
+  padding-right: 36px;
+}
+
+.ds-search-wrap > input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.ds-search-wrap > .btn.ds-search-clear {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  color: #6c757d;
+}
+
+.ds-search-wrap > .btn.ds-search-clear:hover {
+  color: #000;
+}
+
+.ds-search-clear .ds-icon {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 820px) {
+  .ds-toolbar .ds-search-wrap {
+    width: 100%;
+  }
+}
 .ds-filter-toggle[aria-expanded=true] {
   background: var(--ds-tint);
 }
@@ -13460,7 +13507,7 @@ fieldset.ds-field {
   margin-bottom: -8px;
 }
 
-.ds-modal-p2 .modal-body > :is(.alert, .legend-note, .ds-error-summary) {
+.ds-modal-p2 :is(.modal-body, .ds-modal-content) > :is(.alert, .legend-note, .ds-error-summary) {
   margin: 0;
 }
 
@@ -13503,7 +13550,7 @@ fieldset.ds-field {
   padding-bottom: 2px;
 }
 
-.ds-modal-p2 .modal-body > .legend-note {
+.ds-modal-p2 :is(.modal-body, .ds-modal-content) > .legend-note {
   margin-bottom: -8px;
 }
 
@@ -13512,6 +13559,62 @@ fieldset.ds-field {
   padding: 8px 16px;
 }
 
+.ds-modal-layout {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.ds-modal-layout.is-nav-collapsed {
+  grid-template-columns: 40px minmax(0, 1fr);
+}
+
+.ds-modal-aside {
+  position: sticky;
+  top: 0;
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+.ds-modal-nav {
+  justify-self: stretch;
+  font-size: 0.875rem;
+}
+
+.ds-modal-nav .nav-link {
+  padding: 4px 8px;
+  color: var(--bs-body-color);
+}
+
+.ds-modal-nav .nav-link[aria-current] {
+  background: var(--ds-tint);
+  color: var(--bs-primary);
+  font-weight: 600;
+  border-radius: var(--bs-border-radius);
+}
+
+.ds-modal-layout.is-nav-collapsed .ds-modal-nav {
+  display: none;
+}
+
+.ds-modal-content {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .ds-modal-layout, .ds-modal-layout.is-nav-collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-modal-aside {
+    position: static;
+    justify-items: start;
+  }
+}
 .ds-p2-view {
   display: grid;
   gap: 16px;
@@ -13622,6 +13725,13 @@ fieldset.ds-field {
     width: auto;
   }
 }
+.ds-modal-p2 .toast-container.ds-modal-toast:has(.toast:not([hidden]) a) {
+  position: static;
+  transform: none;
+  width: auto;
+  order: -1;
+}
+
 [data-bs-theme=dark] .btn-primary {
   --bs-btn-bg: #47bad9;
   --bs-btn-border-color: #47bad9;
@@ -14067,8 +14177,6 @@ fieldset.ds-field {
 }
 
 .ds-phase2 .filterChipsDiv .remove-filter {
-  padding-top: 0;
-  padding-bottom: 0;
   border-radius: 6px;
   color: #000;
 }
@@ -14302,5 +14410,24 @@ fieldset.ds-field {
     row-gap: 4px;
     white-space: normal;
     max-width: 100%;
+  }
+}
+.ds-phase2 .filterChipsDiv .remove-filter {
+  width: 24px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  margin-left: 2px !important;
+  background-size: 10px auto;
+  flex: none;
+}
+
+.ds-phase2 .filterChipsDiv .chip-expand {
+  min-width: 24px;
+  min-height: 24px;
+}
+
+@media (forced-colors: active) {
+  .ds-phase2 .filterChipsDiv .remove-filter {
+    border: 1px solid ButtonText !important;
   }
 }

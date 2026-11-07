@@ -418,33 +418,25 @@
         { code: 'VT-2', title: 'Actions', pin: { sel: '.vp-toolbar' },
           text: 'View rules, Print, Export, and Make Inactive, as on the current screen. Make Inactive asks first.' }
       ] },
-    { id: 'add-question', title: 'Add Question', priority: 'Page Management', status: 'ready',
+    { id: 'manage-questions', title: 'Manage Questions: library and dialogs', priority: 'Page Management', status: 'ready',
       notes: [
-        { code: 'AQ-1', title: 'Data type decides the fields', pin: { sel: '#dataType' },
+        { code: 'VQ-1', title: 'View, Edit, and Add are dialogs', pin: { sel: '#questionTable tbody tr .ds-row-actions' },
+          text: 'View, Edit, and Add Question open as dialogs on the library, designed as View Condition (Phase 3 review). The sections are Basic Information, User Interface, Data Mart, Messaging, and Administrative, as on the current screen, and the fields follow the data type: the library has one coded, date, numeric, and text question.' },
+        { code: 'VQ-2', title: 'Make Inactive and Make Active', pin: { sel: '#questionTable tbody tr .ds-row-actions' }, after: 'View',
+          text: 'View has Make Inactive and Edit while the question is active, and Make Active while it is inactive. Each asks first, then the status changes and a toast says so.' },
+        { code: 'AQ-1', title: 'Data type decides the fields', pin: { sel: '#addBtn' }, after: 'Add New',
           text: 'Coded: value set, default value from it, and whether other values are allowed. Date: mask and whether future dates are allowed. Numeric: mask, length, default, minimum, maximum, and related units. Text: mask, length, and default. As on the current screen.' },
-        { code: 'AQ-2', title: 'Display Control', pin: { sel: '#displayControl' },
+        { code: 'AQ-2', title: 'Display Control', pin: { sel: '#addBtn' }, after: 'Add New',
           text: 'Lists the controls for the chosen data type, as the current screen does.' },
-        { code: 'AQ-3', title: 'Already used', pin: { sel: '#uniqueId' },
+        { code: 'AQ-3', title: 'Already used', pin: { sel: '#addBtn' }, after: 'Add New',
           text: 'The unique ID, unique name, data mart column name, and RDB column name (with the subgroup) cannot repeat another question, as on the current screen.' },
-        { code: 'AQ-4', title: 'Mask names', pin: { sel: '#dataType' }, ask: true,
-          text: 'The current text masks show their patterns in the name, for example Census Tract (^(\d{4}|...)$). Should the list show only the plain names?' }
-      ] },
-    { id: 'view-question', title: 'View Question', priority: 'Page Management', status: 'ready',
-      notes: [
-        { code: 'VQ-1', title: 'Sections', pin: { sel: 'main .ds-form-section h2' },
-          text: 'Basic Information, User Interface, Data Mart, Messaging, and Administrative, as on the current screen. The sample is the first question in the library, a coded one.' },
-        { code: 'VQ-2', title: 'Make Inactive', pin: { sel: '#toggleStatus' },
-          text: 'Asks first, then shows the new status at the top of the page.' },
-        { code: 'VQ-3', title: 'Other data types', pin: { sel: 'main h1' }, ask: true,
-          text: 'Date, numeric, and text questions show other fields (mask, length, range, units). Do you need a template for each type, or is the coded one enough to build from?' }
-      ] },
-    { id: 'edit-question', title: 'Edit Question', priority: 'Page Management', status: 'ready',
-      notes: [
-        { code: 'EQ-1', title: 'What can change', pin: { sel: 'main .ds-form-section .ds-dl' },
+        { code: 'AQ-4', title: 'Mask names', pin: { sel: '#addBtn' }, after: 'Add New', ask: true,
+          text: 'The current text masks show their patterns in the name, for example Census Tract (^(\d{4}|...)$). Should the list show only the plain names?' },
+        { code: 'EQ-1', title: 'What can change', pin: { sel: '#questionTable' }, after: 'View, then Edit',
           text: 'The type, ID, name, data type, value set, and data mart table and column are shown read only, as on the current screen. Everything else can change.' },
-        { code: 'EQ-2', title: 'Messaging', pin: { sel: '#included-Y' },
+        { code: 'EQ-2', title: 'Messaging', pin: { sel: '#questionTable' }, after: 'View, then Edit',
           text: 'The messaging fields show only while Included in Message is Yes.' },
-        { code: 'EQ-3', title: 'Required', pin: { sel: '.legend-note' },
+        { code: 'EQ-3', title: 'Required', pin: { sel: '#questionTable' }, after: 'View, then Edit',
           text: 'The same required fields as the current screen.' }
       ] },
     { id: 'view-value-set', title: 'View Value Set', priority: 'Page Management', status: 'ready',
@@ -494,35 +486,30 @@
         { code: 'EP-10', title: 'Fixed questions', pin: { sel: '.pb-sub' }, ask: true,
           text: 'Beyond the repeating block rules, are there questions or subsections that must not move, for example standard questions a page needs in place? Those would show no handle.' }
       ] },
-    { id: 'manage-conditions', title: 'Queue component: Manage Conditions', priority: 'Proof of concept, queues (all November 1 queues use it)', status: 'ready',
+    { id: 'manage-conditions', title: 'Manage Conditions: queue and dialogs', priority: 'Proof of concept, queues (all November 1 queues use it)', status: 'ready',
       notes: [
         { code: 'QC-1', title: 'Real data, every page', pin: { sel: '#pageSummary' },
           text: 'The library holds all 263 conditions from the current system. Search, filters, sorting, and paging work across all of them, as the server does, not only on the rows shown. It opens filtered to Status: Active.' },
         { code: 'QC-2', title: 'Filter chips as in Phase 2', pin: { sel: '#mc-programArea' },
-          text: 'Program Area, Condition Family, Status, and NND are always shown. Each menu has the operator (equals or not equals), a search box, Select All, Blanks, the values, Clear selection, and Update. Update with nothing checked is not allowed.' },
+          text: 'A chip shows once it is chosen from Filter, as in Phase 2 (Phase 3 review); Status shows on load because the library opens filtered to Active. Each menu has the operator (equals or not equals), a search box, Select All, Blanks, the values, Clear selection, and Update. Update with nothing checked is not allowed.' },
         { code: 'QC-3', title: 'Changing the operator on a chip', pin: { sel: '#mc-status-chipOperator' },
           text: 'On a chip with a filter applied, changing equals to not equals updates the table right away, as in Phase 2.' },
         { code: 'QC-4', title: 'Filter adds more columns', pin: { sel: '#filtersId' },
-          text: 'Filter lists the columns without a standard chip (Coinfection Group, Investigation Page, Infectious Period, Needs publish). Checking one adds its chip, after the others, with its menu open; its close button removes the chip and its filter.' },
+          text: 'Filter lists every column with a filter (Program Area, Condition Family, Status, NND, Coinfection Group, Investigation Page, Infectious Period, Needs publish). Checking one adds its chip, after the others, with its menu open; its close button removes the chip and its filter.' },
         { code: 'QC-5', title: 'Reset', pin: { sel: '#clearFilters' },
           text: 'Reset clears every filter (Status too), the search, the sort, and the page size, and shows the whole library again. It shows only while something is applied.' },
         { code: 'QC-6', title: 'Sorting and paging', pin: { sel: '#conditionName' },
           text: 'A sortable column sorts ascending, then descending. Filtering, searching, or sorting goes back to page 1 and keeps the page size; paging keeps the filters and the sort. Up to five page numbers show around the current page, as in Phase 2.' },
         { code: 'QC-7', title: 'Table Settings', pin: { sel: '#tableSettingsBtn' }, ask: true,
-          text: 'Table Settings has Compact Rows, as on Phase 2 queues, kept for the session. Phase 2 starts with compact rows on; this template starts at the standard row height. Which should Phase 3 queues start with?' }
-      ] },
-    { id: 'manage-conditions-dialogs', title: 'Conditions: dialog on dialog', priority: 'Proof of concept', status: 'ready',
-      notes: [
-        { code: 'CD-1', title: 'View in a dialog', pin: { sel: '#condTable tbody tr [data-view]' },
+          text: 'Table Settings has Compact Rows, as on Phase 2 queues, kept for the session. Phase 2 starts with compact rows on; this template starts at the standard row height. Which should Phase 3 queues start with?' },
+        { code: 'CD-1', title: 'View in a dialog', pin: { sel: '#condTable tbody tr .ds-row-actions' },
           text: 'View opens over the list, so the list stays where it was. Its sections are accordions, as in the Phase 2 dialogs, with Collapse All.' },
         { code: 'CD-2', title: 'Edit replaces View', pin: { sel: '#condTable' }, after: 'View, then Edit',
           text: 'Edit opens from View and View hides while Edit is open (one dialog on screen at a time). Cancel or Escape brings View back as it was; Submit brings it back with the changes and a confirmation.' },
         { code: 'CD-3', title: 'Unsaved changes', pin: { sel: '#addBtn' },
-          text: 'Closing a changed form asks whether to discard the changes. The question opens on top of the form, which stays in view. Keep editing returns to the form with the changes kept.' },
-        { code: 'CD-4', title: 'Dialog or page', pin: { sel: '#addBtn' }, ask: true,
-          text: 'The condition form is long. Should Add and Edit Condition be dialogs in production, or stay full pages (the Add and Edit Condition templates)? Dialogs suit short forms.' },
-        { code: 'CD-5', title: 'Same fields and rules as the pages', pin: { sel: '#addBtn' }, after: 'Add New',
-          text: 'The Add and Edit dialogs use the fields, option lists, and rules of the Add Condition and Edit Condition templates: Edit shows the coding system, code, program area, and status read only; the co-infection group is only for STD and HIV/AIDS; the days are required only when the infectious period is calculated.' }
+          text: 'Cancel always asks first, in the words of the current screen, as legacy and Phase 2; Escape and the X ask only when something changed. The question opens on top of the form, which stays in view, and its Cancel returns to the form with the changes kept.' },
+        { code: 'CD-5', title: 'Dialogs, not pages', pin: { sel: '#addBtn' }, after: 'Add New',
+          text: 'View, Add, and Edit Condition are dialogs on the library (Phase 3 review); there are no separate Add and Edit pages. The dialogs keep the full form fields, option lists, and rules (Coding System is a type-ahead): Edit shows the coding system, code, program area, and status read only; the co-infection group is only for STD and HIV/AIDS; the days are required only when the infectious period is calculated.' }
       ] }
   ];
 

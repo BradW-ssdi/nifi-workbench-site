@@ -11,13 +11,16 @@
    - #filterChipsDiv[data-list-chips]: the chip row. data-table is the table id, data-noun the plural row name.
    - One .chipsWithSubMenu[data-column] per chip, holding .chip-button (label span, optional operator select
      and value span when filtered, .chip-expand, and .remove-filter on added chips) and its
-     .dropdown-menu.custom-dropdown submenu (id <chip id>-subMenu). data-chip-type="S" marks a standard chip (Phase 2
-     type S): always shown, no close button, cleared with Clear selection. Chips added from Filter (Phase 2 type D)
-     have a close button. data-values="A|B" on .chipsWithSubMenu marks a filter applied on load (data-op="!=" for
-     not equals, data-blanks to include blank rows).
+     .dropdown-menu.custom-dropdown submenu (id <chip id>-subMenu). Chips show only once they are chosen from Filter,
+     as Phase 2's queues (Phase 3 review, Team B; Phase 2 type D): a chip in the markup with data-chip-type="D" and
+     hidden is offered under Filter, shows when it is chosen there, and has a close button that hides it again.
+     data-values="A|B" on .chipsWithSubMenu marks a filter applied on load (data-op="!=" for not equals, data-blanks
+     to include blank rows); its chip shows. Columns with no chip in the markup get one built when chosen.
+     data-chip-type="S" (a standard chip, always shown, no close button) is still supported, and no template uses it.
    - #filtersButtonDiv: the Filter button (#filtersId) after the last chip, and its column menu (#filterButtonId),
-     listing the columns without a standard chip (or only those named in data-addable="A|B" on #filterChipsDiv).
-     Hidden when there is nothing to add.
+     listing the columns without a standard chip (or only those named in data-addable="A|B" on #filterChipsDiv),
+     the offered chips' columns among them. A column is checked while its chip shows. Hidden when there is nothing
+     to add.
    - #clearFiltersDiv: "| Reset", after the Filter button, shown only while a filter is applied.
    - #filterStatus (role="status"): every change is announced there.
    - Footer: .ds-table-footer holding #pageSummary, a Bootstrap .pagination whose .page-link buttons are named
@@ -32,7 +35,8 @@
    - Enter or Space on a chip's expand button opens its menu and moves focus to the first control in it.
    - Escape in a menu, or on its button, closes it and returns focus to the button.
    - Update applies the checked values; Clear selection removes the chip's filter; the close button removes the
-     chip. Reset removes every filter, the text filter, and the sort. */
+     chip (an offered chip hides). Reset removes every filter and every chip chosen from Filter, the text filter, and
+     the sort. */
 (function () {
   'use strict';
 
@@ -110,6 +114,13 @@
     function spoken(f) { return f.values.concat(f.blanks ? ['blank'] : []).join(' or '); }
 
     function chipOf(col) { return $$('.chipsWithSubMenu', bar).filter(function (w) { return w.getAttribute('data-column') === col; })[0]; }
+    function shown(w) { return !!w && !w.hidden; }
+    /* A chip chosen from Filter goes: an offered chip (in the markup) hides, a built one is removed. */
+    function drop(w) {
+      if (!w.hasAttribute('data-offered')) { w.remove(); return; }
+      w.hidden = true; renderChip(w);
+      var box = document.getElementById($('.chip-button', w).id + '-check'); if (box) box.checked = false;
+    }
 
     /* The chip shows its filter the way Phase 2 does: label, operator select, and the value, or Multiple (n). */
     function renderChip(wrap) {
@@ -231,7 +242,7 @@
         var had = !!active[col];
         delete active[col];
         close(false);
-        wrap.remove();
+        drop(wrap);
         var box = document.getElementById(id + '-check'); if (box) box.checked = false;
         applyRows();
         say(col + ' filter removed' + (had ? '. ' + counts() : '.'));
@@ -257,11 +268,14 @@
     /* The Filter button's menu lists the table's columns; checking one adds its chip, unchecking removes it. */
     function addableColumns() {
       var listed = bar.getAttribute('data-addable');
-      return headers.filter(function (h) {
+      var cols = headers.filter(function (h) {
         if (!h || /^actions?$/i.test(h) || h.indexOf('Select') === 0) return false;
         if (standardChip(h)) return false;
         return listed ? listed.split('|').indexOf(h) !== -1 : true;
       });
+      /* an offered chip filters a column of its own, which may not be a header (the activity logs' Action) */
+      $$('.chipsWithSubMenu[data-offered]', bar).forEach(function (w) { var c = w.getAttribute('data-column'); if (cols.indexOf(c) === -1) cols.push(c); });
+      return cols;
     }
     function standardChip(col) { var w = chipOf(col); return !!(w && w.getAttribute('data-chip-type') === 'S'); }
 
@@ -271,7 +285,7 @@
         '<div id="checkbox-list" style="width: 100%; max-height: 250px; overflow-y: auto;" role="group" aria-label="Columns to filter by">';
       cols.forEach(function (c) {
         var id = camel(c);
-        html += '<div class="form-check"><input class="form-check-input typeahead-checkbox" id="' + id + '-check" value="' + esc(c) + '" type="checkbox"' + (chipOf(c) ? ' checked' : '') + '><label class="form-check-label" for="' + id + '-check">' + esc(c) + '</label></div>';
+        html += '<div class="form-check"><input class="form-check-input typeahead-checkbox" id="' + id + '-check" value="' + esc(c) + '" type="checkbox"' + (shown(chipOf(c)) ? ' checked' : '') + '><label class="form-check-label" for="' + id + '-check">' + esc(c) + '</label></div>';
       });
       filterMenu.innerHTML = html + '</div>';
       var search = $('input[type="search"]', filterMenu), t;
@@ -284,13 +298,22 @@
       });
       filterMenu.addEventListener('change', function (e) {
         var col = e.target.value; if (!col) return;
-        if (e.target.checked) { if (!chipOf(col)) addChip(col); say(col + ' filter added. Its menu is the ' + col + ' button before Filter.'); }
-        else { var w = chipOf(col); if (w) { delete active[col]; w.remove(); applyRows(); } say(col + ' filter removed. ' + counts()); }
+        if (e.target.checked) { var c = chipOf(col); if (!c) addChip(col); else c.hidden = false; say(col + ' filter added. Its menu is the ' + col + ' button before Filter.'); }
+        else { var w = chipOf(col); if (w) { delete active[col]; drop(w); applyRows(); } say(col + ' filter removed. ' + counts()); }
       });
     }
 
     /* Filters present on load (data-values on .chipsWithSubMenu) filter the rows too, so the table never
        contradicts a chip. */
+    /* Chips in the markup that are not standard (Phase 2 type D) are offered under Filter: hidden until chosen there,
+       unless a filter is applied on load, with Phase 2's close button. */
+    $$('.chipsWithSubMenu', bar).forEach(function (wrap) {
+      if (wrap.getAttribute('data-chip-type') === 'S') return;
+      wrap.setAttribute('data-offered', '');
+      if (!wrap.hasAttribute('data-values')) wrap.hidden = true;
+      var chip = $('.chip-button', wrap);
+      if (!$('.remove-filter', chip)) chip.insertAdjacentHTML('beforeend', '<button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove ' + esc(wrap.getAttribute('data-column')) + ' filter"></button>');
+    });
     $$('.chipsWithSubMenu', bar).forEach(function (wrap) {
       var col = wrap.getAttribute('data-column');
       if (wrap.hasAttribute('data-values') && headers.indexOf(col) !== -1) active[col] = { op: wrap.getAttribute('data-op') || '=', values: wrap.getAttribute('data-values').split('|').filter(Boolean), blanks: wrap.hasAttribute('data-blanks') };
@@ -324,7 +347,7 @@
       close(false);
       active = {};
       if (status) status.textContent = '';   // quietly: the script that drew the rows says what happened
-      $$('.chipsWithSubMenu:not([data-chip-type="S"])', bar).forEach(function (w) { w.remove(); });
+      $$('.chipsWithSubMenu:not([data-chip-type="S"])', bar).forEach(drop);
       $$('.chipsWithSubMenu', bar).forEach(renderChip);
       originalOrder = Array.prototype.slice.call(tbody.rows);
       applyRows();
@@ -334,8 +357,8 @@
     if (resetBtn) resetBtn.addEventListener('click', function () {
       close(false);
       active = {};
-      // chips added from Filter go; standard chips stay, cleared
-      $$('.chipsWithSubMenu:not([data-chip-type="S"])', bar).forEach(function (w) { w.remove(); });
+      // chips chosen from Filter go (an offered chip hides); standard chips stay, cleared
+      $$('.chipsWithSubMenu:not([data-chip-type="S"])', bar).forEach(drop);
       $$('.chipsWithSubMenu', bar).forEach(renderChip);
       if (textFilter && textFilter.value) { textFilter.value = ''; Array.prototype.forEach.call(tbody.rows, function (r) { r.hidden = false; }); textFilter.dispatchEvent(new Event('input')); }
       $$('th[aria-sort]', table).forEach(function (th) { th.removeAttribute('aria-sort'); });

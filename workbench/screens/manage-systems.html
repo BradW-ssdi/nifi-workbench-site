@@ -6,6 +6,7 @@
 <title>Manage Sending and Receiving Systems - Messaging - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
 <script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,31 +72,34 @@
         <div class="ds-toolbar">
           <input class="form-control" type="search" id="filterInput" aria-label="Filter systems" placeholder="Search to filter..." aria-describedby="filterStatus">
           <span class="ms-auto"></span>
-          <a class="btn btn-primary" href="add-system.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New System</a>
+          <a class="btn btn-outline-primary" href="add-system.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New System</a>
         </div>
         <!-- Column filter chips: Phase 2's queue chips, in Phase 2's order (the chips, Filter, then "| Reset" while a
              filter is applied). DEV: build this with the Phase 3 queue component in the app
              (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
         <div class="ds-phase2">
           <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="systemTable" data-noun="systems">
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Report Type">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Report Type" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="reportType">
                 <span id="reportType-chipLabel">Report Type</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="reportType-subMenu" aria-label="Edit Report Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Report Type filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="reportType-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Sender">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Sender" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="sender">
                 <span id="sender-chipLabel">Sender</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="sender-subMenu" aria-label="Edit Sender filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Sender filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="sender-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Recipient">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Recipient" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="recipient">
                 <span id="recipient-chipLabel">Recipient</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="recipient-subMenu" aria-label="Edit Recipient filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Recipient filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="recipient-subMenu"></div>
             </div>
@@ -112,9 +116,9 @@
         <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
         <div class="ds-table-frame">
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Manage Sending and Receiving Systems table, scrolls horizontally when zoomed">
-          <table class="table ds-table" id="systemTable">
+          <table class="table ds-table tableCompact" id="systemTable">
             <caption class="visually-hidden">Sending and receiving systems. Column headers with buttons are sortable.</caption>
-            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="1">Application Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="2">Display Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">Facility Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">Report Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Sender <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">Recipient <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="7">Transfer <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th></tr></thead>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="1">Application Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="2">Display Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">Facility Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">Report Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Sender <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">Recipient <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="7">Transfer <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th></tr></thead>
             <tbody>
               <tr><td class="ds-row-actions"><a href="view-system.html" aria-label="View qa System"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="edit-system.html" aria-label="Edit qa System"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>qa System</td><td>qa System</td><td>qa System</td><td>Case Report</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
               <tr><td class="ds-row-actions"><a href="#" aria-label="View Sample eICR Sender"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="add-system.html" aria-label="Edit Sample eICR Sender"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Sample eICR Sender</td><td>Sample eICR Sender</td><td>Sample Health System</td><td>Case Report</td><td>Yes</td><td>No</td><td>No</td></tr>

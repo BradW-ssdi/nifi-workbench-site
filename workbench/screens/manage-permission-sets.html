@@ -118,17 +118,18 @@
         <div class="ds-toolbar">
           <input class="form-control" type="search" id="psFilter" data-list-text-filter aria-label="Search permission sets" placeholder="Search to filter..." autocomplete="off" aria-describedby="filterStatus">
           <span class="ms-auto"></span>
-          <a class="btn btn-primary" href="edit-permission-set.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
+          <a class="btn btn-outline-primary" href="edit-permission-set.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
         </div>
         <!-- Column filter chips (BA review: every library has them): Phase 2's queue chips, in Phase 2's order (the chips,
              Filter, then "| Reset" while a filter is applied). DEV: build this with the Phase 3 queue component in the app
              (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
         <div class="ds-phase2">
           <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="psTable" data-noun="permission sets">
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Type">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Type" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="psType">
                 <span id="psType-chipLabel">Type</span>
                 <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="psType-subMenu" aria-label="Edit Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Type filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="psType-subMenu"></div>
             </div>

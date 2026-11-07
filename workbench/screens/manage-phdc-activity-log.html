@@ -92,31 +92,35 @@
                (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
           <div class="ds-phase2">
             <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="resultsTable" data-noun="records">
-              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Status">
+              <div class="chipsWithSubMenu" data-chip-type="D" data-column="Status" hidden>
                 <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="phdcStatusChip">
                   <span id="phdcStatusChip-chipLabel">Status</span>
                   <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="phdcStatusChip-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                  <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Status filter"></button>
                 </div>
                 <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="phdcStatusChip-subMenu"></div>
               </div>
-              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Algorithm Name">
+              <div class="chipsWithSubMenu" data-chip-type="D" data-column="Algorithm Name" hidden>
                 <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="phdcAlgorithmChip">
                   <span id="phdcAlgorithmChip-chipLabel">Algorithm Name</span>
                   <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="phdcAlgorithmChip-subMenu" aria-label="Edit Algorithm Name filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                  <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Algorithm Name filter"></button>
                 </div>
                 <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="phdcAlgorithmChip-subMenu"></div>
               </div>
-              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Action">
+              <div class="chipsWithSubMenu" data-chip-type="D" data-column="Action" hidden>
                 <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="phdcActionChip">
                   <span id="phdcActionChip-chipLabel">Action</span>
                   <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="phdcActionChip-subMenu" aria-label="Edit Action filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                  <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Action filter"></button>
                 </div>
                 <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="phdcActionChip-subMenu"></div>
               </div>
-              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Condition">
+              <div class="chipsWithSubMenu" data-chip-type="D" data-column="Condition" hidden>
                 <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="phdcConditionChip">
                   <span id="phdcConditionChip-chipLabel">Condition</span>
                   <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="phdcConditionChip-subMenu" aria-label="Edit Condition filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                  <button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Condition filter"></button>
                 </div>
                 <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="phdcConditionChip-subMenu"></div>
               </div>

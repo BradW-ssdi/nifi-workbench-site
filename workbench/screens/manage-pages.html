@@ -6,6 +6,7 @@
 <title>Manage Pages - Page Management - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
 <script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -84,10 +85,17 @@
         <div class="ds-toolbar">
           <input class="form-control" type="search" id="filterInput" aria-label="Filter pages" placeholder="Search to filter..." aria-describedby="filterStatus">
           <span class="ms-auto"></span>
-          <a class="btn btn-primary" href="add-page.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
+          <a class="btn btn-outline-primary" href="add-page.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
           <a class="btn btn-outline-primary" href="manage-page-porting.html">Page Porting</a>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+          <div class="ds-table-settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Table Settings"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#settings"/></svg></button>
+            <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="pageTable">
+              <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
+              <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
+            </div>
+          </div>
         </div>
 
         <!-- Column filters as a chip row (legacy per-header filter popups on
@@ -101,26 +109,26 @@
              this template js/list-filters.js stands in for chip.js and js/phase3-queue.js. -->
         <div class="ds-phase2">
           <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="pageTable" data-noun="pages">
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Event Type" data-values="Investigation">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Event Type" data-values="Investigation">
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3 chip-filtered" id="eventType">
                 <span id="eventType-chipLabel">Event Type</span>
                 <div class="d-inline-block position-relative chip-op"><select class="chip-operator rounded-pill" id="eventType-chipOperator" style="margin-left:10px" aria-label="Event Type filter operator"><option value="=" selected>= (equals)</option><option value="!=">!= (not equals)</option></select></div>
                 <span id="eventType-chipValue" style="font-weight: normal;">Investigation</span>
-                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="eventType-subMenu" aria-label="Edit Event Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="eventType-subMenu" aria-label="Edit Event Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button><button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Event Type filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="eventType-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Page State">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Page State" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="pageState">
                 <span id="pageState-chipLabel">Page State</span>
-                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="pageState-subMenu" aria-label="Edit Page State filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="pageState-subMenu" aria-label="Edit Page State filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button><button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Page State filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="pageState-subMenu"></div>
             </div>
-            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Last Updated By">
+            <div class="chipsWithSubMenu" data-chip-type="D" data-column="Last Updated By" hidden>
               <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="lastUpdatedBy">
                 <span id="lastUpdatedBy-chipLabel">Last Updated By</span>
-                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="lastUpdatedBy-subMenu" aria-label="Edit Last Updated By filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="lastUpdatedBy-subMenu" aria-label="Edit Last Updated By filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button><button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove Last Updated By filter"></button>
               </div>
               <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="lastUpdatedBy-subMenu"></div>
             </div>
@@ -139,17 +147,17 @@
 
         <div class="ds-table-frame">
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Page library table, scrolls horizontally when zoomed">
-          <table class="table ds-table" id="pageTable">
+          <table class="table ds-table tableCompact" id="pageTable">
             <caption class="visually-hidden">Page library. Column headers with buttons are sortable. Editing a published page creates a new draft.</caption>
             <thead>
               <tr>
                 <th scope="col"><span class="visually-hidden">Actions</span></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="1">Event Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Page Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="3">Page State <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="4">Related Condition(s) <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="5">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="6">Last Updated By <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="1">Event Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Page Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="3">Page State <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="4">Related Condition(s) <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="5">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="6">Last Updated By <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
               </tr>
             </thead>
             <!-- DEV: tbody = th:each over pages. View is a link. Edit is a link on

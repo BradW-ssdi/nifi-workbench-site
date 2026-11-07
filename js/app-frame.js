@@ -28,6 +28,20 @@
     tipScript.src = SELF.replace(/app-frame\.js(\?.*)?$/, 'ds-tooltip.js');
     document.head.appendChild(tipScript);
   }
+  /* The Texas seal in the browser tab (Phase 3 review, Team B: in the tab we will have the Texas logo), on every screen
+     that has none. DEV: in the app, <link rel="icon" href="/images/favicon.png"> in the layout's head. */
+  if (SELF && !document.querySelector('link[rel~="icon"]')) {
+    var icon = document.createElement('link');
+    icon.rel = 'icon'; icon.type = 'image/png';
+    icon.href = SELF.replace(/js\/app-frame\.js(\?.*)?$/, 'workbench/assets/favicon.png');
+    document.head.appendChild(icon);
+  }
+  /* The clear button in Search to filter (js/ds-search-clear.js), the same way */
+  if (SELF && !window.dsSearchClear && !document.querySelector('script[src$="ds-search-clear.js"]')) {
+    var clearScript = document.createElement('script');
+    clearScript.src = SELF.replace(/app-frame\.js(\?.*)?$/, 'ds-search-clear.js');
+    document.head.appendChild(clearScript);
+  }
 
   function store(value) {
     try { sessionStorage.setItem(KEY, value); } catch (e) { /* storage blocked: state just won't persist */ }
