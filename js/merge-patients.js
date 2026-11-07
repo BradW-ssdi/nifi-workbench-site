@@ -1,15 +1,17 @@
 /* Merge Patients: the Find Patient dialog and the View Patient dialog (BA review 2026-10-20), shared by the manual
    search (opened over Home), the candidate list, and the system identified queue. Dialogs open with js/ds-dialog.js.
 
-   Find Patient (#searchDialog): Phase 2's patient search layout. General Search and Advanced Search are accordions;
-   Search with no criterion shows the error summary in the dialog. On Home (merge-patients-search.html) it opens with
+   Find Patient (#searchDialog): Phase 2's Search for Existing Patient dialog. General Search and Advanced Search are
+   accordions; Date of Birth takes month, day, and year for Equal and a from and a to date for Between; Submit with no
+   criterion shows the error summary in the dialog. On Home (merge-patients-search.html) it opens with
    the page and Search goes to the candidate list; on the candidate list, New Search opens it empty and Refine Search
-   with the current criteria, and Search lists the matches in place.
+   with the current criteria, and Submit lists the matches in place.
    DEV: post the criteria (hx-post) and swap the results; keep the criteria for Refine Search.
 
-   View Patient (#patientDialog): read only, as Phase 2's Patient Events dialog: the patient summary, then the
-   patient's events by type as accordions, with section links. Opened from a patient ID link
-   ([data-view-patient="<id>"]); the sample events are in the page's #patientData.
+   View Patient (#patientDialog): read only, as Phase 2's Patient Events dialog: the summary bar, the section links
+   (they collapse to a toggle), then the patient's events by type as accordions with Phase 2's columns, "No Data
+   Found" when a type has none. Opened from a patient ID link ([data-view-patient="<id>"]); the sample events are in
+   the page's #patientData.
    DEV: load the dialog content with hx-get, as Phase 2 does for Patient Events. */
 (function () {
   'use strict';
@@ -67,24 +69,35 @@
   if (search) {
     var form = $('#searchForm', search), summary = $('#searchErrors', search), status = $('#status');
     var dobOp = $('#msDobOp', search);
+    // Equal: the month, day, and year boxes; Between: the from and to dates. The hidden pair is emptied.
     var syncDob = function () {
       var between = dobOp.value === 'BET';
-      $('#msDobAnd', search).hidden = !between; $('#msDobToWrap', search).hidden = !between;
-      if (!between) $('#msDobTo', search).value = '';
+      $('#msDobParts', search).hidden = between; $('#msDobRange', search).hidden = !between;
+      $$(between ? '#msDobParts input' : '#msDobRange input', search).forEach(function (el) { el.value = ''; });
+      $('label[for^="msDob"]', search).setAttribute('for', between ? 'msDobFrom' : 'msDobMonth');
     };
     dobOp.addEventListener('change', syncDob);
-    var fields = function () { return $$('input[name], select[name]:not([name$="Operator"])', form); };
+    // The criteria: every named field except the selects with a default (the operators and the identifier type),
+    // which only go with a field that has a value.
+    var fields = function () { return $$('input[name], select[name]:not([data-default])', form); };
+    var paired = function () { return $$('select[data-default]', form); };
+    var pairOf = function (sel) {
+      var name = sel.getAttribute('data-for') || sel.name.replace(/Operator$/, '');
+      if (sel === dobOp) return $$('#msDobParts input, #msDobRange input', form);
+      return $$('[name="' + name + '"]', form);
+    };
     var clear = function () {
       fields().forEach(function (el) { el.value = ''; });
-      $$('select[name$="Operator"]', form).forEach(function (s) { s.value = s.getAttribute('data-default'); });
+      paired().forEach(function (s) { s.value = s.getAttribute('data-default'); });
       syncDob(); summary.hidden = true;
     };
     form.addEventListener('reset', function (e) { e.preventDefault(); clear(); if (status) status.textContent = 'Search criteria cleared.'; $('#msLast', search).focus(); });
     var params = new URLSearchParams(location.search);
     var fromUrl = function () {
       clear();
-      fields().concat($$('select[name$="Operator"]', form)).forEach(function (el) { if (params.has(el.name)) el.value = params.get(el.name); });
+      paired().forEach(function (el) { if (params.has(el.name)) el.value = params.get(el.name); });
       syncDob();
+      fields().forEach(function (el) { if (params.has(el.name)) el.value = params.get(el.name); });
     };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -96,7 +109,8 @@
       }
       summary.hidden = true;
       var q = new URLSearchParams();
-      fields().concat($$('select[name$="Operator"]', form)).forEach(function (el) { if (el.value.trim() !== '' && (!/Operator$/.test(el.name) || form.querySelector('[name="' + el.name.replace(/Operator$/, '') + '"]').value.trim())) q.set(el.name, el.value.trim()); });
+      fields().forEach(function (el) { if (el.value.trim() !== '') q.set(el.name, el.value.trim()); });
+      paired().forEach(function (el) { if (pairOf(el).some(function (f) { return f.value.trim() !== ''; })) q.set(el.name, el.value); });
       if (window.mergeCandidates) {   // the candidate list: list the matches in place
         dsDialog.hide(search);
         params = q; history.replaceState(null, '', '?' + q.toString());
@@ -109,7 +123,6 @@
     $$('[data-open-search]').forEach(function (b) {
       b.addEventListener('click', function () {
         if (b.getAttribute('data-open-search') === 'refine') fromUrl(); else clear();
-        $('#searchContext', search).textContent = b.getAttribute('data-open-search') === 'refine' ? 'Change the criteria of the current search.' : 'Search for the patient records to merge.';
         open(search, b);
         $('#msLast', search).focus();
       });
@@ -127,28 +140,45 @@
   var dlg = $('#patientDialog'), dataEl = $('#patientData');
   if (dlg && dataEl) {
     var PATIENTS = JSON.parse(dataEl.textContent);
-    var SECTIONS = [['investigations', 'Investigations', ['Investigation ID', 'Condition', 'Status', 'Start date']],
-      ['labReports', 'Lab Reports', ['Lab report ID', 'Test', 'Result', 'Date received']],
-      ['morbidityReports', 'Morbidity Reports', ['Report ID', 'Condition', 'Date reported']],
-      ['vaccinations', 'Vaccinations', ['Vaccine', 'Date given']],
-      ['treatments', 'Treatments', ['Treatment', 'Date']],
-      ['documents', 'Documents', ['Document', 'Type', 'Date received']],
-      ['contactRecords', 'Contact Records', ['Contact record ID', 'Investigation', 'Date']]];
+    // Phase 2's Patient Events columns, section by section
+    var SECTIONS = [['investigations', 'Investigations', ['Investigation ID', 'Status', 'Start Date', 'Conditions', 'Case Status', 'Notification', 'Jurisdiction', 'Investigator']],
+      ['labReports', 'Lab Reports', ['Event ID', 'Date Received', 'Facility/Provider', 'Date Collected', 'Test Results', 'Associated With', 'Program Area', 'Jurisdiction']],
+      ['morbidityReports', 'Morbidity Reports', ['Event ID', 'Date Received', 'Provider', 'Report Date', 'Condition', 'Jurisdiction', 'Associated With']],
+      ['vaccinations', 'Vaccinations', ['Event ID', 'Date Created', 'Provider', 'Date Administered', 'Vaccine Administered', 'Associated With']],
+      ['treatments', 'Treatments', ['Event ID', 'Date Created', 'Provider', 'Treatment Date', 'Treatment', 'Associated With']],
+      ['documents', 'Documents', ['Event ID', 'Date Received', 'Document Type', 'Sending Facility', 'Date Reported', 'Condition', 'Associated With']],
+      ['contactRecords', 'Contact Records', ['Event ID', 'Date Created', 'Name/Relationship', 'Date Named', 'Description', 'Associated With']]];
+    var EMPTY = '<p class="pv-empty">No Data Found</p>';
+    var table = function (caption, cols, rows) {
+      return '<div class="ds-table-scroll" tabindex="0" role="group" aria-label="' + esc(caption) + ', scrolls horizontally when zoomed"><table class="table ds-table tableCompact mb-0"><caption class="visually-hidden">' + esc(caption) + '</caption><thead><tr>' +
+        cols.map(function (h) { return '<th scope="col">' + h + '</th>'; }).join('') + '</tr></thead><tbody>' +
+        rows.map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+    };
+    /* Contact Records, as Phase 2 splits them: the contacts the patient named, by investigation, then the
+       investigations in which the patient was named as a contact */
+    var contacts = function (p, cols) {
+      var c = p.contactRecords || {}, out = '', n = 0;
+      var part = function (title, groups, line) {
+        var keys = Object.keys(groups || {});
+        out += '<p class="mb-2 mt-1"><b>' + title + '</b></p>';
+        if (!keys.length) { out += EMPTY; return; }
+        keys.forEach(function (k) { n += groups[k].length; out += '<p class="mb-2">' + line(k) + '</p>' + table(title + ' ' + k, cols, groups[k]); });
+      };
+      part('Contacts Named by Patient:', c.namedByPatient, function (k) { return 'The following contacts were named in <b>' + esc(p.name) + '\'s</b> Investigation of <b>' + esc(k) + '</b>:'; });
+      part('Patient Named by Contacts:', c.patientNamedBy, function (k) { return '<b>' + esc(p.name) + '</b> was named as a contact in the following <b>' + esc(k) + '</b>:'; });
+      return { html: out, count: n };
+    };
     var fill = function (id) {
       var p = PATIENTS[id]; if (!p) return false;
-      $('#pvName').textContent = p.name;
-      $('#pvContext').textContent = 'Patient ID ' + id + '. Read only.';
-      $('#pvSummary').innerHTML = [['Patient ID', id], ['Current sex', p.sex], ['Date of birth', p.dob + ' (' + p.age + ')'], ['Address', p.address], ['Phone', p.phone || 'None'], ['Email', p.email || 'None']]
-        .map(function (d) { return '<div><dt>' + esc(d[0]) + '</dt><dd>' + esc(d[1]) + '</dd></div>'; }).join('');
+      $('#pvName').textContent = p.name; $('#pvSex').textContent = p.sex; $('#pvDob').textContent = p.dob + ' (' + p.age + ')'; $('#pvId').textContent = id;
       SECTIONS.forEach(function (s) {
-        var rows = p[s[0]] || [], body = $('#pv-' + s[0] + '-body');
-        $('#pv-' + s[0] + '-count').textContent = '(' + rows.length + ')';
-        body.innerHTML = rows.length
-          ? '<div class="ds-table-scroll" tabindex="0" role="group" aria-label="' + s[1] + ', scrolls horizontally when zoomed"><table class="table ds-table mb-0"><caption class="visually-hidden">' + s[1] + ' for ' + esc(p.name) + '</caption><thead><tr>' + s[2].map(function (h) { return '<th scope="col">' + h + '</th>'; }).join('') + '</tr></thead><tbody>' +
-            rows.map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>'
-          : '<p class="mb-0">No ' + s[1].toLowerCase() + '.</p>';
+        var body = $('#pv-' + s[0] + '-body'), n;
+        if (s[0] === 'contactRecords') { var c = contacts(p, s[2]); body.innerHTML = c.html; n = c.count; }
+        else { var rows = p[s[0]] || []; n = rows.length; body.innerHTML = rows.length ? table(s[1] + ' for ' + p.name, s[2], rows) : EMPTY; }
+        $('#pv-' + s[0] + '-count').textContent = '(' + n + ')';
       });
       $$('.accordion-button', dlg).forEach(function (b) { setSection(b, true); }); syncAll(dlg);
+      $$('#pvNav a', dlg).forEach(function (x) { x.removeAttribute('aria-current'); });
       $('.modal-body', dlg).scrollTop = 0;
       return true;
     };
@@ -168,5 +198,15 @@
       sec.scrollIntoView({ block: 'start' }); b.focus();
     });
     $('#pvPrint').addEventListener('click', function () { window.print(); });
+    // the section links collapse to their toggle, as Phase 2's secondary nav does
+    $('#pvNavToggle').addEventListener('click', function () {
+      var open = this.getAttribute('aria-expanded') !== 'true';
+      this.setAttribute('aria-expanded', String(open));
+      this.setAttribute('data-bs-title', open ? 'Hide section links' : 'Show section links');
+      var bt = window.bootstrap && bootstrap.Tooltip && bootstrap.Tooltip.getInstance(this);   // the Phase 2 frame's tooltips are Bootstrap's
+      if (bt) bt.setContent({ '.tooltip-inner': this.getAttribute('data-bs-title') });
+      $('use', this).setAttribute('href', $('use', this).getAttribute('href').replace(/#.*/, open ? '#left_panel_close' : '#left_panel_open'));
+      $('#pvLayout').classList.toggle('is-nav-collapsed', !open);
+    });
   }
 })();

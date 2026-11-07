@@ -6,6 +6,7 @@
 <title>Manage Trigger Codes for Case Reporting - Case Report and Laboratory - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -86,6 +87,50 @@
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
           <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
             <button type="button" class="btn btn-primary" data-record="add" aria-haspopup="dialog"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New Trigger Code</button></div>
+          <!-- Column filter chips (BA review: every library has them): Phase 2's queue chips, in Phase 2's order (the chips,
+               Filter, then "| Reset" while a filter is applied). DEV: build this with the Phase 3 queue component in the app
+               (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
+          <div class="ds-phase2">
+            <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="resultsTable" data-noun="trigger codes">
+              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Coding System">
+                <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="tcSystemChip">
+                  <span id="tcSystemChip-chipLabel">Coding System</span>
+                  <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="tcSystemChip-subMenu" aria-label="Edit Coding System filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                </div>
+                <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="tcSystemChip-subMenu"></div>
+              </div>
+              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Condition">
+                <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="tcConditionChip">
+                  <span id="tcConditionChip-chipLabel">Condition</span>
+                  <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="tcConditionChip-subMenu" aria-label="Edit Condition filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                </div>
+                <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="tcConditionChip-subMenu"></div>
+              </div>
+              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Program Area">
+                <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="tcProgramChip">
+                  <span id="tcProgramChip-chipLabel">Program Area</span>
+                  <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="tcProgramChip-subMenu" aria-label="Edit Program Area filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                </div>
+                <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="tcProgramChip-subMenu"></div>
+              </div>
+              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Status">
+                <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="tcStatusChip">
+                  <span id="tcStatusChip-chipLabel">Status</span>
+                  <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="tcStatusChip-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                </div>
+                <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="tcStatusChip-subMenu"></div>
+              </div>
+              <div id="filtersButtonDiv">
+                <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="filterButtonId" class="chip-button btn-outline-dark rounded-pill dropdown-toggle d-flex align-items-center bg-primary chip badge me-2 ps-3 filter-chip" id="filtersId">
+                  <span aria-hidden="true" class="material-symbols-rounded text me-1" style="font-size: 24px;">filter_alt</span>
+                  <span class="me-2" style="font-size: 14px;">Filter</span>
+                </button>
+                <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="filterButtonId"></div>
+              </div>
+              <div id="clearFiltersDiv" style="margin-top: 5px">| <button type="button" class="btn btn-link p-0 text-decoration-none align-baseline" id="clearFilters">Reset</button></div>
+            </div>
+          </div>
+          <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
           <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
             <table class="table ds-table" id="resultsTable" data-columns="[&quot;code&quot;, &quot;displayName&quot;, &quot;codingSystem&quot;, &quot;condition&quot;, &quot;programArea&quot;, &quot;status&quot;]" data-actions="[{&quot;label&quot;: &quot;View&quot;, &quot;icon&quot;: &quot;visibility&quot;, &quot;dialog&quot;: &quot;view&quot;}, {&quot;label&quot;: &quot;Edit&quot;, &quot;icon&quot;: &quot;edit&quot;, &quot;dialog&quot;: &quot;edit&quot;}]" data-row-label="code" data-row-key="code"><caption class="visually-hidden">Trigger codes found</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">Code</th><th scope="col">Display Name</th><th scope="col">Coding System</th><th scope="col">Condition</th><th scope="col">Program Area</th><th scope="col">Status</th></tr></thead><tbody></tbody></table></div></div>
           <p class="ds-empty" id="noResults" hidden>No trigger codes match these criteria. Check the spelling, or search with less.</p>

@@ -6,6 +6,7 @@
 <title>Manage SNOMED - Condition Link - Case Report and Laboratory - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -86,6 +87,22 @@
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
           <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
             <a class="btn btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add Link</a></div>
+          <!-- Column filter chips (BA review: every library has them): Phase 2's queue chips, in Phase 2's order (the chips,
+               Filter, then "| Reset" while a filter is applied). DEV: build this with the Phase 3 queue component in the app
+               (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
+          <div class="ds-phase2">
+            <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="resultsTable" data-noun="links">
+              <div id="filtersButtonDiv">
+                <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="filterButtonId" class="chip-button btn-outline-dark rounded-pill dropdown-toggle d-flex align-items-center bg-primary chip badge me-2 ps-3 filter-chip" id="filtersId">
+                  <span aria-hidden="true" class="material-symbols-rounded text me-1" style="font-size: 24px;">filter_alt</span>
+                  <span class="me-2" style="font-size: 14px;">Filter</span>
+                </button>
+                <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="filterButtonId"></div>
+              </div>
+              <div id="clearFiltersDiv" style="margin-top: 5px">| <button type="button" class="btn btn-link p-0 text-decoration-none align-baseline" id="clearFilters">Reset</button></div>
+            </div>
+          </div>
+          <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
           <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
             <table class="table ds-table" id="resultsTable" data-columns="[&quot;conditionCode&quot;, &quot;snomedCode&quot;, &quot;disease&quot;]" data-actions="[]" data-row-label="snomedCode"><caption class="visually-hidden">Links found</caption><thead><tr><th scope="col">Condition Code</th><th scope="col">SNOMED Code</th><th scope="col">Disease Name</th></tr></thead><tbody></tbody></table></div></div>
           <p class="ds-empty" id="noResults" hidden>No links match these criteria. Check the spelling, or search with less.</p>

@@ -93,6 +93,7 @@
       }).join('');
       return '<tr data-key="' + key + '">' + (actions.length ? '<td class="ds-row-actions">' + acts + '</td>' : '') + cols.map(function (c, i) { return (i === 0 ? '<th scope="row">' : '<td>') + (r[c] ? esc(r[c]) : '<span class="visually-hidden">None</span>') + (i === 0 ? '</th>' : '</td>'); }).join('') + '</tr>';
     }).join('');
+    table.dispatchEvent(new CustomEvent('ds-rows-changed', { bubbles: true }));   // js/list-filters.js starts its filters over
   }
   form.addEventListener('submit', function (e) {
     e.preventDefault();

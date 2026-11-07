@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Algorithm Library - Decision Support - NEDSS</title>
+<title>WDS Algorithm Library - Decision Support - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
@@ -70,16 +70,52 @@
             <li class="breadcrumb-item active" aria-current="page">Manage Workflow Decision Support</li>
           </ol>
         </nav>
-        <h1 class="display-6 mb-0 mt-2">Algorithm Library</h1>
+        <h1 class="display-6 mb-0 mt-2">WDS Algorithm Library</h1>
       </div>
       <div class="page-body">
         <div class="ds-toolbar">
-          <input class="form-control rounded-pill" type="search" id="filterInput" aria-label="Filter algorithms" placeholder="Search to filter..." aria-describedby="filterStatus">
+          <input class="form-control" type="search" id="filterInput" aria-label="Filter algorithms" placeholder="Search to filter..." aria-describedby="filterStatus">
           <span class="ms-auto"></span>
           <a class="btn btn-primary" href="wds-add-algorithm.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
           <button class="btn btn-outline-primary" id="importBtn"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#upload_file"/></svg>Import</button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg></button>
+        </div>
+        <!-- Column filter chips (BA review: every library has them): Phase 2's queue chips, in Phase 2's order (the chips,
+             Filter, then "| Reset" while a filter is applied). DEV: build this with the Phase 3 queue component in the app
+             (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
+        <div class="ds-phase2">
+          <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="algTable" data-noun="algorithms">
+            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Event Type">
+              <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="eventType">
+                <span id="eventType-chipLabel">Event Type</span>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="eventType-subMenu" aria-label="Edit Event Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+              </div>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="eventType-subMenu"></div>
+            </div>
+            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Action">
+              <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="action">
+                <span id="action-chipLabel">Action</span>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="action-subMenu" aria-label="Edit Action filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+              </div>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="action-subMenu"></div>
+            </div>
+            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Status">
+              <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="status">
+                <span id="status-chipLabel">Status</span>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="status-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+              </div>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="status-subMenu"></div>
+            </div>
+            <div id="filtersButtonDiv">
+              <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="filterButtonId" class="chip-button btn-outline-dark rounded-pill dropdown-toggle d-flex align-items-center bg-primary chip badge me-2 ps-3 filter-chip" id="filtersId">
+                <span aria-hidden="true" class="material-symbols-rounded text me-1" style="font-size: 24px;">filter_alt</span>
+                <span class="me-2" style="font-size: 14px;">Filter</span>
+              </button>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="filterButtonId"></div>
+            </div>
+            <div id="clearFiltersDiv" style="margin-top: 5px">| <button type="button" class="btn btn-link p-0 text-decoration-none align-baseline" id="clearFilters">Reset</button></div>
+          </div>
         </div>
         <!-- Announces filter/sort results to screen readers without moving focus.
              DEV: update this after every HTMX swap that changes the row set. -->
@@ -102,20 +138,22 @@
                 <th scope="col"><button class="ds-sort-btn" data-sort="6">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
               </tr>
             </thead>
-            <!-- DEV: tbody is the dynamic region (th:each over algorithms).
-                 Row-action labels MUST include the row's algorithm name. -->
+            <!-- DEV: tbody is the dynamic region (th:each over algorithms). Row actions are Phase 2's row buttons
+                 (btn btn-light rounded-circle btn-sm, description for View, edit for Edit) and their labels include the
+                 row's algorithm name. Edit is a disabled button while the algorithm is Active (BA review): make it
+                 inactive first. -->
             <tbody>
               <tr>
-                <td class="ds-row-actions"><a href="wds-view-algorithm.html" aria-label="View 000_A_HepB_CI"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="wds-edit-algorithm.html" aria-label="Edit 000_A_HepB_CI"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 000_A_HepB_CI" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><a class="btn btn-light rounded-circle btn-sm" href="wds-edit-algorithm.html" aria-label="Edit 000_A_HepB_CI" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Algorithm"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
                 <td>Laboratory Report</td>
                 <td>000_A_HepB_CI</td>
                 <td>Hepatitis B, acute (10100)<div class="cond">Hepatitis B virus DNA (42595-9)</div></td>
                 <td>Create Investigation</td>
                 <td>03/05/2026</td>
-                <td><span class="badge text-bg-closed">Inactive</span></td>
+                <td><span class="badge text-bg-secondary">Inactive</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="wds-view-algorithm.html" aria-label="View 000_B_HepB_MAR"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="wds-edit-algorithm.html" aria-label="Edit 000_B_HepB_MAR"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 000_B_HepB_MAR" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 000_B_HepB_MAR, active algorithms cannot be edited"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td>
                 <td>Laboratory Report</td>
                 <td>000_B_HepB_MAR</td>
                 <td>Hepatitis B, acute (10100)<div class="cond">Hepatitis B virus DNA (42595-9)</div></td>
@@ -124,7 +162,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="wds-view-algorithm.html" aria-label="View 1_1_TX_COVID19_Positive_MarkAsReviewed"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="wds-edit-algorithm.html" aria-label="Edit 1_1_TX_COVID19_Positive_MarkAsReviewed"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 1_1_TX_COVID19_Positive_MarkAsReviewed" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_1_TX_COVID19_Positive_MarkAsReviewed, active algorithms cannot be edited"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td>
                 <td>Laboratory Report</td>
                 <td>1_1_TX_COVID19_Positive_MarkAsReviewed</td>
                 <td>TRYPANOSOMA CRUZI AB.IGG (13291-0)<div class="cond">SARS-CoV-2 RNA Pnl XXX NAA+probe (94306-8) · SARS-CoV-2 N gene (94307-6) …</div></td>
@@ -133,7 +171,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="wds-view-algorithm.html" aria-label="View 1_TB_Neg_CulNAAT_MR_AssociateTB"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="wds-edit-algorithm.html" aria-label="Edit 1_TB_Neg_CulNAAT_MR_AssociateTB"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 1_TB_Neg_CulNAAT_MR_AssociateTB" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_TB_Neg_CulNAAT_MR_AssociateTB, active algorithms cannot be edited"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td>
                 <td>Laboratory Report</td>
                 <td>1_TB_Neg_CulNAAT_MR_AssociateTB</td>
                 <td>Tuberculosis (2020 RVCT) (102201)<div class="cond">MICROSCOPIC OBSERVATION (11545-1) · PYRAZINAMIDE 100.0 UG/ML (25229-6) …</div></td>
@@ -142,7 +180,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="wds-view-algorithm.html" aria-label="View 1_TB_Neg_IGRA_MR_AssociateTB"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="wds-edit-algorithm.html" aria-label="Edit 1_TB_Neg_IGRA_MR_AssociateTB"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 1_TB_Neg_IGRA_MR_AssociateTB" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_TB_Neg_IGRA_MR_AssociateTB, active algorithms cannot be edited"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td>
                 <td>Laboratory Report</td>
                 <td>1_TB_Neg_IGRA_MR_AssociateTB</td>
                 <td>Tuberculosis (2020 RVCT) (102201)<div class="cond">M. tuberculosis tuberculin stimulated gamma interferon (45323-3) …</div></td>
@@ -151,7 +189,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="wds-view-algorithm.html" aria-label="View 1_TX_COVID19_Positive_MarkAsReviwed"><svg class="ds-icon"><use href="../../icons/sprite.svg#visibility"/></svg></a><a href="wds-edit-algorithm.html" aria-label="Edit 1_TX_COVID19_Positive_MarkAsReviwed"><svg class="ds-icon"><use href="../../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 1_TX_COVID19_Positive_MarkAsReviwed" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></a><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_TX_COVID19_Positive_MarkAsReviwed, active algorithms cannot be edited"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button></td>
                 <td>Laboratory Report</td>
                 <td>1_TX_COVID19_Positive_MarkAsReviwed</td>
                 <td>Novel Coronavirus 2019 (11065)<div class="cond">SARS-CoV-2 RNA Pnl XXX NAA+probe (94306-8) …</div></td>
@@ -201,25 +239,26 @@
 </div>
 <!-- /app-frame:bottom -->
 
-<!-- Import modal: replaces the legacy inline block that disabled the whole page -->
-<div class="modal" id="importModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="importTitle" hidden>
-  <div class="modal-dialog">
+<!-- Import: Phase 2's file dialog (bulktransfer/bulkTransfer.html, Choose Bulk Transfer File; BA review): the title, the
+     blue banner with what to choose, the file field with its label to the left, Cancel and Submit. Replaces the legacy
+     inline block that disabled the whole page. DEV: post the file; on success go to the imported algorithm. -->
+<div class="modal ds-modal-p2" id="importModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="importTitle" aria-describedby="importBanner" hidden>
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
         <div class="modal-header">
-          <h2 class="modal-title h5" id="importTitle">Import Algorithm</h2>
+          <h2 class="modal-title h5" id="importTitle">Choose Algorithm File</h2>
           <button type="button" class="btn-close" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <p>Browse to the Decision Support Algorithm export you would like to import.</p>
-          <div class="ds-field">
-            <label for="importFile" class="ds-required">Algorithm file</label>
-            <input class="form-control" type="file" id="importFile" name="importFile" required aria-describedby="importHelp">
-            <span class="form-text" id="importHelp">Accepts an algorithm export (.xml) downloaded from another NBS environment.</span>
+        <form class="modal-body" id="importForm" novalidate>
+          <div class="alert alert-info d-flex align-items-center gap-2 mb-0" id="importBanner"><svg class="ds-icon flex-shrink-0" aria-hidden="true"><use href="../../icons/sprite.svg#info"/></svg>Please browse to the Decision Support Algorithm you would like to import.</div>
+          <div class="row g-2 align-items-center">
+            <label for="importFile" class="col-md-3 col-form-label text-md-end ds-required">Algorithm File Name:</label>
+            <div class="col-md-8"><input class="form-control" type="file" id="importFile" name="importFile" accept=".xml" required></div>
           </div>
-        </div>
+        </form>
         <div class="modal-footer">
-          <button class="btn btn-outline-primary">Cancel</button>
-          <button class="btn btn-primary"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#upload_file"/></svg>Import</button>
+          <button type="button" class="btn btn-outline-primary">Cancel</button>
+          <button type="submit" form="importForm" class="btn btn-primary">Submit</button>
         </div>
     </div>
   </div>
@@ -275,7 +314,8 @@
   function open() { dsDialog.show(backdrop); dialog.focus(); }
   function close() { dsDialog.hide(backdrop); opener.focus(); }
   opener.addEventListener('click', open);
-  backdrop.querySelectorAll('.btn-close, .btn-outline-primary').forEach(function (b) { b.addEventListener('click', close); });
+  backdrop.querySelectorAll('.btn-close, .modal-footer .btn-outline-primary').forEach(function (b) { b.addEventListener('click', close); });
+  document.getElementById('importForm').addEventListener('submit', function (e) { e.preventDefault(); });
   backdrop.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { close(); return; }
     if (e.key !== 'Tab') return;

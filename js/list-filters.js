@@ -21,7 +21,12 @@
    - #clearFiltersDiv: "| Reset", after the Filter button, shown only while a filter is applied.
    - #filterStatus (role="status"): every change is announced there.
    - Footer: .ds-table-footer holding #pageSummary, a Bootstrap .pagination whose .page-link buttons are named
-     "Previous page", "Page N", "Next page", and #pageSize.
+     "Previous page", "Page N", "Next page", and #pageSize. A list without paging keeps its "N of M <noun>" count:
+     give that .ds-page-summary data-noun and the count follows the filters in the same words.
+   - The text filter is #filterInput, or the field marked data-list-text-filter (Reset clears it and tells its
+     script, with an input event).
+   - Rows a script replaces (search results, js/ds-search.js): a "ds-rows-changed" event on the table clears the
+     filters for the new rows.
 
    Keyboard
    - Enter or Space on a chip's expand button opens its menu and moves focus to the first control in it.
@@ -56,7 +61,7 @@
     var headers = $$('thead th', table).map(text);
     var filterDiv = $('#filtersButtonDiv', bar), filterBtn = $('#filtersId', bar), filterMenu = $('#filterButtonId', bar);
     var resetDiv = $('#clearFiltersDiv', bar), resetBtn = $('#clearFilters', bar);
-    var textFilter = document.getElementById('filterInput');
+    var textFilter = document.getElementById('filterInput') || $('[data-list-text-filter]');
     var originalOrder = Array.prototype.slice.call(tbody.rows);
     var originalSort = $$('th[aria-sort]', table).map(function (th) { return [th, th.getAttribute('aria-sort')]; });
     var active = {};           /* column -> { op: '=' | '!=', values: [...] } */
@@ -90,6 +95,7 @@
     function syncSummary() {
       var summary = $('.ds-page-summary');
       if (!summary) return;
+      if (summary.hasAttribute('data-noun')) { summary.textContent = shownCount() + ' of ' + tbody.rows.length + ' ' + summary.getAttribute('data-noun'); return; }
       var m = text(summary).match(/of\s+([0-9,]+)/);
       if (!m || parseInt(m[1].replace(/,/g, ''), 10) > tbody.rows.length) return;
       var n = shownCount();
@@ -313,6 +319,17 @@
       if (open && !open.menu.contains(e.target) && !open.button.contains(e.target)) close(false);
     });
 
+    /* Rows replaced by a script (a new search's results): the filters start over, for the new rows. */
+    table.addEventListener('ds-rows-changed', function () {
+      close(false);
+      active = {};
+      if (status) status.textContent = '';   // quietly: the script that drew the rows says what happened
+      $$('.chipsWithSubMenu:not([data-chip-type="S"])', bar).forEach(function (w) { w.remove(); });
+      $$('.chipsWithSubMenu', bar).forEach(renderChip);
+      originalOrder = Array.prototype.slice.call(tbody.rows);
+      applyRows();
+    });
+
     /* Reset (Phase 2's "| Reset"): every filter value, the text filter, and the sort go back to how the page loaded. */
     if (resetBtn) resetBtn.addEventListener('click', function () {
       close(false);
@@ -320,7 +337,7 @@
       // chips added from Filter go; standard chips stay, cleared
       $$('.chipsWithSubMenu:not([data-chip-type="S"])', bar).forEach(function (w) { w.remove(); });
       $$('.chipsWithSubMenu', bar).forEach(renderChip);
-      if (textFilter && textFilter.value) { textFilter.value = ''; Array.prototype.forEach.call(tbody.rows, function (r) { r.hidden = false; }); }
+      if (textFilter && textFilter.value) { textFilter.value = ''; Array.prototype.forEach.call(tbody.rows, function (r) { r.hidden = false; }); textFilter.dispatchEvent(new Event('input')); }
       $$('th[aria-sort]', table).forEach(function (th) { th.removeAttribute('aria-sort'); });
       originalSort.forEach(function (p) { p[0].setAttribute('aria-sort', p[1]); });
       originalOrder.forEach(function (r) { tbody.appendChild(r); });

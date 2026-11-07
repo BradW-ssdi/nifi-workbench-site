@@ -207,7 +207,7 @@
     }
     ['display', 'conceptCode', 'preferredName', 'codeSystem', 'from'].forEach(function (k) { row.querySelector('[data-c="' + k + '"]').textContent = c[k]; });
     row.querySelector('[data-c="to"]').innerHTML = c.to ? '' : '<span class="visually-hidden">None</span>'; if (c.to) row.querySelector('[data-c="to"]').textContent = c.to;
-    row.querySelector('[data-c="status"]').innerHTML = '<span class="badge ' + (c.status === 'Active' ? 'text-bg-success' : 'text-bg-closed') + '">' + c.status + '</span>';
+    row.querySelector('[data-c="status"]').innerHTML = '<span class="badge ' + (c.status === 'Active' ? 'text-bg-success' : 'text-bg-secondary') + '">' + c.status + '</span>';
     var n = tbody.rows.length;
     $('conceptCount').textContent = n + ' concepts';
     var added = !editing;

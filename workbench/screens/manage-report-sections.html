@@ -6,6 +6,7 @@
 <title>Manage Report Sections - Report Management - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -73,15 +74,30 @@
       <div class="page-body" style="max-width:none">
         <!-- Manage Report Sections modernizes ListReportSections.do. Report sections group reports on the Reports page. Default Report Section is assigned to every report that has none. -->
         <div class="ds-toolbar">
-          <input class="form-control rounded-pill" type="search" id="listFilter" data-noun="report sections" aria-label="Search report sections" placeholder="Search to filter..." autocomplete="off">
+          <input class="form-control" type="search" id="listFilter" data-noun="report sections" data-list-text-filter aria-label="Search report sections" placeholder="Search to filter..." autocomplete="off">
           <span class="ms-auto"></span>
           <a class="btn btn-primary" href="add-report-section.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add New</a>
         </div>
-        <div id="listStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+        <!-- Column filter chips (BA review: every library has them): Phase 2's queue chips, in Phase 2's order (the chips,
+             Filter, then "| Reset" while a filter is applied). DEV: build this with the Phase 3 queue component in the app
+             (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
+        <div class="ds-phase2">
+          <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="listTable" data-noun="report sections">
+            <div id="filtersButtonDiv">
+              <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="filterButtonId" class="chip-button btn-outline-dark rounded-pill dropdown-toggle d-flex align-items-center bg-primary chip badge me-2 ps-3 filter-chip" id="filtersId">
+                <span aria-hidden="true" class="material-symbols-rounded text me-1" style="font-size: 24px;">filter_alt</span>
+                <span class="me-2" style="font-size: 14px;">Filter</span>
+              </button>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="filterButtonId"></div>
+            </div>
+            <div id="clearFiltersDiv" style="margin-top: 5px">| <button type="button" class="btn btn-link p-0 text-decoration-none align-baseline" id="clearFilters">Reset</button></div>
+          </div>
+        </div>
+        <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
         <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Manage Report Sections, scrolls sideways">
           <table class="table ds-table" id="listTable"><caption class="visually-hidden">Manage Report Sections</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">Section Name</th><th scope="col">Description</th><th scope="col">Date Added</th></tr></thead><tbody><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit AR/MDRO Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>AR/MDRO Report Section</td><td>AR/MDRO reports (C.auris, C.difficile CRE, MDR-A, MRSA,etc.)</td><td>01/26/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit COVID-19 Reports"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>COVID-19 Reports</td><td>Section for COVID Reports</td><td>05/23/2020</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit Custom Report SME Review"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Custom Report SME Review</td><td>Section for TX SMEs to review custom reports</td><td>03/07/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit Default Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Default Report Section</td><td>This is the default report section that will be assigned to all the reports.</td><td>02/13/2009</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit eICR"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>eICR</td><td>Report section for Electronic Initial Case Reports (eICR) reports</td><td>10/11/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit Foodborne Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Foodborne Report Section</td><td>Foodborne reports</td><td>01/26/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit Hepatitis Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Hepatitis Report Section</td><td>Hepatitis reports</td><td>01/26/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit Local HDs Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Local HDs Report Section</td><td>LHD reports</td><td>01/26/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit Monkeypox Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Monkeypox Report Section</td><td>Monkeypox Report Section</td><td>07/26/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit Other Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Other Report Section</td><td>Section for miscellaneous non-default reports</td><td>01/26/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit Outbreak Management Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Outbreak Management Section</td><td>Report section for outbreaks and outbreak contacts</td><td>12/09/2023</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit QA Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>QA Report Section</td><td>QA reports</td><td>01/26/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit QA Template Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>QA Template Report Section</td><td>QA Template Reports</td><td>01/17/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit Respiratory Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Respiratory Report Section</td><td>Respiratory reports.</td><td>03/21/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit Security Management Reports"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Security Management Reports</td><td>Security Metrics Reports for Administrators</td><td>12/02/2023</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit STD Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>STD Report Section</td><td>STD Report Section</td><td>01/17/2016</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit TB Reports Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>TB Reports Section</td><td>Tb reports from the TB LTBI datamart</td><td>12/18/2023</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit VPD Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>VPD Report Section</td><td>VPD reports (HAV, HBV, pertussis, tetanus, etc.)</td><td>01/26/2022</td></tr><tr><td class="ds-row-actions"><a href="add-report-section.html" aria-label="Edit Zoonotic Report Section"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a></td><td>Zoonotic Report Section</td><td>Zoonotic reports (Chagas, rabies, mosquito-borne, tick-borne, typhus, etc.)</td><td>01/26/2022</td></tr></tbody></table>
           <p class="ds-empty" id="listEmpty" hidden>No report sections match the search.</p></div>
-          <div class="ds-table-footer"><span class="ds-page-summary" id="listSummary">19 of 19 report sections</span></div>
+          <div class="ds-table-footer"><span class="ds-page-summary" id="listSummary" data-noun="report sections">19 of 19 report sections</span></div>
         </div>
       </div>
     </main>
@@ -99,15 +115,16 @@
 </div>
 <!-- /app-frame:bottom -->
 <script>
-/* Search filters the table as you type and says how many rows show; focus never moves. */
+/* Search filters the table as you type and says how many rows show; focus never moves. Rows the chips filter out
+   (js/list-filters.js, class ds-row-filtered) do not count as shown. */
 (function () {
-  var input = document.getElementById('listFilter'), status = document.getElementById('listStatus'), empty = document.getElementById('listEmpty'), summary = document.getElementById('listSummary'), t;
+  var input = document.getElementById('listFilter'), status = document.getElementById('filterStatus'), empty = document.getElementById('listEmpty'), summary = document.getElementById('listSummary'), t;
   var rows = Array.prototype.slice.call(document.querySelectorAll('#listTable tbody tr')), noun = input.getAttribute('data-noun');
   input.addEventListener('input', function () {
     clearTimeout(t);
     t = setTimeout(function () {
       var q = input.value.trim().toLowerCase(), n = 0;
-      rows.forEach(function (r) { var hit = !q || r.textContent.toLowerCase().indexOf(q) !== -1; r.hidden = !hit; if (hit) n++; });
+      rows.forEach(function (r) { var hit = !q || r.textContent.toLowerCase().indexOf(q) !== -1; r.hidden = !hit; if (hit && !r.classList.contains('ds-row-filtered')) n++; });
       empty.hidden = n > 0;
       summary.textContent = n + ' of ' + rows.length + ' ' + noun;
       status.textContent = q ? n + ' of ' + rows.length + ' ' + noun + ' shown' : '';

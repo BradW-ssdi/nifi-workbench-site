@@ -6,6 +6,7 @@
 <title>Manage PHDC Activity Log - Case Report and Laboratory - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -86,6 +87,50 @@
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
           <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
             </div>
+          <!-- Column filter chips (BA review: every library has them): Phase 2's queue chips, in Phase 2's order (the chips,
+               Filter, then "| Reset" while a filter is applied). DEV: build this with the Phase 3 queue component in the app
+               (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
+          <div class="ds-phase2">
+            <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="resultsTable" data-noun="records">
+              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Status">
+                <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="phdcStatusChip">
+                  <span id="phdcStatusChip-chipLabel">Status</span>
+                  <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="phdcStatusChip-subMenu" aria-label="Edit Status filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                </div>
+                <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="phdcStatusChip-subMenu"></div>
+              </div>
+              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Algorithm Name">
+                <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="phdcAlgorithmChip">
+                  <span id="phdcAlgorithmChip-chipLabel">Algorithm Name</span>
+                  <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="phdcAlgorithmChip-subMenu" aria-label="Edit Algorithm Name filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                </div>
+                <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="phdcAlgorithmChip-subMenu"></div>
+              </div>
+              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Action">
+                <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="phdcActionChip">
+                  <span id="phdcActionChip-chipLabel">Action</span>
+                  <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="phdcActionChip-subMenu" aria-label="Edit Action filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                </div>
+                <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="phdcActionChip-subMenu"></div>
+              </div>
+              <div class="chipsWithSubMenu" data-chip-type="S" data-column="Condition">
+                <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="phdcConditionChip">
+                  <span id="phdcConditionChip-chipLabel">Condition</span>
+                  <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="phdcConditionChip-subMenu" aria-label="Edit Condition filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+                </div>
+                <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="phdcConditionChip-subMenu"></div>
+              </div>
+              <div id="filtersButtonDiv">
+                <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="filterButtonId" class="chip-button btn-outline-dark rounded-pill dropdown-toggle d-flex align-items-center bg-primary chip badge me-2 ps-3 filter-chip" id="filtersId">
+                  <span aria-hidden="true" class="material-symbols-rounded text me-1" style="font-size: 24px;">filter_alt</span>
+                  <span class="me-2" style="font-size: 14px;">Filter</span>
+                </button>
+                <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="filterButtonId"></div>
+              </div>
+              <div id="clearFiltersDiv" style="margin-top: 5px">| <button type="button" class="btn btn-link p-0 text-decoration-none align-baseline" id="clearFilters">Reset</button></div>
+            </div>
+          </div>
+          <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
           <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
             <table class="table ds-table" id="resultsTable" data-columns="[&quot;processed&quot;, &quot;status&quot;, &quot;algorithm&quot;, &quot;action&quot;, &quot;condition&quot;, &quot;facility&quot;, &quot;patient&quot;, &quot;documentId&quot;, &quot;interfaceUid&quot;, &quot;exception&quot;]" data-actions="[]" data-row-label="processed"><caption class="visually-hidden">Records found</caption><thead><tr><th scope="col">Processed Time</th><th scope="col">Status</th><th scope="col">Algorithm Name</th><th scope="col">Action</th><th scope="col">Condition</th><th scope="col">Reporting Facility</th><th scope="col">Patient</th><th scope="col">Document ID</th><th scope="col">Interface UID</th><th scope="col">Exception Text</th></tr></thead><tbody></tbody></table></div></div>
           <p class="ds-empty" id="noResults" hidden>No records match these criteria. Check the spelling, or search with less.</p>

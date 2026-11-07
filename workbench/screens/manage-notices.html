@@ -6,6 +6,7 @@
 <title>Manage Notices - Page Management - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -85,6 +86,29 @@
           <button type="button" class="btn btn-primary" id="addNotice" aria-haspopup="dialog"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#add"/></svg>Add Notice</button>
           <button type="button" class="btn btn-outline-primary" id="previewNotices" aria-haspopup="dialog"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#visibility"/></svg>Preview on Home</button>
         </div>
+        <!-- Column filter chips (BA review: every library has them): Phase 2's queue chips, in Phase 2's order (the chips,
+             Filter, then "| Reset" while a filter is applied). DEV: build this with the Phase 3 queue component in the app
+             (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
+        <div class="ds-phase2">
+          <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" data-list-chips data-table="noticeTable" data-noun="notices">
+            <div class="chipsWithSubMenu" data-chip-type="S" data-column="Type">
+              <div class="chip-button chip-to-filter rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="noticeType">
+                <span id="noticeType-chipLabel">Type</span>
+                <button type="button" class="chip-expand" aria-haspopup="true" aria-expanded="false" aria-controls="noticeType-subMenu" aria-label="Edit Type filter"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;">expand_more</span></button>
+              </div>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="noticeType-subMenu"></div>
+            </div>
+            <div id="filtersButtonDiv">
+              <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="filterButtonId" class="chip-button btn-outline-dark rounded-pill dropdown-toggle d-flex align-items-center bg-primary chip badge me-2 ps-3 filter-chip" id="filtersId">
+                <span aria-hidden="true" class="material-symbols-rounded text me-1" style="font-size: 24px;">filter_alt</span>
+                <span class="me-2" style="font-size: 14px;">Filter</span>
+              </button>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="filterButtonId"></div>
+            </div>
+            <div id="clearFiltersDiv" style="margin-top: 5px">| <button type="button" class="btn btn-link p-0 text-decoration-none align-baseline" id="clearFilters">Reset</button></div>
+          </div>
+        </div>
+        <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
         <div id="noticeStatus" class="visually-hidden" role="status" aria-live="polite"></div>
         <div class="ds-table-frame">
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Notices table, scrolls horizontally when zoomed">
@@ -173,6 +197,8 @@
      soon as its field is edited. A good save updates or adds the row, says so, and returns focus to the row's Edit
      (the new row's View after Add).
    - Delete asks first. After it, focus goes to the row that took its place, or to Add Notice when none is left.
+   - Phase 2's chips filter the table (js/list-filters.js): Type, then Filter for the other columns. A save or a
+     delete draws the rows again and the chips start over.
    - Cancel, Close, and Escape return focus to the control that opened the dialog; Tab stays in the dialog.
    DEV: the server saves, numbers, and deletes notices; the ids here stand in for nbs_ui_metadata_uid. */
 (function () {
@@ -211,6 +237,8 @@
     var none = !data.length;
     document.querySelector('#noticeTable').closest('.ds-table-frame').hidden = none;
     $('noNotices').hidden = !none;
+    // js/list-filters.js starts its chips over for the new rows, so the row that takes focus next is never filtered out
+    document.querySelector('#noticeTable').dispatchEvent(new CustomEvent('ds-rows-changed', { bubbles: true }));
   }
   function rowButton(id, act) { return tbody.querySelector('[data-act="' + act + '"][data-id="' + id + '"]'); }
 

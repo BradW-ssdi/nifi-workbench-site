@@ -11,13 +11,15 @@
 <style>
   .page-body { padding: 24px; max-width: 1028px; }   /* 980px of content plus the padding */
   [hidden] { display: none !important; }
-  .page-body { display: grid; gap: 20px; }
+  .page-body { display: grid; gap: 16px; }
   .ds-view-header { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 24px; }
   .ds-view-titles { flex: 1 1 360px; min-width: 0; }
-  .ds-view-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-  .ds-dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 16px 24px; margin: 0; }
-  .ds-dl dt { font-weight: 500; color: var(--bs-secondary-color); font-size: 13px; }
-  .ds-dl dd { margin: 2px 0 0; overflow-wrap: anywhere; }
+  .ds-view-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  /* the summary: two columns of label and value, one on narrow screens */
+  .ds-wds-summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 24px; }
+  @media (max-width: 640px) { .ds-wds-summary { grid-template-columns: minmax(0, 1fr); } .ds-wds-summary .text-md-end { text-align: left; } }
+  /* the view uses the page's width, as Phase 2's view pages do (the Add and Edit skeleton caps it) */
+  .page-body { max-width: none; }
   @media (max-width: 820px) {
     .page-body { padding: 16px; }
   }
@@ -76,45 +78,220 @@
             </ol>
           </nav>
           <h1 class="display-6 mb-0 mt-2">View Algorithm</h1>
-          <p class="mb-0 mt-2 d-flex flex-wrap align-items-center gap-2"><span class="fw-semibold">1_TB_Pos_IGRA_MR_AssociateTB</span><span class="badge text-bg-success">Active</span><span class="text-body-secondary small">Last updated 10/10/2024 by P. Preparer</span></p>
         </div>
-        <!-- Page actions. DEV: Export downloads the algorithm as XML (the file Import in the library reads). Print uses the
-             print stylesheet. Edit opens Edit Algorithm. -->
+        <!-- Page actions in the review's order: Export, Make Active / Make Inactive, Edit (an icon, hidden while the
+             algorithm is active, as the legacy page hides it), Print. Make Inactive and Make Active confirm with the
+             legacy wording, then change the button's label and the status and show a green toast (js/ds-status.js).
+             DEV: Export downloads the algorithm as XML (the file Import in the library reads); the server changes the
+             status; Print uses the print stylesheet. -->
         <div class="ds-view-actions">
-          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print algorithm"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
-          <button type="button" class="btn btn-outline-primary rounded-pill"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg>Export</button>
-          <a class="btn btn-primary rounded-pill" href="wds-edit-algorithm.html"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg>Edit</a>
+          <button type="button" class="btn btn-outline-primary"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#download"/></svg>Export</button>
+          <button type="button" class="btn btn-outline-primary" id="toggleStatus" data-status-toggle data-status-noun="algorithm" data-status-name="1_TB_Pos_IGRA_MR_AssociateTB" aria-haspopup="dialog" data-confirm-inactive="You have indicated that you would like to inactivate the {name} algorithm. Once inactivated, this algorithm will no longer be applied as a part of Workflow Decision Support. Select OK to continue or Cancel to return to View Algorithm." data-confirm-active="You have indicated that you would like to activate the {name} algorithm. Once activated, this algorithm will be applied as a part of Workflow Decision Support. Select OK to continue or Cancel to return to View Algorithm." data-done-inactive="{name} has been made inactive in the system." data-done-active="{name} has been made active in the system.">Make Inactive</button>
+          <a class="btn btn-light rounded-circle ds-btn-icon" href="wds-edit-algorithm.html" aria-label="Edit algorithm" data-hide-when-active data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></a>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print algorithm" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#print"/></svg></button>
         </div>
       </div>
       <div class="page-body">
-        <!-- View Algorithm (legacy DecisionSupport.do viewLoad): the sections of Add and Edit, read only, on one page so
-             the whole algorithm can be read and printed without switching tabs. After a save the page opens with the
-             success alert (role="status"). -->
-        <div class="alert alert-success mb-0" role="status" id="savedAlert" hidden>Algorithm saved.</div>
-        <section class="card ds-form-section">
-          <h2 class="card-header h6 mb-0 fw-semibold">Basic Criteria</h2>
-          <div class="card-body"><dl class="ds-dl"><div><dt>Algorithm Name</dt><dd>1_TB_Pos_IGRA_MR_AssociateTB</dd></div><div><dt>Event Type</dt><dd>Laboratory Report</dd></div><div><dt>Frequency</dt><dd>Real-Time</dd></div><div><dt>Apply To</dt><dd>Electronic Document</dd></div><div><dt>Sending Systems</dt><dd>DSHS Austin Laboratory</dd></div></dl></div>
-        </section>
-        <section class="card ds-form-section">
-          <h2 class="card-header h6 mb-0 fw-semibold">Action</h2>
-          <div class="card-body"><dl class="ds-dl"><div><dt>Action</dt><dd>Mark as Reviewed</dd></div><div><dt>Condition</dt><dd>Tuberculosis (2020 RVCT) (102201)</dd></div><div><dt>On Failure to Mark as Reviewed</dt><dd>Retain Event Record</dd></div></dl></div>
-        </section>
-        <section class="card ds-form-section">
-          <h2 class="card-header h6 mb-0 fw-semibold">Lab Criteria</h2>
-          <div class="card-body ds-stack"><dl class="ds-dl"><div><dt>Logic</dt><dd>ANY of the criteria are met (OR logic)</dd></div></dl><div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Lab criteria, scrolls horizontally when zoomed"><table class="table ds-table"><caption class="visually-hidden">Lab criteria</caption><thead><tr><th scope="col">Resulted Test</th><th scope="col">Operator</th><th scope="col">Result</th></tr></thead><tbody><tr><td>Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)</td><td>=</td><td>Positive (10828004)</td></tr><tr><td>Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)</td><td>&gt;=</td><td>0.35 IU/mL</td></tr><tr><td>Mycobacterium tuberculosis stimulated gamma interferon (71773-6)</td><td>Contains</td><td>positive</td></tr></tbody></table></div></div></div>
-        </section>
-        <section class="card ds-form-section">
-          <h2 class="card-header h6 mb-0 fw-semibold">Advanced Lab Criteria</h2>
-          <div class="card-body"><dl class="ds-dl"><div><dt>Apply advanced lab criteria</dt><dd>No</dd></div></dl></div>
-        </section>
-        <section class="card ds-form-section">
-          <h2 class="card-header h6 mb-0 fw-semibold">Investigation Criteria</h2>
-          <div class="card-body ds-stack"><dl class="ds-dl"><div><dt>Apply investigation logic</dt><dd>Yes</dd></div><div><dt>Check for additional conditions</dt><dd>No</dd></div></dl><h3 class="h6 mb-0">Advanced Investigation Criteria</h3><div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Advanced investigation criteria, scrolls horizontally when zoomed"><table class="table ds-table"><caption class="visually-hidden">Advanced investigation criteria</caption><thead><tr><th scope="col">Question</th><th scope="col">Logic</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Investigation Case Status (INV163)</td><td>Equal</td><td>Confirmed</td></tr></tbody></table></div></div><h3 class="h6 mb-0">Time Frame</h3><dl class="ds-dl"><div><dt>Apply time frame logic</dt><dd>Yes</dd></div><div><dt>Event Date</dt><dd>Date Specimen Collected</dd></div><div><dt>Time Frame</dt><dd>365 days or fewer</dd></div></dl></div>
-        </section>
-        <section class="card ds-form-section">
-          <h2 class="card-header h6 mb-0 fw-semibold">Administrative Information</h2>
-          <div class="card-body"><dl class="ds-dl"><div><dt>Administrative Comments</dt><dd>Associates a positive IGRA result with the patient&#x27;s existing TB investigation from the last year.</dd></div></dl></div>
-        </section>
+        <div class="toast-container top-center"><div class="toast alert-success" id="statusDone" role="status" aria-live="polite" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000" hidden>
+          <div class="d-flex"><svg class="ds-icon ds-toast-icon ms-3" aria-hidden="true"><use href="../../icons/sprite.svg#check_circle"/></svg><div class="toast-body"></div>
+          <button type="button" class="btn-close ms-auto me-3" data-bs-dismiss="toast" aria-label="Close"></button></div>
+        </div></div>
+        <!-- The legacy summary bar (AlgorithmSummary.jsp) as Phase 2's light teal summary: the algorithm and its ID, Event
+             Type and Status, Action and Date Last Run (N/A before the first run). -->
+        <div class="card summary ds-summary-bar ds-wds-summary py-2 px-3" id="algSummary">
+          <p class="mb-0 fw-bold">1_TB_Pos_IGRA_MR_AssociateTB</p><p class="mb-0 text-md-end"><b>Algorithm ID:</b> 17</p>
+          <p class="mb-0"><b>Event Type:</b> Laboratory Report</p><p class="mb-0 text-md-end"><b>Status:</b> <span class="badge text-bg-success" id="statusBadge">Active</span></p>
+          <p class="mb-0"><b>Action:</b> Mark as Reviewed</p><p class="mb-0 text-md-end"><b>Date Last Run:</b> 10/13/2026</p>
+        </div>
+        <div class="ds-form-layout" id="formLayout">
+          <nav class="ds-secnav" aria-label="Section navigation">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="secnavToggle" aria-expanded="true" aria-controls="secnavLinks" aria-label="Hide section navigation"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#left_panel_close"/></svg></button>
+            <div id="secnavLinks" class="nav nav-pills flex-column"><p class="ds-secnav-title fw-semibold px-3 mt-2 mb-1">Basic Criteria</p><a class="nav-link" href="#basicCriteria">Basic Criteria</a><a class="nav-link" href="#frequencyScope">Frequency &amp; Scope</a><a class="nav-link" href="#adminInfo">Administrative Information</a><p class="ds-secnav-title fw-semibold px-3 mt-3 mb-1">Action</p><a class="nav-link" href="#action">Action</a><a class="nav-link" href="#labLogic">Lab Criteria Logic</a><a class="nav-link" href="#labCriteria">Lab Criteria</a><a class="nav-link" href="#advLab">Advanced Lab Criteria</a><a class="nav-link" href="#advLabLogic">Advanced Lab Criteria Logic</a><a class="nav-link" href="#advLabIf">Advanced Lab Criteria [IF Logic]</a><a class="nav-link" href="#invCriteria">Investigation Criteria</a><a class="nav-link" href="#advInvIf">Advanced Investigation Criteria [IF Logic]</a><a class="nav-link" href="#timeFrame">Time Frame Logic</a></div>
+          </nav>
+          <div class="form-content ds-p2-view">
+            <div class="d-flex justify-content-end"><button type="button" class="btn btn-link p-0 text-decoration-none" id="toggleAll" aria-controls="formLayout">Collapse All</button></div>
+            <h2 class="ds-group-heading">Basic Criteria</h2>
+          <section class="accordion ds-form-accordion" id="basicCriteria" aria-labelledby="basicCriteriaHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="basicCriteriaHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="basicCriteriaBody">Basic Criteria</button></h3>
+              <div class="accordion-collapse collapse show" id="basicCriteriaBody"><div class="accordion-body">
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Algorithm Name:</span>
+                  <div class="col-md-8"><span class="ds-field-value">1_TB_Pos_IGRA_MR_AssociateTB</span></div>
+                </div>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Event Type:</span>
+                  <div class="col-md-8"><span class="ds-field-value">Laboratory Report</span></div>
+                </div>
+              </div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="frequencyScope" aria-labelledby="frequencyScopeHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="frequencyScopeHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="frequencyScopeBody">Frequency &amp; Scope</button></h3>
+              <div class="accordion-collapse collapse show" id="frequencyScopeBody"><div class="accordion-body">
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Frequency:</span>
+                  <div class="col-md-8"><span class="ds-field-value">Real-Time</span></div>
+                </div>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Apply To:</span>
+                  <div class="col-md-8"><span class="ds-field-value">Electronic Document</span></div>
+                </div>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Sending System(s):</span>
+                  <div class="col-md-8"><span class="ds-field-value">DSHS Austin Laboratory</span></div>
+                </div>
+              </div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="adminInfo" aria-labelledby="adminInfoHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="adminInfoHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="adminInfoBody">Administrative Information</button></h3>
+              <div class="accordion-collapse collapse show" id="adminInfoBody"><div class="accordion-body">
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Administrative Comments:</span>
+                  <div class="col-md-8"><span class="ds-field-value">Associates a positive IGRA result with the patient&#x27;s existing TB investigation from the last year.</span></div>
+                </div>
+              </div></div>
+            </div>
+          </section>
+            <h2 class="ds-group-heading">Action</h2>
+          <section class="accordion ds-form-accordion" id="action" aria-labelledby="actionHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="actionHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="actionBody">Action</button></h3>
+              <div class="accordion-collapse collapse show" id="actionBody"><div class="accordion-body">
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Action:</span>
+                  <div class="col-md-8"><span class="ds-field-value">Mark as Reviewed</span></div>
+                </div>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Condition:</span>
+                  <div class="col-md-8"><span class="ds-field-value">Tuberculosis (2020 RVCT) (102201)</span></div>
+                </div>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">On Failure to Mark as Reviewed:</span>
+                  <div class="col-md-8"><span class="ds-field-value">Retain Event Record</span></div>
+                </div>
+              </div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="labLogic" aria-labelledby="labLogicHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="labLogicHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="labLogicBody">Lab Criteria Logic</button></h3>
+              <div class="accordion-collapse collapse show" id="labLogicBody"><div class="accordion-body">
+                <p class="ds-static-text mb-0">The type of logic that should be applied to the lab criteria entered in the table below. All test/result data entered below will have either AND or OR logic applied.</p>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">And/Or Logic Setting:</span>
+                  <div class="col-md-8"><span class="ds-field-value">OR</span></div>
+                </div>
+              </div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="labCriteria" aria-labelledby="labCriteriaHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="labCriteriaHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="labCriteriaBody">Lab Criteria</button></h3>
+              <div class="accordion-collapse collapse show" id="labCriteriaBody"><div class="accordion-body">
+                <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Lab criteria, scrolls horizontally when zoomed">
+                  <table class="table ds-table"><caption class="visually-hidden">Lab criteria</caption><thead><tr><th scope="col"><span class="visually-hidden">View</span></th><th scope="col">Resulted Test</th><th scope="col">Operator</th><th scope="col">Result</th></tr></thead><tbody><tr><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)" aria-expanded="false" aria-controls="labDetail" data-detail='[[&quot;Resulted Test&quot;, &quot;Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)&quot;], [&quot;Include test result in algorithm&quot;, &quot;Yes&quot;], [&quot;Coded Result&quot;, &quot;Positive (10828004)&quot;], [&quot;Numeric Result&quot;, &quot;&quot;], [&quot;Text Result&quot;, &quot;&quot;], [&quot;Operator&quot;, &quot;=&quot;]]' data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></button></td><td>Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)</td><td>=</td><td>Positive (10828004)</td></tr><tr><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)" aria-expanded="false" aria-controls="labDetail" data-detail='[[&quot;Resulted Test&quot;, &quot;Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)&quot;], [&quot;Include test result in algorithm&quot;, &quot;Yes&quot;], [&quot;Coded Result&quot;, &quot;&quot;], [&quot;Numeric Result&quot;, &quot;&gt;= 0.35 IU/mL&quot;], [&quot;Text Result&quot;, &quot;&quot;], [&quot;Operator&quot;, &quot;&gt;=&quot;]]' data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></button></td><td>Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)</td><td>&gt;=</td><td>0.35 IU/mL</td></tr><tr><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View Mycobacterium tuberculosis stimulated gamma interferon (71773-6)" aria-expanded="false" aria-controls="labDetail" data-detail='[[&quot;Resulted Test&quot;, &quot;Mycobacterium tuberculosis stimulated gamma interferon (71773-6)&quot;], [&quot;Include test result in algorithm&quot;, &quot;Yes&quot;], [&quot;Coded Result&quot;, &quot;&quot;], [&quot;Numeric Result&quot;, &quot;&quot;], [&quot;Text Result&quot;, &quot;positive&quot;], [&quot;Operator&quot;, &quot;Contains&quot;]]' data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></button></td><td>Mycobacterium tuberculosis stimulated gamma interferon (71773-6)</td><td>Contains</td><td>positive</td></tr></tbody></table>
+                </div></div>
+                <div class="ds-row-detail" id="labDetail" tabindex="-1" role="region" aria-label="Lab criteria details" hidden></div>
+              </div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="advLab" aria-labelledby="advLabHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="advLabHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="advLabBody">Advanced Lab Criteria</button></h3>
+              <div class="accordion-collapse collapse show" id="advLabBody"><div class="accordion-body">
+                <p class="ds-static-text mb-0">Select if advanced lab criteria will be applied to the incoming document in addition to the lab criteria entered above</p>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Apply advanced lab criteria to this algorithm:</span>
+                  <div class="col-md-8"><span class="ds-field-value">No</span></div>
+                </div>
+              </div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="advLabLogic" aria-labelledby="advLabLogicHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="advLabLogicHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="advLabLogicBody">Advanced Lab Criteria Logic</button></h3>
+              <div class="accordion-collapse collapse show" id="advLabLogicBody"><div class="accordion-body">
+                <p class="ds-static-text mb-0">The type of logic that should be applied to the advanced lab criteria entered in the table below. All advanced lab criteria entered below will have either AND or OR logic applied.</p>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">And/Or Logic Setting:</span>
+                  <div class="col-md-8"><span class="ds-field-value">OR</span></div>
+                </div>
+              </div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="advLabIf" aria-labelledby="advLabIfHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="advLabIfHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="advLabIfBody">Advanced Lab Criteria [IF Logic]</button></h3>
+              <div class="accordion-collapse collapse show" id="advLabIfBody"><div class="accordion-body">
+                <p class="ds-empty mb-0">No advanced lab criteria.</p>
+              </div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="invCriteria" aria-labelledby="invCriteriaHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="invCriteriaHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="invCriteriaBody">Investigation Criteria</button></h3>
+              <div class="accordion-collapse collapse show" id="invCriteriaBody"><div class="accordion-body">
+                <p class="ds-static-text mb-0">If 'Mark as Reviewed' is selected as the action above, and the investigation logic defined below are met, then the incoming document will be 'auto-associated' to the pre-existing investigation that is found. If additional conditions are also selected below, then the incoming document will be 'auto-associated' to the pre-existing investigation that is most recently created, across all conditions selected.</p>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Apply investigation logic to this algorithm:</span>
+                  <div class="col-md-8"><span class="ds-field-value">Yes</span></div>
+                </div>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Would you like to check for condition(s) in addition to Tuberculosis (2020 RVCT) (102201) selected for this algorithm?:</span>
+                  <div class="col-md-8"><span class="ds-field-value">No</span></div>
+                </div>
+                <p class="ds-static-text mb-0">(If No is selected, investigation logic will <b>ONLY</b> apply to Tuberculosis (2020 RVCT) (102201).<br>If Yes is selected, investigation logic will apply to <b>ALL</b> selected conditions in addition to Tuberculosis (2020 RVCT) (102201).)</p>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Select additional conditions for investigation logic:</span>
+                  <div class="col-md-8"><span class="ds-field-value"><span class="text-body-secondary">None selected</span></span></div>
+                </div>
+              </div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="advInvIf" aria-labelledby="advInvIfHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="advInvIfHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="advInvIfBody">Advanced Investigation Criteria [IF Logic]</button></h3>
+              <div class="accordion-collapse collapse show" id="advInvIfBody"><div class="accordion-body">
+                <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Advanced investigation criteria, scrolls horizontally when zoomed">
+                  <table class="table ds-table"><caption class="visually-hidden">Advanced investigation criteria</caption><thead><tr><th scope="col"><span class="visually-hidden">View</span></th><th scope="col">Question</th><th scope="col">Logic</th><th scope="col">Value</th></tr></thead><tbody><tr><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View Investigation Case Status (INV163)" aria-expanded="false" aria-controls="advInvIfDetail" data-detail='[[&quot;Question&quot;, &quot;Investigation Case Status (INV163)&quot;], [&quot;Logic&quot;, &quot;Equal&quot;], [&quot;Value&quot;, &quot;Confirmed&quot;]]' data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#description"/></svg></button></td><td>Investigation Case Status (INV163)</td><td>Equal</td><td>Confirmed</td></tr></tbody></table>
+                </div></div>
+                <div class="ds-row-detail" id="advInvIfDetail" tabindex="-1" role="region" aria-label="Advanced investigation criteria details" hidden></div>
+              </div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="timeFrame" aria-labelledby="timeFrameHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="timeFrameHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="timeFrameBody">Time Frame Logic</button></h3>
+              <div class="accordion-collapse collapse show" id="timeFrameBody"><div class="accordion-body">
+                <p class="ds-static-text mb-0"><b>If the number of days falls within the time frame specified below, the action specified in the algorithm will be applied. If No is selected, the logic will check for any investigation EVER (regardless of time frame).</b> The number of days is calculated as the difference between the incoming electronic lab report (specimen collection date) and existing investigations for the same patient and condition (specimen collection date of earliest associated lab or investigation create date if no associated lab).</p>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Apply time frame logic to this algorithm:</span>
+                  <div class="col-md-8"><span class="ds-field-value">Yes</span></div>
+                </div>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Event Date:</span>
+                  <div class="col-md-8"><span class="ds-field-value">Date Specimen Collected</span></div>
+                </div>
+                <div class="row g-2" data-row>
+                  <span class="col-md-4 col-form-label text-md-end">Time Frame:</span>
+                  <div class="col-md-8"><span class="ds-field-value">&lt;= 365 Days</span></div>
+                </div>
+              </div></div>
+            </div>
+          </section>
+          </div>
+        </div>
+      </div>
+      <div class="modal" id="statusDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="statusTitle" aria-describedby="statusText" hidden>
+        <div class="modal-dialog"><div class="modal-content">
+          <div class="modal-header"><h2 class="modal-title h5" id="statusTitle">Make this algorithm inactive?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body"><p id="statusText" class="mb-0"></p></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="statusYes">Make Inactive</button></div>
+        </div></div>
       </div>
     </main>
 <!-- app-frame:bottom -->
@@ -130,5 +307,57 @@
   </footer>
 </div>
 <!-- /app-frame:bottom -->
+<script src="../../js/ds-dialog.js"></script>
+<script src="../../js/ds-toast.js"></script>
+<script src="../../js/ds-status.js"></script>
+<script>
+/* View Algorithm: the sections open and close (Collapse All for all of them), section links open their section and
+   move to it, the section links hide behind their toggle, and a repeating block's View shows that row's details under
+   the table (the legacy detail panel). Make Active / Make Inactive: js/ds-status.js. */
+(function () {
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function setSection(btn, on) {
+    btn.setAttribute('aria-expanded', String(on)); btn.classList.toggle('collapsed', !on);
+    document.getElementById(btn.getAttribute('aria-controls')).classList.toggle('show', on);
+  }
+  var all = $('#toggleAll');
+  function syncAll() { all.textContent = $$('.ds-p2-view .accordion-button').some(function (b) { return b.getAttribute('aria-expanded') === 'true'; }) ? 'Collapse All' : 'Expand All'; }
+  $$('.ds-p2-view .accordion-button').forEach(function (b) { b.addEventListener('click', function () { setSection(b, b.getAttribute('aria-expanded') !== 'true'); syncAll(); }); });
+  all.addEventListener('click', function () { var on = all.textContent === 'Expand All'; $$('.ds-p2-view .accordion-button').forEach(function (b) { setSection(b, on); }); syncAll(); });
+  var layout = $('#formLayout'), navToggle = $('#secnavToggle');
+  navToggle.addEventListener('click', function () {
+    var open = navToggle.getAttribute('aria-expanded') === 'true';
+    navToggle.setAttribute('aria-expanded', String(!open));
+    navToggle.setAttribute('aria-label', open ? 'Show section navigation' : 'Hide section navigation');
+    $('use', navToggle).setAttribute('href', '../../icons/sprite.svg#' + (open ? 'left_panel_open' : 'left_panel_close'));
+    layout.classList.toggle('is-nav-collapsed', open);
+  });
+  var links = $$('#secnavLinks a');
+  links.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      links.forEach(function (x) { x.removeAttribute('aria-current'); });
+      a.setAttribute('aria-current', 'location');
+      var sec = document.getElementById(a.getAttribute('href').slice(1)), b = $('.accordion-button', sec);
+      setSection(b, true); syncAll();
+      sec.scrollIntoView({ block: 'start' }); b.focus();
+    });
+  });
+  /* a row's View fills the panel under its table with the row's details; again on the same row closes it */
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  $$('[data-detail]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var panel = document.getElementById(b.getAttribute('aria-controls')), open = b.getAttribute('aria-expanded') === 'true';
+      $$('[aria-controls="' + panel.id + '"]').forEach(function (x) { x.setAttribute('aria-expanded', 'false'); });
+      if (open) { panel.hidden = true; return; }
+      panel.innerHTML = JSON.parse(b.getAttribute('data-detail')).map(function (d) {
+        return '<div class="row g-2" data-row><span class="col-md-4 col-form-label text-md-end">' + esc(d[0]) + ':</span><div class="col-md-8"><span class="ds-field-value">' + (d[1] ? esc(d[1]) : '<span class="visually-hidden">None</span>') + '</span></div></div>';
+      }).join('');
+      panel.hidden = false; b.setAttribute('aria-expanded', 'true'); panel.focus();
+    });
+  });
+})();
+</script>
 </body>
 </html>

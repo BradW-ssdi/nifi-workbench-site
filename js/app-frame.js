@@ -20,6 +20,14 @@
   'use strict';
 
   var KEY = 'statusNavBar';
+  var SELF = document.currentScript && document.currentScript.src;
+
+  /* Tooltips on every screen (js/ds-tooltip.js), loaded once from beside this script */
+  if (SELF && !window.dsTooltip && !document.querySelector('script[src$="ds-tooltip.js"]')) {
+    var tipScript = document.createElement('script');
+    tipScript.src = SELF.replace(/app-frame\.js(\?.*)?$/, 'ds-tooltip.js');
+    document.head.appendChild(tipScript);
+  }
 
   function store(value) {
     try { sessionStorage.setItem(KEY, value); } catch (e) { /* storage blocked: state just won't persist */ }
