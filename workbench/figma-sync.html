@@ -142,16 +142,19 @@
 
 <div class="sheet"><h2>Sort Header, Accordion Header, Breadcrumb Item</h2>
   <table class="table ds-table sortdemo" style="width:auto"><caption class="visually-hidden">Sort header states</caption><thead><tr>
-    <th scope="col"><button type="button" class="ds-sort-btn" data-fig="Sort Header/Sort=None">Column <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-    <th scope="col" aria-sort="ascending"><button type="button" class="ds-sort-btn" data-fig="Sort Header/Sort=Ascending">Column <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-    <th scope="col" aria-sort="descending"><button type="button" class="ds-sort-btn" data-fig="Sort Header/Sort=Descending">Column <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
+    <th scope="col"><button type="button" class="ds-sort-btn" data-fig="Sort Header/Sort=None">Column <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+    <th scope="col" aria-sort="ascending"><button type="button" class="ds-sort-btn" data-fig="Sort Header/Sort=Ascending">Column <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+    <th scope="col" aria-sort="descending"><button type="button" class="ds-sort-btn" data-fig="Sort Header/Sort=Descending">Column <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#caret_down_fill"/></svg></button></th>
   </tr></thead></table>
   <div class="accordion ds-form-accordion" style="width:480px"><div class="accordion-item"><h3 class="accordion-header"><button type="button" class="accordion-button" aria-expanded="true" data-fig="Accordion Header/Open=Yes">Section title</button></h3></div></div>
   <div class="accordion ds-form-accordion" style="width:480px"><div class="accordion-item"><h3 class="accordion-header"><button type="button" class="accordion-button collapsed" aria-expanded="false" data-fig="Accordion Header/Open=No">Section title</button></h3></div></div>
-  <span class="d-inline-flex align-items-center gap-2" style="font-size:12px" data-fig="Breadcrumb Item/Kind=Link, Divider=No"><a href="#">Page</a></span>
-  <span class="d-inline-flex align-items-center gap-2" style="font-size:12px" data-fig="Breadcrumb Item/Kind=Link, Divider=Yes"><svg class="ds-icon" style="width:16px;height:16px;color:var(--bs-secondary-color)" aria-hidden="true"><use href="../icons/sprite.svg#chevron_right"/></svg><a href="#">Page</a></span>
-  <span class="d-inline-flex align-items-center gap-2" style="font-size:12px;font-weight:600;color:var(--bs-secondary-color)" data-fig="Breadcrumb Item/Kind=Current, Divider=Yes"><svg class="ds-icon" style="width:16px;height:16px" aria-hidden="true"><use href="../icons/sprite.svg#chevron_right"/></svg><span>Page</span></span>
-  <span class="d-inline-flex align-items-center gap-2" style="font-size:12px;font-weight:600;color:var(--bs-secondary-color)" data-fig="Breadcrumb Item/Kind=Current, Divider=No"><span>Page</span></span>
+  <!-- Breadcrumb items as the page header draws them (Bootstrap's breadcrumb: links 14px and underlined, the current page
+       16px in the body color, "/" between items). The divider is CSS ::before in the app; here it is a span, so the
+       extractor can read it, with the same color and spacing (the item's 0.5rem left padding, then "/", then 0.5rem). -->
+  <ol class="breadcrumb m-0"><li class="breadcrumb-item d-inline-flex align-items-center" data-fig="Breadcrumb Item/Kind=Link, Divider=No"><a href="#">Page</a></li></ol>
+  <ol class="breadcrumb m-0"><li class="breadcrumb-item d-inline-flex align-items-center" style="padding-left:.5rem" data-fig="Breadcrumb Item/Kind=Link, Divider=Yes"><span style="color:var(--bs-breadcrumb-divider-color, var(--bs-secondary-color));padding-right:.5rem">/</span><a href="#">Page</a></li></ol>
+  <ol class="breadcrumb m-0"><li class="breadcrumb-item active d-inline-flex align-items-center" style="padding-left:.5rem" data-fig="Breadcrumb Item/Kind=Current, Divider=Yes"><span style="color:var(--bs-breadcrumb-divider-color, var(--bs-secondary-color));padding-right:.5rem">/</span><span>Page</span></li></ol>
+  <ol class="breadcrumb m-0"><li class="breadcrumb-item active d-inline-flex align-items-center" data-fig="Breadcrumb Item/Kind=Current, Divider=No"><span>Page</span></li></ol>
 </div>
 
 <div class="sheet" style="width:1100px"><h2>Composites (the controls inside stay component instances)</h2>

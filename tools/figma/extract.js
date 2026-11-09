@@ -30,7 +30,7 @@
     '--bs-body-color': 'Text', '--bs-emphasis-color': 'Text Emphasis', '--bs-secondary-color': 'Text Secondary', '--ds-on-primary': 'On Primary',
     '--bs-body-bg': 'Surface', '--bs-secondary-bg': 'Surface Section', '--bs-tertiary-bg': 'Surface Card',
     '--ds-tint': 'Tint', '--ds-tint-strong': 'Tint Strong', '--ds-table-header-bg': 'Table Header', '--ds-table-outline': 'Table Outline',
-    '--bs-border-color': 'Border', '--ds-field-border': 'Field Border', '--ds-field-border-on-gray': 'Field Border On Gray',
+    '--bs-border-color': 'Border', '--bs-border-color-translucent': 'Border Translucent', '--ds-field-border': 'Field Border', '--ds-field-border-on-gray': 'Field Border On Gray',
     '--ds-nav-bg': 'Nav', '--ds-nav-current-bg': 'Nav Current', '--ds-nav-active-overlay': 'Nav Active', '--ds-bulkbar-bg': 'Bulk Bar', '--ds-flyout-bg': 'Flyout',
     '--bs-info-bg-subtle': 'Info Subtle', '--bs-success-bg-subtle': 'Success Subtle',
     '--bs-warning-bg-subtle': 'Warning Subtle', '--bs-danger-bg-subtle': 'Danger Subtle',
@@ -44,7 +44,11 @@
     'Success Fill': ['#188665', '#2aa585'], 'Warning Fill': ['#996b00', '#e1a23a'], 'Danger Fill': ['#d40032', '#ff4d6d'],
     'Info Fill': ['#0078b4', '#3bb1f0'], 'Pending Fill': ['#7014a5', '#c9a7f2'], 'Closed Fill': ['#546e7a', '#b9bfc3'],
     'Disabled Surface': ['#e9ecef', '#303030'], 'Disabled Text': ['#333333', '#b9bfc3'], 'Text On Disabled': ['#111111', '#b9bfc3'],
-    'Table Text': ['#111111', '#e6e8ea'], 'Surface Raised': ['#ffffff', '#414141']
+    'Table Text': ['#111111', '#e6e8ea'], 'Surface Raised': ['#ffffff', '#414141'],
+    // the Phase 2 view summary bar (View Algorithm), and the Standard question and Published marks on Edit Page
+    'Summary Bar': ['#d4e8f7', '#414141'], 'Summary Bar Border': ['#9fc3df', '#2a363c'], 'Standard Mark': ['#b02a37', '#b02a37'], 'Published Mark': ['#1c5d99', '#1c5d99'],
+    // Phase 2's chips (chips.css, the same in both themes): the chip to filter, and the read-only chips on the merge search
+    'Chip': ['#e6f2f5', '#e6f2f5'], 'Chip Link': ['#0070c0', '#0070c0'], 'Static Chip': ['#e5e7eb', '#e5e7eb'], 'Static Chip Text': ['#333333', '#333333']
   };
   var root = document.documentElement, probe = document.createElement('span');
 
@@ -86,6 +90,30 @@
   function r1(v) { var x = Math.round(v * 10) / 10; return Math.abs(x - Math.round(x)) < 0.06 ? Math.round(x) : x; }
   function clean(s) { return (s || '').replace(/\s+/g, ' ').trim(); }
 
+  // The text of an element or a text node as Chrome wraps it: its words joined by spaces within a line and by a line
+  // separator between lines, so Figma breaks at the same words (Chrome and Figma set Inter a pixel apart, and a line
+  // that just fits in one wraps in the other). null when the words do not add up to the cleaned text.
+  function wrapped(root, full) {
+    // Character by character, so a word Chrome breaks in the middle (a long address) breaks at the same letter.
+    var nodes = [], w, nd, out = '', top = null, pendingSpace = false, broke = 0;
+    if (root.nodeType === 3) nodes = [root]; else { w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); while ((nd = w.nextNode())) nodes.push(nd); }
+    nodes.forEach(function (node) {
+      for (var k = 0; k < node.data.length; k++) {
+        var ch = node.data[k];
+        if (/\s/.test(ch)) { if (out) pendingSpace = true; continue; }
+        var rg = document.createRange(); rg.setStart(node, k); rg.setEnd(node, k + 1); var rs = rg.getClientRects(); if (!rs.length) continue;
+        var t = rs[0].top;
+        if (top !== null && t > top + 2) { out += '\u2028'; broke++; pendingSpace = false; }
+        else if (pendingSpace) out += ' ';
+        pendingSpace = false; out += ch; if (top === null || t > top + 2) top = t;
+      }
+    });
+    if (!broke) return null;
+    // the same text: a break replaces the space at it, or sits inside a word that Chrome split
+    var a = out.split('\u2028').join(' '), b = out.split('\u2028').join('');
+    return a === full || b === full || a.replace(/ /g, '') === full.replace(/ /g, '') ? out : null;
+  }
+
   function textSpec(cs, chars) {
     var fs = px(cs.fontSize), t = { t: clean(chars), ts: fs + '/' + (parseInt(cs.fontWeight, 10) || 400) + '/' + (px(cs.lineHeight) ? r1(px(cs.lineHeight)) : r1(fs * 1.5)) };
     if (/underline/.test(cs.textDecorationLine)) t.u = 1;
@@ -110,8 +138,14 @@
   // The height a control has with only its base class, outside any page context. A toolbar, the bulk bar, or the
   // table footer can change it; then the instance carries the measured height.
   var NAT = {};
+  var PAD = {};
+  function naturalPad(el) {
+    var base = Array.prototype.filter.call(el.classList, function (k) { return /^btn(-|$)/.test(k) && k !== 'btn-sm' && k !== 'btn-lg'; }).join(' ') || 'btn';
+    if (PAD[base] === undefined) { var t = document.createElement('button'); t.className = base; t.textContent = 'X'; t.style.cssText = 'position:absolute;left:-9999px;top:0'; document.body.appendChild(t); PAD[base] = parseFloat(getComputedStyle(t).paddingLeft); t.remove(); }
+    return PAD[base];
+  }
   function naturalH(el) {
-    var base = el.classList.contains('form-select') ? 'form-select' : el.classList.contains('form-control') ? 'form-control' : 'btn btn-primary', key = el.tagName + base;
+    var base = el.classList.contains('form-select') ? 'form-select' : el.classList.contains('form-control') ? 'form-control' : el.classList.contains('ds-btn-icon') ? 'btn btn-light rounded-circle ds-btn-icon' + (el.classList.contains('ds-btn-icon-sm') ? ' ds-btn-icon-sm' : '') : 'btn btn-primary', key = el.tagName + base;
     if (NAT[key] === undefined) { var t = document.createElement(el.tagName === 'A' ? 'button' : el.tagName); t.className = base; if (t.tagName === 'BUTTON') t.textContent = 'X'; t.style.cssText = 'position:absolute;left:-9999px;top:0;width:200px'; document.body.appendChild(t); NAT[key] = t.getBoundingClientRect().height; t.remove(); }
     return NAT[key];
   }
@@ -119,16 +153,18 @@
     var c = el.classList, tag = el.tagName; if (!c) return null;
     var svg = el.querySelector && el.querySelector(':scope > svg'), label = clean(el.innerText || el.value || ''), inv = c.contains('is-invalid');
     if (c.contains('breadcrumb')) return { i: 'Breadcrumb', items: Array.prototype.map.call(el.querySelectorAll('.breadcrumb-item'), function (li) { return [clean(li.innerText), li.classList.contains('active') ? 1 : 0]; }), W: 'f' };
-    if (c.contains('btn-close')) return { i: 'Close Button' };
+    if (c.contains('btn-close')) { var cr = el.getBoundingClientRect(); return Math.abs(cr.width - cr.height) > 2 ? null : { i: 'Close Button' }; }   // a close button the page squeezes is drawn as it renders
     if (c.contains('ds-btn-icon')) return { i: 'Icon Button', v: { State: stateOf(el) }, icon: svg ? iconName(svg) : '' };
     if (c.contains('btn')) {
       var kind = c.contains('btn-primary') ? 'Button Primary' : c.contains('btn-danger') ? 'Button Danger' : c.contains('btn-outline-primary') ? 'Button Outline' : c.contains('btn-link') ? 'Button Link' : null;
       // an open disclosure button (the Filter toggle) shows the hover fill
       if (kind === 'Button Link' && svg && !label) kind = null;   // an icon-only link button has no text layer to override; it is drawn as it renders
       var open = c.contains('ds-filter-toggle') && el.getAttribute('aria-expanded') === 'true';
+      if (kind && Math.abs(parseFloat(getComputedStyle(el).paddingLeft) - naturalPad(el)) > 2) kind = null;   // padding not the component's (Phase 2's "| Reset" link has none): drawn as it renders
       if (kind) return { i: kind, v: { State: open ? 'Hover' : stateOf(el), Shape: c.contains('rounded-pill') ? 'Pill' : 'Default' }, o: [label], icon: svg ? iconName(svg) : '' };
     }
-    if (c.contains('badge')) return { i: 'Badge', v: { Kind: cap((el.className.match(/text-bg-([a-z]+)/) || [])[1] || 'secondary') }, o: [label] };
+    if (c.contains('badge') && !c.contains('chip')) return { i: 'Badge',   // Phase 2's Filter and chip buttons carry .badge too; they are built from their own markup
+       v: { Kind: cap((el.className.match(/text-bg-([a-z]+)/) || [])[1] || 'secondary') }, o: [label] };
     if (c.contains('ds-chip')) return { i: 'Filter Chip', v: { State: c.contains('is-filtered') ? 'Filtered' : stateOf(el) }, o: [label], icon: svg ? iconName(svg) : '' };
     if (c.contains('form-select')) return { i: 'Select', v: { State: inv ? 'Invalid' : stateOf(el) }, o: [el.options && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text : ''], W: 'w' };
     if (c.contains('form-control')) {
@@ -139,7 +175,7 @@
     if (c.contains('form-check-input')) return { i: el.type === 'radio' ? 'Radio' : 'Checkbox', v: { State: el.disabled ? 'Disabled' : el.checked ? 'Checked' : c.contains('is-focus') ? 'Focus' : 'Default' } };
     if (c.contains('page-link')) return { i: 'Page Link', v: { State: c.contains('active') ? 'Current' : (el.disabled || c.contains('disabled')) ? 'Disabled' : stateOf(el) }, o: [label] };
     if (c.contains('nav-link') && el.closest('.nav-underline')) return { i: 'Tab', v: { State: el.getAttribute('aria-selected') === 'true' || c.contains('active') ? 'Selected' : stateOf(el) }, o: [label] };
-    if (c.contains('nav-link') && el.closest('.nav-pills')) return { i: 'SecNav Link', v: { State: el.hasAttribute('aria-current') || c.contains('active') ? 'Current' : stateOf(el) }, o: [label], W: 'w' };
+    if (c.contains('nav-link') && el.closest('.nav-pills')) var sn = { i: 'SecNav Link', v: { State: el.hasAttribute('aria-current') || c.contains('active') ? 'Current' : stateOf(el) }, o: [label], W: 'w' }; if (el.getBoundingClientRect().height > 40) { sn.wrap = 1; sn.H = 'x'; } return sn;   /* a long section name wraps to two lines */
     if (c.contains('ds-sort-btn')) { var th = el.closest('th'), s = th && th.getAttribute('aria-sort'); var sh = { i: 'Sort Header', v: { Sort: s === 'ascending' ? 'Ascending' : s === 'descending' ? 'Descending' : 'None' }, o: [label] }; if (el.getBoundingClientRect().height > 30) sh.wrap = 1; return sh; }   // a label that wraps in a narrow column wraps in Figma too
     if (c.contains('accordion-button')) return { i: 'Accordion Header', v: { Open: el.getAttribute('aria-expanded') === 'false' ? 'No' : 'Yes' }, o: [label], W: 'w' };
     if (c.contains('ds-avatar')) return { i: 'Avatar', o: [label] };
@@ -158,7 +194,8 @@
     if (!visible(el, cs, r)) return null;
     var i = idx.get(el), b = { x: r.left, y: r.top, w: r.width, h: r.height };
     if (el.tagName.toLowerCase() === 'svg') { var nm = iconName(el); stats.icons[nm] = 1; var ico = Object.assign(b, { ic: nm, z: r1(r.width), f: tok(i, 'color') }); if (cs.position === 'absolute') ico.abs = 1; if (/matrix\(-1, 0, 0, -1/.test(cs.transform)) ico.rot = 180; return ico; }
-    if (useAtoms && !top) { var a = atom(el); if (a) { if (/^(Button|Select$|Input Text$)/.test(a.i) && !a.H && Math.abs(r.height - naturalH(el)) > 1) a.H = 'x'; stats.atoms[a.i] = (stats.atoms[a.i] || 0) + 1; if (a.icon) stats.icons[a.icon] = 1; return Object.assign(b, a); } }
+    if (useAtoms && !top) { var a = atom(el); if (a) { if (/^(Button|Select$|Input Text$)/.test(a.i) && !a.H && Math.abs(r.height - naturalH(el)) > 1) a.H = 'x'; if (a.i === 'Icon Button' && Math.abs(r.height - naturalH(el)) > 1) { a.H = 'x'; a.W = 'w'; }   /* a round button a page resizes (the 38px toolbar buttons) stays round */ stats.atoms[a.i] = (stats.atoms[a.i] || 0) + 1; if (a.icon) stats.icons[a.icon] = 1; return Object.assign(b, a); } }
+    if (/Material Symbols/i.test(cs.fontFamily) && !el.children.length && clean(el.textContent)) { var lig = clean(el.textContent); stats.icons[lig] = 1; return Object.assign(b, { ic: lig, z: r1(Math.max(r.width, r.height)), f: tok(i, 'color') }); }   // Phase 2's font icons (filter_alt) are icons, not words
     if (el.tagName === 'IMG') return Object.assign(b, { img: el.alt || 'image' });
 
     var n = Object.assign(b, { n: el.getAttribute('data-fig-name') || el.id || (typeof el.className === 'string' && el.className.split(' ')[0]) || el.tagName.toLowerCase() });
@@ -184,7 +221,8 @@
     if (el.tagName === 'INPUT' || el.tagName === 'SELECT' || el.tagName === 'TEXTAREA') {   // drawn natively on the component sheet
       if (el.type === 'checkbox' || el.type === 'radio') { n.mark = el.checked ? el.type : ''; n.n = el.type; return n; }
       var val = el.tagName === 'SELECT' ? (el.options[el.selectedIndex] || {}).text : el.type === 'file' ? 'Choose File    No file chosen' : (el.value || el.placeholder || '');
-      if (val) n.kids = [Object.assign({ x: r.left + n.p[3], y: r.top + n.p[0], w: r.width - n.p[1] - n.p[3] - (el.tagName === 'SELECT' ? 8 : 0), h: px(cs.lineHeight) || 21 }, textSpec(cs, val), { f: (el.value || el.tagName === 'SELECT' || el.type === 'file') ? tok(i, 'color') : 'Text Secondary', W: 'f' })];
+      var vh = px(cs.lineHeight) || r1(px(cs.fontSize) * 1.5);   /* the value sits centered in the field, as the frame centers it in Figma */
+      if (val) n.kids = [Object.assign({ x: r.left + n.p[3], y: r.top + n.p[0] + Math.max(0, (r.height - n.p[0] - n.p[2] - vh) / 2), w: r.width - n.p[1] - n.p[3] - (el.tagName === 'SELECT' ? 8 : 0), h: px(cs.lineHeight) || r1(px(cs.fontSize) * 1.5) }, textSpec(cs, val), { f: (el.value || el.tagName === 'SELECT' || el.type === 'file') ? tok(i, 'color') : 'Text Secondary', W: 'f' })];
       if (el.tagName === 'SELECT') n.chev = 1;
       n.fixW = 1;
       if (el.tagName !== 'TEXTAREA') n.centerY = 1;   // a single-line field centers its text at any height
@@ -216,9 +254,17 @@
       if (!tr.width) tr = { left: r.left + n.p[3], top: r.top + n.p[0], width: r.width - n.p[1] - n.p[3], height: r.height - n.p[0] - n.p[2] };
       var lines = Math.max(1, Math.round(tr.height / (px(cs.lineHeight) || tr.height)));
       var bare = !n.f && !n.s && !n.ol && !n.sh && !n.r;
-      var lhh = px(cs.lineHeight) || tr.height, th = lines * lhh;     // a text box is as tall as its lines, as in Figma
+      var lhh = px(cs.lineHeight) || r1(px(cs.fontSize) * 1.5), th = lines * lhh;     // a text box is as tall as its lines, as in Figma
+      if (lines > 1) { var wr = wrapped(el, full); if (wr) { if (/\/U/.test(tx.ts)) wr = wr.toUpperCase(); tx.t = wr + tx.t.slice(full.length); tx.br = 1; } }
       var inner = Object.assign({ x: tr.left, y: tr.top - (th - tr.height) / 2, w: tr.width, h: th, lines: lines }, tx);
       if (lines > 1) { inner.x = r.left + n.p[3]; inner.w = r.width - n.p[1] - n.p[3]; }
+      if (cs.display !== 'inline' && Math.abs(r.height - n.p[0] - n.p[2] - th) < 1) inner.y = r.top + n.p[0];
+      var afc = getComputedStyle(el, '::after').content;
+      if (afc && afc !== 'none' && afc !== 'normal' && /^"/.test(afc) && lines === 1) {   // the ::after text (a required star) is part of the text in Figma, so its width is too
+        var acs = getComputedStyle(el, '::after'), m = document.createElement('span'); m.textContent = afc.replace(/^"|"$/g, '');
+        m.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font:' + acs.font + ';letter-spacing:' + acs.letterSpacing + ';margin-left:' + acs.marginLeft + ';padding-left:' + acs.paddingLeft;
+        el.appendChild(m); inner.w = tr.width + m.getBoundingClientRect().width + px(acs.marginLeft); m.remove();
+      }
       if (el.tagName === 'A') inner.link = 1;
       if (bare && !n.p.some(Boolean)) { inner.abs = n.abs; return inner; }
       n.kids = [inner];
@@ -228,9 +274,9 @@
     var kids = [];
     el.childNodes.forEach(function (ch) {
       if (ch.nodeType === 3 && ch.textContent.trim()) {
-        var rg = document.createRange(); rg.selectNodeContents(ch); var rr = rg.getBoundingClientRect();
+        var rg = document.createRange(), d0 = ch.data, s0 = d0.search(/\S/), e0 = d0.replace(/\s+$/, '').length; rg.setStart(ch, Math.max(0, s0)); rg.setEnd(ch, e0); var rr = rg.getBoundingClientRect();   // the words only: a space kept before an inline-block ("| Reset") is not part of the text in Figma
         var ll = Math.max(1, Math.round(rr.height / (px(cs.lineHeight) || rr.height))), lt = ll * (px(cs.lineHeight) || rr.height);
-        if (rr.width > 0) kids.push(Object.assign({ x: rr.left, y: rr.top - (lt - rr.height) / 2, w: rr.width, h: lt, lines: ll }, textSpec(cs, ch.textContent), { f: tok(i, 'color') }));
+        if (rr.width > 0) { var tsp = textSpec(cs, ch.textContent); if (ll > 1) { var wr2 = wrapped(ch, tsp.t); if (wr2) { tsp.t = wr2; tsp.br = 1; } } kids.push(Object.assign({ x: rr.left, y: rr.top - (lt - rr.height) / 2, w: rr.width, h: lt, lines: ll }, tsp, { f: tok(i, 'color') })); }
       } else if (ch.nodeType === 1) { var k = box(ch, false); if (k) kids.push(k); }
     });
     if (kids.length) n.kids = kids;
@@ -334,11 +380,19 @@
         else { var wrap = group('Spacer', [k], { p: [extra, 0, 0, 0], d: 'V', g: 0, c: [k] }); wrap.y = k.y - extra; wrap.h = k.h + extra; wrap.x = cx; wrap.w = cw; wrap.W = 'f'; delete wrap.kids; if (!near(k.x, cx) && !near(k.w, cw)) wrap.ca = near(k.x + k.w / 2, cx + cw / 2) ? 'center' : near(k.x + k.w, cx + cw) ? 'end' : 'start'; k = wrap; }
       }
       // Text is measured by its glyphs, so text as wide as the container means the container hugs it.
-      if (isText(k)) { if (k.lines > 1) k.W = 'f'; else if (k.al && !near(k.w, cw)) k.W = 'f'; else k.W = undefined; }
+      if (isText(k)) { if (k.lines > 1) k.W = near(k.w, cw) ? 'f' : undefined;   /* a wrapped text narrower than its column (a max-width) keeps its width */ else if (k.al && !near(k.w, cw)) k.W = 'f'; else k.W = undefined; }
       else if (near(k.w, cw) && near(k.x, cx)) k.W = 'f';
       out.push(k);
     });
     var aligned = out.filter(function (k) { return k.W !== 'f'; });
+    // A Bootstrap gutter row starts left of the content edge (negative margin): take that out of the left padding, as
+    // the top edge does, and keep the children that fill the old content box where they were.
+    var minX = aligned.length ? Math.min.apply(null, aligned.map(function (k) { return k.x; })) : cx;
+    if (minX < cx - EPS && n.p[3] >= cx - minX - EPS) {
+      var sh = r1(cx - minX); n.p[3] = r1(n.p[3] - sh); cx = minX; cw += sh;
+      out = out.map(function (k) { return k.W === 'f' ? { n: 'Align', d: 'H', g: 0, p: [0, 0, 0, sh], x: cx, y: k.y, w: cw, h: k.h, W: 'f', H: 'h', ca: 'start', ma: 'start', c: [k] } : k; });
+      aligned = out.filter(function (k) { return k.W !== 'f'; });
+    }
     n.ca = !aligned.length || aligned.every(function (k) { return near(k.x, cx); }) ? 'start' : aligned.every(function (k) { return near(k.x + k.w / 2, cx + cw / 2); }) ? 'center' : aligned.every(function (k) { return near(k.x + k.w, cx + cw); }) ? 'end' : 'start';
     if (n.ca === 'start' && aligned.some(function (k) { return !near(k.x, cx); })) {
       out = out.map(function (k) { if (k.W === 'f' || near(k.x, cx)) return k; var w = { n: 'Align', d: 'H', g: 0, p: [0, 0, 0, r1(k.x - cx)], x: cx, y: k.y, w: cw, h: k.h, W: 'f', H: 'h', ca: 'start', ma: 'start', c: [k] }; return w; });
@@ -351,8 +405,8 @@
     // geometry(): where each text, control, and icon sits in the rendered page, in build order, for checking Figma against the code
     if (geo && (isText(n) || isLeafAtom(n))) geo.push([isText(n) ? 't' : n.i ? 'i' : n.ic ? 'c' : 'm', String(isText(n) ? n.t : n.i || n.ic || n.img).slice(0, 18), r1(n.x), r1(n.y), r1(n.w), r1(n.h), isText(n) ? n.ts : (n.i && n.v ? Object.keys(n.v).map(function (k) { return n.v[k]; }).filter(function (v) { return v !== 'Default' && v !== 'No' && v !== 'None'; }).join(',') : '')]);
     if (isText(n)) {
-      var t = { t: n.t, ts: n.ts, f: n.f }; ['u', 'al', 'runs', 'mono', 'link'].forEach(function (k) { if (n[k]) t[k] = n[k]; });
-      if (n.W === 'f') t.W = 'f'; else if (n.lines > 1) t.W = r1(n.w);
+      var t = { t: n.t, ts: n.ts, f: n.f }; ['u', 'al', 'runs', 'mono', 'link', 'br'].forEach(function (k) { if (n[k]) t[k] = n[k]; });
+      if (n.W === 'f') t.W = 'f'; else if (n.lines > 1) t.W = r1(n.w); if (n.lines > 1) t.ln = n.lines;
       if (n.ax !== undefined) { t.ax = n.ax; t.ay = n.ay; }
       return t;
     }
