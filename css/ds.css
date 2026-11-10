@@ -11813,6 +11813,12 @@ th.sorted .sortable-icon.bi-caret-up-fill {
   transform: rotate(180deg);
 }
 
+@media (forced-colors: active) {
+  th.sorted .sortable-icon {
+    forced-color-adjust: none;
+    background-color: CanvasText;
+  }
+}
 .ds-icon {
   width: 24px;
   height: 24px;
@@ -14073,6 +14079,12 @@ fieldset.ds-field {
   border-radius: 0 0 var(--bs-border-radius) 0;
 }
 
+.material-symbols-rounded {
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  line-height: 1 !important;
+}
+
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--bs-focus-ring-color);
   outline-offset: 2px;
@@ -14295,12 +14307,6 @@ fieldset.ds-field {
   direction: ltr;
   font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
-}
-
-.material-symbols-rounded {
-  letter-spacing: normal !important;
-  word-spacing: normal !important;
-  line-height: 1 !important;
 }
 
 .ds-phase2 {

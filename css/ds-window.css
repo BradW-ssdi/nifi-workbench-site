@@ -13797,6 +13797,12 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
   border-radius: 0 0 var(--bs-border-radius) 0;
 }
 
+.ds-window .material-symbols-rounded:not(.ds-phase2, .ds-phase2 *) {
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  line-height: 1 !important;
+}
+
 .ds-window :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible:not(.ds-phase2, .ds-phase2 *) {
   outline: 2px solid var(--bs-focus-ring-color);
   outline-offset: 2px;
