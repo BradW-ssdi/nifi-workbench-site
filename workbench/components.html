@@ -73,10 +73,10 @@
       <h3>Button with icon</h3>
       <div class="wb-canvas">
         <div class="ds-toolbar">
-          <button class="btn btn-primary"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Add New</button>
-          <button class="btn btn-outline-primary"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#upload_file"/></svg>Import</button>
-          <button class="btn btn-outline-primary"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#print"/></svg>Print</button>
-          <button class="btn btn-outline-primary"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#download"/></svg>Download</button>
+          <button class="btn btn-primary"><span class="ds-icon material-symbols-rounded" aria-hidden="true">add</span>Add New</button>
+          <button class="btn btn-outline-primary"><span class="ds-icon material-symbols-rounded" aria-hidden="true">upload_file</span>Import</button>
+          <button class="btn btn-outline-primary"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span>Print</button>
+          <button class="btn btn-outline-primary"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span>Download</button>
         </div>
       </div>
     </div>
@@ -104,7 +104,7 @@
     <div class="wb-example">
       <h3>Link that opens in a new tab (<code>.ds-ext-icon</code>)</h3>
       <div class="wb-canvas">
-        <a href="#" target="_blank" rel="noopener">Questionnaire Authoring<svg class="ds-icon ds-ext-icon" aria-hidden="true"><use href="../icons/sprite.svg#open_in_new"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a>
+        <a href="#" target="_blank" rel="noopener">Questionnaire Authoring<span class="ds-icon ds-ext-icon material-symbols-rounded" aria-hidden="true">open_in_new</span><span class="visually-hidden"> (opens in a new tab)</span></a>
       </div>
     </div>
     <details class="wb-a11y"><summary>Accessibility: 508 / WCAG AA</summary><ul>
@@ -216,24 +216,24 @@
             <thead>
               <tr>
                 <th scope="col">Actions</th>
-                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn">Algorithm Name <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
-                <th scope="col"><button class="ds-sort-btn">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#arrow_drop_down"/></svg></button></th>
+                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn">Algorithm Name <span class="ds-icon material-symbols-rounded" aria-hidden="true">arrow_drop_down</span></button></th>
+                <th scope="col"><button class="ds-sort-btn">Last Updated <span class="ds-icon material-symbols-rounded" aria-hidden="true">arrow_drop_down</span></button></th>
                 <th scope="col">Status</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 000_A_HepB_CI"><svg class="ds-icon"><use href="../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 000_A_HepB_CI"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a href="#" aria-label="View 000_A_HepB_CI"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="#" aria-label="Edit 000_A_HepB_CI"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>000_A_HepB_CI</td><td>03/05/2026</td>
                 <td><span class="badge text-bg-closed">Inactive</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 000_B_HepB_MAR"><svg class="ds-icon"><use href="../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 000_B_HepB_MAR"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a href="#" aria-label="View 000_B_HepB_MAR"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="#" aria-label="Edit 000_B_HepB_MAR"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>000_B_HepB_MAR</td><td>03/05/2026</td>
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="#" aria-label="View 1_TB_Neg_CulNAAT_MR_AssociateTB"><svg class="ds-icon"><use href="../icons/sprite.svg#visibility"/></svg></a><a href="#" aria-label="Edit 1_TB_Neg_CulNAAT_MR_AssociateTB"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a></td>
+                <td class="ds-row-actions"><a href="#" aria-label="View 1_TB_Neg_CulNAAT_MR_AssociateTB"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="#" aria-label="Edit 1_TB_Neg_CulNAAT_MR_AssociateTB"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>1_TB_Neg_CulNAAT_MR_AssociateTB</td><td>09/24/2024</td>
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
@@ -414,24 +414,26 @@
           </section>
           <div class="d-flex justify-content-end gap-3 px-4 py-3 bg-body-secondary border-top" style="border:1px solid var(--bs-border-color);border-radius:8px">
             <button class="btn btn-outline-primary">Cancel</button>
-            <button class="btn btn-primary"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#save"/></svg>Submit</button>
+            <button class="btn btn-primary"><span class="ds-icon material-symbols-rounded" aria-hidden="true">save</span>Submit</button>
           </div>
         </div>
       </div>
     </div>
     <div class="wb-example">
-      <h3>Error summary</h3>
+      <h3>Error banner</h3>
       <div class="wb-canvas">
-        <div class="ds-error-summary" role="alert" style="max-width:640px">
-          <h2>There is a problem</h2>
-          <ul>
-            <li><a href="#wbFa">Enter an algorithm name</a></li>
-            <li><a href="#wbFb">Select an event type</a></li>
+        <div class="alert alert-danger ds-error-banner" role="alert" style="max-width:640px">
+          <h2 class="d-flex align-items-center gap-1 h6 fw-normal mb-1"><span class="ds-icon material-symbols-rounded" aria-hidden="true">error</span>Please fix the following errors:</h2>
+          <ul class="small mb-0 ps-3">
+            <li><a href="#wbFa">Algorithm Name</a> is required.</li>
+            <li><a href="#wbFb">Event Type</a> is required.</li>
           </ul>
         </div>
         <p class="small text-body-secondary" style="margin:12px 0 0">Rendered above the form after a failed submit and focused
-        programmatically (<code>tabindex="-1"</code>). Each entry is a link that moves focus to its field. The working
-        wiring ships in the Add Algorithm screen template.</p>
+        programmatically (<code>tabindex="-1"</code>), as Phase 2's: the error icon, "Please fix the following errors:", and
+        each field's name as a link that moves focus to it, then "is required." (or the problem). From four errors on, the
+        rest sit behind Show more. The field's label turns red and a text field shows the error icon. Rendered by
+        <code>js/ds-errors.js</code> (<code>dsErrors.forFields</code>); the working wiring ships in the Add Algorithm screen template.</p>
       </div>
     </div>
     <div class="wb-example">
@@ -466,10 +468,10 @@
       <h3>Primary rail: item states (on teal)</h3>
       <div class="wb-canvas on-teal">
         <div class="wb-matrix on-teal" style="grid-template-columns: repeat(auto-fill, 240px);background:transparent;padding:0">
-          <div class="cell"><a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#content_paste_search"/></svg>Queues</a><span class="small text-body-secondary">Live: hover / tab</span></div>
-          <div class="cell"><a class="ds-nav-item is-hover" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#content_paste_search"/></svg>Queues</a><span class="small text-body-secondary">Hover · black 15%</span></div>
-          <div class="cell"><a class="ds-nav-item is-active" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#content_paste_search"/></svg>Queues</a><span class="small text-body-secondary">Active · black 30%</span></div>
-          <div class="cell"><a class="ds-nav-item is-focus" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#content_paste_search"/></svg>Queues</a><span class="small text-body-secondary">Focus · white ring inset</span></div>
+          <div class="cell"><a class="ds-nav-item" href="#"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">content_paste_search</span>Queues</a><span class="small text-body-secondary">Live: hover / tab</span></div>
+          <div class="cell"><a class="ds-nav-item is-hover" href="#"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">content_paste_search</span>Queues</a><span class="small text-body-secondary">Hover · black 15%</span></div>
+          <div class="cell"><a class="ds-nav-item is-active" href="#"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">content_paste_search</span>Queues</a><span class="small text-body-secondary">Active · black 30%</span></div>
+          <div class="cell"><a class="ds-nav-item is-focus" href="#"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">content_paste_search</span>Queues</a><span class="small text-body-secondary">Focus · white ring inset</span></div>
         </div>
       </div>
     </div>
@@ -478,12 +480,12 @@
       <div class="wb-canvas on-teal">
         <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap">
           <div class="ds-nav-rail is-expanded" style="width:240px;border-radius:8px;padding:8px 0">
-            <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
-            <a class="ds-nav-item is-active" href="#" aria-current="page"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+            <a class="ds-nav-item" href="#"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">home</span><span class="ds-nav-label">Home</span></a>
+            <a class="ds-nav-item is-active" href="#" aria-current="page"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">settings</span><span class="ds-nav-label">System Management</span></a>
           </div>
           <div class="ds-nav-rail" style="border-radius:8px;padding:8px 0">
-            <a class="ds-nav-item" href="#"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#home"/></svg><span class="ds-nav-label">Home</span></a>
-            <a class="ds-nav-item is-active" href="#" aria-current="page"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#settings"/></svg><span class="ds-nav-label">System Management</span></a>
+            <a class="ds-nav-item" href="#"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">home</span><span class="ds-nav-label">Home</span></a>
+            <a class="ds-nav-item is-active" href="#" aria-current="page"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">settings</span><span class="ds-nav-label">System Management</span></a>
           </div>
           <p class="small text-body-secondary" style="color:#fff;max-width:260px">Collapsed is the default in the design mock. Labels hide
           visually but remain each link's accessible name; the hamburger toggles states and closes any open group on collapse.</p>
@@ -494,7 +496,7 @@
       <h3>Primary rail: expandable group (Data Entry)</h3>
       <div class="wb-canvas on-teal">
         <div class="ds-nav-rail is-expanded" style="width:240px;border-radius:8px;padding:8px 0">
-          <button class="ds-nav-item ds-nav-group" aria-expanded="true" aria-controls="wbNavSub"><svg class="ds-nav-icon" aria-hidden="true"><use href="../icons/sprite.svg#edit"/></svg>Data Entry<svg class="ds-nav-chevron" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
+          <button class="ds-nav-item ds-nav-group" aria-expanded="true" aria-controls="wbNavSub"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">edit</span>Data Entry<span class="ds-nav-chevron material-symbols-rounded" aria-hidden="true">expand_more</span></button>
           <ul class="ds-nav-sub" id="wbNavSub">
             <li><a href="#">Patient</a></li>
             <li><a href="#">Organization</a></li>
@@ -518,12 +520,12 @@
         <div style="display:flex;gap:40px;flex-wrap:wrap">
           <nav class="ds-secnav" aria-label="Section navigation" style="border:1px solid var(--bs-border-color);border-radius:8px">
             <p class="ds-overline" style="padding:4px 12px 8px">Associations</p>
-            <button type="button" class="btn ds-secnav-group-title" aria-expanded="true" aria-controls="wbSecInv">Investigations <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg></button>
+            <button type="button" class="btn ds-secnav-group-title" aria-expanded="true" aria-controls="wbSecInv">Investigations <span class="ds-icon material-symbols-rounded" aria-hidden="true">expand_more</span></button>
             <div id="wbSecInv" class="nav nav-pills flex-column">
               <a class="nav-link" href="#" aria-current="location">Open investigations</a>
               <a class="nav-link" href="#">Closed investigations</a>
             </div>
-            <button type="button" class="btn ds-secnav-group-title" style="margin-top:8px" aria-expanded="false" aria-controls="wbSecLab">Lab Reports <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#chevron_right"/></svg></button>
+            <button type="button" class="btn ds-secnav-group-title" style="margin-top:8px" aria-expanded="false" aria-controls="wbSecLab">Lab Reports <span class="ds-icon material-symbols-rounded" aria-hidden="true">chevron_right</span></button>
             <div id="wbSecLab" hidden></div>
             <button type="button" class="btn ds-secnav-group-title is-danger" style="margin-top:8px">Required: 2 sections incomplete</button>
           </nav>
@@ -539,7 +541,7 @@
         <header class="ds-header">
           <span class="ds-logo"><img src="assets/texas-logo-main.png" alt="Texas Health and Human Services"></span>
           <span class="flex-grow-1"></span>
-          <button class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#help"/></svg></button>
+          <button class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
           <button type="button" class="ds-profile-btn" aria-expanded="false" style="padding:0"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu: P. Preparer</span></button>
         </header>
       </div>
@@ -571,11 +573,11 @@
       <h3>Button: Icon · Close · Add Row</h3>
       <div class="wb-canvas">
         <div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
-          <button class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon"><use href="../icons/sprite.svg#print"/></svg></button>
-          <button class="btn btn-light rounded-circle ds-btn-icon is-hover" aria-label="Download (hover)"><svg class="ds-icon"><use href="../icons/sprite.svg#download"/></svg></button>
-          <button class="btn btn-light rounded-circle ds-btn-icon is-pressed" aria-label="Settings (pressed)"><svg class="ds-icon"><use href="../icons/sprite.svg#settings"/></svg></button>
+          <button class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
+          <button class="btn btn-light rounded-circle ds-btn-icon is-hover" aria-label="Download (hover)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
+          <button class="btn btn-light rounded-circle ds-btn-icon is-pressed" aria-label="Settings (pressed)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
           <button type="button" class="btn-close" aria-label="Close"></button>
-          <button type="button" class="btn btn-outline-primary rounded-pill"><svg class="ds-icon"><use href="../icons/sprite.svg#add"/></svg>Add row</button>
+          <button type="button" class="btn btn-outline-primary rounded-pill"><span class="ds-icon material-symbols-rounded" aria-hidden="true">add</span>Add row</button>
         </div>
       </div>
     </div>
@@ -586,8 +588,8 @@
         <div class="ds-toolbar">
           <input class="form-control rounded-pill" type="search" aria-label="Filter the table" placeholder="Search to filter..." style="width:320px">
           <span class="ms-auto"></span>
-          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#print"/></svg></button>
-          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#download"/></svg></button>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
         </div>
         <!-- Phase 2's queue filter chips (queues/queueFilterChips.html, js/chip.js, styles/chips.css), in its order:
              chips, Filter, then "| Reset" while a filter is applied. .ds-phase2 keeps the design system CSS off them.
@@ -638,15 +640,15 @@
       <div class="wb-canvas">
         <div style="display:grid;gap:18px;max-width:460px">
           <div class="ds-multiselect" role="group" aria-label="Conditions: selected values">
-            <span class="item">LEAD <button type="button" aria-label="Remove LEAD"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button></span>
-            <span class="item">TB <button type="button" aria-label="Remove TB"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button></span>
-            <span class="item">COVID-19 <button type="button" aria-label="Remove COVID-19"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button></span>
+            <span class="item">LEAD <button type="button" aria-label="Remove LEAD"><span class="ds-icon material-symbols-rounded" aria-hidden="true">close</span></button></span>
+            <span class="item">TB <button type="button" aria-label="Remove TB"><span class="ds-icon material-symbols-rounded" aria-hidden="true">close</span></button></span>
+            <span class="item">COVID-19 <button type="button" aria-label="Remove COVID-19"><span class="ds-icon material-symbols-rounded" aria-hidden="true">close</span></button></span>
           </div>
           <div class="ds-field" style="max-width:none">
             <label for="wbDob">Date of birth</label>
             <div class="ds-datefield">
               <input class="form-control" type="text" id="wbDob" inputmode="numeric" aria-describedby="wbDobFmt" style="width:220px">
-              <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#calendar_today"/></svg>
+              <span class="ds-icon material-symbols-rounded" aria-hidden="true">calendar_today</span>
             </div>
             <span class="form-text" id="wbDobFmt">Format: MM/DD/YYYY</span>
           </div>
@@ -701,7 +703,7 @@
       <h3>Alerts: Toast Success</h3>
       <div class="wb-canvas">
         <div class="ds-toast" role="status">
-          <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#check_circle"/></svg>
+          <span class="ds-icon material-symbols-rounded" aria-hidden="true">check_circle</span>
           Investigation saved. The record is now available in the queue.
           <button type="button" class="btn-close" aria-label="Dismiss notification"></button>
         </div>
@@ -721,11 +723,11 @@
       <div class="wb-canvas">
         <div style="display:grid;gap:20px;max-width:640px">
           <div class="card shadow-sm ds-card-plainhead">
-            <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon"><use href="../icons/sprite.svg#search"/></svg><h2 class="mb-0">Patient Search</h2></div>
+            <div class="card-header d-flex align-items-center gap-3"><span class="ds-card-icon material-symbols-rounded" aria-hidden="true">search</span><h2 class="mb-0">Patient Search</h2></div>
             <div class="card-body">Dashboard cards carry a plain header with a primary icon.</div>
           </div>
           <div class="card shadow-sm ds-card-warnhead">
-            <div class="card-header d-flex align-items-center gap-3"><svg class="ds-card-icon"><use href="../icons/sprite.svg#error"/></svg><h2 class="mb-0">Notices</h2></div>
+            <div class="card-header d-flex align-items-center gap-3"><span class="ds-card-icon material-symbols-rounded" aria-hidden="true">error</span><h2 class="mb-0">Notices</h2></div>
             <div class="card-body">The notices card keeps its warning-tinted header.</div>
           </div>
           <div class="ds-summary">
@@ -761,7 +763,7 @@
           </div>
           <div class="modal-footer">
             <button class="btn btn-outline-primary">Clear</button>
-            <button class="btn btn-primary"><svg class="ds-icon" style="margin-right:8px"><use href="../icons/sprite.svg#search"/></svg>Search</button>
+            <button class="btn btn-primary"><span class="ds-icon material-symbols-rounded" aria-hidden="true" style="margin-right:8px">search</span>Search</button>
           </div>
           </div>
         </div>
@@ -858,16 +860,16 @@
     <div class="wb-example">
       <h3>Table: Repeating Block</h3>
       <div class="wb-canvas">
-        <div style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg);overflow:hidden;max-width:680px">
+        <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Repeating block table, scrolls horizontally when zoomed" style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg);max-width:680px">
           <table class="table ds-table">
             <caption class="visually-hidden">Lab test results for this investigation</caption>
             <thead><tr><th scope="col">Test</th><th scope="col">Result</th><th scope="col">Date</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead>
             <tbody>
-              <tr><td>SARS-CoV-2 RNA Pnl</td><td>Detected</td><td>03/02/2026</td><td class="ds-row-actions"><a href="#" aria-label="Edit SARS-CoV-2 RNA Pnl"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a><a href="#" aria-label="Delete SARS-CoV-2 RNA Pnl"><svg class="ds-icon"><use href="../icons/sprite.svg#delete"/></svg></a></td></tr>
-              <tr><td>Hepatitis B virus DNA</td><td>Not detected</td><td>03/04/2026</td><td class="ds-row-actions"><a href="#" aria-label="Edit Hepatitis B virus DNA"><svg class="ds-icon"><use href="../icons/sprite.svg#edit"/></svg></a><a href="#" aria-label="Delete Hepatitis B virus DNA"><svg class="ds-icon"><use href="../icons/sprite.svg#delete"/></svg></a></td></tr>
+              <tr><td>SARS-CoV-2 RNA Pnl</td><td>Detected</td><td>03/02/2026</td><td class="ds-row-actions"><a href="#" aria-label="Edit SARS-CoV-2 RNA Pnl"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a><a href="#" aria-label="Delete SARS-CoV-2 RNA Pnl"><span class="ds-icon material-symbols-rounded" aria-hidden="true">delete</span></a></td></tr>
+              <tr><td>Hepatitis B virus DNA</td><td>Not detected</td><td>03/04/2026</td><td class="ds-row-actions"><a href="#" aria-label="Edit Hepatitis B virus DNA"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a><a href="#" aria-label="Delete Hepatitis B virus DNA"><span class="ds-icon material-symbols-rounded" aria-hidden="true">delete</span></a></td></tr>
             </tbody>
           </table>
-          <div class="px-3 py-2 border-top"><button type="button" class="btn btn-outline-primary rounded-pill"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Add row</button></div>
+          <div class="px-3 py-2 border-top"><button type="button" class="btn btn-outline-primary rounded-pill"><span class="ds-icon material-symbols-rounded" aria-hidden="true">add</span>Add row</button></div>
         </div>
       </div>
     </div>
@@ -893,7 +895,7 @@
           <button type="button" class="ds-profile-btn" aria-expanded="false">
             <span class="ds-avatar" aria-hidden="true">PP</span>
             P. Preparer
-            <svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg>
+            <span class="ds-icon material-symbols-rounded" aria-hidden="true">expand_more</span>
           </button>
         </div>
       </div>
@@ -974,7 +976,7 @@
     <div class="wb-example" data-js="wbDisclosureJs">
       <h3>Disclosure (<code>.ds-disclosure</code>)</h3>
       <div class="wb-canvas">
-        <button type="button" class="ds-disclosure" id="wbAdvToggle" aria-expanded="false" aria-controls="wbAdv"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#expand_more"/></svg>Advanced search</button>
+        <button type="button" class="ds-disclosure" id="wbAdvToggle" aria-expanded="false" aria-controls="wbAdv"><span class="ds-icon material-symbols-rounded" aria-hidden="true">expand_more</span>Advanced search</button>
         <div id="wbAdv" role="group" aria-labelledby="wbAdvToggle" hidden style="margin-top:12px;max-width:360px">
           <div class="ds-field"><label for="wbIdType">ID Type</label><select class="form-select" id="wbIdType"><option>Any</option><option>Medical record number</option></select></div>
         </div>
@@ -993,7 +995,7 @@
       <div class="wb-canvas">
         <div class="ds-field" style="max-width:560px"><label for="wbTest">Resulted Test</label>
           <div class="ds-lookup"><input class="form-control" id="wbTest" type="text" readonly value="Hepatitis B virus DNA (42595-9)">
-            <button type="button" class="btn btn-outline-primary" aria-label="Search resulted test"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#search"/></svg>Search</button>
+            <button type="button" class="btn btn-outline-primary" aria-label="Search resulted test"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
             <button type="button" class="btn btn-link" aria-label="Clear resulted test">Clear</button></div></div>
       </div>
     </div>
@@ -1033,8 +1035,8 @@
       <h3>Step list (<code>.ds-steps</code>)</h3>
       <div class="wb-canvas">
         <ol class="ds-steps" aria-label="Porting steps">
-          <li class="ds-step-done"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#check_circle"/></svg>Map details<span class="visually-hidden">, done</span></li>
-          <li class="ds-step-done"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#check_circle"/></svg>Map questions<span class="visually-hidden">, done</span></li>
+          <li class="ds-step-done"><span class="ds-icon material-symbols-rounded" aria-hidden="true">check_circle</span>Map details<span class="visually-hidden">, done</span></li>
+          <li class="ds-step-done"><span class="ds-icon material-symbols-rounded" aria-hidden="true">check_circle</span>Map questions<span class="visually-hidden">, done</span></li>
           <li aria-current="step">Map answers</li>
           <li>Review mapping</li>
           <li>Port condition</li>
@@ -1046,12 +1048,12 @@
       <div class="wb-canvas">
         <div class="d-grid gap-3">
           <div class="ds-actions">
-            <button class="btn btn-primary" type="button" id="wbSearchBtn"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#search"/></svg>Search</button>
+            <button class="btn btn-primary" type="button" id="wbSearchBtn"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
             <button class="btn btn-outline-primary" type="button">Clear</button>
           </div>
           <div class="ds-results-head">
             <h4 class="ds-results-title" id="wbResultsTitle" tabindex="-1">Search results: 3 links found</h4>
-            <a class="btn btn-primary" href="#"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#add"/></svg>Add Link</a>
+            <a class="btn btn-primary" href="#"><span class="ds-icon material-symbols-rounded" aria-hidden="true">add</span>Add Link</a>
           </div>
         </div>
       </div>
@@ -1078,7 +1080,7 @@
         <div style="display:grid;gap:20px;max-width:760px">
           <div class="ds-table-footer"><span class="ds-page-summary">Items 1 - 10 of 190</span><nav aria-label="Pagination, footer example"><ul class="pagination mb-0"><li class="page-item disabled"><button type="button" class="page-link" aria-label="Previous page" disabled>Previous</button></li><li class="page-item"><button type="button" class="page-link active" aria-current="page" aria-label="Page 1">1</button></li><li class="page-item"><button type="button" class="page-link" aria-label="Next page">Next</button></li></ul></nav><div class="ds-page-size"><select class="form-select" id="wbFootSize"><option selected>10</option><option>25</option></select><label for="wbFootSize">Items per page</label></div></div>
           <div class="d-flex justify-content-end gap-3 px-4 py-3 bg-body-secondary border-top"><button class="btn btn-outline-primary">Cancel</button><button class="btn btn-primary">Save</button></div>
-          <div><span class="ds-bulkbar" role="region" aria-label="Bulk actions"><span aria-live="polite">3 selected</span> <button type="button" class="btn btn-primary">Assign</button><button type="button" class="btn btn-link">Export</button><button type="button" class="btn btn-link" aria-label="Clear selection"><svg class="ds-icon" aria-hidden="true"><use href="../icons/sprite.svg#close"/></svg></button></span></div>
+          <div><span class="ds-bulkbar" role="region" aria-label="Bulk actions"><span aria-live="polite">3 selected</span> <button type="button" class="btn btn-primary">Assign</button><button type="button" class="btn btn-link">Export</button><button type="button" class="btn btn-link" aria-label="Clear selection"><span class="ds-icon material-symbols-rounded" aria-hidden="true">close</span></button></span></div>
         </div>
       </div>
     </div>

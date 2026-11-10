@@ -150,7 +150,7 @@
       ['contactRecords', 'Contact Records', ['Event ID', 'Date Created', 'Name/Relationship', 'Date Named', 'Description', 'Associated With']]];
     var EMPTY = '<p class="pv-empty">No Data Found</p>';
     var table = function (caption, cols, rows) {
-      return '<div class="ds-table-scroll" tabindex="0" role="group" aria-label="' + esc(caption) + ', scrolls horizontally when zoomed"><table class="table ds-table tableCompact mb-0"><caption class="visually-hidden">' + esc(caption) + '</caption><thead><tr>' +
+      return '<div class="ds-table-scroll" tabindex="0" role="group" aria-label="' + esc(caption) + ', scrolls horizontally when zoomed"><table class="table table-sm table-hover table-css ds-table mb-0"><caption class="visually-hidden">' + esc(caption) + '</caption><thead><tr>' +
         cols.map(function (h) { return '<th scope="col">' + h + '</th>'; }).join('') + '</tr></thead><tbody>' +
         rows.map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
     };
@@ -178,7 +178,7 @@
         $('#pv-' + s[0] + '-count').textContent = '(' + n + ')';
       });
       $$('.accordion-button', dlg).forEach(function (b) { setSection(b, true); }); syncAll(dlg);
-      $$('#pvNav a', dlg).forEach(function (x) { x.removeAttribute('aria-current'); });
+      $$('#pvNav a', dlg).forEach(function (x, i) { if (i === 0) x.setAttribute('aria-current', 'location'); else x.removeAttribute('aria-current'); });
       $('.modal-body', dlg).scrollTop = 0;
       return true;
     };
@@ -205,7 +205,7 @@
       this.setAttribute('data-bs-title', open ? 'Hide section links' : 'Show section links');
       var bt = window.bootstrap && bootstrap.Tooltip && bootstrap.Tooltip.getInstance(this);   // the Phase 2 frame's tooltips are Bootstrap's
       if (bt) bt.setContent({ '.tooltip-inner': this.getAttribute('data-bs-title') });
-      $('use', this).setAttribute('href', $('use', this).getAttribute('href').replace(/#.*/, open ? '#left_panel_close' : '#left_panel_open'));
+      $('.material-symbols-rounded', this).textContent = open ? 'left_panel_close' : 'left_panel_open';
       $('#pvLayout').classList.toggle('is-nav-collapsed', !open);
     });
   }

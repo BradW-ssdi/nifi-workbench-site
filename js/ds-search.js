@@ -87,7 +87,7 @@
     tbody.innerHTML = rows.map(function (r) {
       var label = esc(r[labelKey]), key = esc(r[rowKey]);
       var acts = actions.map(function (a) {
-        var icon = '<svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#' + a.icon + '"/></svg>';
+        var icon = '<span class="ds-icon material-symbols-rounded" aria-hidden="true">' + a.icon + '</span>';
         if (a.dialog) return '<button type="button" class="btn btn-link p-0" data-record="' + a.dialog + '" data-key="' + key + '" aria-haspopup="dialog" aria-label="' + esc(a.label) + ' ' + label + '">' + icon + '</button>';
         return '<a href="' + esc(a.href) + '" aria-label="' + esc(a.label) + ' ' + label + '">' + icon + '</a>';
       }).join('');

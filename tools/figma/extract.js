@@ -37,7 +37,10 @@
     '--bs-info-border-subtle': 'Info Border', '--bs-success-border-subtle': 'Success Border',
     '--bs-warning-border-subtle': 'Warning Border', '--bs-danger-border-subtle': 'Danger Border',
     '--bs-info-text-emphasis': 'Info Ink', '--bs-warning-text-emphasis': 'Warning Ink', '--bs-danger-text-emphasis': 'Danger Ink',
-    '--bs-form-invalid-color': 'Invalid', '--bs-form-valid-color': 'Valid'
+    '--bs-form-invalid-color': 'Invalid', '--bs-form-valid-color': 'Valid',
+    // Phase 2's colors adopted after the Phase 3 deck review (2026-11-10)
+    '--ds-accordion-body-bg': 'Accordion Body', '--ds-info-banner-bg': 'Info Banner',
+    '--ds-nav-hover': 'Nav Hover', '--ds-icon-hover': 'Icon Hover', '--ds-icon-pressed': 'Icon Pressed'
   };
   // Component colors whose dark value is set per component in scss/_dark.scss, not by a custom property.
   var EXTRA = {
@@ -45,8 +48,8 @@
     'Info Fill': ['#0078b4', '#3bb1f0'], 'Pending Fill': ['#7014a5', '#c9a7f2'], 'Closed Fill': ['#546e7a', '#b9bfc3'],
     'Disabled Surface': ['#e9ecef', '#303030'], 'Disabled Text': ['#333333', '#b9bfc3'], 'Text On Disabled': ['#111111', '#b9bfc3'],
     'Table Text': ['#111111', '#e6e8ea'], 'Surface Raised': ['#ffffff', '#414141'],
-    // the Phase 2 view summary bar (View Algorithm), and the Standard question and Published marks on Edit Page
-    'Summary Bar': ['#d4e8f7', '#414141'], 'Summary Bar Border': ['#9fc3df', '#2a363c'], 'Standard Mark': ['#b02a37', '#b02a37'], 'Published Mark': ['#1c5d99', '#1c5d99'],
+    // Phase 2's summary bar (.summary #e6f2f5, border #c3d7e6; deck review 2026-11-10), and the Standard question and Published marks on Edit Page
+    'Summary Bar': ['#e6f2f5', '#414141'], 'Summary Bar Border': ['#c3d7e6', '#2a363c'], 'Standard Mark': ['#b02a37', '#b02a37'], 'Published Mark': ['#1c5d99', '#1c5d99'],
     // Phase 2's chips (chips.css, the same in both themes): the chip to filter, and the read-only chips on the merge search
     'Chip': ['#e6f2f5', '#e6f2f5'], 'Chip Link': ['#0070c0', '#0070c0'], 'Static Chip': ['#e5e7eb', '#e5e7eb'], 'Static Chip Text': ['#333333', '#333333']
   };
@@ -125,7 +128,20 @@
   }
 
   // ---- atoms: controls that become component instances on screens ---------------------------
-  function iconName(svg) { var u = svg.querySelector('use'); var h = u && (u.getAttribute('href') || u.getAttribute('xlink:href')) || ''; return h.split('#')[1] || ''; }
+  // an icon is Phase 2's Material Symbols glyph (<span class="material-symbols-rounded">edit</span>) or, for the sort caret, a sprite SVG
+  function iconName(el) {
+    if (el.classList && el.classList.contains('material-symbols-rounded')) return clean(el.textContent);
+    var u = el.querySelector('use'); var h = u && (u.getAttribute('href') || u.getAttribute('xlink:href')) || ''; return h.split('#')[1] || '';
+  }
+  // a control's visible label without its icon's ligature word
+  function labelOf(el) {
+    if (!el.querySelector || !el.querySelector('.material-symbols-rounded')) return clean(el.innerText || el.value || '');
+    return clean(Array.prototype.map.call(el.childNodes, function (n) {
+      if (n.nodeType === 3) return n.textContent;
+      if (n.nodeType !== 1 || n.classList.contains('material-symbols-rounded')) return '';
+      return n.innerText || n.textContent;
+    }).join(' '));
+  }
   function stateOf(el) {
     var c = el.classList;
     if (el.disabled || c.contains('disabled') || el.getAttribute('aria-disabled') === 'true') return 'Disabled';
@@ -151,7 +167,7 @@
   }
   function atom(el) {
     var c = el.classList, tag = el.tagName; if (!c) return null;
-    var svg = el.querySelector && el.querySelector(':scope > svg'), label = clean(el.innerText || el.value || ''), inv = c.contains('is-invalid');
+    var svg = el.querySelector && el.querySelector(':scope > svg, :scope > .material-symbols-rounded'), label = labelOf(el), inv = c.contains('is-invalid');
     if (c.contains('breadcrumb')) return { i: 'Breadcrumb', items: Array.prototype.map.call(el.querySelectorAll('.breadcrumb-item'), function (li) { return [clean(li.innerText), li.classList.contains('active') ? 1 : 0]; }), W: 'f' };
     if (c.contains('btn-close')) { var cr = el.getBoundingClientRect(); return Math.abs(cr.width - cr.height) > 2 ? null : { i: 'Close Button' }; }   // a close button the page squeezes is drawn as it renders
     if (c.contains('ds-btn-icon')) return { i: 'Icon Button', v: { State: stateOf(el) }, icon: svg ? iconName(svg) : '' };
@@ -175,7 +191,12 @@
     if (c.contains('form-check-input')) return { i: el.type === 'radio' ? 'Radio' : 'Checkbox', v: { State: el.disabled ? 'Disabled' : el.checked ? 'Checked' : c.contains('is-focus') ? 'Focus' : 'Default' } };
     if (c.contains('page-link')) return { i: 'Page Link', v: { State: c.contains('active') ? 'Current' : (el.disabled || c.contains('disabled')) ? 'Disabled' : stateOf(el) }, o: [label] };
     if (c.contains('nav-link') && el.closest('.nav-underline')) return { i: 'Tab', v: { State: el.getAttribute('aria-selected') === 'true' || c.contains('active') ? 'Selected' : stateOf(el) }, o: [label] };
-    if (c.contains('nav-link') && el.closest('.nav-pills')) var sn = { i: 'SecNav Link', v: { State: el.hasAttribute('aria-current') || c.contains('active') ? 'Current' : stateOf(el) }, o: [label], W: 'w' }; if (el.getBoundingClientRect().height > 40) { sn.wrap = 1; sn.H = 'x'; } return sn;   /* a long section name wraps to two lines */
+    if (c.contains('nav-link') && el.closest('.nav-pills')) {
+      var sn = { i: 'SecNav Link', v: { State: el.hasAttribute('aria-current') || c.contains('active') ? 'Current' : stateOf(el) }, o: [label], W: 'w' };
+      if (el.getBoundingClientRect().height > 40) { sn.wrap = 1; sn.H = 'x'; }   /* a long section name wraps to two lines */
+      return sn;
+    }
+    return null;
     if (c.contains('ds-sort-btn')) { var th = el.closest('th'), s = th && th.getAttribute('aria-sort'); var sh = { i: 'Sort Header', v: { Sort: s === 'ascending' ? 'Ascending' : s === 'descending' ? 'Descending' : 'None' }, o: [label] }; if (el.getBoundingClientRect().height > 30) sh.wrap = 1; return sh; }   // a label that wraps in a narrow column wraps in Figma too
     if (c.contains('accordion-button')) return { i: 'Accordion Header', v: { Open: el.getAttribute('aria-expanded') === 'false' ? 'No' : 'Yes' }, o: [label], W: 'w' };
     if (c.contains('ds-avatar')) return { i: 'Avatar', o: [label] };

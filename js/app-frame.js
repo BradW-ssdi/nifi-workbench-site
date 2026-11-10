@@ -22,6 +22,27 @@
   var KEY = 'statusNavBar';
   var SELF = document.currentScript && document.currentScript.src;
 
+  /* A design preview page (workbench/design-preview, the design system's own layout) says so at the top, and where the
+     developers' templates are: workbench/screens, inside Phase 2's header and sidebar. Not shown to automated runs (the
+     508 harness, the Figma extraction), which test and copy the page itself. */
+  if (/\/design-preview\/[^/]+\.html/.test(location.pathname) && !navigator.webdriver) {
+    var showPreviewNote = function () {
+      if (document.getElementById('dsPreviewNote')) return;
+      var file = location.pathname.split('/').pop();
+      var note = document.createElement('div');
+      note.id = 'dsPreviewNote';
+      note.setAttribute('role', 'note');
+      note.style.cssText = 'position:sticky;top:0;z-index:1100;background:#fff3e0;border-bottom:2px solid #996b00;color:#333;' +
+        'font:600 15px/1.4 Inter,sans-serif;padding:10px 16px;text-align:center';
+      var local = !/github\.io$/.test(location.hostname);
+      note.innerHTML = 'Design preview: do not build from this page. Developers: use ' +
+        (local ? '<a href="../screens/' + file + '" style="color:#004a80">workbench/screens/' + file + '</a>' : '<b>workbench/screens/' + file + '</b>') +
+        ' in the nifi-design-system repo (the template inside Phase 2’s header and sidebar).';
+      document.body.insertBefore(note, document.body.firstChild);
+    };
+    if (document.body) showPreviewNote(); else document.addEventListener('DOMContentLoaded', showPreviewNote);
+  }
+
   /* Tooltips on every screen (js/ds-tooltip.js), loaded once from beside this script */
   if (SELF && !window.dsTooltip && !document.querySelector('script[src$="ds-tooltip.js"]')) {
     var tipScript = document.createElement('script');
@@ -41,6 +62,18 @@
     var clearScript = document.createElement('script');
     clearScript.src = SELF.replace(/app-frame\.js(\?.*)?$/, 'ds-search-clear.js');
     document.head.appendChild(clearScript);
+  }
+  /* Phase 2's validation banner and red labels on every form (js/ds-errors.js), the same way */
+  if (SELF && !window.dsErrors && !document.querySelector('script[src$="ds-errors.js"]')) {
+    var errorsScript = document.createElement('script');
+    errorsScript.src = SELF.replace(/app-frame\.js(\?.*)?$/, 'ds-errors.js');
+    document.head.appendChild(errorsScript);
+  }
+  /* Phase 2's Cancel confirmation on every form (js/ds-cancel-confirm.js), the same way */
+  if (SELF && !window.dsCancelConfirm && !document.querySelector('script[src$="ds-cancel-confirm.js"]')) {
+    var cancelScript = document.createElement('script');
+    cancelScript.src = SELF.replace(/app-frame\.js(\?.*)?$/, 'ds-cancel-confirm.js');
+    document.head.appendChild(cancelScript);
   }
 
   function store(value) {

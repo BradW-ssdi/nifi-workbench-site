@@ -15,8 +15,6 @@
   if (window.dsSearchClear) return;
   window.dsSearchClear = true;
   var SEL = 'input[type="search"][placeholder^="Search to filter"]';
-  var ICON = (document.querySelector('script[src$="ds-search-clear.js"]') || {}).src;
-  ICON = ICON ? ICON.replace(/js\/ds-search-clear\.js(\?.*)?$/, 'icons/sprite.svg#close') : '../../icons/sprite.svg#close';
 
   function sync(input) {
     var b = input.__dsClear;
@@ -33,7 +31,8 @@
     b.className = 'btn btn-link ds-search-clear';
     b.setAttribute('aria-label', 'Clear filter text');
     if (input.id) b.setAttribute('aria-controls', input.id);
-    b.innerHTML = '<svg class="ds-icon" aria-hidden="true"><use href="' + ICON + '"/></svg>';
+    // Phase 2's glyph: Material Symbols Rounded "close", 24px (Phase 3 review: the X was a different icon)
+    b.innerHTML = '<span class="material-symbols-rounded" aria-hidden="true">close</span>';
     b.hidden = true;
     b.addEventListener('click', function () {
       input.value = '';

@@ -12,6 +12,9 @@
      gets one, from its name, when it has none of its own (BA review: tooltips on every button and icon, as Phase 2).
      Phase 2's own components (.ds-phase2) and the app frame's rail, which shows its labels itself, are left as they
      are. The rule for the app: give each icon-only control Phase 2's tooltip markup with its name as the title.
+   - Text buttons get one too, their label (Phase 3 review, Team A: New Search, Refine Search, Filter, Add New, Import,
+     Export, Make Active had none; Phase 2 titles its buttons, Cancel, OK, Submit, Add New, Export ..., with their label).
+     Links styled as links (.btn-link) and close buttons are left out; Phase 2's Filter chip button is included.
    - Loaded on every screen by js/app-frame.js. */
 (function () {
   'use strict';
@@ -40,9 +43,12 @@
     /* Inside the Phase 2 frame Bootstrap's tooltip script runs: an icon-only control gets Phase 2's tooltip markup and a
        Bootstrap tooltip, styled and placed as Phase 2's are (ours is styled only in the design system layout) */
     if (!el.matches(SEL) && window.bootstrap && bootstrap.Tooltip) {
-      el.setAttribute('data-bs-toggle', 'tooltip'); el.setAttribute('data-bs-custom-class', 'custom-tooltip'); el.setAttribute('data-bs-title', textOf(el));
+      /* A control's own data-bs-toggle (Filter's dropdown, a dialog opener) is left alone: the tooltip is made from
+         options, so the control keeps working */
+      if (!el.hasAttribute('data-bs-toggle')) el.setAttribute('data-bs-toggle', 'tooltip');
+      el.setAttribute('data-bs-custom-class', 'custom-tooltip'); el.setAttribute('data-bs-title', textOf(el));
       el.setAttribute('data-ds-auto-tip', '');   // its title is its name: the click handler below keeps the two the same
-      bootstrap.Tooltip.getOrCreateInstance(el).show();
+      bootstrap.Tooltip.getOrCreateInstance(el, { title: textOf(el), customClass: 'custom-tooltip' }).show();
       return;
     }
     clearTimeout(timer);
@@ -80,9 +86,20 @@
     var n = e.target; if (!n || !n.closest) return null;
     var el = n.closest(SEL); if (el) return el;
     var c = n.closest('button, a[href], [role="button"]');
-    return c && !c.textContent.trim() && !c.hasAttribute('title') && (c.getAttribute('aria-label') || '').trim() && c.closest(AUTO_IN) && !c.closest(AUTO_OUT) ? c : null;
+    if (!c || c.hasAttribute('title')) return null;
+    if (!c.textContent.trim()) return (c.getAttribute('aria-label') || '').trim() && c.closest(AUTO_IN) && !c.closest(AUTO_OUT) ? c : null;
+    /* a text button: its label is its tooltip */
+    if (c.id === 'filtersId') return c;
+    return c.matches(TEXT_BTN) && visibleText(c) && c.closest(AUTO_IN) && !c.closest(AUTO_OUT) ? c : null;
   }
-  function textOf(el) { return el.getAttribute('data-bs-title') || el.getAttribute('aria-label') || ''; }
+  var TEXT_BTN = '.btn:not(.btn-link):not(.btn-close)';
+  /* what the button shows: its text without icon ligatures (aria-hidden) or text only screen readers get */
+  function visibleText(el) {
+    var c = el.cloneNode(true);
+    Array.prototype.forEach.call(c.querySelectorAll('[aria-hidden="true"], .visually-hidden, .material-symbols-rounded'), function (x) { x.remove(); });
+    return (c.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+  function textOf(el) { return el.getAttribute('data-bs-title') || el.getAttribute('aria-label') || visibleText(el); }
 
   document.addEventListener('mouseover', function (e) { var el = from(e); hovered = el; if (el) show(el); });
   document.addEventListener('mouseout', function (e) {

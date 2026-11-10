@@ -19,7 +19,7 @@
    - Validation on Submit: required controls that are visible, and every repeating table marked data-min="1".
      A field with data-not-in="a|b|c" rejects a value already in use (any case); data-not-in-msg is the message, and
      {value} in it is replaced with what was entered. DEV: the server makes the same check.
-     The error summary lists problems in form order; its links focus the control and switch to its tab first. On success the form's data-saved
+     The error banner (Phase 2's, js/ds-errors.js) lists problems in form order; its links focus the control and switch to its tab first. On success the form's data-saved
      message is announced (DEV: post the form). */
 (function () {
   'use strict';
@@ -185,7 +185,7 @@
     if (type === 'coded') {
       control = '<select class="form-select" id="' + id + '" data-role="value" data-entry-required data-errmsg="Choose a value"><option value="">Select a value</option>' + (opt.getAttribute('data-values') || '').split('|').filter(Boolean).map(function (v) { return '<option>' + esc(v) + '</option>'; }).join('') + '</select>';
     } else if (type === 'date') {
-      control = '<div class="ds-datefield"><input class="form-control" type="text" inputmode="numeric" id="' + id + '" data-role="value" data-entry-required data-errmsg="Enter a date" aria-describedby="' + id + '-fmt"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#calendar_today"/></svg></div><span class="form-text" id="' + id + '-fmt">Format: MM/DD/YYYY</span>';
+      control = '<div class="ds-datefield"><input class="form-control" type="text" inputmode="numeric" id="' + id + '" data-role="value" data-entry-required data-errmsg="Enter a date" aria-describedby="' + id + '-fmt"><span class="ds-icon material-symbols-rounded" aria-hidden="true">calendar_today</span></div><span class="form-text" id="' + id + '-fmt">Format: MM/DD/YYYY</span>';
     } else {
       control = '<input class="form-control" type="' + (type === 'number' ? 'number' : 'text') + '" id="' + id + '" data-role="value" data-entry-required data-errmsg="Enter a value">';
     }
@@ -323,8 +323,8 @@
       var tr = document.createElement('tr');
       tr.setAttribute('data-row', '');
       tr.innerHTML = cells.map(function (c) { return '<td>' + esc(c.text || '') + '<input type="hidden" data-field="' + c.field + '" value="' + esc(c.value || '') + '"></td>'; }).join('') +
-        '<td class="ds-row-actions"><button type="button" class="ds-icon-btn" data-edit aria-label="Edit ' + esc(noun) + ': ' + esc(rowLabel(cells)) + '"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#edit"/></svg></button>' +
-        '<button type="button" class="ds-icon-btn" data-delete aria-label="Delete ' + esc(noun) + ': ' + esc(rowLabel(cells)) + '"><svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#delete"/></svg></button></td>';
+        '<td class="ds-row-actions"><button type="button" class="ds-icon-btn" data-edit aria-label="Edit ' + esc(noun) + ': ' + esc(rowLabel(cells)) + '"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button>' +
+        '<button type="button" class="ds-icon-btn" data-delete aria-label="Delete ' + esc(noun) + ': ' + esc(rowLabel(cells)) + '"><span class="ds-icon material-symbols-rounded" aria-hidden="true">delete</span></button></td>';
       tr._cells = cells;
       tr.setAttribute('data-state', JSON.stringify(entryState()));
       return tr;
@@ -369,7 +369,7 @@
         clearEntry();
         loadState(JSON.parse(tr.getAttribute('data-state')));
         syncConditions();
-        addBtn.innerHTML = '<svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#save"/></svg>Update ' + noun.toLowerCase();
+        addBtn.innerHTML = '<span class="ds-icon material-symbols-rounded" aria-hidden="true">save</span>Update ' + noun.toLowerCase();
         var f = entryFields()[0] || $('[data-lookup-search]', entry); if (f) f.focus();
         say('Editing ' + noun.toLowerCase() + ': ' + rowLabel(tr._cells) + '. Change the fields, then Update.');
       }
@@ -394,16 +394,15 @@
   }
 
   /* --- Submit --- */
-  var summary = $('#errorSummary'), list = $('#errorList');
+  var summary = $('#errorSummary');
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    list.innerHTML = '';
     var bad = [];
     $$('[required]', form).forEach(function (f) {
       clearError(f);
       if (!visible(f)) return;
       var empty = f.type === 'radio' ? !$$('[name="' + f.name + '"]', form).some(function (r) { return r.checked; }) : !f.value.trim();
-      if (empty && !bad.some(function (b) { return b.f.name && b.f.name === f.name && f.type === 'radio'; })) { setError(f, f.getAttribute('data-errmsg')); bad.push({ f: f, msg: f.getAttribute('data-errmsg') }); }
+      if (empty && !bad.some(function (b) { return b.f.name && b.f.name === f.name && f.type === 'radio'; })) { setError(f, f.getAttribute('data-errmsg')); bad.push({ f: f, msg: f.getAttribute('data-errmsg'), req: true }); }
     });
     $$('[data-not-in]', form).forEach(function (f) {
       if (!visible(f) || bad.some(function (b) { return b.f === f; })) return;
@@ -422,13 +421,8 @@
     bad.sort(function (a, b) { return a.f === b.f ? 0 : (a.f.compareDocumentPosition(b.f) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1); });
     markTabs(bad);
     if (!bad.length) { summary.hidden = true; say(form.getAttribute('data-saved') || 'Algorithm saved.'); /* DEV: post the form; on success go to the View screen with a success alert. */ return; }
-    bad.forEach(function (b) {
-      var li = document.createElement('li'), a = document.createElement('a');
-      a.href = '#' + b.f.id; a.textContent = b.msg;
-      a.addEventListener('click', function (ev) { ev.preventDefault(); revealTab(b.f); b.f.focus(); });
-      li.appendChild(a); list.appendChild(li);
-    });
-    summary.hidden = false; summary.focus();
+    /* Phase 2's banner (js/ds-errors.js): "<field> is required.", Show more after three */
+    dsErrors.forFields(summary, bad.map(function (b) { return { field: b.f, msg: b.msg, required: !!b.req }; }), function (f) { revealTab(f); f.focus(); });
   });
   $$('[required]', form).forEach(function (f) {
     f.addEventListener('change', function () { if (f.value.trim()) clearError(f); });

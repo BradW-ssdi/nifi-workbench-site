@@ -21,7 +21,7 @@
      listing the columns without a standard chip (or only those named in data-addable="A|B" on #filterChipsDiv),
      the offered chips' columns among them. A column is checked while its chip shows. Hidden when there is nothing
      to add.
-   - #clearFiltersDiv: "| Reset", after the Filter button, shown only while a filter is applied.
+   - #clearFiltersDiv: "| Reset", after the Filter button, shown while a filter is applied or a chip has been added from Filter.
    - #filterStatus (role="status"): every change is announced there.
    - Footer: .ds-table-footer holding #pageSummary, a Bootstrap .pagination whose .page-link buttons are named
      "Previous page", "Page N", "Next page", and #pageSize. A list without paging keeps its "N of M <noun>" count:
@@ -91,7 +91,13 @@
         r.classList.toggle('ds-row-filtered', !keep);
       });
       syncSummary();
-      if (resetDiv) resetDiv.style.display = Object.keys(active).length ? '' : 'none';
+      syncReset();
+    }
+    /* Reset shows while any filter is applied, and as soon as a filter is added from Filter, before it has values. */
+    function syncReset() {
+      if (!resetDiv) return;
+      var added = $$('.chipsWithSubMenu', bar).some(function (w) { return !w.hidden && w.getAttribute('data-chip-type') !== 'S'; });
+      resetDiv.style.display = Object.keys(active).length || added ? '' : 'none';
     }
 
     /* When every result fits on one page, the item count follows the filters. With server paging the
@@ -108,6 +114,7 @@
 
     /* Phase 2's chip value: the value, or Multiple (n), with ", Blanks" when blank rows are included. */
     function describe(f) {
+      if (f.all) return 'All, Blanks';
       var v = f.values.length > 1 ? 'Multiple (' + f.values.length + ')' : f.values[0] || '';
       return f.blanks ? (v ? v + ', Blanks' : 'Blanks') : v;
     }
@@ -209,8 +216,9 @@
       $('#' + id + '-updateButton', menu).addEventListener('click', function () {
         var picked = boxes().filter(function (b) { return b.checked; }).map(function (b) { return b.value; });
         var op = $('.submenu-operator', menu).value;
-        if ((!picked.length && !blanks.checked) || (picked.length === boxes().length && blanks.checked && op === '=')) delete active[col];
-        else active[col] = { op: op, values: picked, blanks: blanks.checked };
+        /* Every value and Blanks is Phase 2's Select All, shown as "All, Blanks"; every value without Blanks stays Multiple (n). */
+        if (!picked.length && !blanks.checked) delete active[col];
+        else active[col] = { op: op, values: picked, blanks: blanks.checked, all: picked.length === boxes().length && blanks.checked };
         renderChip(wrap); applyRows(); close(true);
         say(active[col] ? 'Filter applied: ' + col + (op === '=' ? ' is ' : ' is not ') + spoken(active[col]) + '. ' + counts() : 'Filter removed: ' + col + '. ' + counts());
       });
@@ -298,7 +306,13 @@
       });
       filterMenu.addEventListener('change', function (e) {
         var col = e.target.value; if (!col) return;
-        if (e.target.checked) { var c = chipOf(col); if (!c) addChip(col); else c.hidden = false; say(col + ' filter added. Its menu is the ' + col + ' button before Filter.'); }
+        /* As in Phase 2: the Filter menu closes and the new chip's menu opens for its values. */
+        if (e.target.checked) {
+          var c = chipOf(col); if (!c) addChip(col); else c.hidden = false;
+          syncReset(); close(false);
+          $('.chip-expand', chipOf(col)).click();
+          say(col + ' filter added. Its menu is open.');
+        }
         else { var w = chipOf(col); if (w) { delete active[col]; drop(w); applyRows(); } say(col + ' filter removed. ' + counts()); }
       });
     }

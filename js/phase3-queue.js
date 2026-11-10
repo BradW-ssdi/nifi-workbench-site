@@ -106,6 +106,7 @@
         w.hidden = true;
         var check = document.getElementById(id + "-check");
         if (check) { check.checked = false; }
+        if (!hadFilter) { syncReset(formId); }
         var filterButton = document.getElementById("filtersId");
         if (filterButton) { filterButton.focus(); }
         if (hadFilter) {
@@ -113,6 +114,16 @@
         } else {
             say(formId, labelOf(id) + " filter removed.");
         }
+    }
+
+    /* Reset shows as soon as a filter is added from Filter, before it has values; otherwise Phase 2's rule decides
+       (a value applied, or the sort changed). */
+    function syncReset(formId) {
+        var f = form(formId), row = chipRow(formId);
+        var r = f && f.querySelector("#clearFiltersDiv");
+        if (!r) { return; }
+        if (row && row.querySelector(".chipsWithSubMenu[data-chip-type='D']:not([hidden])")) { r.style.display = ""; return; }
+        if (typeof updateHiddenFilteringVariable === "function") { updateHiddenFilteringVariable(formId); }
     }
 
     /* The Filter button's column menu: Bootstrap's dropdown when Bootstrap is loaded, otherwise its .show class. */
@@ -135,6 +146,7 @@
         var w = wrapper(formId, id);
         if (!w) { return; }
         w.hidden = false;
+        syncReset(formId);
         closeFilterMenu();
         var expand = w.querySelector(".chip-expand");
         if (expand) { expand.click(); }
@@ -260,6 +272,7 @@
         if (settled && target.id === "paginationNav") { delete awaitingNav[settled.id]; }
         document.querySelectorAll("[data-phase3-queue-chips]").forEach(function (row) {
             var formId = row.getAttribute("data-form-id");
+            syncReset(formId);
             if (pendingFocus === "first") {
                 var b = firstChipButton(formId);
                 if (b) { b.focus(); }

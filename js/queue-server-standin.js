@@ -14,7 +14,6 @@
     var el = document.getElementById("queueData");
     if (!el) { return; }
     var Q = JSON.parse(el.textContent);
-    var ICON = "../../icons/sprite.svg#";
 
     function esc(s) {
         return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
@@ -87,11 +86,11 @@
             var name = esc(r[Q.actions.name] || "");
             var tip = function (verb) { return ' data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="' + verb + " " + esc(Q.actions.noun) + '"'; };
             return '<td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View ' + name + '"' + tip("View") +
-                '><svg class="ds-icon" aria-hidden="true"><use href="' + ICON + 'description"/></svg></button>' +
+                '><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button>' +
                 /* Edit: a link to its page, or (no page) a button that opens the Edit dialog */
                 (Q.actions.edit ? '<a class="btn btn-light rounded-circle btn-sm" href="' + Q.actions.edit + '"' : '<button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog"') +
                 ' aria-label="Edit ' + name + '"' + tip("Edit") +
-                '><svg class="ds-icon" aria-hidden="true"><use href="' + ICON + 'edit"/></svg>' + (Q.actions.edit ? '</a>' : '</button>') + '</td>';
+                '><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span>' + (Q.actions.edit ? '</a>' : '</button>') + '</td>';
         }
         var v = r[c.field] || "", none = '<span class="visually-hidden">None</span>';
         if (c.type === "badge") { return '<td><span class="badge ' + (c.badges[v] || c.otherBadge) + '">' + esc(v) + "</span></td>"; }

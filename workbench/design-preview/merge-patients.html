@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merge Candidate List - Merge Patients - NEDSS</title>
+<link rel="stylesheet" href="../../css/ds.css">
+<script src="../../js/app-frame.js" defer></script>
+<script src="../../js/ds-tooltip.js" defer></script>
+<script src="../../js/ds-infotip.js" defer></script>
+<script src="../../js/merge-patients.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
+<script src="../../js/ds-dialog.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .page-body { padding: 24px; display: grid; gap: 16px; }
+  .search-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px 20px; }
+  .search-grid .ds-field-wide { grid-column: 1 / -1; }
+  .ds-empty { margin: 0; padding: 24px; text-align: center; color: var(--bs-secondary-color); }
+  .search-grid .ds-field { max-width: none; }
+  .ds-cell-sub { color: var(--bs-secondary-color); font-size: 13px; display: block; }
+  @media (max-width: 820px) {
+    .page-body { padding: 16px; }
+  }
+  /* View Patient: Phase 2's Patient Events layout. The section links sit beside the events and collapse to the toggle
+     (Phase 2's secondary nav); above the events on narrow screens. */
+  .pv-layout { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .pv-layout.is-nav-collapsed { grid-template-columns: 40px minmax(0, 1fr); }
+  .pv-aside { position: sticky; top: 0; display: grid; gap: 8px; justify-items: end; }
+  .pv-nav { justify-self: stretch; font-size: 0.875rem; }
+  /* Phase 2's Patient Events nav (nav-link px-2 py-1 in .secondary-nav; Phase 3 review, Team A slide 5): 32px links 4px
+     apart, gray on hover, the current one in the teal tint; the first section is current when the dialog opens */
+  .pv-nav .nav-link { min-height: 32px; margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; color: var(--bs-body-color); }
+  .pv-nav .nav-link:hover { background: var(--ds-nav-hover); color: var(--bs-body-color); }
+  .pv-nav .nav-link[aria-current] { background: var(--ds-tint); color: var(--ds-primary-hover); font-weight: 600; }
+  .pv-layout.is-nav-collapsed .pv-nav { display: none; }
+  .pv-content { display: grid; gap: 16px; min-width: 0; }
+  .pv-empty { margin: 0; padding: 8px 0; text-align: center; font-size: 1.125rem; color: var(--bs-secondary-color); }
+  @media (max-width: 768px) { .pv-layout, .pv-layout.is-nav-collapsed { grid-template-columns: minmax(0, 1fr); } .pv-aside { position: static; justify-items: start; } }
+</style>
+</head>
+<body data-nav-current="merge-manual">
+<!-- app-frame:top -->
+<a class="visually-hidden-focusable ds-skip-link" href="#main">Skip to main content</a>
+<div class="ds-app">
+  <nav class="ds-nav-rail" aria-label="Main navigation" id="railNav">
+    <button type="button" class="ds-nav-toggle" id="railToggle" aria-label="Expand navigation" aria-expanded="false" aria-controls="railNav"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">menu</span></button>
+    <a class="ds-nav-item" data-nav-id="home" href="home.html"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">home</span><span class="ds-nav-label">Home</span></a>
+    <a class="ds-nav-item" data-nav-id="search" href="#"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">search</span><span class="ds-nav-label">Search</span></a>
+    <button type="button" class="ds-nav-item ds-nav-group" aria-expanded="false" aria-controls="navDataEntry"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">edit</span><span class="ds-nav-label">Data Entry</span><span class="ds-nav-chevron material-symbols-rounded" aria-hidden="true">expand_more</span></button>
+    <ul class="ds-nav-sub" id="navDataEntry" hidden>
+      <li><a data-nav-id="data-entry-patient" href="#">Patient</a></li>
+      <li><a data-nav-id="data-entry-organization" href="#">Organization</a></li>
+      <li><a data-nav-id="data-entry-provider" href="#">Provider</a></li>
+      <li><a data-nav-id="data-entry-place" href="#">Place</a></li>
+      <li><a data-nav-id="data-entry-lab-report" href="#">Lab Report</a></li>
+      <li><a data-nav-id="data-entry-morbidity-report" href="#">Morbidity Report</a></li>
+      <li><a data-nav-id="data-entry-summary-report" href="#">Summary Report</a></li>
+      <li><a data-nav-id="data-entry-bulk-data" href="#">Bulk Data</a></li>
+    </ul>
+    <button type="button" class="ds-nav-item ds-nav-group has-current" aria-expanded="false" aria-controls="navMerge"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">merge_type</span><span class="ds-nav-label">Merge Patients</span><span class="ds-nav-chevron material-symbols-rounded" aria-hidden="true">expand_more</span></button>
+    <ul class="ds-nav-sub" id="navMerge" hidden>
+      <li><a data-nav-id="merge-manual" aria-current="page" href="merge-patients-search.html">Manual Search</a></li>
+      <li><a data-nav-id="merge-system" href="merge-system-identified.html">System Identified</a></li>
+    </ul>
+    <a class="ds-nav-item" data-nav-id="open-investigations" href="#"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">content_paste_search</span><span class="ds-nav-label">Open Investigations</span></a>
+    <a class="ds-nav-item" data-nav-id="reports" href="#"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">description</span><span class="ds-nav-label">Reports</span></a>
+    <a class="ds-nav-item" data-nav-id="system-management" href="system-management.html"><span class="ds-nav-icon material-symbols-rounded" aria-hidden="true">settings</span><span class="ds-nav-label">System Management</span></a>
+  </nav>
+  <script>(function () { try { if (sessionStorage.getItem('statusNavBar') === 'expanded') { document.getElementById('railNav').classList.add('is-expanded'); var t = document.getElementById('railToggle'); t.setAttribute('aria-expanded', 'true'); t.setAttribute('aria-label', 'Collapse navigation'); } } catch (e) {} })();</script>
+  <header class="ds-header d-flex align-items-center bg-body border-bottom">
+    <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
+    <span class="ms-auto"></span>
+    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <div class="dropdown">
+      <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
+      <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
+        <li><span class="dropdown-header">Signed in as P. Preparer</span></li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </header>
+<!-- /app-frame:top -->
+<main id="main" tabindex="-1">
+      <div class="ds-page-header">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="home.html">Home</a></li>
+            <li class="breadcrumb-item">Merge Patients</li>
+            <li class="breadcrumb-item active" aria-current="page">Manual Search</li>
+          </ol>
+        </nav>
+        <div class="ds-title-row mt-2">
+          <h1 class="display-6 mb-0">Merge Candidate List</h1>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" data-ds-infotip aria-expanded="false" aria-controls="mergeHelp" aria-label="How to merge"><span class="ds-icon material-symbols-rounded" aria-hidden="true">info</span></button>
+        </div>
+      </div>
+      <div class="page-body">
+        <!-- The merge rules, behind the info button beside the title (BA review). The button opens and closes
+             this panel (js/ds-infotip.js); it is in the page, so it can be read from the
+             keyboard and by a screen reader (WCAG 3.3.2). A mouse hover opens it too. The error summary repeats a rule that is
+             broken on Merge. -->
+        <div class="alert mb-0 alert-info ds-infotip-panel" id="mergeHelp" hidden>
+          To merge records, select two or more candidates in the <b>Merge</b> column. Optionally, select a
+          <b>Surviving ID</b>. If no Surviving ID is selected, then the oldest (first) patient ID will be the
+          Surviving ID.
+        </div>
+
+        <!-- Error banner (Phase 2's): shown when the rules above are violated on Merge. -->
+        <div class="alert alert-danger ds-error-banner" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
+          <h2 class="d-flex align-items-center gap-1 h6 fw-normal mb-1" id="errorSummaryTitle"><span class="ds-icon material-symbols-rounded" aria-hidden="true">error</span>Please fix the following errors:</h2>
+          <ul class="small mb-0 ps-3" id="errorList" data-errors></ul>
+          <div class="collapse" id="errorSummaryMore"><ul class="small mb-0 ps-3" data-errors-more></ul></div>
+          <button type="button" class="btn btn-more alert-link" data-errors-toggle aria-controls="errorSummaryMore" aria-expanded="false" aria-label="Show more errors" hidden><span class="ds-icon material-symbols-rounded" aria-hidden="true">more_horiz</span></button>
+        </div>
+
+
+<!-- merge:toolbar -->
+        <!-- The search that produced this list, with Refine Search (the dialog with these criteria) and New Search (an
+             empty dialog), each with the search icon the BA review asks for. DEV: render the criteria from the request. -->
+        <div class="ds-toolbar">
+          <input class="form-control" type="search" id="filterInput" aria-label="Filter candidates" placeholder="Search to filter..." aria-describedby="status">
+          <span class="ms-auto"></span>
+          <button type="button" class="btn btn-outline-primary" data-open-search="refine" aria-haspopup="dialog"><span class="ds-icon material-symbols-rounded" aria-hidden="true">content_paste_search</span>Refine Search</button>
+          <button type="button" class="btn btn-outline-primary" data-open-search="new" aria-haspopup="dialog"><span class="ds-icon material-symbols-rounded" aria-hidden="true">content_paste_search</span>New Search</button>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
+          <div class="ds-table-settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
+            <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="candTable">
+              <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
+              <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
+            </div>
+          </div>
+        </div>
+        <p class="mb-0 fw-semibold" id="resultCount">4 candidates found</p>
+        <!-- The search criteria as Phase 2's read-only chips (queues/queueFilterChips with chip.readOnly: gray, with
+             the -readOnly ids), in Phase 2's host (#filterChips > #filterChipsDiv). Plain text here: Phase 2 keeps a
+             select for the operator, which the keyboard can still reach and change; a read-only chip has nothing to
+             operate. The group is named, so a screen reader hears "Search criteria" before them.
+             DEV: one chip per criterion in the request, in the search form's order. -->
+        <div class="ds-phase2">
+          <div class="d-flex flex-wrap" id="filterChips">
+            <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" role="group" aria-label="Search criteria">
+              <div class="chipsWithSubMenu"><div class="chip-button chip-read-only rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="lastName-readOnly"><span id="lastName-chipLabel-readOnly">Last Name</span> <span class="chip-operator-read-only" id="lastName-chipOperator-readOnly" style="font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;">starts with</span> <span class="chip-value-read-only" id="lastName-chipValue" style="font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;">Garcia</span></div></div>
+            </div>
+          </div>
+        </div>
+<!-- /merge:toolbar -->
+        <div id="status" class="visually-hidden" role="status" aria-live="polite"></div>
+
+        <div class="ds-table-frame">
+          <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Merge candidates table, scrolls horizontally when zoomed">
+          <table class="table ds-table tableCompact table-hover" id="candTable">
+            <caption class="visually-hidden">Merge candidates. Use the Merge column to choose records to combine and the Surviving ID column to choose which record survives.</caption>
+            <thead>
+              <tr>
+                <!-- Merge column (BA review): labeled "Merge", no Select All; each row's box is named for its patient. -->
+                <th scope="col" class="ds-select-col">Merge</th>
+                <th scope="col" class="ds-select-col">Surviving ID</th>
+                <th scope="col"><button class="ds-sort-btn" data-sort="2">Patient ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="3">Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col">Age / DOB / Sex</th>
+                <th scope="col">Address</th>
+                <th scope="col">Phone / Email</th>
+                <th scope="col">ID</th>
+              </tr>
+            </thead>
+            <!-- DEV: tbody = th:each over candidates. Each row's checkbox and
+                 radio carry aria-labels naming the patient. -->
+            <tbody>
+              <tr data-id="10023451">
+                <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10023451" aria-label="Merge Maria Garcia, patient ID 10023451"></td>
+                <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10023451" aria-label="Surviving ID: Maria Garcia, patient ID 10023451"></td>
+                <td><a href="#" data-view-patient="10023451" aria-haspopup="dialog">10023451</a></td>
+                <td>Garcia, Maria L</td>
+                <td>42<span class="ds-cell-sub">03/14/1984 · Female</span></td>
+                <td>1204 Riverside Dr<span class="ds-cell-sub">Austin, TX 78704</span></td>
+                <td>(512) 555-0142<span class="ds-cell-sub">mgarcia@example.com</span></td>
+                <td>SSN ···-··-4417</td>
+              </tr>
+              <tr data-id="10087719">
+                <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10087719" aria-label="Merge Maria Garcia, patient ID 10087719"></td>
+                <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10087719" aria-label="Surviving ID: Maria Garcia, patient ID 10087719"></td>
+                <td><a href="#" data-view-patient="10087719" aria-haspopup="dialog">10087719</a></td>
+                <td>Garcia, Maria</td>
+                <td>42<span class="ds-cell-sub">03/14/1984 · Female</span></td>
+                <td>1204 Riverside Drive<span class="ds-cell-sub">Austin, TX 78704</span></td>
+                <td>(512) 555-0142</td>
+                <td><span class="visually-hidden">None</span></td>
+              </tr>
+              <tr data-id="10091008">
+                <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10091008" aria-label="Merge Maria Garcia-Lopez, patient ID 10091008"></td>
+                <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10091008" aria-label="Surviving ID: Maria Garcia-Lopez, patient ID 10091008"></td>
+                <td><a href="#" data-view-patient="10091008" aria-haspopup="dialog">10091008</a></td>
+                <td>Garcia-Lopez, Maria</td>
+                <td>42<span class="ds-cell-sub">03/14/1984 · Female</span></td>
+                <td>880 Oltorf St<span class="ds-cell-sub">Austin, TX 78741</span></td>
+                <td><span class="visually-hidden">None</span><span class="ds-cell-sub">maria.gl@example.com</span></td>
+                <td>MRN 55-2210</td>
+              </tr>
+              <tr data-id="10105532">
+                <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10105532" aria-label="Merge Mario Garcia, patient ID 10105532"></td>
+                <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10105532" aria-label="Surviving ID: Mario Garcia, patient ID 10105532"></td>
+                <td><a href="#" data-view-patient="10105532" aria-haspopup="dialog">10105532</a></td>
+                <td>Garcia, Mario</td>
+                <td>39<span class="ds-cell-sub">07/02/1987 · Male</span></td>
+                <td>4410 Burnet Rd<span class="ds-cell-sub">Austin, TX 78756</span></td>
+                <td>(512) 555-0199</td>
+                <td><span class="visually-hidden">None</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="ds-empty" id="noResults" hidden>No patients match these criteria. Check the spelling, change an operator, or enter fewer criteria.</p>
+          </div>
+<!-- merge:footer -->
+          <!-- Table footer, as on every queue: the server pages the candidates. -->
+          <div class="ds-table-footer">
+            <span class="ds-page-summary" id="pageSummary">Items 1 - 4 of 4</span>
+            <nav aria-label="Pagination">
+              <ul class="pagination mb-0">
+                <li class="page-item"><button type="button" class="page-link disabled" aria-label="Previous page" disabled>Previous</button></li>
+                <li class="page-item active"><button type="button" class="page-link active" aria-current="page" aria-label="Page 1">1</button></li>
+                <li class="page-item"><button type="button" class="page-link disabled" aria-label="Next page" disabled>Next</button></li>
+              </ul>
+            </nav>
+            <div class="ds-page-size"><select class="form-select" id="pageSize"><option>5</option><option selected>25</option><option>50</option><option>100</option></select><label for="pageSize">Items per page</label></div>
+          </div>
+<!-- /merge:footer -->
+        </div>
+      </div>
+    </main>
+<!-- app-frame:bottom -->
+</div>
+<!-- /app-frame:bottom -->
+
+<!-- Floating bulk bar: appears once a candidate is selected. -->
+<div class="ds-bulkbar is-floating" id="bulkbar" role="region" aria-label="Merge actions" hidden>
+  <span id="bulkCount"><span class="ds-bulkbar-num">0</span> selected</span>
+  <span class="ds-bulkbar-sep" aria-hidden="true"></span>
+  <button class="btn ds-bulkbar-action" id="mergeBtn" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="To merge records, select two or more candidates in the Merge column. You may also select a surviving record ID; if none is selected, then the oldest (first) patient ID will be the surviving record ID."><span class="ds-icon material-symbols-rounded" aria-hidden="true">call_merge</span>Merge</button>
+  <button type="button" class="btn ds-bulkbar-close" id="clearSel" aria-label="Clear selection" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Clear selection"><span class="ds-icon material-symbols-rounded" aria-hidden="true">close</span></button>
+</div>
+
+<!-- Confirm merge: the legacy confirm() becomes the standard modal. -->
+<div class="modal" id="mergeModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="mergeTitle" aria-describedby="mergeDesc" hidden>
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="mergeTitle">Merge patient records?</h2>
+          <button type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="mergeDesc">This combines the selected records into one. Events, documents, and identifiers move to the surviving record. This cannot be undone.</p>
+          <ul class="mb-0 ps-4" id="mergeList"></ul>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-primary" data-close>Cancel</button>
+          <button class="btn btn-danger" id="confirmMerge">Merge records</button>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- merge:dialogs -->
+<!-- Find Patient: Phase 2's Search for Existing Patient dialog (patients/advancedSearchModal.html, opened with
+     invocationContext addLab): the search icon and title, the blue performance banner, General Search and Advanced
+     Search as accordions, Clear on the left and Submit on the right. The fields are the current merge search's
+     (person/jsp, workflow MergePatientManual). Names and operator values are Phase 2's (personSearch.*, SW / CT / =
+     / != / SL), so the form posts what the existing person search reads. -->
+<div class="modal ds-modal-p2 ds-modal-search" id="searchDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="searchTitle" aria-describedby="searchBanner" hidden>
+  <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title h5 d-flex align-items-center gap-2" id="searchTitle"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search for Existing Patient</h2>
+      <button type="button" class="btn-close" data-dismiss aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button>
+    </div>
+    <form class="modal-body" id="searchForm" novalidate>
+          <div class="alert alert-info d-flex align-items-center gap-2" id="searchBanner"><span class="ds-icon flex-shrink-0 material-symbols-rounded" aria-hidden="true">info</span>A search resulting in a large data set can cause extended wait times for query results and could affect performance.</div>
+          <div class="alert alert-danger ds-error-banner" id="searchErrors" role="alert" aria-labelledby="searchErrorsTitle" tabindex="-1" hidden><h3 id="searchErrorsTitle" class="d-flex align-items-center gap-1 h6 fw-normal mb-1"><span class="ds-icon material-symbols-rounded" aria-hidden="true">error</span>Please fix the following errors:</h3><ul class="small mb-0 ps-3"><li><a href="#msLast" onclick="event.preventDefault();document.getElementById('msLast').focus()">Enter at least one search criterion</a></li></ul></div>
+          <section class="accordion ds-form-accordion" id="msGeneral" aria-labelledby="msGeneralHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="msGeneralHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="msGeneralBody">General Search</button></h3>
+              <div class="accordion-collapse collapse show" id="msGeneralBody">
+                <div class="accordion-body">
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msLast">Last Name</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msLastOp" name="personSearch.lastNameOperator" data-default="SW" aria-label="Last Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msLast" name="personSearch.lastName" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msFirst">First Name</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msFirstOp" name="personSearch.firstNameOperator" data-default="SW" aria-label="First Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msFirst" name="personSearch.firstName" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msDobMonth">Date of Birth</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msDobOp" name="personSearch.birthTimeOperator" data-default="=" aria-label="Date of Birth operator"><option value="=" selected>Equal</option><option value="BET">Between</option></select></div>
+                <div class="col-md-6"><div class="ds-dob-parts" id="msDobParts"><input class="form-control" id="msDobMonth" name="personSearch.birthTimeMonth" type="text" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Date of Birth, month" autocomplete="off"><input class="form-control" id="msDobDay" name="personSearch.birthTimeDay" type="text" inputmode="numeric" maxlength="2" placeholder="DD" aria-label="Date of Birth, day" autocomplete="off"><input class="form-control" id="msDobYear" name="personSearch.birthTimeYear" type="text" inputmode="numeric" maxlength="4" placeholder="YYYY" aria-label="Date of Birth, year" autocomplete="off"></div><div class="ds-op-field" id="msDobRange" hidden><div class="ds-datefield"><input class="form-control" id="msDobFrom" name="personSearch.beforeBirthTime" type="text" inputmode="numeric" placeholder="MM/DD/YYYY" aria-label="Date of Birth, from (MM/DD/YYYY)" autocomplete="off"><span class="ds-icon material-symbols-rounded" aria-hidden="true">calendar_today</span></div><span class="ds-op-and">and</span><div class="ds-datefield"><input class="form-control" id="msDobTo" name="personSearch.afterBirthTime" type="text" inputmode="numeric" placeholder="MM/DD/YYYY" aria-label="Date of Birth, to (MM/DD/YYYY)" autocomplete="off"><span class="ds-icon material-symbols-rounded" aria-hidden="true">calendar_today</span></div></div></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msSex">Current Sex</label>
+                <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msSex" name="personSearch.currentSex"><option value=""></option><option value="F">Female</option><option value="M">Male</option><option value="U">Unknown</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msStreet">Street Address</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msStreetOp" name="personSearch.streetAddr1Operator" data-default="CT" aria-label="Street Address operator"><option value="CT" selected>Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msStreet" name="personSearch.streetAddr1" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msCity">City</label>
+                <div class="col-md-3 col-lg-2"><select class="form-select" id="msCityOp" name="personSearch.cityDescTxtOperator" data-default="CT" aria-label="City operator"><option value="CT" selected>Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option></select></div>
+                <div class="col-md-6"><input class="form-control" id="msCity" name="personSearch.cityDescTxt" type="text" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msState">State</label>
+                <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msState" name="personSearch.state"><option value=""></option><option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option><option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option><option>District of Columbia</option><option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option><option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option><option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option><option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option><option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option><option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option><option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option><option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option><option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msZip">Zip</label>
+                <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msZip" name="personSearch.zipCd" type="text" inputmode="numeric" placeholder="#####-####" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msId">Patient ID(s)</label>
+                <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msId" name="personSearch.localID" type="text" autocomplete="off" aria-describedby="msIdHint"><span class="visually-hidden" id="msIdHint">Separate IDs with commas, semicolons, or spaces.</span></div>
+                <div class="col-auto"><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm" aria-label="About Patient ID(s)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Separate IDs with commas, semicolons, or spaces."><span class="ds-icon material-symbols-rounded" aria-hidden="true">info</span></button></div>
+              </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="msAdvanced" aria-labelledby="msAdvancedHeading">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="msAdvancedHeading"><button type="button" class="accordion-button collapsed" aria-expanded="false" aria-controls="msAdvancedBody">Advanced Search</button></h3>
+              <div class="accordion-collapse collapse" id="msAdvancedBody">
+                <div class="accordion-body">
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msIdNum">Identifier</label>
+                <div class="col-md-6 offset-md-3 offset-lg-2"><div class="input-group"><select class="form-select ds-input-group-select" id="msIdType" name="personSearch.typeCd" data-default="Account number" data-for="personSearch.rootExtensionTxt" aria-label="Identifier type"><option selected>Account number</option><option>Alternate person number</option><option>CHIP Identification number</option><option>Driver&#39;s license number</option><option>ImmTrac ID</option><option>Immunization Registry ID</option><option>Medicaid number</option><option>Medical record number</option><option>Medicare number</option><option>Mother&#39;s identifier</option><option>National unique individual identifier</option><option>Other</option><option>Partner Services Patient Number</option><option>Patient External Identifier</option><option>Patient internal identifier</option><option>Person number</option><option>Prison identification number</option><option>Social Security</option><option>Visa/Passport</option><option>WIC identifier</option></select><input class="form-control" id="msIdNum" name="personSearch.rootExtensionTxt" type="text" autocomplete="off"></div></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msPhone">Phone</label>
+                <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msPhone" name="personSearch.phoneNbrTxt" type="tel" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msEmail">Email</label>
+                <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msEmail" name="personSearch.emailAddress" type="email" autocomplete="off"></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msEthnicity">Ethnicity</label>
+                <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msEthnicity" name="personSearch.ethnicGroupInd"><option value=""></option><option>Hispanic or Latino</option><option>Not Hispanic or Latino</option><option>Unknown</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <label class="col-md-3 col-form-label text-md-end" for="msRace">Race</label>
+                <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msRace" name="personSearch.raceCd"><option value=""></option><option>American Indian or Alaska Native</option><option>Asian</option><option>Black or African American</option><option>Multi-Race</option><option>Native Hawaiian or Other Pacific Islander</option><option>Not asked</option><option>Other</option><option>Refused to answer</option><option>Unknown</option><option>White</option></select></div>
+              </div>
+                </div>
+              </div>
+            </div>
+          </section>
+    </form>
+    <div class="modal-footer">
+      <button type="reset" form="searchForm" class="btn btn-outline-primary rounded-pill me-auto">Clear</button>
+      <button type="submit" form="searchForm" class="btn btn-primary rounded-pill">Submit</button>
+    </div>
+  </div></div>
+</div>
+<!-- View Patient: read only, as Phase 2's Patient Events dialog (pagedataentry/contactrecords/patientEventsModal.html,
+     View Investigation > Add Contact Record > Contact Record Search > View Patient): Print and close in the header, the
+     light teal summary bar, the section links beside the events (they collapse to a button, as Phase 2's secondary nav
+     does), then the events by type as accordions, each with Phase 2's columns and "No Data Found" when it has none.
+     No Close button: the header's close and Escape close it. DEV: load the content with hx-get when a patient ID is
+     chosen, as Patient Events does. -->
+<div class="modal ds-modal-p2 ds-modal-fill" id="patientDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="pvTitle" aria-describedby="pvSummary" hidden>
+  <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title h5" id="pvTitle">Patient Events</h2>
+      <div class="d-flex align-items-center gap-2 ms-auto">
+        <button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm" id="pvPrint" aria-label="Print" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
+        <button type="button" class="btn-close" data-dismiss aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="card summary ds-summary-bar py-2 px-3" id="pvSummary">
+        <p class="mb-0 d-flex flex-wrap align-items-center column-gap-2 row-gap-1 fw-bold sub2"><span id="pvName"></span><span class="vr" aria-hidden="true"></span><span id="pvSex"></span><span class="vr" aria-hidden="true"></span><span id="pvDob"></span><span class="ms-auto">Patient ID: <span id="pvId"></span></span></p>
+      </div>
+      <div class="pv-layout" id="pvLayout">
+        <aside class="pv-aside">
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon pv-nav-toggle" id="pvNavToggle" aria-expanded="true" aria-controls="pvNav" aria-label="Section links" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Hide section links"><span class="ds-icon material-symbols-rounded" aria-hidden="true">left_panel_close</span></button>
+          <nav class="pv-nav nav flex-column" id="pvNav" aria-label="Patient events"><a class="nav-link" href="#pv-investigations">Investigations</a><a class="nav-link" href="#pv-labReports">Lab Reports</a><a class="nav-link" href="#pv-morbidityReports">Morbidity Reports</a><a class="nav-link" href="#pv-vaccinations">Vaccinations</a><a class="nav-link" href="#pv-treatments">Treatments</a><a class="nav-link" href="#pv-documents">Documents</a><a class="nav-link" href="#pv-contactRecords">Contact Records</a></nav>
+        </aside>
+        <div class="pv-content">
+          <div class="d-flex align-items-center gap-2"><h3 class="h5 mb-0">Patient Events History</h3><button type="button" class="btn btn-link p-0 ms-auto" data-toggle-all aria-controls="patientDialog">Collapse All</button></div>
+          <section class="accordion ds-form-accordion" id="pv-investigations" aria-labelledby="pv-investigationsHeading">
+            <div class="accordion-item">
+              <h4 class="accordion-header" id="pv-investigationsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-investigations-collapse">Investigations <span class="ms-1" id="pv-investigations-count"></span></button></h4>
+              <div class="accordion-collapse collapse show" id="pv-investigations-collapse"><div class="accordion-body" id="pv-investigations-body"></div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="pv-labReports" aria-labelledby="pv-labReportsHeading">
+            <div class="accordion-item">
+              <h4 class="accordion-header" id="pv-labReportsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-labReports-collapse">Lab Reports <span class="ms-1" id="pv-labReports-count"></span></button></h4>
+              <div class="accordion-collapse collapse show" id="pv-labReports-collapse"><div class="accordion-body" id="pv-labReports-body"></div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="pv-morbidityReports" aria-labelledby="pv-morbidityReportsHeading">
+            <div class="accordion-item">
+              <h4 class="accordion-header" id="pv-morbidityReportsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-morbidityReports-collapse">Morbidity Reports <span class="ms-1" id="pv-morbidityReports-count"></span></button></h4>
+              <div class="accordion-collapse collapse show" id="pv-morbidityReports-collapse"><div class="accordion-body" id="pv-morbidityReports-body"></div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="pv-vaccinations" aria-labelledby="pv-vaccinationsHeading">
+            <div class="accordion-item">
+              <h4 class="accordion-header" id="pv-vaccinationsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-vaccinations-collapse">Vaccinations <span class="ms-1" id="pv-vaccinations-count"></span></button></h4>
+              <div class="accordion-collapse collapse show" id="pv-vaccinations-collapse"><div class="accordion-body" id="pv-vaccinations-body"></div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="pv-treatments" aria-labelledby="pv-treatmentsHeading">
+            <div class="accordion-item">
+              <h4 class="accordion-header" id="pv-treatmentsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-treatments-collapse">Treatments <span class="ms-1" id="pv-treatments-count"></span></button></h4>
+              <div class="accordion-collapse collapse show" id="pv-treatments-collapse"><div class="accordion-body" id="pv-treatments-body"></div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="pv-documents" aria-labelledby="pv-documentsHeading">
+            <div class="accordion-item">
+              <h4 class="accordion-header" id="pv-documentsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-documents-collapse">Documents <span class="ms-1" id="pv-documents-count"></span></button></h4>
+              <div class="accordion-collapse collapse show" id="pv-documents-collapse"><div class="accordion-body" id="pv-documents-body"></div></div>
+            </div>
+          </section>
+          <section class="accordion ds-form-accordion" id="pv-contactRecords" aria-labelledby="pv-contactRecordsHeading">
+            <div class="accordion-item">
+              <h4 class="accordion-header" id="pv-contactRecordsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-contactRecords-collapse">Contact Records <span class="ms-1" id="pv-contactRecords-count"></span></button></h4>
+              <div class="accordion-collapse collapse show" id="pv-contactRecords-collapse"><div class="accordion-body" id="pv-contactRecords-body"></div></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+<script type="application/json" id="patientData">{"10023451":{"name":"Maria L Garcia","sex":"Female","dob":"03/14/1984","age":"42 Years","investigations":[["CAS10023451TX01","Open","02/03/2026","Hepatitis B, acute","Confirmed","Completed","Region 7 Public Health","Avery Lin"]],"labReports":[["OBS20031TX01","01/28/2026","Central Valley Laboratory","01/27/2026","Hepatitis B surface antigen: Positive","CAS10023451TX01","HEP","Region 7 Public Health"],["OBS20032TX01","01/28/2026","Central Valley Laboratory","01/27/2026","ALT: 210 U/L (high)","CAS10023451TX01","HEP","Region 7 Public Health"]],"vaccinations":[["INT40011TX01","05/12/2019","Riverbend Clinic","05/12/2019","Hepatitis B vaccine, adult",""]],"documents":[["DOC50001TX01","01/28/2026","Electronic Lab Report","Central Valley Laboratory","01/27/2026","Hepatitis B, acute","CAS10023451TX01"]],"contactRecords":{"namedByPatient":{"Hepatitis B, acute":[["CON60001TX01","02/05/2026","Sam Ortiz / Household member","02/04/2026","Shares a household","CAS10023451TX01"]]}}},"10087719":{"name":"Maria Garcia","sex":"Female","dob":"03/14/1984","age":"42 Years","labReports":[["OBS20101TX01","02/01/2026","Northside Medical Laboratory","01/31/2026","Hepatitis B core IgM: Positive","","HEP","Region 7 Public Health"]]},"10091008":{"name":"Maria Garcia-Lopez","sex":"Female","dob":"03/14/1984","age":"42 Years","morbidityReports":[["MOR30044TX01","12/09/2025","Dana Whitfield","12/08/2025","Influenza","Region 7 Public Health",""]],"contactRecords":{"patientNamedBy":{"Pertussis":[["CON60007TX01","11/20/2025","Robin Hale / Coworker","11/19/2025","Shared an office","CAS10002204TX01"]]}}},"10105532":{"name":"Mario Garcia","sex":"Male","dob":"07/02/1987","age":"39 Years","treatments":[["TRT70002TX01","08/14/2025","Riverbend Clinic","08/14/2025","Doxycycline, 100 mg",""]]}}</script>
+<!-- /merge:dialogs -->
+<script>
+/* Working reference implementations of the selection + merge contracts. */
+(function () {
+  var table = document.getElementById('candTable');
+  var tbody = table.tBodies[0];
+  var status = document.getElementById('status');
+  var bar = document.getElementById('bulkbar');
+  var count = document.getElementById('bulkCount');
+  var boxes = function () { return Array.prototype.slice.call(tbody.querySelectorAll('input[name="merge"]')); };
+
+  /* --- Selection state: row highlight, header indeterminate, bulk bar --- */
+  /* The count is said in #status, which is always on the page: the bar's own count appears with the bar, too late to
+     be read. note: what else changed, said first. */
+  var said = 0;
+  function sync(note) {
+    var b = boxes(), n = b.filter(function (x) { return x.checked; }).length;
+    b.forEach(function (x) { x.closest('tr').classList.toggle('is-selected', x.checked); });
+    bar.hidden = n === 0;
+    count.firstChild.textContent = n;
+    if (n !== said || note) { status.textContent = (note || '') + n + ' selected'; said = n; }
+  }
+  tbody.addEventListener('change', function (e) {
+    if (e.target.name === 'merge') { sync(); }
+    /* Marking a survivor implies merging it: check its merge box (announced). */
+    if (e.target.name === 'survivor') {
+      var row = e.target.closest('tr'), cb = row.querySelector('input[name="merge"]'), note = '';
+      if (!cb.checked) { cb.checked = true; note = 'Surviving record also selected for merge. '; }
+      sync(note);
+    }
+  });
+  document.getElementById('clearSel').addEventListener('click', function () {
+    boxes().forEach(function (x) { x.checked = false; });
+    tbody.querySelectorAll('input[name="survivor"]').forEach(function (r) { r.checked = false; });
+    sync(); status.textContent = 'Selection cleared'; boxes()[0].focus();
+  });
+
+  /* --- Merge: validate the rules, then show the error summary or confirm in the modal --- */
+  var summary = document.getElementById('errorSummary');
+  var backdrop = document.getElementById('mergeModal'), dialog = backdrop;
+  var mergeBtn = document.getElementById('mergeBtn');
+  function openModal() {
+    var sel = boxes().filter(function (x) { return x.checked; });
+    var surv = tbody.querySelector('input[name="survivor"]:checked');
+    var ml = document.getElementById('mergeList'); ml.innerHTML = '';
+    sel.forEach(function (x) {
+      var li = document.createElement('li');
+      li.textContent = x.closest('tr').cells[3].textContent + ' (' + x.value + ')' + (surv && surv.value === x.value ? ' (survives)' : '');
+      ml.appendChild(li);
+    });
+    dsDialog.show(backdrop); dialog.focus();
+  }
+  function closeModal() { dsDialog.hide(backdrop); mergeBtn.focus(); }
+  mergeBtn.addEventListener('click', function () {
+    var errs = [];
+    var sel = boxes().filter(function (x) { return x.checked; });
+    var surv = tbody.querySelector('input[name="survivor"]:checked');
+    if (sel.length < 2) errs.push({ msg: 'Select at least two candidates to merge', focus: sel[0] || boxes()[0] });
+    if (surv && !surv.closest('tr').querySelector('input[name="merge"]').checked) errs.push({ msg: 'The surviving record must also be selected for merge', focus: surv });
+    if (errs.length) {
+      /* Phase 2's banner (js/ds-errors.js); these are choices, not fields, so the whole message is the link */
+      dsErrors.show(summary, errs.map(function (e) { return [e.focus, e.msg, '']; }));
+      return;
+    }
+    summary.hidden = true; openModal();
+  });
+  backdrop.querySelectorAll('.btn-close, [data-close]').forEach(function (b) { b.addEventListener('click', closeModal); });
+  document.getElementById('confirmMerge').addEventListener('click', function () {
+    closeModal();
+    status.textContent = 'Records merged. The surviving record is now open.';
+    /* DEV: submit the merge (hx-post) and navigate to the surviving patient. */
+  });
+  backdrop.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeModal(); return; }
+    if (e.key !== 'Tab') return;
+    var items = Array.prototype.filter.call(dialog.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'), function (el) { return el.offsetParent !== null; });
+    var first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  /* --- Sort (same contract as every table) --- */
+  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var th = btn.closest('th'), col = +btn.dataset.sort;
+      var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
+      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
+      th.setAttribute('aria-sort', dir);
+      Array.prototype.slice.call(tbody.rows).sort(function (a, b) {
+        var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();
+        return dir === 'ascending' ? x.localeCompare(y) : y.localeCompare(x);
+      }).forEach(function (r) { tbody.appendChild(r); });
+      status.textContent = 'Sorted by ' + btn.textContent.trim() + ', ' + dir;
+    });
+  });
+
+})();
+</script>
+<!-- merge:search -->
+<script>
+/* The candidate list answers the Find Patient dialog's Search (js/merge-patients.js): the sample rows are filtered by
+   name and patient ID to show the result and empty states, and the "Search to filter" box narrows what is listed.
+   DEV: hx-post the criteria and swap the table; announce the count from the response. */
+(function () {
+  var tbody = document.getElementById('candTable').tBodies[0], status = document.getElementById('status');
+  var OPS = { SW: 'starts with', CT: 'contains', '=': 'is', '!=': 'is not', SL: 'sounds like', BET: 'between' };
+  var LABELS = { 'personSearch.lastName': 'Last Name', 'personSearch.firstName': 'First Name', 'personSearch.currentSex': 'Current Sex',
+    'personSearch.streetAddr1': 'Street Address', 'personSearch.cityDescTxt': 'City', 'personSearch.state': 'State', 'personSearch.zipCd': 'Zip', 'personSearch.localID': 'Patient ID',
+    'personSearch.typeCd': 'Identifier Type', 'personSearch.rootExtensionTxt': 'Identifier', 'personSearch.phoneNbrTxt': 'Phone', 'personSearch.emailAddress': 'Email',
+    'personSearch.ethnicGroupInd': 'Ethnicity', 'personSearch.raceCd': 'Race' };
+  function matches(op, value, q) {
+    value = value.toLowerCase(); q = q.toLowerCase();
+    if (op === 'CT') return value.indexOf(q) !== -1;
+    if (op === '=') return value === q;
+    if (op === '!=') return value !== q;
+    return value.indexOf(q) === 0;
+  }
+  /* the criteria as read-only chips (read_only_chip() in scripts/screens/merge-patients.py renders the same) */
+  /* Date of Birth comes as month, day, and year (Equal) or a from and a to date (Between): one chip either way */
+  function dob(q) {
+    if (q.get('personSearch.birthTimeOperator') === 'BET') {
+      var a = q.get('personSearch.beforeBirthTime') || '', b = q.get('personSearch.afterBirthTime') || '';
+      return a || b ? (a || '...') + ' and ' + (b || '...') : '';
+    }
+    var parts = [q.get('personSearch.birthTimeMonth') || 'MM', q.get('personSearch.birthTimeDay') || 'DD', q.get('personSearch.birthTimeYear') || 'YYYY'];
+    return /\d/.test(parts.join('')) ? parts.join('/') : '';
+  }
+  function chips(q) {
+    var box = document.getElementById('filterChipsDiv'), dobDone = false;
+    box.innerHTML = '';
+    q.forEach(function (v, k) {
+      var label = LABELS[k], op = q.get(k + 'Operator');
+      if (/^personSearch\.(birthTime(Month|Day|Year)|beforeBirthTime|afterBirthTime)$/.test(k)) {
+        if (dobDone) return; dobDone = true;
+        label = 'Date of Birth'; v = dob(q); op = q.get('personSearch.birthTimeOperator') || '=';
+      }
+      if (!label || !v) return;
+      var id = k.replace('personSearch.', ''), wrap = document.createElement('div'), chip = document.createElement('div');
+      wrap.className = 'chipsWithSubMenu';
+      chip.className = 'chip-button chip-read-only rounded-pill d-flex align-items-center chip badge me-2 ps-3';
+      chip.id = id + '-readOnly';
+      [[label, id + '-chipLabel-readOnly', ''], [OPS[op] || 'is', id + '-chipOperator-readOnly', 'chip-operator-read-only'],
+       [v, id + '-chipValue', 'chip-value-read-only']].forEach(function (part, i) {
+        var span = document.createElement('span');
+        span.textContent = part[0]; span.id = part[1];
+        if (part[2]) { span.className = part[2]; span.setAttribute('style', 'font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;'); }
+        if (i) chip.appendChild(document.createTextNode(' '));   /* a space between the parts for screen readers */
+        chip.appendChild(span);
+      });
+      wrap.appendChild(chip);
+      box.appendChild(wrap);
+    });
+    document.getElementById('filterChips').hidden = !box.children.length;
+  }
+  function filterText() {
+    var t = document.getElementById('filterInput').value.trim().toLowerCase();
+    Array.prototype.forEach.call(tbody.rows, function (r) { r.classList.toggle('d-none', !!t && r.textContent.toLowerCase().indexOf(t) === -1); });
+  }
+  function search(q) {
+    var last = q.get('personSearch.lastName') || '', first = q.get('personSearch.firstName') || '';
+    var ids = (q.get('personSearch.localID') || '').split(/[\s,;]+/).filter(Boolean), shown = 0;
+    Array.prototype.forEach.call(tbody.rows, function (row) {
+      var parts = row.cells[3].textContent.trim().split(/,\s*/);
+      var ok = (!last || matches(q.get('personSearch.lastNameOperator') || 'SW', parts[0], last)) &&
+               (!first || matches(q.get('personSearch.firstNameOperator') || 'SW', parts[1] || '', first)) &&
+               (!ids.length || ids.indexOf(row.getAttribute('data-id')) !== -1);
+      row.hidden = !ok; if (ok) shown++;
+    });
+    chips(q);
+    document.getElementById('noResults').hidden = shown !== 0;
+    var text = shown === 0 ? 'No patients match these criteria' : shown + (shown === 1 ? ' candidate found' : ' candidates found');
+    document.getElementById('resultCount').textContent = text;
+    document.getElementById('pageSummary').textContent = 'Items ' + (shown ? 1 : 0) + ' - ' + shown + ' of ' + shown;
+    status.textContent = text + '.';
+    filterText();
+  }
+  var t;
+  document.getElementById('filterInput').addEventListener('input', function () { clearTimeout(t); t = setTimeout(filterText, 300); });
+  window.mergeCandidates = { search: search };
+  var q = new URLSearchParams(location.search);
+  if (!q.toString()) { q.set('personSearch.lastName', 'Garcia'); q.set('personSearch.lastNameOperator', 'SW'); }
+  search(q);
+  status.textContent = '';
+})();
+</script>
+<!-- /merge:search -->
+</body>
+</html>

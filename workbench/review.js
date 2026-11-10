@@ -23,7 +23,7 @@
   /* ---- the template under review ---- */
   $('#rvTitle').textContent = current.title;
   $('#rvBadge').innerHTML = badge(current.status);
-  $('#rvOpen').href = 'screens/' + current.id + '.html';
+  $('#rvOpen').href = 'design-preview/' + current.id + '.html';
   var frame = $('#rvFrame'), live = $('#rvStatus');
   frame.title = 'Template: ' + current.title;
   function say(t) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 30); }
@@ -93,7 +93,7 @@
     new frame.contentWindow.MutationObserver(later).observe(doc.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['hidden', 'class', 'style', 'aria-selected'] });
     later();
   });
-  frame.src = 'screens/' + current.id + '.html';
+  frame.src = 'design-preview/' + current.id + '.html';
   $('#rvPins').addEventListener('change', function () { place(); say(this.checked ? 'Note markers shown.' : 'Note markers hidden.'); });
 
   /* ---- width ---- */
