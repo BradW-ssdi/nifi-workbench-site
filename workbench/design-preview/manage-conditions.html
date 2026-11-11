@@ -122,7 +122,7 @@
         <div class="ds-toolbar">
           <input class="form-control search" type="search" id="localTextFilter" name="localTextFilter" aria-label="Search conditions" placeholder="Search to filter..." autocomplete="off" data-phase3-announce oninput="resetPagination('manageConditionsForm')" hx-trigger="input changed delay:400ms, search" hx-post="/web/systemmanagement/list-conditions" hx-include="#manageConditionsForm" hx-target="#manageConditionsForm .tableData" hx-swap="innerHTML">
           <span class="ms-auto"></span>
-          <button type="button" class="btn btn-outline-primary" id="addBtn" aria-haspopup="dialog" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Add Condition"><span class="ds-icon material-symbols-rounded" aria-hidden="true">add</span>Add Condition</button>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="addBtn" aria-haspopup="dialog" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Add Condition"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add Condition</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
           <div class="ds-table-settings">
@@ -563,10 +563,10 @@
                 <button type="button" class="btn-close ms-auto me-3" data-bs-dismiss="toast" aria-label="Close"></button></div>
             </div></div>
             <div class="ds-modal-record-actions"><button type="button" class="btn btn-outline-primary btn-sm" id="viewStatus" aria-haspopup="dialog">Make Inactive</button><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm" id="viewEdit" aria-label="Edit condition" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></div>
-            <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0" data-toggle-all aria-controls="viewDialog">Collapse All</button></div>
+            <div class="pt-3 d-flex align-items-center ds-modal-section-title"><h3 class="sub ps-1 m-0">View Condition</h3><button type="button" class="btn btn-link p-0 ms-auto me-2" data-toggle-all aria-controls="viewDialog">Collapse All</button></div>
         <section class="accordion ds-form-accordion" id="v-details" aria-labelledby="v-detailsHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="v-detailsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-detailsBody">Condition Details</button></h3>
+            <h4 class="accordion-header" id="v-detailsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-detailsBody">Condition Details</button></h4>
             <div class="accordion-collapse collapse show" id="v-detailsBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="codingSystem">
@@ -607,7 +607,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="v-behavior" aria-labelledby="v-behaviorHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="v-behaviorHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-behaviorBody">Condition Behavior</button></h3>
+            <h4 class="accordion-header" id="v-behaviorHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-behaviorBody">Condition Behavior</button></h4>
             <div class="accordion-collapse collapse show" id="v-behaviorBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="nnd">
@@ -663,11 +663,11 @@
               <div class="collapse" id="addErrorsMore"><ul class="small mb-0 ps-3" data-errors-more></ul></div>
               <button type="button" class="btn btn-more alert-link" data-errors-toggle aria-controls="addErrorsMore" aria-expanded="false" aria-label="Show more errors" hidden><span class="ds-icon material-symbols-rounded" aria-hidden="true">more_horiz</span></button>
             </div>
-            <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0" data-toggle-all aria-controls="addDialog">Collapse All</button></div>
+            <div class="pt-3 d-flex align-items-center ds-modal-section-title"><h3 class="sub ps-1 m-0">Add Condition</h3><button type="button" class="btn btn-link p-0 ms-auto me-2" data-toggle-all aria-controls="addDialog">Collapse All</button></div>
         <form id="addForm" novalidate>
         <section class="accordion ds-form-accordion" id="a-details" aria-labelledby="a-detailsHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="a-detailsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-detailsBody">Condition Details</button></h3>
+            <h4 class="accordion-header" id="a-detailsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-detailsBody">Condition Details</button></h4>
             <div class="accordion-collapse collapse show" id="a-detailsBody">
               <div class="accordion-body">
             <div class="row g-2 align-items-center">
@@ -1010,7 +1010,7 @@
 
         <section class="accordion ds-form-accordion" id="a-behavior" aria-labelledby="a-behaviorHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="a-behaviorHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-behaviorBody">Condition Behavior</button></h3>
+            <h4 class="accordion-header" id="a-behaviorHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-behaviorBody">Condition Behavior</button></h4>
             <div class="accordion-collapse collapse show" id="a-behaviorBody">
               <div class="accordion-body">
             <div class="row g-2 align-items-center">
@@ -1101,11 +1101,11 @@
               <div class="collapse" id="editErrorsMore"><ul class="small mb-0 ps-3" data-errors-more></ul></div>
               <button type="button" class="btn btn-more alert-link" data-errors-toggle aria-controls="editErrorsMore" aria-expanded="false" aria-label="Show more errors" hidden><span class="ds-icon material-symbols-rounded" aria-hidden="true">more_horiz</span></button>
             </div>
-            <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0" data-toggle-all aria-controls="editDialog">Collapse All</button></div>
+            <div class="pt-3 d-flex align-items-center ds-modal-section-title"><h3 class="sub ps-1 m-0">Edit Condition</h3><button type="button" class="btn btn-link p-0 ms-auto me-2" data-toggle-all aria-controls="editDialog">Collapse All</button></div>
         <form id="editForm" novalidate>
         <section class="accordion ds-form-accordion" id="e-details" aria-labelledby="e-detailsHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="e-detailsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-detailsBody">Condition Details</button></h3>
+            <h4 class="accordion-header" id="e-detailsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-detailsBody">Condition Details</button></h4>
             <div class="accordion-collapse collapse show" id="e-detailsBody">
               <div class="accordion-body">
             <div class="row g-2 align-items-center">
@@ -1176,7 +1176,7 @@
 
         <section class="accordion ds-form-accordion" id="e-behavior" aria-labelledby="e-behaviorHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="e-behaviorHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-behaviorBody">Condition Behavior</button></h3>
+            <h4 class="accordion-header" id="e-behaviorHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-behaviorBody">Condition Behavior</button></h4>
             <div class="accordion-collapse collapse show" id="e-behaviorBody">
               <div class="accordion-body">
             <div class="row g-2 align-items-center">

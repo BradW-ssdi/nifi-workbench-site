@@ -88,7 +88,7 @@
         <div class="ds-toolbar">
           <input class="form-control search" type="search" id="filterInput" aria-label="Search questions by ID, name, or label" placeholder="Search to filter..." aria-describedby="filterStatus">
           <span class="ms-auto"></span>
-          <button type="button" class="btn btn-outline-primary" id="addBtn" aria-haspopup="dialog" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Add Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">add</span>Add Question</button>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="addBtn" aria-haspopup="dialog" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Add Question"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add Question</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
           <div class="ds-table-settings">
@@ -431,10 +431,10 @@
                 <button type="button" class="btn-close ms-auto me-3" data-bs-dismiss="toast" aria-label="Close"></button></div>
             </div></div>
             <div class="ds-modal-record-actions"><button type="button" class="btn btn-outline-primary btn-sm" id="viewStatus" aria-haspopup="dialog">Make Inactive</button><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm" id="viewEdit" aria-label="Edit question" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></div>
-            <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0" data-toggle-all aria-controls="viewDialog">Collapse All</button></div>
+            <div class="pt-3 d-flex align-items-center ds-modal-section-title"><h3 class="sub ps-1 m-0">View Question</h3><button type="button" class="btn btn-link p-0 ms-auto me-2" data-toggle-all aria-controls="viewDialog">Collapse All</button></div>
         <section class="accordion ds-form-accordion" id="v-basic" aria-labelledby="v-basicHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="v-basicHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-basicBody">Basic Information</button></h3>
+            <h4 class="accordion-header" id="v-basicHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-basicBody">Basic Information</button></h4>
             <div class="accordion-collapse collapse show" id="v-basicBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="type">
@@ -523,7 +523,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="v-ui" aria-labelledby="v-uiHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="v-uiHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-uiBody">User Interface</button></h3>
+            <h4 class="accordion-header" id="v-uiHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-uiBody">User Interface</button></h4>
             <div class="accordion-collapse collapse show" id="v-uiBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="label">
@@ -544,7 +544,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="v-mart" aria-labelledby="v-martHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="v-martHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-martBody">Data Mart</button></h3>
+            <h4 class="accordion-header" id="v-martHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-martBody">Data Mart</button></h4>
             <div class="accordion-collapse collapse show" id="v-martBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="reportLabel">
@@ -569,7 +569,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="v-msg" aria-labelledby="v-msgHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="v-msgHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-msgBody">Messaging</button></h3>
+            <h4 class="accordion-header" id="v-msgHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-msgBody">Messaging</button></h4>
             <div class="accordion-collapse collapse show" id="v-msgBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="included">
@@ -610,7 +610,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="v-admin" aria-labelledby="v-adminHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="v-adminHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-adminBody">Administrative</button></h3>
+            <h4 class="accordion-header" id="v-adminHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="v-adminBody">Administrative</button></h4>
             <div class="accordion-collapse collapse show" id="v-adminBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="adminComment">
@@ -642,11 +642,11 @@
               <div class="collapse" id="editErrorsMore"><ul class="small mb-0 ps-3" data-errors-more></ul></div>
               <button type="button" class="btn btn-more alert-link" data-errors-toggle aria-controls="editErrorsMore" aria-expanded="false" aria-label="Show more errors" hidden><span class="ds-icon material-symbols-rounded" aria-hidden="true">more_horiz</span></button>
             </div>
-            <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0" data-toggle-all aria-controls="editDialog">Collapse All</button></div>
+            <div class="pt-3 d-flex align-items-center ds-modal-section-title"><h3 class="sub ps-1 m-0">Edit Question</h3><button type="button" class="btn btn-link p-0 ms-auto me-2" data-toggle-all aria-controls="editDialog">Collapse All</button></div>
         <form id="editForm" novalidate>
         <section class="accordion ds-form-accordion" id="e-basic" aria-labelledby="e-basicHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="e-basicHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-basicBody">Basic Information</button></h3>
+            <h4 class="accordion-header" id="e-basicHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-basicBody">Basic Information</button></h4>
             <div class="accordion-collapse collapse show" id="e-basicBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="type">
@@ -783,7 +783,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="e-ui" aria-labelledby="e-uiHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="e-uiHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-uiBody">User Interface</button></h3>
+            <h4 class="accordion-header" id="e-uiHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-uiBody">User Interface</button></h4>
             <div class="accordion-collapse collapse show" id="e-uiBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="label">
@@ -813,7 +813,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="e-mart" aria-labelledby="e-martHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="e-martHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-martBody">Data Mart</button></h3>
+            <h4 class="accordion-header" id="e-martHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-martBody">Data Mart</button></h4>
             <div class="accordion-collapse collapse show" id="e-martBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="reportLabel">
@@ -844,7 +844,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="e-msg" aria-labelledby="e-msgHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="e-msgHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-msgBody">Messaging</button></h3>
+            <h4 class="accordion-header" id="e-msgHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-msgBody">Messaging</button></h4>
             <div class="accordion-collapse collapse show" id="e-msgBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="included">
@@ -915,7 +915,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="e-admin" aria-labelledby="e-adminHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="e-adminHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-adminBody">Administrative</button></h3>
+            <h4 class="accordion-header" id="e-adminHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-adminBody">Administrative</button></h4>
             <div class="accordion-collapse collapse show" id="e-adminBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="adminComment">
@@ -952,11 +952,11 @@
               <div class="collapse" id="addErrorsMore"><ul class="small mb-0 ps-3" data-errors-more></ul></div>
               <button type="button" class="btn btn-more alert-link" data-errors-toggle aria-controls="addErrorsMore" aria-expanded="false" aria-label="Show more errors" hidden><span class="ds-icon material-symbols-rounded" aria-hidden="true">more_horiz</span></button>
             </div>
-            <div class="ds-modal-sections-bar"><button type="button" class="btn btn-link p-0" data-toggle-all aria-controls="addDialog">Collapse All</button></div>
+            <div class="pt-3 d-flex align-items-center ds-modal-section-title"><h3 class="sub ps-1 m-0">Add Question</h3><button type="button" class="btn btn-link p-0 ms-auto me-2" data-toggle-all aria-controls="addDialog">Collapse All</button></div>
         <form id="addForm" novalidate>
         <section class="accordion ds-form-accordion" id="a-basic" aria-labelledby="a-basicHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="a-basicHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-basicBody">Basic Information</button></h3>
+            <h4 class="accordion-header" id="a-basicHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-basicBody">Basic Information</button></h4>
             <div class="accordion-collapse collapse show" id="a-basicBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="type">
@@ -1107,7 +1107,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="a-ui" aria-labelledby="a-uiHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="a-uiHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-uiBody">User Interface</button></h3>
+            <h4 class="accordion-header" id="a-uiHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-uiBody">User Interface</button></h4>
             <div class="accordion-collapse collapse show" id="a-uiBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="label">
@@ -1137,7 +1137,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="a-mart" aria-labelledby="a-martHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="a-martHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-martBody">Data Mart</button></h3>
+            <h4 class="accordion-header" id="a-martHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-martBody">Data Mart</button></h4>
             <div class="accordion-collapse collapse show" id="a-martBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="reportLabel">
@@ -1174,7 +1174,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="a-msg" aria-labelledby="a-msgHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="a-msgHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-msgBody">Messaging</button></h3>
+            <h4 class="accordion-header" id="a-msgHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-msgBody">Messaging</button></h4>
             <div class="accordion-collapse collapse show" id="a-msgBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="included">
@@ -1245,7 +1245,7 @@
         </section>
         <section class="accordion ds-form-accordion" id="a-admin" aria-labelledby="a-adminHeading">
           <div class="accordion-item">
-            <h3 class="accordion-header" id="a-adminHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-adminBody">Administrative</button></h3>
+            <h4 class="accordion-header" id="a-adminHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-adminBody">Administrative</button></h4>
             <div class="accordion-collapse collapse show" id="a-adminBody">
               <div class="accordion-body">
               <div class="row g-2 align-items-center" data-row="adminComment">

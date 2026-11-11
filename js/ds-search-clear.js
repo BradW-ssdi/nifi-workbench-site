@@ -3,8 +3,8 @@
    filter text", btn btn-link with the close icon, gray, inside the end of the field, shown only while the field has
    text). In the app that fragment has the button; in the design system templates this script adds it.
 
-   - Every input[type=search] with the placeholder "Search to filter..." gets one, in a .ds-search-wrap around the
-     field (scss/_extensions.scss). The browser's own clear control is hidden there, so there is one x.
+   - Every input[type=search] with the placeholder "Search to filter..." on the page gets one (not the ones inside the
+     Filter menu and the chip menus, which have none in Phase 2), in a .ds-search-wrap around the field (scss/_extensions.scss). The browser's own clear control is hidden there, so there is one x.
    - It shows while the field has text, after typing, a paste, or a script that fills or empties the field (it follows
      the field after every input, search, change, click, and key release on the page, so Reset hides it too).
    - Clicking it empties the field, sends input and search events (the list filters again: htmx's "input changed" and
@@ -22,6 +22,9 @@
   }
   function add(input) {
     if (input.__dsClear || input.hasAttribute('data-ds-clear')) return;
+    // Only the page's Search to filter, as Phase 2 (its typeToFilterFragment has the button). The search boxes inside the
+    // Filter menu and the chip menus are Phase 2's plain type="search" with no button of their own (dev team, 11/10).
+    if (input.closest('.dropdown-menu, .custom-dropdown')) return;
     var wrap = document.createElement('span');
     wrap.className = 'ds-search-wrap';
     input.parentNode.insertBefore(wrap, input);

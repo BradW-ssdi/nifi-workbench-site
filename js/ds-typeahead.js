@@ -25,6 +25,21 @@
   }
 
   /* Phase 2's makeTomSelect settings and fixes, for pages without Phase 2's script */
+  function nameRemove(ts) {
+    if (!ts || !ts.control) return;
+    Array.prototype.forEach.call(ts.control.querySelectorAll('.item .remove'), function (btn) {
+      var item = btn.closest('.item'); if (!item) return;
+      var label = (item.textContent || '').replace(/\s+/g, ' ').replace(/[\u00d7\u2715\u2716]\s*$/, '').trim(); if (!label) return;
+      btn.setAttribute('aria-label', 'Remove ' + label); btn.setAttribute('title', 'Remove ' + label);
+      btn.setAttribute('role', 'button'); btn.setAttribute('tabindex', '0');
+      if (btn.dataset.a11yRemoveKeyBound) return;
+      btn.dataset.a11yRemoveKeyBound = '1';
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); e.currentTarget.click(); }
+        else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); e.currentTarget.click(); }
+      });
+    });
+  }
   function build(sel) {
     if (!sel.getAttribute('aria-label') && !sel.getAttribute('aria-labelledby')) {
       var name = labelOf(sel);
@@ -36,7 +51,13 @@
       maxOptions: null,
       dropdownParent: 'body',
       closeAfterSelect: false,
+      /* Phase 2's remove_button: an x on the chosen value clears it, named after the value and reachable from the
+         keyboard (Phase 2's nameTomSelectRemoveButtons, 508 4.1.2 / 2.1.1) */
+      plugins: { remove_button: { title: 'Remove this item' } },
+      onItemAdd: function () { nameRemove(this); },
+      onItemRemove: function () { nameRemove(this); },
       onInitialize: function () {
+        nameRemove(this);
         var id = sel.id, lbl = document.getElementById(id + '-ts-label'), ctrl = document.getElementById(id + '-ts-control');
         /* the list opens on a click, as before, but not when the field is reached with Tab: an open list on focus
            makes NVDA read the list and its first option instead of the combo box */
