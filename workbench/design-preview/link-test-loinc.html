@@ -6,6 +6,8 @@
 <title>Manage Lab Test - LOINC Link - Case Report and Laboratory - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
+<script src="../../js/ds-table-sort.js" defer></script>
 <script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -81,14 +83,23 @@
           <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Find a link</h2>
             <div class="card-body d-grid gap-3">
               <p class="form-text mb-0" id="criteriaHint">Enter a lab test code. The sample results are links for Default Manual Lab tests that start with T-50.</p>
-              <div class="ds-entry-grid"><div class="ds-field"><label class="ds-required" for="ltlCode">Lab Test Code</label><input class="form-control" id="ltlCode" type="text" autocomplete="off" data-match="testCode" required data-errmsg="Enter a lab test code"><span class="invalid-feedback" id="ltlCode-error" hidden></span></div></div>
-              <div class="ds-actions"><button class="btn btn-primary" type="submit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
-                <button class="btn btn-outline-primary" type="reset">Clear</button></div>
+              <div class="ds-entry-grid"><div class="ds-field"><label class="ds-required" for="ltlCode">Lab Test Code:</label><input class="form-control" id="ltlCode" type="text" autocomplete="off" data-match="testCode" required data-errmsg="Enter a lab test code"><span class="invalid-feedback" id="ltlCode-error" hidden></span></div></div>
+              <div class="ds-actions"><button class="btn btn-primary px-3" type="submit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
+                <button class="btn btn-outline-dark px-3" type="reset">Clear</button></div>
             </div></section>
         </form>
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
           <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
-            <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" href="#"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add Link</span></a></div>
+            <div class="d-flex flex-wrap align-items-center"><a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" href="#"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add Link</span></a>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
+          <div class="ds-table-settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
+            <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="resultsTable">
+              <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
+              <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
+            </div>
+          </div></div></div>
           <!-- Column filter chips (BA review: every library has them): Phase 2's queue chips, in Phase 2's order (the chips,
                Filter, then "| Reset" while a filter is applied). DEV: build this with the Phase 3 queue component in the app
                (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
@@ -105,8 +116,8 @@
             </div>
           </div>
           <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
-          <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
-            <table class="table ds-table" id="resultsTable" data-columns="[&quot;testCode&quot;, &quot;labId&quot;, &quot;loincCode&quot;]" data-actions="[]" data-row-label="testCode"><caption class="visually-hidden">Links found</caption><thead><tr><th scope="col">Lab Test Code</th><th scope="col">Lab ID</th><th scope="col">LOINC Code</th></tr></thead><tbody></tbody></table></div></div>
+          <div class="table-wrapper"><div class="scrolling-section table-css-queues ds-table-scroll" id="myScrollableTable" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
+            <table class="table table-hover tableCompact ds-table" id="resultsTable" data-ds-sort data-columns="[&quot;testCode&quot;, &quot;labId&quot;, &quot;loincCode&quot;]" data-actions="[]" data-row-label="testCode"><caption class="visually-hidden">Links found</caption><thead><tr><th scope="col" id="labTestCodeColumn" aria-sort="none" tabindex="0" data-sort="0"><span>Lab Test Code</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="labIDColumn" aria-sort="none" tabindex="0" data-sort="1"><span>Lab ID</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="loincCodeColumn" aria-sort="none" tabindex="0" data-sort="2"><span>LOINC Code</span> <i class="bi sortable-icon" aria-hidden="true"></i></th></tr></thead><tbody class="tableData" id="queueDataTableBody"></tbody></table></div></div>
           <p class="ds-empty" id="noResults" hidden>No links match these criteria. Check the spelling, or search with less.</p>
         </section>
       </div>

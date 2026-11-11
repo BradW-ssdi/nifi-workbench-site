@@ -189,7 +189,7 @@
     } else {
       control = '<input class="form-control" type="' + (type === 'number' ? 'number' : 'text') + '" id="' + id + '" data-role="value" data-entry-required data-errmsg="Enter a value">';
     }
-    valueWrap.innerHTML = '<label class="ds-required" for="' + id + '">' + label + '</label>' + control + '<span class="invalid-feedback" id="' + id + '-error" hidden></span>';
+    valueWrap.innerHTML = '<label class="ds-required" for="' + id + '">' + label + (/:$/.test(label) ? '' : ':') + '</label>' + control + '<span class="invalid-feedback" id="' + id + '-error" hidden></span>';
   }
   $$('[data-repeat] [data-role="question"]', form).forEach(function (q) {
     var entry = q.closest('[data-entry]');
@@ -323,8 +323,8 @@
       var tr = document.createElement('tr');
       tr.setAttribute('data-row', '');
       tr.innerHTML = cells.map(function (c) { return '<td>' + esc(c.text || '') + '<input type="hidden" data-field="' + c.field + '" value="' + esc(c.value || '') + '"></td>'; }).join('') +
-        '<td class="ds-row-actions"><button type="button" class="ds-icon-btn" data-edit aria-label="Edit ' + esc(noun) + ': ' + esc(rowLabel(cells)) + '"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button>' +
-        '<button type="button" class="ds-icon-btn" data-delete aria-label="Delete ' + esc(noun) + ': ' + esc(rowLabel(cells)) + '"><span class="ds-icon material-symbols-rounded" aria-hidden="true">delete</span></button></td>';
+        '<td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" data-edit aria-label="Edit ' + esc(noun) + ': ' + esc(rowLabel(cells)) + '" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button>' +
+        '<button type="button" class="btn btn-light rounded-circle btn-sm" data-delete aria-label="Delete ' + esc(noun) + ': ' + esc(rowLabel(cells)) + '" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Delete"><span class="ds-icon material-symbols-rounded" aria-hidden="true">delete</span></button></td>';
       tr._cells = cells;
       tr.setAttribute('data-state', JSON.stringify(entryState()));
       return tr;

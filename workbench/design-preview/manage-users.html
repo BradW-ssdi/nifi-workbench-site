@@ -147,9 +147,9 @@
 
         <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
 
-        <div class="ds-table-frame">
-          <div class="ds-table-scroll" tabindex="0" role="group" aria-label="User table, scrolls horizontally when zoomed">
-          <table class="table ds-table tableCompact" id="userTable">
+        <div class="table-wrapper">
+          <div class="scrolling-section table-css-queues ds-table-scroll" id="myScrollableTable" tabindex="0" role="group" aria-label="User table, scrolls horizontally when zoomed">
+          <table class="table table-hover tableCompact ds-table" id="userTable">
             <caption class="visually-hidden">Users. Column headers with buttons are sortable. Status changes are made from the View User screen.</caption>
             <thead>
               <tr>
@@ -169,9 +169,9 @@
             <!-- DEV: tbody = th:each over users. Multi-value cells (Jurisdiction,
                  Program Area) list values separated by semicolons; never truncate to
                  a count with a tooltip. -->
-            <tbody>
+            <tbody class="tableData" id="queueDataTableBody">
               <tr>
-                <td class="ds-row-actions"><a href="view-user.html" aria-label="View Randi Alvarez (ralvarez)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="edit-user.html" aria-label="Edit Randi Alvarez (ralvarez)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Randi Alvarez (ralvarez)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Randi Alvarez (ralvarez)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>ralvarez</td>
                 <td>Alvarez</td>
                 <td>Randi</td>
@@ -184,7 +184,7 @@
                 <td>09/11/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="view-user.html" aria-label="View Priya Patel (ppatel)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="edit-user.html" aria-label="Edit Priya Patel (ppatel)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Priya Patel (ppatel)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Priya Patel (ppatel)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>ppatel</td>
                 <td>Patel</td>
                 <td>Priya</td>
@@ -197,7 +197,7 @@
                 <td>09/10/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="view-user.html" aria-label="View Marcus Lee (mlee)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="edit-user.html" aria-label="Edit Marcus Lee (mlee)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Marcus Lee (mlee)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Marcus Lee (mlee)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>mlee</td>
                 <td>Lee</td>
                 <td>Marcus</td>
@@ -210,7 +210,7 @@
                 <td>09/09/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="view-user.html" aria-label="View Jasmine Nguyen (jnguyen)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="edit-user.html" aria-label="Edit Jasmine Nguyen (jnguyen)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Jasmine Nguyen (jnguyen)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Jasmine Nguyen (jnguyen)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>jnguyen</td>
                 <td>Nguyen</td>
                 <td>Jasmine</td>
@@ -223,7 +223,7 @@
                 <td>09/08/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="view-user.html" aria-label="View Daniel Okafor (dokafor)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="edit-user.html" aria-label="Edit Daniel Okafor (dokafor)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Daniel Okafor (dokafor)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Daniel Okafor (dokafor)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>dokafor</td>
                 <td>Okafor</td>
                 <td>Daniel</td>
@@ -236,7 +236,7 @@
                 <td>11/30/2025</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="view-user.html" aria-label="View Sarah Thompson (sthompson)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="edit-user.html" aria-label="Edit Sarah Thompson (sthompson)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Sarah Thompson (sthompson)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Sarah Thompson (sthompson)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>sthompson</td>
                 <td>Thompson</td>
                 <td>Sarah</td>

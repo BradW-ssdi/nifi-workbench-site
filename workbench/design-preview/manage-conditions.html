@@ -551,18 +551,18 @@
       <!-- ============================ Dialogs (siblings, inside main) ============================ -->
       <div class="modal ds-modal-p2" id="viewDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="viewTitle" aria-describedby="viewName" hidden>
         <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-body-secondary">
             <h2 class="modal-title h5" id="viewTitle">View Condition</h2><p class="visually-hidden" id="viewName"></p>
             <div class="ds-modal-actions"><button type="button" class="btn-close" data-dismiss aria-label="Close"></button></div>
           </div>
-          <div class="modal-body"><div class="ds-modal-layout">
+          <div class="modal-body bg-body-secondary"><div class="ds-modal-layout">
             <aside class="ds-modal-aside"><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm ds-modal-nav-toggle" aria-expanded="true" aria-controls="viewDialogNav" aria-label="Section links" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Hide section links"><span class="ds-icon material-symbols-rounded" aria-hidden="true">left_panel_close</span></button><nav class="ds-modal-nav nav flex-column" id="viewDialogNav" aria-label="View Condition sections"><button type="button" class="btn ds-secnav-group-title" aria-expanded="true" aria-controls="viewDialogNavGroup">View Condition<span class="ds-icon ds-secnav-chevron material-symbols-rounded" aria-hidden="true">keyboard_arrow_up</span></button><div class="nav flex-column ds-secnav-children" id="viewDialogNavGroup"><a class="nav-link" href="#v-details">Condition Details</a><a class="nav-link" href="#v-behavior">Condition Behavior</a></div></nav></aside>
             <div class="ds-modal-content">
             <div class="toast-container top-center ds-modal-toast"><div class="toast alert-success" id="viewSaved" role="status" aria-live="polite" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000" hidden>
               <div class="d-flex"><span class="ds-icon ds-toast-icon ms-3 material-symbols-rounded" aria-hidden="true">check_circle</span><div class="toast-body"></div>
                 <button type="button" class="btn-close ms-auto me-3" data-bs-dismiss="toast" aria-label="Close"></button></div>
             </div></div>
-            <div class="ds-modal-record-actions"><button type="button" class="btn btn-outline-primary btn-sm" id="viewStatus" aria-haspopup="dialog">Make Inactive</button><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm" id="viewEdit" aria-label="Edit condition" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></div>
+            <div class="ds-modal-record-actions"><button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" id="viewStatus" aria-haspopup="dialog">Make Inactive</button><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm" id="viewEdit" aria-label="Edit condition" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></div>
             <div class="pt-3 d-flex align-items-center ds-modal-section-title"><h3 class="sub ps-1 m-0">View Condition</h3><button type="button" class="btn btn-link p-0 ms-auto me-2" data-toggle-all aria-controls="viewDialog">Collapse All</button></div>
         <section class="accordion ds-form-accordion" id="v-details" aria-labelledby="v-detailsHeading">
           <div class="accordion-item">
@@ -649,11 +649,11 @@
 
       <div class="modal ds-modal-p2" id="addDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="addTitle" hidden>
         <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-body-secondary">
             <h2 class="modal-title h5" id="addTitle">Add Condition</h2>
             <div class="ds-modal-actions"><button type="button" class="btn-close" data-dismiss aria-label="Close"></button></div>
           </div>
-          <div class="modal-body"><div class="ds-modal-layout">
+          <div class="modal-body bg-body-secondary"><div class="ds-modal-layout">
             <aside class="ds-modal-aside"><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm ds-modal-nav-toggle" aria-expanded="true" aria-controls="addDialogNav" aria-label="Section links" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Hide section links"><span class="ds-icon material-symbols-rounded" aria-hidden="true">left_panel_close</span></button><nav class="ds-modal-nav nav flex-column" id="addDialogNav" aria-label="Add Condition sections"><button type="button" class="btn ds-secnav-group-title" aria-expanded="true" aria-controls="addDialogNavGroup">Add Condition<span class="ds-icon ds-secnav-chevron material-symbols-rounded" aria-hidden="true">keyboard_arrow_up</span></button><div class="nav flex-column ds-secnav-children" id="addDialogNavGroup"><a class="nav-link" href="#a-details">Condition Details</a><a class="nav-link" href="#a-behavior">Condition Behavior</a></div></nav></aside>
             <div class="ds-modal-content">
             <p class="legend-note"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
@@ -1081,17 +1081,17 @@
         </form>
             </div>
           </div></div>
-          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-dismiss data-cancel>Cancel</button><button type="submit" form="addForm" class="btn btn-primary">Submit</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-dismiss data-cancel>Cancel</button><button type="submit" form="addForm" class="btn btn-primary rounded-pill px-3">Submit</button></div>
         </div></div>
       </div>
 
       <div class="modal ds-modal-p2" id="editDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="editTitle" aria-describedby="editContext" hidden>
         <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-body-secondary">
             <h2 class="modal-title h5" id="editTitle">Edit Condition</h2><p class="visually-hidden" id="editContext"></p>
             <div class="ds-modal-actions"><button type="button" class="btn-close" data-dismiss aria-label="Close"></button></div>
           </div>
-          <div class="modal-body"><div class="ds-modal-layout">
+          <div class="modal-body bg-body-secondary"><div class="ds-modal-layout">
             <aside class="ds-modal-aside"><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm ds-modal-nav-toggle" aria-expanded="true" aria-controls="editDialogNav" aria-label="Section links" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Hide section links"><span class="ds-icon material-symbols-rounded" aria-hidden="true">left_panel_close</span></button><nav class="ds-modal-nav nav flex-column" id="editDialogNav" aria-label="Edit Condition sections"><button type="button" class="btn ds-secnav-group-title" aria-expanded="true" aria-controls="editDialogNavGroup">Edit Condition<span class="ds-icon ds-secnav-chevron material-symbols-rounded" aria-hidden="true">keyboard_arrow_up</span></button><div class="nav flex-column ds-secnav-children" id="editDialogNavGroup"><a class="nav-link" href="#e-details">Condition Details</a><a class="nav-link" href="#e-behavior">Condition Behavior</a></div></nav></aside>
             <div class="ds-modal-content">
             <p class="legend-note"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
@@ -1247,24 +1247,24 @@
         </form>
             </div>
           </div></div>
-          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-dismiss data-cancel>Cancel</button><button type="submit" form="editForm" class="btn btn-primary">Submit</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-dismiss data-cancel>Cancel</button><button type="submit" form="editForm" class="btn btn-primary rounded-pill px-3">Submit</button></div>
         </div></div>
       </div>
 
       <div class="modal ds-modal-confirm" id="discardDialog" tabindex="-1" role="alertdialog" aria-modal="true" aria-labelledby="discardTitle" aria-describedby="discardText" hidden>
         <div class="modal-dialog"><div class="modal-content">
-          <div class="modal-header"><h2 class="modal-title h5" id="discardTitle">Cancel</h2><button type="button" class="btn-close" id="discardClose" aria-label="Close"></button></div>
-          <div class="modal-body"><p class="mb-0" id="discardText"></p></div>
-          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" id="keepEditing">Cancel</button>
-            <button type="button" class="btn btn-primary" id="discardYes">OK</button></div>
+          <div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="discardTitle">Cancel</h2><button type="button" class="btn-close" id="discardClose" aria-label="Close"></button></div>
+          <div class="modal-body bg-body-secondary"><p class="mb-0" id="discardText"></p></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="keepEditing">Cancel</button>
+            <button type="button" class="btn btn-primary rounded-pill px-3" id="discardYes">OK</button></div>
         </div></div>
       </div>
       <div class="modal ds-modal-confirm ds-modal-status" id="statusDialog" tabindex="-1" role="alertdialog" aria-modal="true" aria-labelledby="statusTitle" aria-describedby="statusText" hidden>
         <div class="modal-dialog"><div class="modal-content">
-          <div class="modal-header"><h2 class="modal-title h5" id="statusTitle">Make this condition inactive?</h2></div>
-          <div class="modal-body"><p class="mb-0" id="statusText"></p></div>
-          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" id="statusNo">Cancel</button>
-            <button type="button" class="btn btn-primary" id="statusYes">OK</button></div>
+          <div class="modal-header bg-body-tertiary"><h2 class="modal-title h5" id="statusTitle">Make this condition inactive?</h2></div>
+          <div class="modal-body bg-body-tertiary"><p class="mb-0" id="statusText"></p></div>
+          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="statusNo">Cancel</button>
+            <button type="button" class="btn btn-primary rounded-pill px-3" id="statusYes">OK</button></div>
         </div></div>
       </div>
     </main>

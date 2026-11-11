@@ -97,21 +97,21 @@
             <div class="card-body d-grid gap-3">
               <p class="form-text mb-0">Choose an event type, a template, and a message mapping guide, then name the page.</p>
               <div class="ds-entry-grid">
-                <div class="ds-field"><label class="ds-required" for="eventType">Event Type</label>
+                <div class="ds-field"><label class="ds-required" for="eventType">Event Type:</label>
                   <select class="form-select" id="eventType" name="eventType" required data-errmsg="Select an event type"><option value="">Select an event type</option><option>Contact Record</option><option>Interview</option><option>Investigation</option><option>Lab Isolate Tracking</option><option>Lab Report</option><option>Lab Susceptibility</option><option>Vaccination</option></select>
                   <span class="invalid-feedback" id="eventType-error" hidden></span></div>
-                <div class="ds-field"><label class="ds-required" for="template">Template</label>
+                <div class="ds-field"><label class="ds-required" for="template">Template:</label>
                   <select class="form-select" id="template" name="template" required data-errmsg="Select a template"><option value="">Select a template</option><option>Acute Flaccid Myelitis Prod</option><option>AMEBIASIS</option><option>Arboviral Human Investigation</option><option>BOTULISM</option><option>BRUCELLOSIS</option><option>CAMPYLOBACTERIOSIS</option><option>Chagas Investigation</option><option>CHOLERA</option><option>CREUTZFELDT-JAKOB DISEASE</option><option>CRYPTOSPORIDIOSIS</option><option>CYSTICERCOSIS</option><option>Generic Investigation</option><option>GIARDIASIS</option><option>Hepatitis A, acute - Texas Prod</option><option>Hepatitis B and C, chronic Texas Prod</option><option>Hepatitis Core Texas Prod</option><option>INFLUENZA A</option><option>LEGACY CYCLOSPORIASIS</option></select>
                   <span class="invalid-feedback" id="template-error" hidden></span></div>
-                <div class="ds-field ds-field-wide"><label class="ds-required" for="mappingGuide">Message Mapping Guide</label>
+                <div class="ds-field ds-field-wide"><label class="ds-required" for="mappingGuide">Message Mapping Guide:</label>
                   <select class="form-select" id="mappingGuide" name="mappingGuide" required data-errmsg="Select a message mapping guide"><option value="">Select a message mapping guide</option><option>Arboviral Case Notification Message Mapping Guide v.1</option><option>Congenital Syphilis Case Notification Message Mapping Guide v.1</option><option>Generic Case Notification Message Mapping Guide v.1</option><option>Generic Case Notification Message Mapping Guide v.2</option><option>HAI MDRO Case Notification Message Mapping Guide v.1</option><option>Hepatitis Message Mapping Guide v1</option><option>Malaria Message Mapping Guide v1.0</option><option>Measles Case Notification Message Mapping Guide v.1</option><option>Mumps Message Mapping Guide v1.0</option><option>No Reporting Mechanism (Not NND Reportable)</option><option>Pertussis Case Notification Message Mapping Guide v.1</option><option>Rubella Message Mapping Guide v1</option><option>Sexually Transmitted Disease (STD) Message Mapping Guide v1</option><option>Streptococcus Pneumoniae Message Mapping Guide v1</option><option>TB Case Notification Message Mapping Guide v3.0</option><option>Varicella Case Notification Message Mapping Guide v.3</option></select>
                   <span class="invalid-feedback" id="mappingGuide-error" hidden></span></div>
-                <div class="ds-field"><label class="ds-required" for="pageName">Page Name</label>
+                <div class="ds-field"><label class="ds-required" for="pageName">Page Name:</label>
                   <input class="form-control" id="pageName" name="pageName" type="text" autocomplete="off" required data-errmsg="Enter a page name">
                   <span class="invalid-feedback" id="pageName-error" hidden></span></div>
-                <div class="ds-field"><label for="dataMartName">Data Mart Name</label>
+                <div class="ds-field"><label for="dataMartName">Data Mart Name:</label>
                   <input class="form-control" id="dataMartName" name="dataMartName" type="text" autocomplete="off"></div>
-                <div class="ds-field ds-field-wide"><label for="pageDescription">Page Description</label>
+                <div class="ds-field ds-field-wide"><label for="pageDescription">Page Description:</label>
                   <textarea class="form-control" id="pageDescription" name="pageDescription" rows="3"></textarea></div>
               </div>
             </div>
@@ -122,11 +122,11 @@
             <div class="card-body d-grid gap-3">
               <p class="form-text mb-0" id="condHelp">Only conditions that are not mapped to another page are listed. If a condition is missing, search the page library: a condition already on a page cannot be added here, and that page must be cloned instead.</p>
               <div class="ap-cond-tools">
-                <div class="ds-field"><label for="condFind">Find a condition</label>
+                <div class="ds-field"><label for="condFind">Find a condition:</label>
                   <input class="form-control" id="condFind" type="search" autocomplete="off" aria-describedby="condCount"></div>
                 <p class="ap-count" id="condCount" aria-live="polite">16 conditions</p>
               </div>
-              <fieldset class="ds-field ds-field-wide" aria-describedby="condHelp"><legend>Related Conditions</legend>
+              <fieldset class="ds-field ds-field-wide" aria-describedby="condHelp"><legend>Related Conditions:</legend>
                 <div class="ds-check-list ds-check-list-tall" id="condList"><label class="ds-check" data-cond="aids"><input class="form-check-input" type="checkbox" name="conditions" value="AIDS"> AIDS</label><label class="ds-check" data-cond="bacterial and other meningitis"><input class="form-check-input" type="checkbox" name="conditions" value="Bacterial and other meningitis"> Bacterial and other meningitis</label><label class="ds-check" data-cond="haemophilus influenzae, invasive"><input class="form-check-input" type="checkbox" name="conditions" value="Haemophilus influenzae, invasive"> Haemophilus influenzae, invasive</label><label class="ds-check" data-cond="hiv infection, adult"><input class="form-check-input" type="checkbox" name="conditions" value="HIV Infection, adult"> HIV Infection, adult</label><label class="ds-check" data-cond="hiv infection, pediatric"><input class="form-check-input" type="checkbox" name="conditions" value="HIV Infection, pediatric"> HIV Infection, pediatric</label><label class="ds-check" data-cond="neisseria meningitidis, invasive (mening. disease)"><input class="form-check-input" type="checkbox" name="conditions" value="Neisseria meningitidis, invasive (Mening. disease)"> Neisseria meningitidis, invasive (Mening. disease)</label><label class="ds-check" data-cond="rubella"><input class="form-check-input" type="checkbox" name="conditions" value="Rubella"> Rubella</label><label class="ds-check" data-cond="rubella, congenital syndrome (crs)"><input class="form-check-input" type="checkbox" name="conditions" value="Rubella, Congenital Syndrome (CRS)"> Rubella, Congenital Syndrome (CRS)</label><label class="ds-check" data-cond="strep pneumoniae, drug resistant, invasive"><input class="form-check-input" type="checkbox" name="conditions" value="Strep pneumoniae, drug resistant, invasive"> Strep pneumoniae, drug resistant, invasive</label><label class="ds-check" data-cond="strep pneumoniae, invasive"><input class="form-check-input" type="checkbox" name="conditions" value="Strep pneumoniae, invasive"> Strep pneumoniae, invasive</label><label class="ds-check" data-cond="strep, other, invasive, beta-hem (non-a nonb)"><input class="form-check-input" type="checkbox" name="conditions" value="Strep, other, invasive, beta-hem (non-A nonB)"> Strep, other, invasive, beta-hem (non-A nonB)</label><label class="ds-check" data-cond="streptococcal toxic-shock syndrome"><input class="form-check-input" type="checkbox" name="conditions" value="Streptococcal toxic-shock syndrome"> Streptococcal toxic-shock syndrome</label><label class="ds-check" data-cond="streptococcus pneumoniae, invasive disease (ipd)"><input class="form-check-input" type="checkbox" name="conditions" value="Streptococcus pneumoniae, invasive disease (IPD)"> Streptococcus pneumoniae, invasive disease (IPD)</label><label class="ds-check" data-cond="streptococcus, invasive group a"><input class="form-check-input" type="checkbox" name="conditions" value="Streptococcus, invasive Group A"> Streptococcus, invasive Group A</label><label class="ds-check" data-cond="streptococcus, invasive group b"><input class="form-check-input" type="checkbox" name="conditions" value="Streptococcus, invasive Group B"> Streptococcus, invasive Group B</label><label class="ds-check" data-cond="strongyloidiasis"><input class="form-check-input" type="checkbox" name="conditions" value="Strongyloidiasis"> Strongyloidiasis</label></div>
               </fieldset>
               <div class="ds-field ds-field-wide"><span class="ds-label" id="pickedLabel">Chosen conditions</span>
@@ -135,8 +135,8 @@
           </section>
 
           <div class="ds-form-footer" style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg)">
-            <a class="btn btn-outline-primary" href="manage-pages.html">Cancel</a>
-            <button class="btn btn-primary" type="submit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">save</span>Submit</button>
+            <a class="btn btn-outline-dark rounded-pill px-3" href="manage-pages.html">Cancel</a>
+            <button class="btn btn-primary rounded-pill px-3" type="submit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">save</span>Submit</button>
           </div>
         </form>
       </div>

@@ -109,19 +109,19 @@
               <div id="panelBasicSearch" role="tabpanel" aria-labelledby="tabBasicSearch">
                 <form novalidate>
                   <div class="search-grid">
-                    <div class="ds-field"><label for="hsLast">Last Name</label><input class="form-control" id="hsLast" type="text" autocomplete="off"></div>
-                    <div class="ds-field"><label for="hsFirst">First Name</label><input class="form-control" id="hsFirst" type="text" autocomplete="off"></div>
+                    <div class="ds-field"><label for="hsLast">Last Name:</label><input class="form-control" id="hsLast" type="text" autocomplete="off"></div>
+                    <div class="ds-field"><label for="hsFirst">First Name:</label><input class="form-control" id="hsFirst" type="text" autocomplete="off"></div>
                     <div class="ds-field">
-                      <label for="hsDob">Date of Birth</label>
+                      <label for="hsDob">Date of Birth:</label>
                       <div class="ds-datefield"><input class="form-control" id="hsDob" type="text" inputmode="numeric" aria-describedby="hsDobFmt" style="width:100%"><span class="ds-icon material-symbols-rounded" aria-hidden="true">calendar_today</span></div>
                       <span class="form-text" id="hsDobFmt">Format: MM/DD/YYYY</span>
                     </div>
-                    <div class="ds-field"><label for="hsSex">Current Sex</label><select class="form-select" id="hsSex"><option value="">Any</option><option>Female</option><option>Male</option><option>Unknown</option></select></div>
-                    <div class="ds-field"><label for="hsId">ID</label><input class="form-control" id="hsId" type="text" aria-describedby="hsIdHelp" autocomplete="off"><span class="form-text" id="hsIdHelp">Patient, event, or accession ID.</span></div>
+                    <div class="ds-field"><label for="hsSex">Current Sex:</label><select class="form-select" id="hsSex"><option value="">Any</option><option>Female</option><option>Male</option><option>Unknown</option></select></div>
+                    <div class="ds-field"><label for="hsId">ID:</label><input class="form-control" id="hsId" type="text" aria-describedby="hsIdHelp" autocomplete="off"><span class="form-text" id="hsIdHelp">Patient, event, or accession ID.</span></div>
                   </div>
                   <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap">
-                    <button class="btn btn-primary" type="submit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
-                    <button class="btn btn-outline-primary" type="reset">Clear</button>
+                    <button class="btn btn-primary px-3" type="submit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
+                    <button class="btn btn-outline-dark px-3" type="reset">Clear</button>
                   </div>
                 </form>
               </div>
@@ -209,11 +209,11 @@
      / != / SL), so the form posts what the existing person search reads. -->
 <div class="modal ds-modal-p2 ds-modal-search" id="searchDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="searchTitle" aria-describedby="searchBanner" data-open-on-load hidden>
   <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
-    <div class="modal-header">
+    <div class="modal-header bg-body-secondary">
       <h2 class="modal-title h5 d-flex align-items-center gap-2" id="searchTitle"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search for Existing Patient</h2>
       <button type="button" class="btn-close" data-dismiss aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button>
     </div>
-    <form class="modal-body" id="searchForm" novalidate>
+    <form class="modal-body bg-body-secondary" id="searchForm" novalidate>
           <div class="alert alert-info d-flex align-items-center gap-2" id="searchBanner"><span class="ds-icon flex-shrink-0 material-symbols-rounded" aria-hidden="true">info</span>A search resulting in a large data set can cause extended wait times for query results and could affect performance.</div>
           <div class="alert alert-danger ds-error-banner" id="searchErrors" role="alert" aria-labelledby="searchErrorsTitle" tabindex="-1" hidden><h3 id="searchErrorsTitle" class="d-flex align-items-center gap-1 h6 fw-normal mb-1"><span class="ds-icon material-symbols-rounded" aria-hidden="true">error</span>Please fix the following errors:</h3><ul class="small mb-0 ps-3"><li><a href="#msLast" onclick="event.preventDefault();document.getElementById('msLast').focus()">Enter at least one search criterion</a></li></ul></div>
           <section class="accordion ds-form-accordion" id="msGeneral" aria-labelledby="msGeneralHeading">
@@ -305,9 +305,9 @@
             </div>
           </section>
     </form>
-    <div class="modal-footer">
-      <button type="reset" form="searchForm" class="btn btn-outline-primary rounded-pill me-auto">Clear</button>
-      <button type="submit" form="searchForm" class="btn btn-primary rounded-pill">Submit</button>
+    <div class="modal-footer bg-body-secondary">
+      <button type="reset" form="searchForm" class="btn btn-outline-dark rounded-pill px-3 me-auto">Clear</button>
+      <button type="submit" form="searchForm" class="btn btn-primary rounded-pill px-3">Submit</button>
     </div>
   </div></div>
 </div>

@@ -185,7 +185,15 @@
     });
   }
 
-  function init() { initRail(); initMenus(); initFieldReveal(); initTableReveal(); }
+  /* A queue table sized to the window, as the app does: Phase 2's queues.js resizeTableHeight() sets
+     #myScrollableTable to 80% of the window less 150px (none at 992px and narrower) after every results swap. A
+     template has no swap, so it runs once here; Phase 2's own resize listener keeps it after that. The design
+     system layout has no queues.js and takes the same size from _extensions.scss. */
+  function initQueueHeight() {
+    if (typeof window.resizeTableHeight === 'function' && document.getElementById('myScrollableTable')) window.resizeTableHeight();
+  }
+
+  function init() { initRail(); initMenus(); initFieldReveal(); initTableReveal(); initQueueHeight(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();

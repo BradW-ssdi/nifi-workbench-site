@@ -125,11 +125,11 @@
           <input class="form-control" type="search" id="filterInput" aria-label="Filter candidates" placeholder="Search to filter..." aria-describedby="status">
           <span class="ms-auto"></span>
           <!-- The legacy queue's buttons, names, and order (BA review): Skip, No Merge, Exit Merge, each with an icon; the
-               legacy button titles are their tooltips. Exit Merge leaves the queue without acting on this group, which
+               tooltips are the button names (Phase 3 review, Team A); the info panel beside the title explains each. Exit Merge leaves the queue without acting on this group, which
                stays in place. DEV: release the group if the server holds it for this user, then go to Home. -->
-          <button class="btn btn-outline-primary" id="skipBtn" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Skip allows you to skip the current merge candidate list to get to the next set of merge candidates. Any skipped merge candidate groups are moved to the end of the merge candidate group queue for later review."><span class="ds-icon material-symbols-rounded" aria-hidden="true">skip_next</span>Skip</button>
-          <button class="btn btn-outline-primary" id="noMergeBtn" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="No Merge allows you to indicate that none of the candidates in the merge group should be merged and to move to the next set of merge candidates."><span class="ds-icon material-symbols-rounded" aria-hidden="true">do_not_disturb_on</span>No Merge</button>
-          <a class="btn btn-outline-primary" id="exitBtn" href="home.html" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Exit Merge allows you to exit the Merge Patient functionality."><span class="ds-icon material-symbols-rounded" aria-hidden="true">logout</span>Exit Merge</a>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="skipBtn" data-bs-custom-class="custom-tooltip" data-bs-title="Skip" data-bs-toggle="tooltip"><span aria-hidden="true" class="material-symbols-rounded text me-1">skip_next</span><span>Skip</span></button>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="noMergeBtn" data-bs-custom-class="custom-tooltip" data-bs-title="No Merge" data-bs-toggle="tooltip"><span aria-hidden="true" class="material-symbols-rounded text me-1">do_not_disturb_on</span><span>No Merge</span></button>
+          <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="exitBtn" href="home.html" data-bs-custom-class="custom-tooltip" data-bs-title="Exit Merge" data-bs-toggle="tooltip"><span aria-hidden="true" class="material-symbols-rounded text me-1">logout</span><span>Exit Merge</span></a>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
           <div class="ds-table-settings">
@@ -146,8 +146,8 @@
         <p class="mb-0"><span class="ds-page-summary"><span id="groupPos">Group 3 of 27 in the queue</span><span class="ds-cell-sub" id="batchInfo">Matching last ran 10/08/2026. 25 groups left to review.</span></span></p>
         <div id="status" class="visually-hidden" role="status" aria-live="polite"></div>
 
-        <div class="ds-table-frame">
-          <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Candidate group table, scrolls horizontally when zoomed">
+        <div class="table-wrapper">
+          <div class="scrolling-section table-css-queues ds-table-scroll" id="myScrollableTable" tabindex="0" role="group" aria-label="Candidate group table, scrolls horizontally when zoomed">
           <table class="table ds-table tableCompact table-hover" id="candTable">
             <caption class="visually-hidden" id="groupCaption">Candidate group 3. Use the Merge column to choose records to combine or remove, and the Surviving ID column to choose which record survives.</caption>
             <thead>
@@ -163,7 +163,7 @@
                 <th scope="col">ID</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="tableData" id="queueDataTableBody">
               <tr>
                 <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10023451" aria-label="Merge Maria Garcia, patient ID 10023451"></td>
                 <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10023451" aria-label="Surviving ID: Maria Garcia, patient ID 10023451"></td>
@@ -217,17 +217,17 @@
 <div class="modal" id="confirmModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cTitle" aria-describedby="cDesc" hidden>
   <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-body-tertiary">
           <h2 class="modal-title h5" id="cTitle">Confirm</h2>
           <button type="button" class="btn-close" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bg-body-tertiary">
           <p id="cDesc"></p>
           <ul class="mb-0 ps-4" id="cList"></ul>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-outline-primary" data-close>Cancel</button>
-          <button class="btn btn-danger" id="cConfirm">Confirm</button>
+        <div class="modal-footer bg-body-tertiary">
+          <button class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button>
+          <button class="btn btn-danger rounded-pill px-3" id="cConfirm">Confirm</button>
         </div>
     </div>
   </div>
@@ -241,14 +241,14 @@
      chosen, as Patient Events does. -->
 <div class="modal ds-modal-p2 ds-modal-fill" id="patientDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="pvTitle" aria-describedby="pvSummary" hidden>
   <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
-    <div class="modal-header">
+    <div class="modal-header bg-body-secondary">
       <h2 class="modal-title h5" id="pvTitle">Patient Events</h2>
       <div class="d-flex align-items-center gap-2 ms-auto">
         <button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm" id="pvPrint" aria-label="Print" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
         <button type="button" class="btn-close" data-dismiss aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button>
       </div>
     </div>
-    <div class="modal-body">
+    <div class="modal-body bg-body-secondary">
       <div class="card summary ds-summary-bar py-2 px-3" id="pvSummary">
         <p class="mb-0 d-flex flex-wrap align-items-center column-gap-2 row-gap-1 fw-bold sub2"><span id="pvName"></span><span class="vr" aria-hidden="true"></span><span id="pvSex"></span><span class="vr" aria-hidden="true"></span><span id="pvDob"></span><span class="ms-auto">Patient ID: <span id="pvId"></span></span></p>
       </div>

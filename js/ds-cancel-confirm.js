@@ -56,11 +56,11 @@
     box.setAttribute('aria-describedby', 'dsCancelText');
     box.hidden = true;
     box.innerHTML = '<div class="modal-dialog"><div class="modal-content">' +
-      '<div class="modal-header"><h2 class="modal-title h5" id="dsCancelTitle"></h2>' +
+      '<div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="dsCancelTitle"></h2>' +
       '<button type="button" class="btn-close" data-stay aria-label="Close"></button></div>' +
-      '<div class="modal-body"><p class="mb-0" id="dsCancelText"></p></div>' +
-      '<div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-stay>Cancel</button>' +
-      '<button type="button" class="btn btn-primary" data-go>OK</button></div>' +
+      '<div class="modal-body bg-body-secondary"><p class="mb-0" id="dsCancelText"></p></div>' +
+      '<div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-stay>Cancel</button>' +
+      '<button type="button" class="btn btn-primary rounded-pill px-3" data-go>OK</button></div>' +
       '</div></div>';
     /* beside the page's other dialogs, so it takes the same styles (inside the Phase 2 frame's window) */
     var win = document.querySelector('.ds-window');

@@ -166,8 +166,8 @@
 <!-- /merge:toolbar -->
         <div id="status" class="visually-hidden" role="status" aria-live="polite"></div>
 
-        <div class="ds-table-frame">
-          <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Merge candidates table, scrolls horizontally when zoomed">
+        <div class="table-wrapper">
+          <div class="scrolling-section table-css-queues ds-table-scroll" id="myScrollableTable" tabindex="0" role="group" aria-label="Merge candidates table, scrolls horizontally when zoomed">
           <table class="table ds-table tableCompact table-hover" id="candTable">
             <caption class="visually-hidden">Merge candidates. Use the Merge column to choose records to combine and the Surviving ID column to choose which record survives.</caption>
             <thead>
@@ -185,7 +185,7 @@
             </thead>
             <!-- DEV: tbody = th:each over candidates. Each row's checkbox and
                  radio carry aria-labels naming the patient. -->
-            <tbody>
+            <tbody class="tableData" id="queueDataTableBody">
               <tr data-id="10023451">
                 <td class="ds-select-col"><input class="form-check-input" type="checkbox" name="merge" value="10023451" aria-label="Merge Maria Garcia, patient ID 10023451"></td>
                 <td class="ds-select-col"><input class="form-check-input" type="radio" name="survivor" value="10023451" aria-label="Surviving ID: Maria Garcia, patient ID 10023451"></td>
@@ -263,17 +263,17 @@
 <div class="modal" id="mergeModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="mergeTitle" aria-describedby="mergeDesc" hidden>
   <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-body-tertiary">
           <h2 class="modal-title h5" id="mergeTitle">Merge patient records?</h2>
           <button type="button" class="btn-close" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bg-body-tertiary">
           <p id="mergeDesc">This combines the selected records into one. Events, documents, and identifiers move to the surviving record. This cannot be undone.</p>
           <ul class="mb-0 ps-4" id="mergeList"></ul>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-outline-primary" data-close>Cancel</button>
-          <button class="btn btn-danger" id="confirmMerge">Merge records</button>
+        <div class="modal-footer bg-body-tertiary">
+          <button class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button>
+          <button class="btn btn-danger rounded-pill px-3" id="confirmMerge">Merge records</button>
         </div>
     </div>
   </div>
@@ -286,11 +286,11 @@
      / != / SL), so the form posts what the existing person search reads. -->
 <div class="modal ds-modal-p2 ds-modal-search" id="searchDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="searchTitle" aria-describedby="searchBanner" hidden>
   <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
-    <div class="modal-header">
+    <div class="modal-header bg-body-secondary">
       <h2 class="modal-title h5 d-flex align-items-center gap-2" id="searchTitle"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search for Existing Patient</h2>
       <button type="button" class="btn-close" data-dismiss aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button>
     </div>
-    <form class="modal-body" id="searchForm" novalidate>
+    <form class="modal-body bg-body-secondary" id="searchForm" novalidate>
           <div class="alert alert-info d-flex align-items-center gap-2" id="searchBanner"><span class="ds-icon flex-shrink-0 material-symbols-rounded" aria-hidden="true">info</span>A search resulting in a large data set can cause extended wait times for query results and could affect performance.</div>
           <div class="alert alert-danger ds-error-banner" id="searchErrors" role="alert" aria-labelledby="searchErrorsTitle" tabindex="-1" hidden><h3 id="searchErrorsTitle" class="d-flex align-items-center gap-1 h6 fw-normal mb-1"><span class="ds-icon material-symbols-rounded" aria-hidden="true">error</span>Please fix the following errors:</h3><ul class="small mb-0 ps-3"><li><a href="#msLast" onclick="event.preventDefault();document.getElementById('msLast').focus()">Enter at least one search criterion</a></li></ul></div>
           <section class="accordion ds-form-accordion" id="msGeneral" aria-labelledby="msGeneralHeading">
@@ -382,9 +382,9 @@
             </div>
           </section>
     </form>
-    <div class="modal-footer">
-      <button type="reset" form="searchForm" class="btn btn-outline-primary rounded-pill me-auto">Clear</button>
-      <button type="submit" form="searchForm" class="btn btn-primary rounded-pill">Submit</button>
+    <div class="modal-footer bg-body-secondary">
+      <button type="reset" form="searchForm" class="btn btn-outline-dark rounded-pill px-3 me-auto">Clear</button>
+      <button type="submit" form="searchForm" class="btn btn-primary rounded-pill px-3">Submit</button>
     </div>
   </div></div>
 </div>
@@ -396,14 +396,14 @@
      chosen, as Patient Events does. -->
 <div class="modal ds-modal-p2 ds-modal-fill" id="patientDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="pvTitle" aria-describedby="pvSummary" hidden>
   <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
-    <div class="modal-header">
+    <div class="modal-header bg-body-secondary">
       <h2 class="modal-title h5" id="pvTitle">Patient Events</h2>
       <div class="d-flex align-items-center gap-2 ms-auto">
         <button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm" id="pvPrint" aria-label="Print" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
         <button type="button" class="btn-close" data-dismiss aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button>
       </div>
     </div>
-    <div class="modal-body">
+    <div class="modal-body bg-body-secondary">
       <div class="card summary ds-summary-bar py-2 px-3" id="pvSummary">
         <p class="mb-0 d-flex flex-wrap align-items-center column-gap-2 row-gap-1 fw-bold sub2"><span id="pvName"></span><span class="vr" aria-hidden="true"></span><span id="pvSex"></span><span class="vr" aria-hidden="true"></span><span id="pvDob"></span><span class="ms-auto">Patient ID: <span id="pvId"></span></span></p>
       </div>

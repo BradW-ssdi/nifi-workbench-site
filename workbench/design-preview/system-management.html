@@ -113,7 +113,7 @@
     <div class="sm-layout">
       <div class="sm-side">
         <div class="menu-find">
-          <label class="form-label" for="find">Find a setting</label>
+          <label class="form-label" for="find">Find a setting:</label>
           <input class="form-control" id="find" type="search" autocomplete="off" placeholder="For example: users, LOINC, alerts" aria-describedby="findStatus">
         </div>
         <nav class="sm-nav" aria-label="System Management modules">
@@ -216,9 +216,9 @@
        top of the page takes focus. DEV: the reset runs on the server. -->
   <div class="modal" id="resetCacheDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="resetCacheTitle" aria-describedby="resetCacheText" hidden>
     <div class="modal-dialog"><div class="modal-content">
-      <div class="modal-header"><h2 class="modal-title h5" id="resetCacheTitle">Reset the lab mapping cache?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
-      <div class="modal-body"><p id="resetCacheText" class="mb-0">The lab test program area mappings are loaded again. The application server must then be restarted for the change to take effect.</p></div>
-      <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="resetCacheYes">Reset Cache</button></div>
+      <div class="modal-header bg-body-tertiary"><h2 class="modal-title h5" id="resetCacheTitle">Reset the lab mapping cache?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+      <div class="modal-body bg-body-tertiary"><p id="resetCacheText" class="mb-0">The lab test program area mappings are loaded again. The application server must then be restarted for the change to take effect.</p></div>
+      <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="resetCacheYes">Reset Cache</button></div>
     </div></div>
   </div>
 </main>

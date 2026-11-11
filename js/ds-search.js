@@ -83,15 +83,18 @@
       return op && op.value === '=' ? v === q : v.indexOf(q) !== -1;
     });
   }
+  /* A Status column shows the status badge, as the other lists (Phase 3 review, Team A slide 5: status as a badge) */
+  var BADGE = { success: 'text-bg-success', active: 'text-bg-success', failure: 'text-bg-danger', inactive: 'text-bg-secondary' };
+  function cell(c, v) { return c === 'status' ? '<span class="badge ' + (BADGE[String(v).toLowerCase()] || 'text-bg-secondary') + '">' + esc(v) + '</span>' : esc(v); }
   function render(rows) {
     tbody.innerHTML = rows.map(function (r) {
       var label = esc(r[labelKey]), key = esc(r[rowKey]);
       var acts = actions.map(function (a) {
         var icon = '<span class="ds-icon material-symbols-rounded" aria-hidden="true">' + a.icon + '</span>';
-        if (a.dialog) return '<button type="button" class="btn btn-link p-0" data-record="' + a.dialog + '" data-key="' + key + '" aria-haspopup="dialog" aria-label="' + esc(a.label) + ' ' + label + '">' + icon + '</button>';
-        return '<a href="' + esc(a.href) + '" aria-label="' + esc(a.label) + ' ' + label + '">' + icon + '</a>';
+        if (a.dialog) return '<button type="button" class="btn btn-light rounded-circle btn-sm" data-record="' + a.dialog + '" data-key="' + key + '" aria-haspopup="dialog" aria-label="' + esc(a.label) + ' ' + label + '" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="' + esc(a.label) + '">' + icon + '</button>';
+        return '<a class="btn btn-light rounded-circle btn-sm" href="' + esc(a.href) + '" aria-label="' + esc(a.label) + ' ' + label + '" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="' + esc(a.label) + '">' + icon + '</a>';
       }).join('');
-      return '<tr data-key="' + key + '">' + (actions.length ? '<td class="ds-row-actions">' + acts + '</td>' : '') + cols.map(function (c, i) { return (i === 0 ? '<th scope="row">' : '<td>') + (r[c] ? esc(r[c]) : '<span class="visually-hidden">None</span>') + (i === 0 ? '</th>' : '</td>'); }).join('') + '</tr>';
+      return '<tr data-key="' + key + '">' + (actions.length ? '<td class="ds-row-actions">' + acts + '</td>' : '') + cols.map(function (c, i) { return (i === 0 ? '<th scope="row">' : '<td>') + (r[c] ? cell(c, r[c]) : '<span class="visually-hidden">None</span>') + (i === 0 ? '</th>' : '</td>'); }).join('') + '</tr>';
     }).join('');
     table.dispatchEvent(new CustomEvent('ds-rows-changed', { bubbles: true }));   // js/list-filters.js starts its filters over
   }
@@ -124,7 +127,7 @@
   var CHIP_PART = 'font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;';
   function labelOf(f) {
     var l = form.querySelector('label[for="' + f.id + '"]');
-    return l ? l.textContent.trim() : f.getAttribute('aria-label') || f.id;
+    return l ? l.textContent.replace(/\*/g, '').replace(/\s+/g, ' ').replace(/:\s*$/, '').trim() : f.getAttribute('aria-label') || f.id;   // a chip names the field without Phase 2's label colon
   }
   function criteria() {
     var out = [], groups = {};
@@ -167,7 +170,7 @@
     var n = shown.length;
     render(shown);
     results.hidden = false;
-    table.closest('.ds-table-frame').hidden = n === 0;
+    table.closest('.table-wrapper').hidden = n === 0;
     none.hidden = n > 0;
     title.textContent = 'Search results: ' + (n === 0 ? 'No ' + nouns + ' found' : n + ' ' + (n === 1 ? noun : nouns) + ' found');
   }

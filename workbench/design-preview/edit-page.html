@@ -129,8 +129,8 @@
           <p class="mb-0 mt-2 d-flex flex-wrap align-items-center gap-2"><span class="fw-semibold">Cyclosporiasis Investigation (PageBuilder)</span><span class="badge text-bg-warning">Draft</span></p>
         </div>
         <div class="pb-actions">
-          <a class="btn btn-outline-primary rounded-pill" href="#">Preview</a>
-          <a class="btn btn-primary rounded-pill" href="view-page.html">Done editing</a>
+          <a class="btn btn-outline-dark rounded-pill px-3" href="#">Preview</a>
+          <a class="btn btn-primary rounded-pill px-3" href="view-page.html">Done editing</a>
         </div>
       </div>
       <div class="page-body">
@@ -187,17 +187,17 @@
 
       <div class="modal" id="moveDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="moveTitle" aria-describedby="moveWhat" hidden>
         <div class="modal-dialog"><div class="modal-content">
-          <div class="modal-header"><h2 class="modal-title h5" id="moveTitle">Move to</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
-          <div class="modal-body d-grid gap-3">
+          <div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="moveTitle">Move to</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body d-grid gap-3 bg-body-secondary">
             <p class="mb-0" id="moveWhat"></p>
             <div class="d-grid gap-3" id="moveChoose">
-              <div class="ds-field" id="moveTabField"><label for="moveTab">Tab</label><select class="form-select" id="moveTab"></select></div>
-              <div class="ds-field" id="moveParentField"><label for="moveParent" id="moveParentLabel">Destination</label><select class="form-select" id="moveParent"></select></div>
-              <div class="ds-field"><label for="movePos">Position</label><select class="form-select" id="movePos"></select></div>
+              <div class="ds-field" id="moveTabField"><label for="moveTab">Tab:</label><select class="form-select" id="moveTab"></select></div>
+              <div class="ds-field" id="moveParentField"><label for="moveParent" id="moveParentLabel">Destination:</label><select class="form-select" id="moveParent"></select></div>
+              <div class="ds-field"><label for="movePos">Position:</label><select class="form-select" id="movePos"></select></div>
             </div>
             <p class="mb-0 fw-semibold" id="moveConfirm" tabindex="-1" hidden></p>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-outline-primary" id="moveBack" hidden>Back</button><button type="button" class="btn btn-primary" id="moveDo">Move</button><button type="button" class="btn btn-primary" id="moveYes" aria-describedby="moveConfirm" hidden>Confirm move</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="moveBack" hidden>Back</button><button type="button" class="btn btn-primary rounded-pill px-3" id="moveDo">Move</button><button type="button" class="btn btn-primary rounded-pill px-3" id="moveYes" aria-describedby="moveConfirm" hidden>Confirm move</button></div>
         </div></div>
       </div>
     </main>
@@ -210,16 +210,16 @@
 <div class="modal" id="draftModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="dmTitle" aria-describedby="dmDesc" hidden>
   <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-body-tertiary">
           <h2 class="modal-title h5" id="dmTitle">Create a draft?</h2>
           <button type="button" class="btn-close" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bg-body-tertiary">
           <p class="mb-0" id="dmDesc" style="margin:0"></p>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-outline-primary" data-close>Cancel</button>
-          <button class="btn btn-primary" id="dmConfirm">Create draft</button>
+        <div class="modal-footer bg-body-tertiary">
+          <button class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button>
+          <button class="btn btn-primary rounded-pill px-3" id="dmConfirm">Create draft</button>
         </div>
     </div>
   </div>

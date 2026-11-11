@@ -86,7 +86,7 @@
           <input class="form-control" type="search" id="filterInput" aria-label="Filter pages" placeholder="Search to filter..." aria-describedby="filterStatus">
           <span class="ms-auto"></span>
           <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" href="add-page.html"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add New</span></a>
-          <a class="btn btn-outline-primary" href="manage-page-porting.html">Page Porting</a>
+          <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" href="manage-page-porting.html">Page Porting</a>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
           <div class="ds-table-settings">
@@ -145,9 +145,9 @@
 
         <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
 
-        <div class="ds-table-frame">
-          <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Page library table, scrolls horizontally when zoomed">
-          <table class="table ds-table tableCompact" id="pageTable">
+        <div class="table-wrapper">
+          <div class="scrolling-section table-css-queues ds-table-scroll" id="myScrollableTable" tabindex="0" role="group" aria-label="Page library table, scrolls horizontally when zoomed">
+          <table class="table table-hover tableCompact ds-table" id="pageTable">
             <caption class="visually-hidden">Page library. Column headers with buttons are sortable. Editing a published page creates a new draft.</caption>
             <thead>
               <tr>
@@ -164,9 +164,9 @@
                  Draft rows; on Published rows it is a BUTTON (data-draft) because
                  it creates a draft: the confirm dialog below replaces the legacy
                  window.confirm(). -->
-            <tbody>
+            <tbody class="tableData" id="queueDataTableBody">
               <tr>
-                <td class="ds-row-actions"><a href="view-page.html" aria-label="View Hepatitis_Case_Map_v2"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><button type="button" data-draft="Hepatitis_Case_Map_v2" aria-label="Edit Hepatitis_Case_Map_v2 (creates a draft)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View Hepatitis_Case_Map_v2" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><button type="button" class="btn btn-light rounded-circle btn-sm" data-draft="Hepatitis_Case_Map_v2" aria-label="Edit Hepatitis_Case_Map_v2 (creates a draft)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Investigation</td>
                 <td>Hepatitis_Case_Map_v2</td>
                 <td><span class="badge text-bg-success">Published</span></td>
@@ -175,7 +175,7 @@
                 <td>Randi Alvarez</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="view-page.html" aria-label="View Lead_Case_Map_v1"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="edit-page.html" aria-label="Edit Lead_Case_Map_v1"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View Lead_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-page.html" aria-label="Edit Lead_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>Investigation</td>
                 <td>Lead_Case_Map_v1</td>
                 <td><span class="badge text-bg-pending">Initial Draft</span></td>
@@ -184,7 +184,7 @@
                 <td>Priya Patel</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="view-page.html" aria-label="View COVID19_Case_Map_v1"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="edit-page.html" aria-label="Edit COVID19_Case_Map_v1"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View COVID19_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-page.html" aria-label="Edit COVID19_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>Investigation</td>
                 <td>COVID19_Case_Map_v1</td>
                 <td><span class="badge text-bg-info">Published with Draft</span></td>
@@ -193,7 +193,7 @@
                 <td>Randi Alvarez</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="view-page.html" aria-label="View STD_Interview_v1"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><button type="button" data-draft="STD_Interview_v1" aria-label="Edit STD_Interview_v1 (creates a draft)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View STD_Interview_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><button type="button" class="btn btn-light rounded-circle btn-sm" data-draft="STD_Interview_v1" aria-label="Edit STD_Interview_v1 (creates a draft)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Interview</td>
                 <td>STD_Interview_v1</td>
                 <td><span class="badge text-bg-success">Published</span></td>
@@ -202,7 +202,7 @@
                 <td>Marcus Lee</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="view-page.html" aria-label="View TB_Case_Map_2020"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><button type="button" data-draft="TB_Case_Map_2020" aria-label="Edit TB_Case_Map_2020 (creates a draft)"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View TB_Case_Map_2020" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><button type="button" class="btn btn-light rounded-circle btn-sm" data-draft="TB_Case_Map_2020" aria-label="Edit TB_Case_Map_2020 (creates a draft)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Investigation</td>
                 <td>TB_Case_Map_2020</td>
                 <td><span class="badge text-bg-success">Published</span></td>
@@ -211,7 +211,7 @@
                 <td>Marcus Lee</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a href="view-page.html" aria-label="View Vaccination_Record_v1"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="edit-page.html" aria-label="Edit Vaccination_Record_v1"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View Vaccination_Record_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-page.html" aria-label="Edit Vaccination_Record_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>Vaccination</td>
                 <td>Vaccination_Record_v1</td>
                 <td><span class="badge text-bg-pending">Draft</span></td>
@@ -257,16 +257,16 @@
 <div class="modal" id="draftModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="dmTitle" aria-describedby="dmDesc" hidden>
   <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-body-tertiary">
           <h2 class="modal-title h5" id="dmTitle">Create a draft?</h2>
           <button type="button" class="btn-close" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bg-body-tertiary">
           <p class="mb-0" id="dmDesc" style="margin:0"></p>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-outline-primary" data-close>Cancel</button>
-          <button class="btn btn-primary" id="dmConfirm">Create draft</button>
+        <div class="modal-footer bg-body-tertiary">
+          <button class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button>
+          <button class="btn btn-primary rounded-pill px-3" id="dmConfirm">Create draft</button>
         </div>
     </div>
   </div>

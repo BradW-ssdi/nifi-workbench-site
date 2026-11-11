@@ -6,6 +6,8 @@
 <title>Manage Laboratories - Case Report and Laboratory - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/table-settings.js" defer></script>
+<script src="../../js/ds-table-sort.js" defer></script>
 <script src="../../js/list-filters.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -81,14 +83,23 @@
           <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">Find a laboratory</h2>
             <div class="card-body d-grid gap-3">
               <p class="form-text mb-0" id="criteriaHint">The sample results are laboratories whose name contains lab.</p>
-              <div class="ds-entry-grid"><div class="ds-field ds-field-wide"><label class="ds-required" for="labName">Lab Name</label><div class="ds-op-field"><select class="form-select" id="labName-op" data-op-for="labName" aria-label="Lab Name operator"><option value="CT" selected>Contains</option><option value="=">Equal</option></select><input class="form-control" id="labName" type="text" autocomplete="off" data-match="name" required data-errmsg="Enter a lab name"></div><span class="invalid-feedback" id="labName-error" hidden></span></div></div>
-              <div class="ds-actions"><button class="btn btn-primary" type="submit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
-                <button class="btn btn-outline-primary" type="reset">Clear</button></div>
+              <div class="ds-entry-grid"><div class="ds-field ds-field-wide"><label class="ds-required" for="labName">Lab Name:</label><div class="ds-op-field"><select class="form-select" id="labName-op" data-op-for="labName" aria-label="Lab Name operator"><option value="CT" selected>Contains</option><option value="=">Equal</option></select><input class="form-control" id="labName" type="text" autocomplete="off" data-match="name" required data-errmsg="Enter a lab name"></div><span class="invalid-feedback" id="labName-error" hidden></span></div></div>
+              <div class="ds-actions"><button class="btn btn-primary px-3" type="submit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
+                <button class="btn btn-outline-dark px-3" type="reset">Clear</button></div>
             </div></section>
         </form>
         <section class="d-grid gap-3" id="results" aria-labelledby="resultsTitle" hidden>
           <div class="ds-results-head"><h2 id="resultsTitle" tabindex="-1">Search results</h2>
-            <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" data-record="add" aria-haspopup="dialog"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add New Lab</span></button></div>
+            <div class="d-flex flex-wrap align-items-center"><button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" data-record="add" aria-haspopup="dialog"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add New Lab</span></button>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
+          <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
+          <div class="ds-table-settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
+            <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="resultsTable">
+              <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
+              <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
+            </div>
+          </div></div></div>
           <!-- Column filter chips (BA review: every library has them): Phase 2's queue chips, in Phase 2's order (the chips,
                Filter, then "| Reset" while a filter is applied). DEV: build this with the Phase 3 queue component in the app
                (templates/phase3/fragments/queueFilters.html, docs/phase3-queue-filters.md). -->
@@ -105,8 +116,8 @@
             </div>
           </div>
           <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
-          <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
-            <table class="table ds-table" id="resultsTable" data-columns="[&quot;labId&quot;, &quot;name&quot;]" data-actions="[{&quot;label&quot;: &quot;View&quot;, &quot;icon&quot;: &quot;visibility&quot;, &quot;dialog&quot;: &quot;view&quot;}, {&quot;label&quot;: &quot;Edit&quot;, &quot;icon&quot;: &quot;edit&quot;, &quot;dialog&quot;: &quot;edit&quot;}]" data-row-label="name" data-row-key="labId"><caption class="visually-hidden">Laboratories found</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col">Lab ID</th><th scope="col">Lab Name</th></tr></thead><tbody></tbody></table></div></div>
+          <div class="table-wrapper"><div class="scrolling-section table-css-queues ds-table-scroll" id="myScrollableTable" tabindex="0" role="group" aria-label="Search results, scrolls sideways">
+            <table class="table table-hover tableCompact ds-table" id="resultsTable" data-ds-sort data-columns="[&quot;labId&quot;, &quot;name&quot;]" data-actions="[{&quot;label&quot;: &quot;View&quot;, &quot;icon&quot;: &quot;description&quot;, &quot;dialog&quot;: &quot;view&quot;}, {&quot;label&quot;: &quot;Edit&quot;, &quot;icon&quot;: &quot;edit&quot;, &quot;dialog&quot;: &quot;edit&quot;}]" data-row-label="name" data-row-key="labId"><caption class="visually-hidden">Laboratories found</caption><thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" id="labIDColumn" aria-sort="none" tabindex="0" data-sort="1"><span>Lab ID</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="labNameColumn" aria-sort="none" tabindex="0" data-sort="2"><span>Lab Name</span> <i class="bi sortable-icon" aria-hidden="true"></i></th></tr></thead><tbody class="tableData" id="queueDataTableBody"></tbody></table></div></div>
           <p class="ds-empty" id="noResults" hidden>No laboratories match these criteria. Check the spelling, or search with less.</p>
         </section>
       </div>
@@ -114,27 +125,27 @@
       <div id="recordStatus" class="visually-hidden" role="status" aria-live="polite"></div>
       <div class="modal" id="viewDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="viewTitle" hidden>
         <div class="modal-dialog modal-lg"><div class="modal-content">
-          <div class="modal-header"><h2 class="modal-title h5" id="viewTitle">View Lab</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
-          <div class="modal-body"><dl class="ds-dl" id="viewList"></dl></div>
-          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Close</button><button type="button" class="btn btn-primary" id="viewEdit">Edit</button></div>
+          <div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="viewTitle">View Lab</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body bg-body-secondary"><dl class="ds-dl" id="viewList"></dl></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Close</button><button type="button" class="btn btn-primary rounded-pill px-3" id="viewEdit">Edit</button></div>
         </div></div>
       </div>
       <div class="modal" id="formDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="formTitle" hidden>
         <div class="modal-dialog modal-lg"><div class="modal-content">
-          <div class="modal-header"><h2 class="modal-title h5" id="formTitle">Add Lab</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
-          <div class="modal-body d-grid gap-3">
+          <div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="formTitle">Add Lab</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body d-grid gap-3 bg-body-secondary">
             <p class="legend-note mb-0"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
             <div class="ds-entry-grid">
-              <dl class="ds-dl" id="rf-labId-ro" hidden><div><dt>Lab ID</dt><dd></dd></div></dl><div class="ds-field"><label class="ds-required" for="rf-labId">Lab ID</label><input class="form-control" id="rf-labId" type="text" autocomplete="off" maxlength="20"><span class="invalid-feedback" id="rf-labId-error" hidden></span></div>
-              <div class="ds-field"><label class="ds-required" for="rf-name">Lab Name</label><input class="form-control" id="rf-name" type="text" autocomplete="off" maxlength="100"><span class="invalid-feedback" id="rf-name-error" hidden></span></div>
-              <div class="ds-field"><label class="ds-required" for="rf-codingSystem">Coding System</label><input class="form-control" id="rf-codingSystem" type="text" autocomplete="off" maxlength="20"><span class="invalid-feedback" id="rf-codingSystem-error" hidden></span></div>
-              <div class="ds-field"><label class="ds-required" for="rf-codingSystemDesc">Coding System Description</label><input class="form-control" id="rf-codingSystemDesc" type="text" autocomplete="off" maxlength="100"><span class="invalid-feedback" id="rf-codingSystemDesc-error" hidden></span></div>
-              <div class="ds-field ds-field-wide"><label class="ds-required" for="rf-authority">Assigning Authority</label><input class="form-control" id="rf-authority" type="text" autocomplete="off" maxlength="300"><span class="invalid-feedback" id="rf-authority-error" hidden></span></div>
-              <div class="ds-field"><label class="ds-required" for="rf-authorityDesc">Assigning Authority Description</label><input class="form-control" id="rf-authorityDesc" type="text" autocomplete="off" maxlength="100"><span class="invalid-feedback" id="rf-authorityDesc-error" hidden></span></div>
-              <div class="ds-field"><label class="ds-required" for="rf-electronic">Electronic Lab</label><select class="form-select" id="rf-electronic"><option value="">Select one</option><option>No</option><option>Yes</option></select><span class="invalid-feedback" id="rf-electronic-error" hidden></span></div>
+              <dl class="ds-dl" id="rf-labId-ro" hidden><div><dt>Lab ID:</dt><dd></dd></div></dl><div class="ds-field"><label class="ds-required" for="rf-labId">Lab ID:</label><input class="form-control" id="rf-labId" type="text" autocomplete="off" maxlength="20"><span class="invalid-feedback" id="rf-labId-error" hidden></span></div>
+              <div class="ds-field"><label class="ds-required" for="rf-name">Lab Name:</label><input class="form-control" id="rf-name" type="text" autocomplete="off" maxlength="100"><span class="invalid-feedback" id="rf-name-error" hidden></span></div>
+              <div class="ds-field"><label class="ds-required" for="rf-codingSystem">Coding System:</label><input class="form-control" id="rf-codingSystem" type="text" autocomplete="off" maxlength="20"><span class="invalid-feedback" id="rf-codingSystem-error" hidden></span></div>
+              <div class="ds-field"><label class="ds-required" for="rf-codingSystemDesc">Coding System Description:</label><input class="form-control" id="rf-codingSystemDesc" type="text" autocomplete="off" maxlength="100"><span class="invalid-feedback" id="rf-codingSystemDesc-error" hidden></span></div>
+              <div class="ds-field ds-field-wide"><label class="ds-required" for="rf-authority">Assigning Authority:</label><input class="form-control" id="rf-authority" type="text" autocomplete="off" maxlength="300"><span class="invalid-feedback" id="rf-authority-error" hidden></span></div>
+              <div class="ds-field"><label class="ds-required" for="rf-authorityDesc">Assigning Authority Description:</label><input class="form-control" id="rf-authorityDesc" type="text" autocomplete="off" maxlength="100"><span class="invalid-feedback" id="rf-authorityDesc-error" hidden></span></div>
+              <div class="ds-field"><label class="ds-required" for="rf-electronic">Electronic Lab:</label><select class="form-select" id="rf-electronic"><option value="">Select one</option><option>No</option><option>Yes</option></select><span class="invalid-feedback" id="rf-electronic-error" hidden></span></div>
             </div>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="formSave">Save</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="formSave">Save</button></div>
         </div></div>
       </div>
       <script type="application/json" id="recordSpec">{"noun": "Lab", "key": "labId", "keyLabel": "Lab ID", "fields": [{"key": "labId", "label": "Lab ID", "type": "text", "required": true, "ml": 20, "keyField": true}, {"key": "name", "label": "Lab Name", "type": "text", "required": true, "ml": 100}, {"key": "codingSystem", "label": "Coding System", "type": "text", "required": true, "ml": 20}, {"key": "codingSystemDesc", "label": "Coding System Description", "type": "text", "required": true, "ml": 100}, {"key": "authority", "label": "Assigning Authority", "type": "text", "required": true, "ml": 300}, {"key": "authorityDesc", "label": "Assigning Authority Description", "type": "text", "required": true, "ml": 100}, {"key": "electronic", "label": "Electronic Lab", "type": "select", "required": true, "article": "whether it is an"}]}</script>

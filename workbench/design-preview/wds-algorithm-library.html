@@ -246,20 +246,20 @@
 <div class="modal ds-modal-p2" id="importModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="importTitle" aria-describedby="importBanner" hidden>
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-body-secondary">
           <h2 class="modal-title h5" id="importTitle">Choose Algorithm File</h2>
           <button type="button" class="btn-close" aria-label="Close"></button>
         </div>
-        <form class="modal-body" id="importForm" novalidate>
+        <form class="modal-body bg-body-secondary" id="importForm" novalidate>
           <div class="alert alert-info d-flex align-items-center gap-2 mb-0" id="importBanner"><span class="ds-icon flex-shrink-0 material-symbols-rounded" aria-hidden="true">info</span>Please browse to the Decision Support Algorithm you would like to import.</div>
           <div class="row g-2 align-items-center">
             <label for="importFile" class="col-md-3 col-form-label text-md-end ds-required">Algorithm File Name:</label>
             <div class="col-md-8"><input class="form-control" type="file" id="importFile" name="importFile" accept=".xml" required></div>
           </div>
         </form>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-primary">Cancel</button>
-          <button type="submit" form="importForm" class="btn btn-primary">Submit</button>
+        <div class="modal-footer bg-body-secondary">
+          <button type="button" class="btn btn-outline-dark rounded-pill px-3">Cancel</button>
+          <button type="submit" form="importForm" class="btn btn-primary rounded-pill px-3">Submit</button>
         </div>
     </div>
   </div>
@@ -321,7 +321,7 @@
   function open() { dsDialog.show(backdrop); dialog.focus(); }
   function close() { dsDialog.hide(backdrop); opener.focus(); }
   opener.addEventListener('click', open);
-  backdrop.querySelectorAll('.btn-close, .modal-footer .btn-outline-primary').forEach(function (b) { b.addEventListener('click', close); });
+  backdrop.querySelectorAll('.btn-close, .modal-footer .btn-outline-dark').forEach(function (b) { b.addEventListener('click', close); });
   document.getElementById('importForm').addEventListener('submit', function (e) { e.preventDefault(); });
   backdrop.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { close(); return; }

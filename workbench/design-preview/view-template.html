@@ -102,11 +102,11 @@
              structure, read only, as View Page shows a page. Make Inactive asks first (js/ds-status.js).
              DEV: View Rules goes to the template's rules; Export saves the template as a file to import elsewhere. -->
         <div class="alert alert-success mb-0" id="statusDone" role="status" tabindex="-1" hidden></div>        <div class="vp-toolbar" role="group" aria-label="Template actions">
-          <a class="btn btn-outline-primary rounded-pill" href="#">View rules</a>
+          <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" href="#">View rules</a>
           <span class="vp-spacer"></span>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print template"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1"><span aria-hidden="true" class="material-symbols-rounded text me-1">download</span><span>Export</span></button>
-          <button type="button" class="btn btn-outline-primary rounded-pill" id="toggleStatus" data-status-toggle data-status-noun="template" data-status-name="Acute Flaccid Myelitis Prod" aria-haspopup="dialog">Make Inactive</button>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" id="toggleStatus" data-status-toggle data-status-noun="template" data-status-name="Acute Flaccid Myelitis Prod" aria-haspopup="dialog">Make Inactive</button>
         </div>
         <ul class="nav nav-underline vp-tabs" role="tablist" aria-label="Page tabs"><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="true" id="tPatient" aria-controls="pPatient">Patient</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tCase" aria-controls="pCase" tabindex="-1">Case Info</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tContact" aria-controls="pContact" tabindex="-1">Contact Tracing</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tRecords" aria-controls="pRecords" tabindex="-1">Contact Records</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tSupp" aria-controls="pSupp" tabindex="-1">Supplemental Info</button></li></ul>
         <div id="pPatient" role="tabpanel" aria-labelledby="tPatient" class="vp-panel" style="display:grid;gap:16px">
@@ -117,9 +117,9 @@
 
       <div class="modal" id="statusDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="statusTitle" aria-describedby="statusText" hidden>
         <div class="modal-dialog"><div class="modal-content">
-          <div class="modal-header"><h2 class="modal-title h5" id="statusTitle">Make this template inactive?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
-          <div class="modal-body"><p id="statusText" class="mb-0">Acute Flaccid Myelitis Prod will be inactive.</p></div>
-          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="statusYes">Make Inactive</button></div>
+          <div class="modal-header bg-body-tertiary"><h2 class="modal-title h5" id="statusTitle">Make this template inactive?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body bg-body-tertiary"><p id="statusText" class="mb-0">Acute Flaccid Myelitis Prod will be inactive.</p></div>
+          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="statusYes">Make Inactive</button></div>
         </div></div>
       </div>
     </main>
@@ -132,16 +132,16 @@
 <div class="modal" id="draftModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="dmTitle" aria-describedby="dmDesc" hidden>
   <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-body-tertiary">
           <h2 class="modal-title h5" id="dmTitle">Create a draft?</h2>
           <button type="button" class="btn-close" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bg-body-tertiary">
           <p class="mb-0" id="dmDesc" style="margin:0"></p>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-outline-primary" data-close>Cancel</button>
-          <button class="btn btn-primary" id="dmConfirm">Create draft</button>
+        <div class="modal-footer bg-body-tertiary">
+          <button class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button>
+          <button class="btn btn-primary rounded-pill px-3" id="dmConfirm">Create draft</button>
         </div>
     </div>
   </div>

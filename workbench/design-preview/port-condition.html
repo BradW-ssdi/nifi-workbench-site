@@ -73,9 +73,9 @@
              the pre-run check, then convert a number of cases. Each action adds to the run log. DEV: the server runs the
              count, the pre-run, and the conversion; the sample log is the Varicella map's, before its last run. -->
         <dl class="ds-details">
-          <dt>Map</dt><dd>Varicella_Legacy_to_Page_Builder_Mapping_NBS_5_4_GA_TX</dd>
-          <dt>From page</dt><dd>Legacy Varicella Investigation</dd>
-          <dt>To page</dt><dd>Varicella Investigation</dd>
+          <dt>Map:</dt><dd>Varicella_Legacy_to_Page_Builder_Mapping_NBS_5_4_GA_TX</dd>
+          <dt>From page:</dt><dd>Legacy Varicella Investigation</dd>
+          <dt>To page:</dt><dd>Varicella Investigation</dd>
         </dl>
         <div class="alert alert-warning mb-0">
           <h2 class="h6 mb-2">Before you convert</h2>
@@ -96,34 +96,34 @@
         <section class="card ds-form-section mb-0" aria-labelledby="pcCond"><h2 class="card-header h6 mb-0 fw-semibold" id="pcCond">1. Condition</h2>
           <div class="card-body d-grid gap-3">
             <p class="mb-0">Choose the condition to port from Legacy Varicella Investigation to Varicella Investigation, then get its case count.</p>
-            <div class="ds-field"><label class="ds-required" for="portCondition">Condition</label>
+            <div class="ds-field"><label class="ds-required" for="portCondition">Condition:</label>
               <select class="form-select" id="portCondition"><option value="">Select a condition</option><option value="10030">Varicella (Chickenpox)</option></select>
               <span class="invalid-feedback" id="portCondition-error" hidden></span></div>
-            <div><button type="button" class="btn btn-outline-primary" id="getCount">Get Case Count</button></div>
+            <div><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="getCount">Get Case Count</button></div>
             <p class="mb-0" id="caseCount" hidden><strong>Cases to port:</strong> <span id="caseCountValue"></span></p>
           </div></section>
         <section class="card ds-form-section mb-0" aria-labelledby="pcNotif"><h2 class="card-header h6 mb-0 fw-semibold" id="pcNotif">2. Notifications</h2>
           <div class="card-body d-grid gap-3">
             <p class="mb-0">If any notifications need approval, process them and run the message out processor before you convert.</p>
             <dl class="ds-details" id="notifCounts" hidden>
-              <dt>Notifications needing approval</dt><dd>0</dd>
-              <dt>Notifications to process</dt><dd>0</dd>
+              <dt>Notifications needing approval:</dt><dd>0</dd>
+              <dt>Notifications to process:</dt><dd>0</dd>
             </dl>
           </div></section>
         <section class="card ds-form-section mb-0" aria-labelledby="pcRun"><h2 class="card-header h6 mb-0 fw-semibold" id="pcRun">3. Validate and convert</h2>
           <div class="card-body d-grid gap-3">
             <p class="mb-0">Run the pre-run check to validate the map for this condition. Once it passes, enter how many cases to convert and run the conversion.</p>
-            <div><button type="button" class="btn btn-outline-primary" id="preRun">Validate Map (Pre-Run)</button></div>
-            <div class="ds-field"><label class="ds-required" for="records">Number of Records to Migrate</label>
+            <div><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="preRun">Validate Map (Pre-Run)</button></div>
+            <div class="ds-field"><label class="ds-required" for="records">Number of Records to Migrate:</label>
               <input class="form-control" id="records" type="text" inputmode="numeric" autocomplete="off" aria-describedby="records-hint" style="max-width:12rem">
               <span class="form-text" id="records-hint">4 remaining</span>
               <span class="invalid-feedback" id="records-error" hidden></span></div>
-            <div><button type="button" class="btn btn-primary" id="runConv" aria-haspopup="dialog">Run Conversion</button></div>
+            <div><button type="button" class="btn btn-primary rounded-pill px-3" id="runConv" aria-haspopup="dialog">Run Conversion</button></div>
           </div></section>
         <section class="d-grid gap-2" aria-labelledby="logTitle">
           <h2 class="h5 mb-0" id="logTitle">Run log</h2>
           <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Run log, scrolls sideways">
-            <table class="table ds-table" id="logTable"><caption class="visually-hidden">Run log, newest first</caption>
+            <table class="table table-sm ds-table" id="logTable"><caption class="visually-hidden">Run log, newest first</caption>
               <thead><tr><th scope="col">Process</th><th scope="col">Message</th><th scope="col">Status</th><th scope="col">Start Time</th><th scope="col">End Time</th></tr></thead>
               <tbody>
                 <tr><td>Pre-Run</td><td>There were 0 mapping error(s). For condition code &quot;10030&quot;, 4 case(s) require conversion to the new TO page.</td><td><span class="badge text-bg-success">Pass</span></td><td>04/28/2026 10:05:46 AM</td><td>04/28/2026 10:05:51 AM</td></tr>
@@ -139,14 +139,14 @@
               </tbody></table></div></div>
         </section>
         <div class="ds-form-footer" style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg)">
-          <a class="btn btn-outline-primary" href="port-review-mapping.html">Back</a>
-          <a class="btn btn-primary" href="manage-page-porting.html">Done</a>
+          <a class="btn btn-outline-dark rounded-pill px-3" href="port-review-mapping.html">Back</a>
+          <a class="btn btn-primary rounded-pill px-3" href="manage-page-porting.html">Done</a>
         </div>
       </div>
       <div class="modal" id="runDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="runTitle" aria-describedby="runText" hidden>
         <div class="modal-dialog modal-lg"><div class="modal-content">
-          <div class="modal-header"><h2 class="modal-title h5" id="runTitle">Run the conversion?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
-          <div class="modal-body">
+          <div class="modal-header bg-body-tertiary"><h2 class="modal-title h5" id="runTitle">Run the conversion?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body bg-body-tertiary">
             <p id="runText">This ports <span id="runCount"></span> of Varicella (Chickenpox) from Legacy Varicella Investigation to Varicella Investigation, using the map Varicella_Legacy_to_Page_Builder_Mapping_NBS_5_4_GA_TX.</p>
             <h3 class="h6">Until every case is ported</h3>
             <ul>
@@ -161,7 +161,7 @@
             </ul>
             <p class="mb-0">If you have not backed up the database, cancel and do that first.</p>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-outline-primary" data-close>Cancel</button><button type="button" class="btn btn-primary" id="runYes">Run Conversion</button></div>
+          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="runYes">Run Conversion</button></div>
         </div></div>
       </div>
       <script type="application/json" id="portData">{"cases": 4, "caseIds": ["CAS495191022TX01", "CAS495191023TX01", "CAS495241000TX01", "CAS495242000TX01"]}</script>

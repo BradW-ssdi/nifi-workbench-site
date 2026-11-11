@@ -46,7 +46,7 @@
     current = row;
     $('viewTitle').textContent = 'View ' + spec.noun;
     $('viewList').innerHTML = spec.fields.map(function (f) {
-      return '<div><dt>' + esc(f.label) + '</dt><dd>' + esc(shown(row[f.key])) + '</dd></div>';
+      return '<div><dt>' + esc(f.label) + (/:$/.test(f.label) ? '' : ':') + '</dt><dd>' + esc(shown(row[f.key])) + '</dd></div>';   // Phase 2's label colon
     }).join('');
     show(viewDlg, from);
   }

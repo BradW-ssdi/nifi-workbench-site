@@ -105,14 +105,14 @@
              template. Draft: Edit (to Edit Page), Publish, and Delete draft (confirm dialog). Page Rules, Page History,
              and Page Metadata go to their own screens. -->
         <div class="vp-toolbar" role="group" aria-label="Page actions">
-          <button type="button" class="btn btn-outline-primary rounded-pill" id="detailsBtn">Page details</button>
-          <a class="btn btn-outline-primary rounded-pill" href="#">Page rules</a>
-          <a class="btn btn-outline-primary rounded-pill" href="#">Page history</a>
-          <a class="btn btn-outline-primary rounded-pill" href="#">Page metadata</a>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" id="detailsBtn">Page details</button>
+          <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" href="#">Page rules</a>
+          <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" href="#">Page history</a>
+          <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" href="#">Page metadata</a>
           <span class="vp-spacer"></span>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print page"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
-          <button type="button" class="btn btn-outline-primary rounded-pill">Save as template</button>
-          <a class="btn btn-primary rounded-pill" href="edit-page.html">Create new draft</a>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1">Save as template</button>
+          <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" href="edit-page.html">Create new draft</a>
         </div>
         <ul class="nav nav-underline vp-tabs" role="tablist" aria-label="Page tabs"><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="true" id="tPatient" aria-controls="pPatient">Patient</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tCase" aria-controls="pCase" tabindex="-1">Case Info</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tContact" aria-controls="pContact" tabindex="-1">Contact Tracing</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tRecords" aria-controls="pRecords" tabindex="-1">Contact Records</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tSupp" aria-controls="pSupp" tabindex="-1">Supplemental Info</button></li></ul>
         <div id="pPatient" role="tabpanel" aria-labelledby="tPatient" class="vp-panel" style="display:grid;gap:16px">
@@ -123,18 +123,18 @@
 
       <div class="modal" id="detailsDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="detailsTitle" hidden>
         <div class="modal-dialog"><div class="modal-content">
-          <div class="modal-header"><h2 class="modal-title h5" id="detailsTitle">Page details</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
-          <div class="modal-body">
+          <div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="detailsTitle">Page details</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
+          <div class="modal-body bg-body-secondary">
             <dl class="vp-details">
-              <dt>Event type</dt><dd>Investigation</dd>
-              <dt>Page name</dt><dd>Acute Flaccid Myelitis</dd>
-              <dt>Description</dt><dd>Investigation page for acute flaccid myelitis.</dd>
-              <dt>Related conditions</dt><dd>Acute flaccid myelitis (11081)</dd>
-              <dt>Data mart name</dt><dd>AFM</dd>
-              <dt>Status</dt><dd><span class="badge text-bg-success">Published</span></dd>
+              <dt>Event type:</dt><dd>Investigation</dd>
+              <dt>Page name:</dt><dd>Acute Flaccid Myelitis</dd>
+              <dt>Description:</dt><dd>Investigation page for acute flaccid myelitis.</dd>
+              <dt>Related conditions:</dt><dd>Acute flaccid myelitis (11081)</dd>
+              <dt>Data mart name:</dt><dd>AFM</dd>
+              <dt>Status:</dt><dd><span class="badge text-bg-success">Published</span></dd>
             </dl>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-primary" data-close>Close</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-primary rounded-pill px-3" data-close>Close</button></div>
         </div></div>
       </div>
     </main>
@@ -147,16 +147,16 @@
 <div class="modal" id="draftModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="dmTitle" aria-describedby="dmDesc" hidden>
   <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-body-tertiary">
           <h2 class="modal-title h5" id="dmTitle">Create a draft?</h2>
           <button type="button" class="btn-close" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bg-body-tertiary">
           <p class="mb-0" id="dmDesc" style="margin:0"></p>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-outline-primary" data-close>Cancel</button>
-          <button class="btn btn-primary" id="dmConfirm">Create draft</button>
+        <div class="modal-footer bg-body-tertiary">
+          <button class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button>
+          <button class="btn btn-primary rounded-pill px-3" id="dmConfirm">Create draft</button>
         </div>
     </div>
   </div>
