@@ -6,6 +6,7 @@
 <title>System Identified Merge Queue - Merge Patients - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/ds-floating-bar.js" defer></script>
 <script src="../../js/ds-tooltip.js" defer></script>
 <script src="../../js/ds-infotip.js" defer></script>
 <script src="../../js/merge-patients.js" defer></script>
@@ -27,9 +28,11 @@
   .pv-nav { justify-self: stretch; font-size: 0.875rem; }
   /* Phase 2's Patient Events nav (nav-link px-2 py-1 in .secondary-nav; Phase 3 review, Team A slide 5): 32px links 4px
      apart, gray on hover, the current one in the teal tint; the first section is current when the dialog opens */
-  .pv-nav .nav-link { min-height: 32px; margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; color: var(--bs-body-color); }
-  .pv-nav .nav-link:hover { background: var(--ds-nav-hover); color: var(--bs-body-color); }
-  .pv-nav .nav-link[aria-current] { background: var(--ds-tint); color: var(--ds-primary-hover); font-weight: 600; }
+  .pv-nav .nav-link { min-height: 32px; margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; color: var(--bs-body-color); font-weight: 400; }
+  /* measured on Phase 2's own nav markup (11/10): #e9ecef under the pointer, the body color; the current one #111 */
+  .pv-nav .nav-link:hover { background: var(--ds-icon-hover); color: var(--bs-body-color); }
+  .pv-nav .nav-link[aria-current] { background: var(--ds-tint); color: var(--bs-emphasis-color); font-weight: 600; }
+  .pv-content [data-toggle-all] { min-height: 32px; }
   .pv-layout.is-nav-collapsed .pv-nav { display: none; }
   .pv-content { display: grid; gap: 16px; min-width: 0; }
   .pv-empty { margin: 0; padding: 8px 0; text-align: center; font-size: 1.125rem; color: var(--bs-secondary-color); }
@@ -152,8 +155,8 @@
                 <!-- Merge column (BA review): labeled "Merge", no Select All; each row's box is named for its patient. -->
                 <th scope="col" class="ds-select-col">Merge</th>
                 <th scope="col" class="ds-select-col">Surviving ID</th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="2">Patient ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
-                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="3">Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col" id="patientIDColumn" aria-sort="none" tabindex="0" data-sort="2"><span>Patient ID</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="nameColumn" class="sorted" aria-sort="ascending" tabindex="0" data-sort="3"><span>Name</span> <i class="bi bi-caret-up-fill sortable-icon" aria-hidden="true"></i></th>
                 <th scope="col">Age / DOB / Sex</th>
                 <th scope="col">Address</th>
                 <th scope="col">Phone / Email</th>
@@ -204,8 +207,8 @@
 <div class="ds-bulkbar is-floating" id="bulkbar" role="region" aria-label="Selected candidate actions" hidden>
   <span id="bulkCount"><span class="ds-bulkbar-num">0</span> selected</span>
   <span class="ds-bulkbar-sep" aria-hidden="true"></span>
-  <button type="button" class="btn ds-bulkbar-action" id="mergeBtn" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="To merge records, select two or more candidates in the Merge column. You may also select a surviving record ID; if none is selected, then the oldest (first) patient ID will be the surviving record ID."><span class="ds-icon material-symbols-rounded" aria-hidden="true">call_merge</span>Merge</button>
-  <button type="button" class="btn ds-bulkbar-action" id="removeBtn" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="To remove a patient from future merges, select a patient in the Merge column. This will flag the patient to NOT be included in future merge logic until/unless the patient record is updated in the future."><span class="ds-icon material-symbols-rounded" aria-hidden="true">person_remove</span>Remove from Merge</button>
+  <button type="button" class="btn ds-bulkbar-action" id="mergeBtn"><span class="ds-icon material-symbols-rounded" aria-hidden="true">call_merge</span>Merge</button>
+  <button type="button" class="btn ds-bulkbar-action" id="removeBtn"><span class="ds-icon material-symbols-rounded" aria-hidden="true">person_remove</span>Remove from Merge</button>
   <button type="button" class="btn ds-bulkbar-close" id="clearSel" aria-label="Clear selection" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Clear selection"><span class="ds-icon material-symbols-rounded" aria-hidden="true">close</span></button>
 </div>
 
@@ -255,7 +258,7 @@
           <nav class="pv-nav nav flex-column" id="pvNav" aria-label="Patient events"><a class="nav-link" href="#pv-investigations">Investigations</a><a class="nav-link" href="#pv-labReports">Lab Reports</a><a class="nav-link" href="#pv-morbidityReports">Morbidity Reports</a><a class="nav-link" href="#pv-vaccinations">Vaccinations</a><a class="nav-link" href="#pv-treatments">Treatments</a><a class="nav-link" href="#pv-documents">Documents</a><a class="nav-link" href="#pv-contactRecords">Contact Records</a></nav>
         </aside>
         <div class="pv-content">
-          <div class="d-flex align-items-center gap-2"><h3 class="h5 mb-0">Patient Events History</h3><button type="button" class="btn btn-link p-0 ms-auto" data-toggle-all aria-controls="patientDialog">Collapse All</button></div>
+          <div class="pt-3 d-flex align-items-center"><h3 class="sub ps-1 m-0">Patient Events History</h3><button type="button" class="btn btn-link p-0 ms-auto me-2" data-toggle-all aria-controls="patientDialog">Collapse All</button></div>
           <section class="accordion ds-form-accordion" id="pv-investigations" aria-labelledby="pv-investigationsHeading">
             <div class="accordion-item">
               <h4 class="accordion-header" id="pv-investigationsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-investigations-collapse">Investigations <span class="ms-1" id="pv-investigations-count"></span></button></h4>
@@ -419,12 +422,16 @@
   document.getElementById('skipBtn').addEventListener('click', function () { advance('Group skipped and moved to the end of the queue.'); });
 
   /* --- Sort --- */
-  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+  /* Phase 2's sort header (table-sort.js): the sorted th is .sorted with aria-sort and the caret, the others
+     aria-sort="none". The th sorts on click and, for the keyboard, on Enter or Space (508 2.1.1). */
+  table.querySelectorAll('th[data-sort]').forEach(function (btn) {
+    btn.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); } });
     btn.addEventListener('click', function () {
-      var th = btn.closest('th'), col = +btn.dataset.sort;
+      var th = btn, col = +btn.dataset.sort;
       var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
-      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
-      th.setAttribute('aria-sort', dir);
+      table.querySelectorAll('th[data-sort]').forEach(function (t) { t.setAttribute('aria-sort', 'none'); t.classList.remove('sorted'); t.querySelector('.sortable-icon').className = 'bi sortable-icon'; });
+      th.setAttribute('aria-sort', dir); th.classList.add('sorted');
+      th.querySelector('.sortable-icon').className = 'bi ' + (dir === 'ascending' ? 'bi-caret-up-fill' : 'bi-caret-down-fill') + ' sortable-icon';
       Array.prototype.slice.call(tbody.rows).sort(function (a, b) {
         var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();
         return dir === 'ascending' ? x.localeCompare(y) : y.localeCompare(x);

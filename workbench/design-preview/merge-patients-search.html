@@ -8,6 +8,7 @@
 <script src="../../js/app-frame.js" defer></script>
 <script src="../../js/ds-dialog.js"></script>
 <script src="../../js/merge-patients.js" defer></script>
+<script src="../../js/ds-floating-bar.js" defer></script>
 <script src="../../js/table-settings.js" defer></script>
 <script src="../../js/ds-tooltip.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,9 +39,11 @@
   .pv-nav { justify-self: stretch; font-size: 0.875rem; }
   /* Phase 2's Patient Events nav (nav-link px-2 py-1 in .secondary-nav; Phase 3 review, Team A slide 5): 32px links 4px
      apart, gray on hover, the current one in the teal tint; the first section is current when the dialog opens */
-  .pv-nav .nav-link { min-height: 32px; margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; color: var(--bs-body-color); }
-  .pv-nav .nav-link:hover { background: var(--ds-nav-hover); color: var(--bs-body-color); }
-  .pv-nav .nav-link[aria-current] { background: var(--ds-tint); color: var(--ds-primary-hover); font-weight: 600; }
+  .pv-nav .nav-link { min-height: 32px; margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; color: var(--bs-body-color); font-weight: 400; }
+  /* measured on Phase 2's own nav markup (11/10): #e9ecef under the pointer, the body color; the current one #111 */
+  .pv-nav .nav-link:hover { background: var(--ds-icon-hover); color: var(--bs-body-color); }
+  .pv-nav .nav-link[aria-current] { background: var(--ds-tint); color: var(--bs-emphasis-color); font-weight: 600; }
+  .pv-content [data-toggle-all] { min-height: 32px; }
   .pv-layout.is-nav-collapsed .pv-nav { display: none; }
   .pv-content { display: grid; gap: 16px; min-width: 0; }
   .pv-empty { margin: 0; padding: 8px 0; text-align: center; font-size: 1.125rem; color: var(--bs-secondary-color); }
@@ -219,44 +222,44 @@
               <div class="accordion-collapse collapse show" id="msGeneralBody">
                 <div class="accordion-body">
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msLast">Last Name</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msLast">Last Name:</label>
                 <div class="col-md-3 col-lg-2"><select class="form-select" id="msLastOp" name="personSearch.lastNameOperator" data-default="SW" aria-label="Last Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select></div>
                 <div class="col-md-6"><input class="form-control" id="msLast" name="personSearch.lastName" type="text" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msFirst">First Name</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msFirst">First Name:</label>
                 <div class="col-md-3 col-lg-2"><select class="form-select" id="msFirstOp" name="personSearch.firstNameOperator" data-default="SW" aria-label="First Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select></div>
                 <div class="col-md-6"><input class="form-control" id="msFirst" name="personSearch.firstName" type="text" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msDobMonth">Date of Birth</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msDobMonth">Date of Birth:</label>
                 <div class="col-md-3 col-lg-2"><select class="form-select" id="msDobOp" name="personSearch.birthTimeOperator" data-default="=" aria-label="Date of Birth operator"><option value="=" selected>Equal</option><option value="BET">Between</option></select></div>
                 <div class="col-md-6"><div class="ds-dob-parts" id="msDobParts"><input class="form-control" id="msDobMonth" name="personSearch.birthTimeMonth" type="text" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Date of Birth, month" autocomplete="off"><input class="form-control" id="msDobDay" name="personSearch.birthTimeDay" type="text" inputmode="numeric" maxlength="2" placeholder="DD" aria-label="Date of Birth, day" autocomplete="off"><input class="form-control" id="msDobYear" name="personSearch.birthTimeYear" type="text" inputmode="numeric" maxlength="4" placeholder="YYYY" aria-label="Date of Birth, year" autocomplete="off"></div><div class="ds-op-field" id="msDobRange" hidden><div class="ds-datefield"><input class="form-control" id="msDobFrom" name="personSearch.beforeBirthTime" type="text" inputmode="numeric" placeholder="MM/DD/YYYY" aria-label="Date of Birth, from (MM/DD/YYYY)" autocomplete="off"><span class="ds-icon material-symbols-rounded" aria-hidden="true">calendar_today</span></div><span class="ds-op-and">and</span><div class="ds-datefield"><input class="form-control" id="msDobTo" name="personSearch.afterBirthTime" type="text" inputmode="numeric" placeholder="MM/DD/YYYY" aria-label="Date of Birth, to (MM/DD/YYYY)" autocomplete="off"><span class="ds-icon material-symbols-rounded" aria-hidden="true">calendar_today</span></div></div></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msSex">Current Sex</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msSex">Current Sex:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msSex" name="personSearch.currentSex"><option value=""></option><option value="F">Female</option><option value="M">Male</option><option value="U">Unknown</option></select></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msStreet">Street Address</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msStreet">Street Address:</label>
                 <div class="col-md-3 col-lg-2"><select class="form-select" id="msStreetOp" name="personSearch.streetAddr1Operator" data-default="CT" aria-label="Street Address operator"><option value="CT" selected>Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option></select></div>
                 <div class="col-md-6"><input class="form-control" id="msStreet" name="personSearch.streetAddr1" type="text" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msCity">City</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msCity">City:</label>
                 <div class="col-md-3 col-lg-2"><select class="form-select" id="msCityOp" name="personSearch.cityDescTxtOperator" data-default="CT" aria-label="City operator"><option value="CT" selected>Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option></select></div>
                 <div class="col-md-6"><input class="form-control" id="msCity" name="personSearch.cityDescTxt" type="text" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msState">State</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msState">State:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msState" name="personSearch.state"><option value=""></option><option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option><option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option><option>District of Columbia</option><option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option><option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option><option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option><option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option><option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option><option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option><option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option><option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option><option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option></select></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msZip">Zip</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msZip">Zip:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msZip" name="personSearch.zipCd" type="text" inputmode="numeric" placeholder="#####-####" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msId">Patient ID(s)</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msId">Patient ID(s):</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msId" name="personSearch.localID" type="text" autocomplete="off" aria-describedby="msIdHint"><span class="visually-hidden" id="msIdHint">Separate IDs with commas, semicolons, or spaces.</span></div>
                 <div class="col-auto"><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm" aria-label="About Patient ID(s)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Separate IDs with commas, semicolons, or spaces."><span class="ds-icon material-symbols-rounded" aria-hidden="true">info</span></button></div>
               </div>
@@ -270,24 +273,32 @@
               <div class="accordion-collapse collapse" id="msAdvancedBody">
                 <div class="accordion-body">
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msIdNum">Identifier</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msIdNum">Identifier:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><div class="input-group"><select class="form-select ds-input-group-select" id="msIdType" name="personSearch.typeCd" data-default="Account number" data-for="personSearch.rootExtensionTxt" aria-label="Identifier type"><option selected>Account number</option><option>Alternate person number</option><option>CHIP Identification number</option><option>Driver&#39;s license number</option><option>ImmTrac ID</option><option>Immunization Registry ID</option><option>Medicaid number</option><option>Medical record number</option><option>Medicare number</option><option>Mother&#39;s identifier</option><option>National unique individual identifier</option><option>Other</option><option>Partner Services Patient Number</option><option>Patient External Identifier</option><option>Patient internal identifier</option><option>Person number</option><option>Prison identification number</option><option>Social Security</option><option>Visa/Passport</option><option>WIC identifier</option></select><input class="form-control" id="msIdNum" name="personSearch.rootExtensionTxt" type="text" autocomplete="off"></div></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msPhone">Phone</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msPhone">Phone:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msPhone" name="personSearch.phoneNbrTxt" type="tel" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msEmail">Email</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msEmail">Email:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msEmail" name="personSearch.emailAddress" type="email" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msEthnicity">Ethnicity</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msEthnicity">Ethnicity:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msEthnicity" name="personSearch.ethnicGroupInd"><option value=""></option><option>Hispanic or Latino</option><option>Not Hispanic or Latino</option><option>Unknown</option></select></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msRace">Race</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msRace">Race:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msRace" name="personSearch.raceCd"><option value=""></option><option>American Indian or Alaska Native</option><option>Asian</option><option>Black or African American</option><option>Multi-Race</option><option>Native Hawaiian or Other Pacific Islander</option><option>Not asked</option><option>Other</option><option>Refused to answer</option><option>Unknown</option><option>White</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <span class="col-md-3 col-form-label text-md-end" id="msRecordsLabel">Include Records:</span>
+                <div class="col-md-6 offset-md-3 offset-lg-2" role="group" aria-labelledby="msRecordsLabel">
+                  <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" id="msRecordAct" name="personSearch.active" checked><label class="form-check-label" for="msRecordAct">Active</label></div>
+                  <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" id="msRecordDel" name="personSearch.inActive"><label class="form-check-label" for="msRecordDel">Deleted</label></div>
+                  <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" id="msRecordSup" name="personSearch.superceded"><label class="form-check-label" for="msRecordSup">Superceded</label></div>
+                </div>
               </div>
                 </div>
               </div>

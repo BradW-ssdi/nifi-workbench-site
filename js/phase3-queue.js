@@ -16,8 +16,9 @@
  *   fires updatePaginationNav on the form's #paginationNav, which fetches Phase 2's queues/paginationNav fragment
  *   (as Phase 2's applyListeners does). Focus and the announcement wait for that second swap, so they use the new
  *   page buttons and the new items message.
- * - phase3Queue.sort(button, formId) for column header sort buttons rendered with data-sort-next. The header is not
- *   swapped, so the sort state (aria-sort, .sorted, the next sort) is moved here.
+ * - phase3Queue.sort(th, formId) for Phase 2's sort headers (th + span + i.bi.sortable-icon) rendered with
+ *   data-sort-key and data-sort-next. The header is not swapped, so the sort state (aria-sort, .sorted, the caret,
+ *   the next sort) is moved here. Enter or Space on a sort header clicks it, so the keyboard can sort.
  *
  * The same file runs in the app (static/js/phase3-queue.js) and in the design system templates, where
  * js/phase2-chip-standin.js stands in for chip.js and js/queue-server-standin.js answers the requests.
@@ -85,11 +86,12 @@
         if (!f) { return; }
         var parts = (f.querySelector("#sorting").value || "").split(":");
         var key = parts[0], desc = (parts[1] || "").toLowerCase() === "desc";
-        f.querySelectorAll("thead button[data-sort-next]").forEach(function (b) {
-            var th = b.closest("th"), on = b.id === key;
+        f.querySelectorAll("thead th[data-sort-next]").forEach(function (th) {
+            var id = th.getAttribute("data-sort-key"), on = id === key, icon = th.querySelector(".sortable-icon");
             th.classList.toggle("sorted", on);
-            if (on) { th.setAttribute("aria-sort", desc ? "descending" : "ascending"); } else { th.removeAttribute("aria-sort"); }
-            b.setAttribute("data-sort-next", b.id + (on && !desc ? ":desc" : ":asc"));
+            th.setAttribute("aria-sort", on ? (desc ? "descending" : "ascending") : "none");
+            if (icon) { icon.className = "bi " + (on ? (desc ? "bi-caret-down-fill " : "bi-caret-up-fill ") : "") + "sortable-icon"; }
+            th.setAttribute("data-sort-next", id + (on && !desc ? ":desc" : ":asc"));
         });
     }
 
@@ -171,8 +173,7 @@
                 if (check) { check.checked = false; }
             }
         });
-        // Phase 2's resetSorting expects its own header (a "<column>Column" th holding an <i> caret) and throws on
-        // these sort buttons, so the sort is reset here, and the header with it.
+        // the sort and the header go back to the page's first order here
         var f = form(formId);
         f.querySelector("#sorting").value = f.querySelector("#originalSorting").value;
         syncSortHeader(formId);
@@ -202,6 +203,14 @@
         if (resetDiv) { resetDiv.style.display = ""; }
         syncSortHeader(formId);
     }
+
+    /* Enter or Space on a sort header (a th with tabindex) clicks it, as a button would */
+    document.addEventListener("keydown", function (evt) {
+        var th = evt.target && evt.target.matches && evt.target.matches("th[data-sort-next]") ? evt.target : null;
+        if (!th || (evt.key !== "Enter" && evt.key !== " ")) { return; }
+        evt.preventDefault();
+        th.click();
+    });
 
     /* The control that asked for new results, found again after the pagination bar is replaced: by its id, or for
        Phase 2's Previous and Next (no id on the button) by its li's id. */

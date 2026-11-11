@@ -6,6 +6,8 @@
 <title>Merge Candidate List - Merge Patients - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/ds-floating-bar.js" defer></script>
+<script src="../../js/list-filters.js" defer></script>
 <script src="../../js/ds-tooltip.js" defer></script>
 <script src="../../js/ds-infotip.js" defer></script>
 <script src="../../js/merge-patients.js" defer></script>
@@ -31,9 +33,11 @@
   .pv-nav { justify-self: stretch; font-size: 0.875rem; }
   /* Phase 2's Patient Events nav (nav-link px-2 py-1 in .secondary-nav; Phase 3 review, Team A slide 5): 32px links 4px
      apart, gray on hover, the current one in the teal tint; the first section is current when the dialog opens */
-  .pv-nav .nav-link { min-height: 32px; margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; color: var(--bs-body-color); }
-  .pv-nav .nav-link:hover { background: var(--ds-nav-hover); color: var(--bs-body-color); }
-  .pv-nav .nav-link[aria-current] { background: var(--ds-tint); color: var(--ds-primary-hover); font-weight: 600; }
+  .pv-nav .nav-link { min-height: 32px; margin-bottom: 4px; padding: 4px 8px; border-radius: 4px; color: var(--bs-body-color); font-weight: 400; }
+  /* measured on Phase 2's own nav markup (11/10): #e9ecef under the pointer, the body color; the current one #111 */
+  .pv-nav .nav-link:hover { background: var(--ds-icon-hover); color: var(--bs-body-color); }
+  .pv-nav .nav-link[aria-current] { background: var(--ds-tint); color: var(--bs-emphasis-color); font-weight: 600; }
+  .pv-content [data-toggle-all] { min-height: 32px; }
   .pv-layout.is-nav-collapsed .pv-nav { display: none; }
   .pv-content { display: grid; gap: 16px; min-width: 0; }
   .pv-empty { margin: 0; padding: 8px 0; text-align: center; font-size: 1.125rem; color: var(--bs-secondary-color); }
@@ -117,13 +121,14 @@
 
 
 <!-- merge:toolbar -->
-        <!-- The search that produced this list, with Refine Search (the dialog with these criteria) and New Search (an
-             empty dialog), each with the search icon the BA review asks for. DEV: render the criteria from the request. -->
+        <!-- The search that produced this list, with New Search (an empty dialog) and Refine Search (the dialog with
+             these criteria), in that order, as Phase 2's patient search results (patientsSearchResults.html, addLab):
+             btn-outline-dark btn-sm rounded-pill with the content_paste_search icon. DEV: render the criteria from the request. -->
         <div class="ds-toolbar">
           <input class="form-control" type="search" id="filterInput" aria-label="Filter candidates" placeholder="Search to filter..." aria-describedby="status">
           <span class="ms-auto"></span>
-          <button type="button" class="btn btn-outline-primary" data-open-search="refine" aria-haspopup="dialog"><span class="ds-icon material-symbols-rounded" aria-hidden="true">content_paste_search</span>Refine Search</button>
-          <button type="button" class="btn btn-outline-primary" data-open-search="new" aria-haspopup="dialog"><span class="ds-icon material-symbols-rounded" aria-hidden="true">content_paste_search</span>New Search</button>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" data-open-search="new" aria-haspopup="dialog"><span aria-hidden="true" class="material-symbols-rounded text me-1">content_paste_search</span><span>New Search</span></button>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" data-open-search="refine" aria-haspopup="dialog"><span aria-hidden="true" class="material-symbols-rounded text me-1">content_paste_search</span><span>Refine Search</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
           <div class="ds-table-settings">
@@ -136,17 +141,28 @@
         </div>
         <p class="mb-0 fw-semibold" id="resultCount">4 candidates found</p>
         <!-- The search criteria as Phase 2's read-only chips (queues/queueFilterChips with chip.readOnly: gray, with
-             the -readOnly ids), in Phase 2's host (#filterChips > #filterChipsDiv). Plain text here: Phase 2 keeps a
-             select for the operator, which the keyboard can still reach and change; a read-only chip has nothing to
-             operate. The group is named, so a screen reader hears "Search criteria" before them.
-             DEV: one chip per criterion in the request, in the search form's order. -->
+             the -readOnly ids), then Phase 2's filter chips for the results (Filter, a chip per column chosen, and
+             "| Reset" while a filter is applied), all in Phase 2's host (#filterChips > #filterChipsDiv), as Phase 2's
+             patient search results (patientsSearchResults.html PSR_QueueFilterChips_Fragment). Plain text in the
+             read-only chips: Phase 2 keeps a select for the operator, which the keyboard can still reach and change; a
+             read-only chip has nothing to operate. Phase 3 review, Team A slides 3, 4 (11/10): the filter chips were missing.
+             DEV: one read-only chip per criterion in the request, in the search form's order. -->
         <div class="ds-phase2">
           <div class="d-flex flex-wrap" id="filterChips">
-            <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" role="group" aria-label="Search criteria">
-              <div class="chipsWithSubMenu"><div class="chip-button chip-read-only rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="lastName-readOnly"><span id="lastName-chipLabel-readOnly">Last Name</span> <span class="chip-operator-read-only" id="lastName-chipOperator-readOnly" style="font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;">starts with</span> <span class="chip-value-read-only" id="lastName-chipValue" style="font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;">Garcia</span></div></div>
+            <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" role="group" aria-label="Search criteria and filters" data-list-chips data-table="candTable" data-noun="candidates" data-addable="Patient ID|Name|Age / DOB / Sex|Address|Phone / Email|ID">
+              <div class="chipsWithSubMenu ds-read-only-wrap"><div class="chip-button chip-read-only rounded-pill d-flex align-items-center chip badge me-2 ps-3" id="lastName-readOnly"><span id="lastName-chipLabel-readOnly">Last Name</span> <span class="chip-operator-read-only" id="lastName-chipOperator-readOnly" style="font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;">starts with</span> <span class="chip-value-read-only" id="lastName-chipValue" style="font-weight: normal; margin-left: 6px; white-space: normal; overflow-wrap: anywhere; text-align: left;">Garcia</span></div></div>
+              <div id="filtersButtonDiv">
+              <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="filterButtonId" class="chip-button btn-outline-dark rounded-pill dropdown-toggle d-flex align-items-center bg-primary chip badge me-2 ps-3 filter-chip" id="filtersId">
+              <span aria-hidden="true" class="material-symbols-rounded text me-1" style="font-size: 24px;">filter_alt</span>
+              <span class="me-2" style="font-size: 14px;">Filter</span>
+              </button>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="filterButtonId"></div>
+              </div>
+              <div id="clearFiltersDiv" style="margin-top: 5px">| <button type="button" class="btn btn-link p-0 text-decoration-none align-baseline" id="clearFilters">Reset</button></div>
             </div>
           </div>
         </div>
+        <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
 <!-- /merge:toolbar -->
         <div id="status" class="visually-hidden" role="status" aria-live="polite"></div>
 
@@ -159,8 +175,8 @@
                 <!-- Merge column (BA review): labeled "Merge", no Select All; each row's box is named for its patient. -->
                 <th scope="col" class="ds-select-col">Merge</th>
                 <th scope="col" class="ds-select-col">Surviving ID</th>
-                <th scope="col"><button class="ds-sort-btn" data-sort="2">Patient ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
-                <th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="3">Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th>
+                <th scope="col" id="patientIDColumn" aria-sort="none" tabindex="0" data-sort="2"><span>Patient ID</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="nameColumn" class="sorted" aria-sort="ascending" tabindex="0" data-sort="3"><span>Name</span> <i class="bi bi-caret-up-fill sortable-icon" aria-hidden="true"></i></th>
                 <th scope="col">Age / DOB / Sex</th>
                 <th scope="col">Address</th>
                 <th scope="col">Phone / Email</th>
@@ -239,7 +255,7 @@
 <div class="ds-bulkbar is-floating" id="bulkbar" role="region" aria-label="Merge actions" hidden>
   <span id="bulkCount"><span class="ds-bulkbar-num">0</span> selected</span>
   <span class="ds-bulkbar-sep" aria-hidden="true"></span>
-  <button class="btn ds-bulkbar-action" id="mergeBtn" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="To merge records, select two or more candidates in the Merge column. You may also select a surviving record ID; if none is selected, then the oldest (first) patient ID will be the surviving record ID."><span class="ds-icon material-symbols-rounded" aria-hidden="true">call_merge</span>Merge</button>
+  <button class="btn ds-bulkbar-action" id="mergeBtn"><span class="ds-icon material-symbols-rounded" aria-hidden="true">call_merge</span>Merge</button>
   <button type="button" class="btn ds-bulkbar-close" id="clearSel" aria-label="Clear selection" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Clear selection"><span class="ds-icon material-symbols-rounded" aria-hidden="true">close</span></button>
 </div>
 
@@ -283,44 +299,44 @@
               <div class="accordion-collapse collapse show" id="msGeneralBody">
                 <div class="accordion-body">
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msLast">Last Name</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msLast">Last Name:</label>
                 <div class="col-md-3 col-lg-2"><select class="form-select" id="msLastOp" name="personSearch.lastNameOperator" data-default="SW" aria-label="Last Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select></div>
                 <div class="col-md-6"><input class="form-control" id="msLast" name="personSearch.lastName" type="text" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msFirst">First Name</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msFirst">First Name:</label>
                 <div class="col-md-3 col-lg-2"><select class="form-select" id="msFirstOp" name="personSearch.firstNameOperator" data-default="SW" aria-label="First Name operator"><option value="SW" selected>Starts With</option><option value="CT">Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option><option value="SL">Sounds Like</option></select></div>
                 <div class="col-md-6"><input class="form-control" id="msFirst" name="personSearch.firstName" type="text" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msDobMonth">Date of Birth</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msDobMonth">Date of Birth:</label>
                 <div class="col-md-3 col-lg-2"><select class="form-select" id="msDobOp" name="personSearch.birthTimeOperator" data-default="=" aria-label="Date of Birth operator"><option value="=" selected>Equal</option><option value="BET">Between</option></select></div>
                 <div class="col-md-6"><div class="ds-dob-parts" id="msDobParts"><input class="form-control" id="msDobMonth" name="personSearch.birthTimeMonth" type="text" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Date of Birth, month" autocomplete="off"><input class="form-control" id="msDobDay" name="personSearch.birthTimeDay" type="text" inputmode="numeric" maxlength="2" placeholder="DD" aria-label="Date of Birth, day" autocomplete="off"><input class="form-control" id="msDobYear" name="personSearch.birthTimeYear" type="text" inputmode="numeric" maxlength="4" placeholder="YYYY" aria-label="Date of Birth, year" autocomplete="off"></div><div class="ds-op-field" id="msDobRange" hidden><div class="ds-datefield"><input class="form-control" id="msDobFrom" name="personSearch.beforeBirthTime" type="text" inputmode="numeric" placeholder="MM/DD/YYYY" aria-label="Date of Birth, from (MM/DD/YYYY)" autocomplete="off"><span class="ds-icon material-symbols-rounded" aria-hidden="true">calendar_today</span></div><span class="ds-op-and">and</span><div class="ds-datefield"><input class="form-control" id="msDobTo" name="personSearch.afterBirthTime" type="text" inputmode="numeric" placeholder="MM/DD/YYYY" aria-label="Date of Birth, to (MM/DD/YYYY)" autocomplete="off"><span class="ds-icon material-symbols-rounded" aria-hidden="true">calendar_today</span></div></div></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msSex">Current Sex</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msSex">Current Sex:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msSex" name="personSearch.currentSex"><option value=""></option><option value="F">Female</option><option value="M">Male</option><option value="U">Unknown</option></select></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msStreet">Street Address</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msStreet">Street Address:</label>
                 <div class="col-md-3 col-lg-2"><select class="form-select" id="msStreetOp" name="personSearch.streetAddr1Operator" data-default="CT" aria-label="Street Address operator"><option value="CT" selected>Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option></select></div>
                 <div class="col-md-6"><input class="form-control" id="msStreet" name="personSearch.streetAddr1" type="text" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msCity">City</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msCity">City:</label>
                 <div class="col-md-3 col-lg-2"><select class="form-select" id="msCityOp" name="personSearch.cityDescTxtOperator" data-default="CT" aria-label="City operator"><option value="CT" selected>Contains</option><option value="=">Equal</option><option value="!=">Not Equal</option></select></div>
                 <div class="col-md-6"><input class="form-control" id="msCity" name="personSearch.cityDescTxt" type="text" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msState">State</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msState">State:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msState" name="personSearch.state"><option value=""></option><option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option><option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option><option>District of Columbia</option><option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option><option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option><option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option><option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option><option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option><option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option><option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option><option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option><option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option></select></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msZip">Zip</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msZip">Zip:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msZip" name="personSearch.zipCd" type="text" inputmode="numeric" placeholder="#####-####" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msId">Patient ID(s)</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msId">Patient ID(s):</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msId" name="personSearch.localID" type="text" autocomplete="off" aria-describedby="msIdHint"><span class="visually-hidden" id="msIdHint">Separate IDs with commas, semicolons, or spaces.</span></div>
                 <div class="col-auto"><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm" aria-label="About Patient ID(s)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Separate IDs with commas, semicolons, or spaces."><span class="ds-icon material-symbols-rounded" aria-hidden="true">info</span></button></div>
               </div>
@@ -334,24 +350,32 @@
               <div class="accordion-collapse collapse" id="msAdvancedBody">
                 <div class="accordion-body">
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msIdNum">Identifier</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msIdNum">Identifier:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><div class="input-group"><select class="form-select ds-input-group-select" id="msIdType" name="personSearch.typeCd" data-default="Account number" data-for="personSearch.rootExtensionTxt" aria-label="Identifier type"><option selected>Account number</option><option>Alternate person number</option><option>CHIP Identification number</option><option>Driver&#39;s license number</option><option>ImmTrac ID</option><option>Immunization Registry ID</option><option>Medicaid number</option><option>Medical record number</option><option>Medicare number</option><option>Mother&#39;s identifier</option><option>National unique individual identifier</option><option>Other</option><option>Partner Services Patient Number</option><option>Patient External Identifier</option><option>Patient internal identifier</option><option>Person number</option><option>Prison identification number</option><option>Social Security</option><option>Visa/Passport</option><option>WIC identifier</option></select><input class="form-control" id="msIdNum" name="personSearch.rootExtensionTxt" type="text" autocomplete="off"></div></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msPhone">Phone</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msPhone">Phone:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msPhone" name="personSearch.phoneNbrTxt" type="tel" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msEmail">Email</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msEmail">Email:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><input class="form-control" id="msEmail" name="personSearch.emailAddress" type="email" autocomplete="off"></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msEthnicity">Ethnicity</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msEthnicity">Ethnicity:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msEthnicity" name="personSearch.ethnicGroupInd"><option value=""></option><option>Hispanic or Latino</option><option>Not Hispanic or Latino</option><option>Unknown</option></select></div>
               </div>
               <div class="row g-2 align-items-center">
-                <label class="col-md-3 col-form-label text-md-end" for="msRace">Race</label>
+                <label class="col-md-3 col-form-label text-md-end" for="msRace">Race:</label>
                 <div class="col-md-6 offset-md-3 offset-lg-2"><select class="form-select" id="msRace" name="personSearch.raceCd"><option value=""></option><option>American Indian or Alaska Native</option><option>Asian</option><option>Black or African American</option><option>Multi-Race</option><option>Native Hawaiian or Other Pacific Islander</option><option>Not asked</option><option>Other</option><option>Refused to answer</option><option>Unknown</option><option>White</option></select></div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <span class="col-md-3 col-form-label text-md-end" id="msRecordsLabel">Include Records:</span>
+                <div class="col-md-6 offset-md-3 offset-lg-2" role="group" aria-labelledby="msRecordsLabel">
+                  <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" id="msRecordAct" name="personSearch.active" checked><label class="form-check-label" for="msRecordAct">Active</label></div>
+                  <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" id="msRecordDel" name="personSearch.inActive"><label class="form-check-label" for="msRecordDel">Deleted</label></div>
+                  <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" id="msRecordSup" name="personSearch.superceded"><label class="form-check-label" for="msRecordSup">Superceded</label></div>
+                </div>
               </div>
                 </div>
               </div>
@@ -389,7 +413,7 @@
           <nav class="pv-nav nav flex-column" id="pvNav" aria-label="Patient events"><a class="nav-link" href="#pv-investigations">Investigations</a><a class="nav-link" href="#pv-labReports">Lab Reports</a><a class="nav-link" href="#pv-morbidityReports">Morbidity Reports</a><a class="nav-link" href="#pv-vaccinations">Vaccinations</a><a class="nav-link" href="#pv-treatments">Treatments</a><a class="nav-link" href="#pv-documents">Documents</a><a class="nav-link" href="#pv-contactRecords">Contact Records</a></nav>
         </aside>
         <div class="pv-content">
-          <div class="d-flex align-items-center gap-2"><h3 class="h5 mb-0">Patient Events History</h3><button type="button" class="btn btn-link p-0 ms-auto" data-toggle-all aria-controls="patientDialog">Collapse All</button></div>
+          <div class="pt-3 d-flex align-items-center"><h3 class="sub ps-1 m-0">Patient Events History</h3><button type="button" class="btn btn-link p-0 ms-auto me-2" data-toggle-all aria-controls="patientDialog">Collapse All</button></div>
           <section class="accordion ds-form-accordion" id="pv-investigations" aria-labelledby="pv-investigationsHeading">
             <div class="accordion-item">
               <h4 class="accordion-header" id="pv-investigationsHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="pv-investigations-collapse">Investigations <span class="ms-1" id="pv-investigations-count"></span></button></h4>
@@ -520,12 +544,16 @@
   });
 
   /* --- Sort (same contract as every table) --- */
-  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+  /* Phase 2's sort header (table-sort.js): the sorted th is .sorted with aria-sort and the caret, the others
+     aria-sort="none". The th sorts on click and, for the keyboard, on Enter or Space (508 2.1.1). */
+  table.querySelectorAll('th[data-sort]').forEach(function (btn) {
+    btn.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); } });
     btn.addEventListener('click', function () {
-      var th = btn.closest('th'), col = +btn.dataset.sort;
+      var th = btn, col = +btn.dataset.sort;
       var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
-      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
-      th.setAttribute('aria-sort', dir);
+      table.querySelectorAll('th[data-sort]').forEach(function (t) { t.setAttribute('aria-sort', 'none'); t.classList.remove('sorted'); t.querySelector('.sortable-icon').className = 'bi sortable-icon'; });
+      th.setAttribute('aria-sort', dir); th.classList.add('sorted');
+      th.querySelector('.sortable-icon').className = 'bi ' + (dir === 'ascending' ? 'bi-caret-up-fill' : 'bi-caret-down-fill') + ' sortable-icon';
       Array.prototype.slice.call(tbody.rows).sort(function (a, b) {
         var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();
         return dir === 'ascending' ? x.localeCompare(y) : y.localeCompare(x);
@@ -566,8 +594,8 @@
     return /\d/.test(parts.join('')) ? parts.join('/') : '';
   }
   function chips(q) {
-    var box = document.getElementById('filterChipsDiv'), dobDone = false;
-    box.innerHTML = '';
+    var box = document.getElementById('filterChipsDiv'), dobDone = false, first = box.querySelector('.chipsWithSubMenu:not(.ds-read-only-wrap), #filtersButtonDiv');
+    Array.prototype.forEach.call(box.querySelectorAll('.ds-read-only-wrap'), function (w) { w.remove(); });
     q.forEach(function (v, k) {
       var label = LABELS[k], op = q.get(k + 'Operator');
       if (/^personSearch\.(birthTime(Month|Day|Year)|beforeBirthTime|afterBirthTime)$/.test(k)) {
@@ -576,7 +604,7 @@
       }
       if (!label || !v) return;
       var id = k.replace('personSearch.', ''), wrap = document.createElement('div'), chip = document.createElement('div');
-      wrap.className = 'chipsWithSubMenu';
+      wrap.className = 'chipsWithSubMenu ds-read-only-wrap';
       chip.className = 'chip-button chip-read-only rounded-pill d-flex align-items-center chip badge me-2 ps-3';
       chip.id = id + '-readOnly';
       [[label, id + '-chipLabel-readOnly', ''], [OPS[op] || 'is', id + '-chipOperator-readOnly', 'chip-operator-read-only'],
@@ -588,25 +616,29 @@
         chip.appendChild(span);
       });
       wrap.appendChild(chip);
-      box.appendChild(wrap);
+      box.insertBefore(wrap, first);
     });
-    document.getElementById('filterChips').hidden = !box.children.length;
   }
   function filterText() {
     var t = document.getElementById('filterInput').value.trim().toLowerCase();
     Array.prototype.forEach.call(tbody.rows, function (r) { r.classList.toggle('d-none', !!t && r.textContent.toLowerCase().indexOf(t) === -1); });
   }
+  var ALL = Array.prototype.slice.call(tbody.rows);
   function search(q) {
     var last = q.get('personSearch.lastName') || '', first = q.get('personSearch.firstName') || '';
     var ids = (q.get('personSearch.localID') || '').split(/[\s,;]+/).filter(Boolean), shown = 0;
-    Array.prototype.forEach.call(tbody.rows, function (row) {
+    /* the matches are the table's rows; the others leave it until a later search, so the filter chips and their
+       Reset (js/list-filters.js) only ever see this search's results */
+    ALL.forEach(function (row) {
       var parts = row.cells[3].textContent.trim().split(/,\s*/);
       var ok = (!last || matches(q.get('personSearch.lastNameOperator') || 'SW', parts[0], last)) &&
                (!first || matches(q.get('personSearch.firstNameOperator') || 'SW', parts[1] || '', first)) &&
                (!ids.length || ids.indexOf(row.getAttribute('data-id')) !== -1);
-      row.hidden = !ok; if (ok) shown++;
+      row.hidden = false;
+      if (ok) { tbody.appendChild(row); shown++; } else if (row.parentNode) row.parentNode.removeChild(row);
     });
     chips(q);
+    document.getElementById('candTable').dispatchEvent(new Event('ds-rows-changed'));
     document.getElementById('noResults').hidden = shown !== 0;
     var text = shown === 0 ? 'No patients match these criteria' : shown + (shown === 1 ? ' candidate found' : ' candidates found');
     document.getElementById('resultCount').textContent = text;

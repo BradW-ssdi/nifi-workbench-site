@@ -87,12 +87,13 @@
     var el = n.closest(SEL); if (el) return el;
     var c = n.closest('button, a[href], [role="button"]');
     if (!c || c.hasAttribute('title')) return null;
-    if (!c.textContent.trim()) return (c.getAttribute('aria-label') || '').trim() && c.closest(AUTO_IN) && !c.closest(AUTO_OUT) ? c : null;
+    /* icon-only: no text but its icon's ligature (print, download), which is not visible text */
+    if (!visibleText(c)) return (c.getAttribute('aria-label') || '').trim() && c.closest(AUTO_IN) && !c.closest(AUTO_OUT) ? c : null;
     /* a text button: its label is its tooltip */
     if (c.id === 'filtersId') return c;
     return c.matches(TEXT_BTN) && visibleText(c) && c.closest(AUTO_IN) && !c.closest(AUTO_OUT) ? c : null;
   }
-  var TEXT_BTN = '.btn:not(.btn-link):not(.btn-close)';
+  var TEXT_BTN = '.btn:not(.btn-link):not(.btn-close), .page-link';   // the pager too (Phase 3 review, Team A 11/10)
   /* what the button shows: its text without icon ligatures (aria-hidden) or text only screen readers get */
   function visibleText(el) {
     var c = el.cloneNode(true);

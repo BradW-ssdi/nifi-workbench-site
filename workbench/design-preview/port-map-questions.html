@@ -135,7 +135,7 @@
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Map Questions table, scrolls horizontally when zoomed">
           <table class="table ds-table tableCompact" id="questionTable">
             <caption class="visually-hidden">Questions on the From page and the To page question each maps to. Column headers with buttons are sortable.</caption>
-            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col"><button class="ds-sort-btn" data-sort="1">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="2">From ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">From Label <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">From Data Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Map <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">To ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="7">To Label <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="8">To Data Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th></tr></thead>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" id="statusColumn" aria-sort="none" tabindex="0" data-sort="1"><span>Status</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="fromIDColumn" aria-sort="none" tabindex="0" data-sort="2"><span>From ID</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="fromLabelColumn" aria-sort="none" tabindex="0" data-sort="3"><span>From Label</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="fromDataTypeColumn" aria-sort="none" tabindex="0" data-sort="4"><span>From Data Type</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="mapColumn" aria-sort="none" tabindex="0" data-sort="5"><span>Map</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="toIDColumn" aria-sort="none" tabindex="0" data-sort="6"><span>To ID</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="toLabelColumn" aria-sort="none" tabindex="0" data-sort="7"><span>To Label</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="toDataTypeColumn" aria-sort="none" tabindex="0" data-sort="8"><span>To Data Type</span> <i class="bi sortable-icon" aria-hidden="true"></i></th></tr></thead>
             <tbody>
               <tr data-q="VAR218"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR218" aria-haspopup="dialog" aria-label="Map VAR218 Manufacturer"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR218</td><td>Manufacturer</td><td>CODED</td><td data-c="map">Yes</td><td data-c="toId">VAC107</td><td data-c="toLabel">Vaccine Manufacturer(1)</td><td data-c="toType">CODED</td></tr>
               <tr data-q="VAR219"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR219" aria-haspopup="dialog" aria-label="Map VAR219 Lot Number"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td><td data-c="status"><span class="badge text-bg-success">Complete (R)</span></td><td>VAR219</td><td>Lot Number</td><td>TEXT</td><td data-c="map">Yes</td><td data-c="toId">VAC108</td><td data-c="toLabel">Vaccine Lot Number(1)</td><td data-c="toType">TEXT</td></tr>
@@ -227,13 +227,17 @@
   var tbody = table.tBodies[0];
 
   /* Sort: aria-sort exclusively on the sorted th, order announced. */
-  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+  /* Phase 2's sort header (table-sort.js): the sorted th is .sorted with aria-sort and the caret, the others
+     aria-sort="none". The th sorts on click and, for the keyboard, on Enter or Space (508 2.1.1). */
+  table.querySelectorAll('th[data-sort]').forEach(function (btn) {
+    btn.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); } });
     btn.addEventListener('click', function () {
-      var th = btn.closest('th');
+      var th = btn;
       var col = +btn.dataset.sort;
       var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
-      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
-      th.setAttribute('aria-sort', dir);
+      table.querySelectorAll('th[data-sort]').forEach(function (t) { t.setAttribute('aria-sort', 'none'); t.classList.remove('sorted'); t.querySelector('.sortable-icon').className = 'bi sortable-icon'; });
+      th.setAttribute('aria-sort', dir); th.classList.add('sorted');
+      th.querySelector('.sortable-icon').className = 'bi ' + (dir === 'ascending' ? 'bi-caret-up-fill' : 'bi-caret-down-fill') + ' sortable-icon';
       var rows = Array.prototype.slice.call(tbody.rows);
       rows.sort(function (a, b) {
         var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();

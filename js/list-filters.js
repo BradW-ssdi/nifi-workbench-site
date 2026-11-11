@@ -55,6 +55,10 @@
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   var ICON = function (name, size) { return '<span class="material-symbols-rounded" aria-hidden="true" style="font-size:' + size + 'px;">' + name + '</span>'; };
 
+  /* A filter chip. Read-only chips (a search's criteria, .chip-read-only, as Phase 2's queueFilterChips) share the row
+     and are left alone. */
+  var CHIP = '.chipsWithSubMenu:not(:has(> .chip-read-only))';
+
   function initFilters() {
     var bar = $('[data-list-chips]');
     var status = document.getElementById('filterStatus');
@@ -96,7 +100,7 @@
     /* Reset shows while any filter is applied, and as soon as a filter is added from Filter, before it has values. */
     function syncReset() {
       if (!resetDiv) return;
-      var added = $$('.chipsWithSubMenu', bar).some(function (w) { return !w.hidden && w.getAttribute('data-chip-type') !== 'S'; });
+      var added = $$(CHIP, bar).some(function (w) { return !w.hidden && w.getAttribute('data-chip-type') !== 'S'; });
       resetDiv.style.display = Object.keys(active).length || added ? '' : 'none';
     }
 
@@ -120,7 +124,7 @@
     }
     function spoken(f) { return f.values.concat(f.blanks ? ['blank'] : []).join(' or '); }
 
-    function chipOf(col) { return $$('.chipsWithSubMenu', bar).filter(function (w) { return w.getAttribute('data-column') === col; })[0]; }
+    function chipOf(col) { return $$(CHIP, bar).filter(function (w) { return w.getAttribute('data-column') === col; })[0]; }
     function shown(w) { return !!w && !w.hidden; }
     /* A chip chosen from Filter goes: an offered chip (in the markup) hides, a built one is removed. */
     function drop(w) {
@@ -282,7 +286,7 @@
         return listed ? listed.split('|').indexOf(h) !== -1 : true;
       });
       /* an offered chip filters a column of its own, which may not be a header (the activity logs' Action) */
-      $$('.chipsWithSubMenu[data-offered]', bar).forEach(function (w) { var c = w.getAttribute('data-column'); if (cols.indexOf(c) === -1) cols.push(c); });
+      $$(CHIP + '[data-offered]', bar).forEach(function (w) { var c = w.getAttribute('data-column'); if (cols.indexOf(c) === -1) cols.push(c); });
       return cols;
     }
     function standardChip(col) { var w = chipOf(col); return !!(w && w.getAttribute('data-chip-type') === 'S'); }
@@ -321,14 +325,14 @@
        contradicts a chip. */
     /* Chips in the markup that are not standard (Phase 2 type D) are offered under Filter: hidden until chosen there,
        unless a filter is applied on load, with Phase 2's close button. */
-    $$('.chipsWithSubMenu', bar).forEach(function (wrap) {
+    $$(CHIP, bar).forEach(function (wrap) {
       if (wrap.getAttribute('data-chip-type') === 'S') return;
       wrap.setAttribute('data-offered', '');
       if (!wrap.hasAttribute('data-values')) wrap.hidden = true;
       var chip = $('.chip-button', wrap);
       if (!$('.remove-filter', chip)) chip.insertAdjacentHTML('beforeend', '<button type="button" class="btn-close ms-2 remove-filter" style="width:2px" aria-label="Remove ' + esc(wrap.getAttribute('data-column')) + ' filter"></button>');
     });
-    $$('.chipsWithSubMenu', bar).forEach(function (wrap) {
+    $$(CHIP, bar).forEach(function (wrap) {
       var col = wrap.getAttribute('data-column');
       if (wrap.hasAttribute('data-values') && headers.indexOf(col) !== -1) active[col] = { op: wrap.getAttribute('data-op') || '=', values: wrap.getAttribute('data-values').split('|').filter(Boolean), blanks: wrap.hasAttribute('data-blanks') };
       wireChip(wrap);
@@ -361,8 +365,8 @@
       close(false);
       active = {};
       if (status) status.textContent = '';   // quietly: the script that drew the rows says what happened
-      $$('.chipsWithSubMenu:not([data-chip-type="S"])', bar).forEach(drop);
-      $$('.chipsWithSubMenu', bar).forEach(renderChip);
+      $$(CHIP + ':not([data-chip-type="S"])', bar).forEach(drop);
+      $$(CHIP, bar).forEach(renderChip);
       originalOrder = Array.prototype.slice.call(tbody.rows);
       applyRows();
     });
@@ -372,15 +376,15 @@
       close(false);
       active = {};
       // chips chosen from Filter go (an offered chip hides); standard chips stay, cleared
-      $$('.chipsWithSubMenu:not([data-chip-type="S"])', bar).forEach(drop);
-      $$('.chipsWithSubMenu', bar).forEach(renderChip);
+      $$(CHIP + ':not([data-chip-type="S"])', bar).forEach(drop);
+      $$(CHIP, bar).forEach(renderChip);
       if (textFilter && textFilter.value) { textFilter.value = ''; Array.prototype.forEach.call(tbody.rows, function (r) { r.hidden = false; }); textFilter.dispatchEvent(new Event('input')); }
       $$('th[aria-sort]', table).forEach(function (th) { th.removeAttribute('aria-sort'); });
       originalSort.forEach(function (p) { p[0].setAttribute('aria-sort', p[1]); });
       originalOrder.forEach(function (r) { tbody.appendChild(r); });
       applyRows();
       say('Filters and sorting reset. Showing all ' + tbody.rows.length + ' ' + noun + '.');
-      var first = $('.chipsWithSubMenu .chip-expand', bar) || filterBtn;
+      var first = $(CHIP + ' .chip-expand', bar) || filterBtn;
       first.focus();
     });
   }

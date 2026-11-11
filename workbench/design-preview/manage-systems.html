@@ -118,7 +118,7 @@
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Manage Sending and Receiving Systems table, scrolls horizontally when zoomed">
           <table class="table ds-table tableCompact" id="systemTable">
             <caption class="visually-hidden">Sending and receiving systems. Column headers with buttons are sortable.</caption>
-            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="1">Application Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="2">Display Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">Facility Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">Report Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Sender <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">Recipient <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="7">Transfer <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th></tr></thead>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" id="applicationNameColumn" class="sorted" aria-sort="ascending" tabindex="0" data-sort="1"><span>Application Name</span> <i class="bi bi-caret-up-fill sortable-icon" aria-hidden="true"></i></th><th scope="col" id="displayNameColumn" aria-sort="none" tabindex="0" data-sort="2"><span>Display Name</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="facilityNameColumn" aria-sort="none" tabindex="0" data-sort="3"><span>Facility Name</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="reportTypeColumn" aria-sort="none" tabindex="0" data-sort="4"><span>Report Type</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="senderColumn" aria-sort="none" tabindex="0" data-sort="5"><span>Sender</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="recipientColumn" aria-sort="none" tabindex="0" data-sort="6"><span>Recipient</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="transferColumn" aria-sort="none" tabindex="0" data-sort="7"><span>Transfer</span> <i class="bi sortable-icon" aria-hidden="true"></i></th></tr></thead>
             <tbody>
               <tr><td class="ds-row-actions"><a href="view-system.html" aria-label="View qa System"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="edit-system.html" aria-label="Edit qa System"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td><td>qa System</td><td>qa System</td><td>qa System</td><td>Case Report</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
               <tr><td class="ds-row-actions"><a href="#" aria-label="View Sample eICR Sender"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="add-system.html" aria-label="Edit Sample eICR Sender"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td><td>Sample eICR Sender</td><td>Sample eICR Sender</td><td>Sample Health System</td><td>Case Report</td><td>Yes</td><td>No</td><td>No</td></tr>
@@ -156,13 +156,17 @@
   var tbody = table.tBodies[0];
 
   /* Sort: aria-sort exclusively on the sorted th, order announced. */
-  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+  /* Phase 2's sort header (table-sort.js): the sorted th is .sorted with aria-sort and the caret, the others
+     aria-sort="none". The th sorts on click and, for the keyboard, on Enter or Space (508 2.1.1). */
+  table.querySelectorAll('th[data-sort]').forEach(function (btn) {
+    btn.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); } });
     btn.addEventListener('click', function () {
-      var th = btn.closest('th');
+      var th = btn;
       var col = +btn.dataset.sort;
       var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
-      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
-      th.setAttribute('aria-sort', dir);
+      table.querySelectorAll('th[data-sort]').forEach(function (t) { t.setAttribute('aria-sort', 'none'); t.classList.remove('sorted'); t.querySelector('.sortable-icon').className = 'bi sortable-icon'; });
+      th.setAttribute('aria-sort', dir); th.classList.add('sorted');
+      th.querySelector('.sortable-icon').className = 'bi ' + (dir === 'ascending' ? 'bi-caret-up-fill' : 'bi-caret-down-fill') + ' sortable-icon';
       var rows = Array.prototype.slice.call(tbody.rows);
       rows.sort(function (a, b) {
         var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();

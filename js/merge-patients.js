@@ -79,7 +79,9 @@
     dobOp.addEventListener('change', syncDob);
     // The criteria: every named field except the selects with a default (the operators and the identifier type),
     // which only go with a field that has a value.
-    var fields = function () { return $$('input[name], select[name]:not([data-default])', form); };
+    var fields = function () { return $$('input[name]:not([type="checkbox"]), select[name]:not([data-default])', form); };
+    // Include Records (Active, Deleted, Superceded): checkboxes, Active on by default as Phase 2's
+    var records = function () { return $$('input[type="checkbox"][name]', form); };
     var paired = function () { return $$('select[data-default]', form); };
     var pairOf = function (sel) {
       var name = sel.getAttribute('data-for') || sel.name.replace(/Operator$/, '');
@@ -88,6 +90,7 @@
     };
     var clear = function () {
       fields().forEach(function (el) { el.value = ''; });
+      records().forEach(function (el) { el.checked = el.defaultChecked; });
       paired().forEach(function (s) { s.value = s.getAttribute('data-default'); });
       syncDob(); summary.hidden = true;
     };
@@ -98,6 +101,7 @@
       paired().forEach(function (el) { if (params.has(el.name)) el.value = params.get(el.name); });
       syncDob();
       fields().forEach(function (el) { if (params.has(el.name)) el.value = params.get(el.name); });
+      if (params.has('personSearch.recordsSet')) records().forEach(function (el) { el.checked = params.has(el.name); });
     };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -111,6 +115,8 @@
       var q = new URLSearchParams();
       fields().forEach(function (el) { if (el.value.trim() !== '') q.set(el.name, el.value.trim()); });
       paired().forEach(function (el) { if (pairOf(el).some(function (f) { return f.value.trim() !== ''; })) q.set(el.name, el.value); });
+      records().forEach(function (el) { if (el.checked) q.set(el.name, 'on'); });
+      q.set('personSearch.recordsSet', '1');   // so Refine Search restores the boxes as they were
       if (window.mergeCandidates) {   // the candidate list: list the matches in place
         dsDialog.hide(search);
         params = q; history.replaceState(null, '', '?' + q.toString());
@@ -149,10 +155,16 @@
       ['documents', 'Documents', ['Event ID', 'Date Received', 'Document Type', 'Sending Facility', 'Date Reported', 'Condition', 'Associated With']],
       ['contactRecords', 'Contact Records', ['Event ID', 'Date Created', 'Name/Relationship', 'Date Named', 'Description', 'Associated With']]];
     var EMPTY = '<p class="pv-empty">No Data Found</p>';
+    /* Status as Phase 2's badge (PatientService: badge ms-1 bg-info Open, bg-close Closed; Phase 3 review, Team A slide 5) */
+    var badge = function (v) {
+      var cls = /^open$/i.test(v) ? 'bg-info' : /^closed$/i.test(v) ? 'bg-close' : '';
+      return cls ? '<span class="badge ms-1 ' + cls + '">' + esc(v) + '</span>' : esc(v);
+    };
     var table = function (caption, cols, rows) {
+      var statusCol = cols.indexOf('Status');
       return '<div class="ds-table-scroll" tabindex="0" role="group" aria-label="' + esc(caption) + ', scrolls horizontally when zoomed"><table class="table table-sm table-hover table-css ds-table mb-0"><caption class="visually-hidden">' + esc(caption) + '</caption><thead><tr>' +
         cols.map(function (h) { return '<th scope="col">' + h + '</th>'; }).join('') + '</tr></thead><tbody>' +
-        rows.map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+        rows.map(function (r) { return '<tr>' + r.map(function (c, i) { return '<td>' + (i === statusCol ? badge(c) : esc(c)) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
     };
     /* Contact Records, as Phase 2 splits them: the contacts the patient named, by investigation, then the
        investigations in which the patient was named as a contact */

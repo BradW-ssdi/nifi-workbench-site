@@ -9,11 +9,11 @@
  * the menu #tableSettingsMenu[data-table="<table id>"]. The button opens and closes the menu; Escape or a click
  * outside closes it and Escape returns focus to the button.
  *
- * BA review question: Phase 2 starts compact; these templates start at the standard row height (TS-1).
+ * Tables start compact, as Phase 2's (Phase 3 review, Team B slide 2, 11/11: compact rows on by default).
  */
 (function () {
     "use strict";
-    var START_COMPACT = false;
+    var START_COMPACT = true;
 
     function key(tableId) { return "compactRows__" + tableId; }
     function isCompact(tableId) {

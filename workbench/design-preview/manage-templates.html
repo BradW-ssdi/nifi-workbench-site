@@ -120,7 +120,7 @@
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Manage Templates table, scrolls horizontally when zoomed">
           <table class="table ds-table tableCompact" id="templateTable">
             <caption class="visually-hidden">Template library. Column headers with buttons are sortable.</caption>
-            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="1">Template Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="2">Template Description <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">Last Updated <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">Last Updated By <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Source <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th></tr></thead>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" id="templateNameColumn" class="sorted" aria-sort="ascending" tabindex="0" data-sort="1"><span>Template Name</span> <i class="bi bi-caret-up-fill sortable-icon" aria-hidden="true"></i></th><th scope="col" id="templateDescriptionColumn" aria-sort="none" tabindex="0" data-sort="2"><span>Template Description</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="lastUpdatedColumn" aria-sort="none" tabindex="0" data-sort="3"><span>Last Updated</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="lastUpdatedByColumn" aria-sort="none" tabindex="0" data-sort="4"><span>Last Updated By</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="sourceColumn" aria-sort="none" tabindex="0" data-sort="5"><span>Source</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="statusColumn" aria-sort="none" tabindex="0" data-sort="6"><span>Status</span> <i class="bi sortable-icon" aria-hidden="true"></i></th></tr></thead>
             <tbody>
               <tr><td class="ds-row-actions"><a href="view-template.html" aria-label="View Acute Flaccid Myelitis Prod"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a></td><td>Acute Flaccid Myelitis Prod</td><td>Acute Flaccid Myelitis Prod</td><td>09/20/2016</td><td>Lucia Navarro</td><td>TX.DOH.PROD.1</td><td><span class="badge text-bg-success">Active</span></td></tr>
               <tr><td class="ds-row-actions"><a href="#" aria-label="View AMEBIASIS"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a></td><td>AMEBIASIS</td><td>Amebiasis template for legacy to page builder bulk conversion.</td><td>03/26/2026</td><td>Marcus Chen</td><td>TX.DOH.PROD.1</td><td><span class="badge text-bg-success">Active</span></td></tr>
@@ -174,13 +174,17 @@
   var tbody = table.tBodies[0];
 
   /* Sort: aria-sort exclusively on the sorted th, order announced. */
-  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+  /* Phase 2's sort header (table-sort.js): the sorted th is .sorted with aria-sort and the caret, the others
+     aria-sort="none". The th sorts on click and, for the keyboard, on Enter or Space (508 2.1.1). */
+  table.querySelectorAll('th[data-sort]').forEach(function (btn) {
+    btn.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); } });
     btn.addEventListener('click', function () {
-      var th = btn.closest('th');
+      var th = btn;
       var col = +btn.dataset.sort;
       var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
-      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
-      th.setAttribute('aria-sort', dir);
+      table.querySelectorAll('th[data-sort]').forEach(function (t) { t.setAttribute('aria-sort', 'none'); t.classList.remove('sorted'); t.querySelector('.sortable-icon').className = 'bi sortable-icon'; });
+      th.setAttribute('aria-sort', dir); th.classList.add('sorted');
+      th.querySelector('.sortable-icon').className = 'bi ' + (dir === 'ascending' ? 'bi-caret-up-fill' : 'bi-caret-down-fill') + ' sortable-icon';
       var rows = Array.prototype.slice.call(tbody.rows);
       rows.sort(function (a, b) {
         var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();

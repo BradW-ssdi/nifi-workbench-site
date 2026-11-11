@@ -120,7 +120,7 @@
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Manage Value Sets table, scrolls horizontally when zoomed">
           <table class="table ds-table tableCompact" id="valueSetTable">
             <caption class="visually-hidden">Value set library. Column headers with buttons are sortable.</caption>
-            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col"><button class="ds-sort-btn" data-sort="1">Type <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col" aria-sort="ascending"><button class="ds-sort-btn" data-sort="2">Value Set Code <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">Value Set Name <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">Value Set Description <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th></tr></thead>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" id="typeColumn" aria-sort="none" tabindex="0" data-sort="1"><span>Type</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="valueSetCodeColumn" class="sorted" aria-sort="ascending" tabindex="0" data-sort="2"><span>Value Set Code</span> <i class="bi bi-caret-up-fill sortable-icon" aria-hidden="true"></i></th><th scope="col" id="valueSetNameColumn" aria-sort="none" tabindex="0" data-sort="3"><span>Value Set Name</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="valueSetDescriptionColumn" aria-sort="none" tabindex="0" data-sort="4"><span>Value Set Description</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="statusColumn" aria-sort="none" tabindex="0" data-sort="5"><span>Status</span> <i class="bi sortable-icon" aria-hidden="true"></i></th></tr></thead>
             <tbody>
               <tr><td class="ds-row-actions"><a href="view-value-set.html" aria-label="View 3RDGEN_CEPH"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="edit-value-set.html" aria-label="Edit 3RDGEN_CEPH"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td><td>LOCAL</td><td>3RDGEN_CEPH</td><td>3rd generation cephalosporin set</td><td>3rd generation cephalosporins</td><td><span class="badge text-bg-success">Active</span></td></tr>
               <tr><td class="ds-row-actions"><a href="#" aria-label="View 730_JUSTIFICATION"><span class="ds-icon material-symbols-rounded" aria-hidden="true">visibility</span></a><a href="#" aria-label="Edit 730_JUSTIFICATION"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td><td>LOCAL</td><td>730_JUSTIFICATION</td><td>730_JUSTIFICATION</td><td>Justification for 730 case classification</td><td><span class="badge text-bg-success">Active</span></td></tr>
@@ -174,13 +174,17 @@
   var tbody = table.tBodies[0];
 
   /* Sort: aria-sort exclusively on the sorted th, order announced. */
-  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+  /* Phase 2's sort header (table-sort.js): the sorted th is .sorted with aria-sort and the caret, the others
+     aria-sort="none". The th sorts on click and, for the keyboard, on Enter or Space (508 2.1.1). */
+  table.querySelectorAll('th[data-sort]').forEach(function (btn) {
+    btn.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); } });
     btn.addEventListener('click', function () {
-      var th = btn.closest('th');
+      var th = btn;
       var col = +btn.dataset.sort;
       var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
-      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
-      th.setAttribute('aria-sort', dir);
+      table.querySelectorAll('th[data-sort]').forEach(function (t) { t.setAttribute('aria-sort', 'none'); t.classList.remove('sorted'); t.querySelector('.sortable-icon').className = 'bi sortable-icon'; });
+      th.setAttribute('aria-sort', dir); th.classList.add('sorted');
+      th.querySelector('.sortable-icon').className = 'bi ' + (dir === 'ascending' ? 'bi-caret-up-fill' : 'bi-caret-down-fill') + ' sortable-icon';
       var rows = Array.prototype.slice.call(tbody.rows);
       rows.sort(function (a, b) {
         var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();

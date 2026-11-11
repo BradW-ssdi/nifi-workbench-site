@@ -135,7 +135,7 @@
           <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Map Answers table, scrolls horizontally when zoomed">
           <table class="table ds-table tableCompact" id="answerTable">
             <caption class="visually-hidden">Coded answers on the From page and the To page answer each maps to. Column headers with buttons are sortable.</caption>
-            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col"><button class="ds-sort-btn" data-sort="1">Status <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="2">From ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="3">From Label <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="4">From Answer <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="5">Map <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="6">To ID <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th><th scope="col"><button class="ds-sort-btn" data-sort="7">To Answer <svg class="ds-icon" aria-hidden="true"><use href="../../icons/sprite.svg#caret_down_fill"/></svg></button></th></tr></thead>
+            <thead><tr><th scope="col"><span class="visually-hidden">Actions</span></th><th scope="col" id="statusColumn" aria-sort="none" tabindex="0" data-sort="1"><span>Status</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="fromIDColumn" aria-sort="none" tabindex="0" data-sort="2"><span>From ID</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="fromLabelColumn" aria-sort="none" tabindex="0" data-sort="3"><span>From Label</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="fromAnswerColumn" aria-sort="none" tabindex="0" data-sort="4"><span>From Answer</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="mapColumn" aria-sort="none" tabindex="0" data-sort="5"><span>Map</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="toIDColumn" aria-sort="none" tabindex="0" data-sort="6"><span>To ID</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="toAnswerColumn" aria-sort="none" tabindex="0" data-sort="7"><span>To Answer</span> <i class="bi sortable-icon" aria-hidden="true"></i></th></tr></thead>
             <tbody>
               <tr data-q="VAR176|119297000"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR176|119297000" aria-haspopup="dialog" aria-label="Map VAR176 answer Blood"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td><td data-c="status"><span class="badge text-bg-success">Auto-Mapped</span></td><td>VAR176</td><td>Source of PCR Specimen</td><td>Blood</td><td data-c="map">Yes</td><td>LAB165</td><td data-c="toAnswer">Blood specimen</td></tr>
               <tr data-q="VAR176|119342007"><td class="ds-row-actions"><button type="button" class="btn btn-link p-0 pp-map-btn" data-map="VAR176|119342007" aria-haspopup="dialog" aria-label="Map VAR176 answer Saliva"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td><td data-c="status"><span class="badge text-bg-success">Auto-Mapped</span></td><td>VAR176</td><td>Source of PCR Specimen</td><td>Saliva</td><td data-c="map">Yes</td><td>LAB165</td><td data-c="toAnswer">Saliva specimen</td></tr>
@@ -220,13 +220,17 @@
   var tbody = table.tBodies[0];
 
   /* Sort: aria-sort exclusively on the sorted th, order announced. */
-  table.querySelectorAll('.ds-sort-btn').forEach(function (btn) {
+  /* Phase 2's sort header (table-sort.js): the sorted th is .sorted with aria-sort and the caret, the others
+     aria-sort="none". The th sorts on click and, for the keyboard, on Enter or Space (508 2.1.1). */
+  table.querySelectorAll('th[data-sort]').forEach(function (btn) {
+    btn.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); } });
     btn.addEventListener('click', function () {
-      var th = btn.closest('th');
+      var th = btn;
       var col = +btn.dataset.sort;
       var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
-      table.querySelectorAll('th[aria-sort]').forEach(function (t) { t.removeAttribute('aria-sort'); });
-      th.setAttribute('aria-sort', dir);
+      table.querySelectorAll('th[data-sort]').forEach(function (t) { t.setAttribute('aria-sort', 'none'); t.classList.remove('sorted'); t.querySelector('.sortable-icon').className = 'bi sortable-icon'; });
+      th.setAttribute('aria-sort', dir); th.classList.add('sorted');
+      th.querySelector('.sortable-icon').className = 'bi ' + (dir === 'ascending' ? 'bi-caret-up-fill' : 'bi-caret-down-fill') + ' sortable-icon';
       var rows = Array.prototype.slice.call(tbody.rows);
       rows.sort(function (a, b) {
         var x = a.cells[col].textContent.trim(), y = b.cells[col].textContent.trim();
