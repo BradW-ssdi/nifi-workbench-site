@@ -12085,6 +12085,10 @@ span.ds-icon, span.ds-nav-icon, span.ds-nav-chevron, span.ds-card-icon {
   margin-top: 4px;
 }
 
+.page-body > p + .ds-phase2:has([data-list-chips]) {
+  margin-top: 4px;
+}
+
 .page-body .ds-toolbar ~ .ds-table-frame, .page-body .ds-toolbar ~ .table-wrapper, .page-body .ds-phase2 + .table-wrapper {
   margin-top: 8px;
 }

@@ -6,6 +6,7 @@
 <title>System Identified Merge Queue - Merge Patients - NEDSS</title>
 <link rel="stylesheet" href="../../css/ds.css">
 <script src="../../js/app-frame.js" defer></script>
+<script src="../../js/list-filters.js" defer></script>
 <script src="../../js/ds-floating-bar.js" defer></script>
 <script src="../../js/ds-tooltip.js" defer></script>
 <script src="../../js/ds-infotip.js" defer></script>
@@ -144,6 +145,26 @@
              remaining to view for merge"), the text above the table the BA review keeps in place of the group header.
              DEV: both come from the matching batch; update them after every action. -->
         <p class="mb-0"><span class="ds-page-summary"><span id="groupPos">Group 3 of 27 in the queue</span><span class="ds-cell-sub" id="batchInfo">Matching last ran 10/08/2026. 25 groups left to review.</span></span></p>
+<!-- merge:chips -->
+        <!-- Column filter chips: Phase 2's queue chips in Phase 2's host (#filterChips > #filterChipsDiv), as on the
+             candidate list. They narrow the group's candidates; moving to the next group resets them.
+             DEV: build them with the Phase 3 queue component (templates/phase3/fragments/queueFilters.html). -->
+        <div class="ds-phase2">
+          <div class="d-flex flex-wrap" id="filterChips">
+            <div class="d-flex flex-wrap filterChipsDiv" id="filterChipsDiv" role="group" aria-label="Filters" data-list-chips data-table="candTable" data-noun="candidates" data-addable="Patient ID|Name|Age / DOB / Sex|Address|Phone / Email|ID">
+              <div id="filtersButtonDiv">
+              <button type="button" aria-expanded="false" aria-haspopup="true" aria-controls="filterButtonId" class="chip-button btn-outline-dark rounded-pill dropdown-toggle d-flex align-items-center bg-primary chip badge me-2 ps-3 filter-chip" id="filtersId">
+              <span aria-hidden="true" class="material-symbols-rounded text me-1" style="font-size: 24px;">filter_alt</span>
+              <span class="me-2" style="font-size: 14px;">Filter</span>
+              </button>
+              <div class="dropdown-menu custom-dropdown dropdown typeahead-container" id="filterButtonId"></div>
+              </div>
+              <div id="clearFiltersDiv" style="margin-top: 5px">| <button type="button" class="btn btn-link p-0 text-decoration-none align-baseline" id="clearFilters">Reset</button></div>
+            </div>
+          </div>
+        </div>
+        <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+<!-- /merge:chips -->
         <div id="status" class="visually-hidden" role="status" aria-live="polite"></div>
 
         <div class="table-wrapper">
@@ -361,6 +382,7 @@
     document.getElementById('groupPos').textContent = 'Group ' + group + ' of ' + total + ' in the queue';
     var cap = document.getElementById('groupCaption'); cap.textContent = cap.textContent.replace(/^Candidate group \d+/, 'Candidate group ' + group);
     var f = document.getElementById('filterInput'); f.value = ''; filterText();
+    var reset = document.getElementById('clearFilters'); if (reset && reset.getClientRects().length) reset.click();   // the chips too
     banner.textContent = message + ' Showing group ' + group + ' of ' + total + '.';
     banner.hidden = false;
     boxes().forEach(function (x) { x.checked = false; });

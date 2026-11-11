@@ -11802,6 +11802,10 @@
   margin-top: 4px;
 }
 
+.ds-window .page-body > p + .ds-phase2:has([data-list-chips]):not(.ds-phase2, .ds-phase2 *) {
+  margin-top: 4px;
+}
+
 .ds-window .page-body .ds-toolbar ~ .ds-table-frame:not(.ds-phase2, .ds-phase2 *), .ds-window .page-body .ds-toolbar ~ .table-wrapper:not(.ds-phase2, .ds-phase2 *), .ds-window .page-body .ds-phase2 + .table-wrapper:not(.ds-phase2, .ds-phase2 *) {
   margin-top: 8px;
 }
@@ -14913,6 +14917,10 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
   }
 }
 .ds-window .page-body .ds-toolbar + .ds-phase2 {
+  margin-top: 4px;
+}
+
+.ds-window .page-body > p + .ds-phase2:has([data-list-chips]) {
   margin-top: 4px;
 }
 
