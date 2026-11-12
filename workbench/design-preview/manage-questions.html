@@ -153,19 +153,19 @@
             <caption class="visually-hidden">Question library search results. Column headers with buttons are sortable.</caption>
             <thead>
               <tr>
-                <th scope="col"><span class="visually-hidden">Actions</span></th>
-                <th scope="col" id="typeColumn" aria-sort="none" tabindex="0" data-sort="1"><span>Type</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="uniqueIDColumn" class="sorted" aria-sort="ascending" tabindex="0" data-sort="2"><span>Unique ID</span> <i class="bi bi-caret-up-fill sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="uniqueNameColumn" aria-sort="none" tabindex="0" data-sort="3"><span>Unique Name</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="subgroupColumn" aria-sort="none" tabindex="0" data-sort="4"><span>Subgroup</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="labelColumn" aria-sort="none" tabindex="0" data-sort="5"><span>Label</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="statusColumn" aria-sort="none" tabindex="0" data-sort="6"><span>Status</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col"><span class="visually-hidden">View</span></th><th scope="col"><span class="visually-hidden">Edit</span></th>
+                <th scope="col" id="typeColumn" aria-sort="none" tabindex="0" data-sort="2"><span>Type</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="uniqueIDColumn" class="sorted" aria-sort="ascending" tabindex="0" data-sort="3"><span>Unique ID</span> <i class="bi bi-caret-up-fill sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="uniqueNameColumn" aria-sort="none" tabindex="0" data-sort="4"><span>Unique Name</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="subgroupColumn" aria-sort="none" tabindex="0" data-sort="5"><span>Subgroup</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="labelColumn" aria-sort="none" tabindex="0" data-sort="6"><span>Label</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="statusColumn" aria-sort="none" tabindex="0" data-sort="7"><span>Status</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
               </tr>
             </thead>
             <!-- DEV: tbody = th:each over questions; swap this card on search. -->
             <tbody class="tableData" id="queueDataTableBody">
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 10109" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 10109" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 10109" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 10109" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>10109</td>
                 <td>Streptomycin</td>
@@ -174,7 +174,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 1023001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 1023001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 1023001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 1023001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>LOCAL</td>
                 <td>1023001</td>
                 <td>Did the patient have apnea?</td>
@@ -183,7 +183,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 102478008" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 102478008" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 102478008" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 102478008" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>102478008</td>
                 <td>Pre-Existing Condition(s)</td>
@@ -192,7 +192,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 102594003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 102594003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 102594003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 102594003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>102594003</td>
                 <td>Abnormal Electrocardiogram EKG</td>
@@ -201,7 +201,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 102957003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 102957003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 102957003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 102957003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>102957003</td>
                 <td>Neurologic Signs/Symptoms</td>
@@ -210,7 +210,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 103001002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 103001002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 103001002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 103001002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>103001002</td>
                 <td>Feverish</td>
@@ -219,7 +219,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 103514009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 103514009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 103514009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 103514009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>103514009</td>
                 <td>C. pneumoniae Result</td>
@@ -228,7 +228,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 10665004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 10665004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 10665004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 10665004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>10665004</td>
                 <td>Pancreatitis Indicator</td>
@@ -237,7 +237,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 110359009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 110359009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 110359009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 110359009" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>110359009</td>
                 <td>Neuro/Intellectual Disability</td>
@@ -246,7 +246,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 11833005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 11833005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 11833005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 11833005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>11833005</td>
                 <td>Dry Cough</td>
@@ -255,7 +255,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 118940003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 118940003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 118940003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 118940003" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>118940003</td>
                 <td>Nervous System Disorder Indicator</td>
@@ -264,7 +264,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 11920_8" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 11920_8" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 11920_8" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 11920_8" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>11920_8</td>
                 <td>Liver Enzyme Test AST_SGOT</td>
@@ -273,7 +273,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 119292006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 119292006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 119292006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 119292006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>119292006</td>
                 <td>Gastrointestinal Disorder Indicator</td>
@@ -282,7 +282,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 12063002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 12063002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 12063002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 12063002" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>12063002</td>
                 <td>Rectal Bleeding</td>
@@ -291,7 +291,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 1221000119103" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 1221000119103" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 1221000119103" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 1221000119103" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>1221000119103</td>
                 <td>History of Tobacco Usage</td>
@@ -300,7 +300,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 127086001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 127086001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 127086001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 127086001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>127086001</td>
                 <td>Cervical Lymphadenopathy Indicator</td>
@@ -309,7 +309,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 128045006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 128045006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 128045006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 128045006" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>128045006</td>
                 <td>Cellulitis</td>
@@ -318,7 +318,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 128241005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 128241005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 128241005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 128241005" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>128241005</td>
                 <td>Hepatitis</td>
@@ -327,7 +327,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 128480004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 128480004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 128480004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 128480004" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>128480004</td>
                 <td>Acute Hematologic Disorder</td>
@@ -336,7 +336,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 128487001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 128487001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 128487001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 128487001" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>128487001</td>
                 <td>Cardiovascular Disease</td>
@@ -345,7 +345,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 276654001_OTH" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 276654001_OTH" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 276654001_OTH" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 276654001_OTH" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>276654001_OTH</td>
                 <td>Other Congenital Malformations</td>
@@ -354,7 +354,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 413947000" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 413947000" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 413947000" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 413947000" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>413947000</td>
                 <td>Date treatment Stopped</td>
@@ -363,7 +363,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 65490_5" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 65490_5" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 65490_5" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 65490_5" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>65490_5</td>
                 <td>Weight Lost Amount</td>
@@ -372,7 +372,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 74200_7" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 74200_7" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View 74200_7" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="Edit 74200_7" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>74200_7</td>
                 <td>Intensive Care Duration</td>
@@ -381,7 +381,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View NBS559" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit NBS559, inactive questions cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View NBS559" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Question"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit NBS559, inactive questions cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>PHIN</td>
                 <td>NBS559</td>
                 <td>Animal Exposure</td>
@@ -1466,11 +1466,12 @@
   function updateRow(q, tr) {
     tr = tr || rowOf(q.id);
     var on = q.status === 'Active';
-    tr.cells[0].innerHTML = '<button type="button" class="' + BTN + '" aria-haspopup="dialog" aria-label="View ' + esc(q.id) + '"' + tip('View') + '>' + icon('description') + '</button>' +
-      (on ? '<button type="button" class="' + BTN + '" aria-haspopup="dialog" aria-label="Edit ' + esc(q.id) + '"' + tip('Edit') + '>' + icon('edit') + '</button>'
+    // View and Edit in a column each (cells 0 and 1), then Type (2) through Status (7)
+    tr.cells[0].innerHTML = '<button type="button" class="' + BTN + '" aria-haspopup="dialog" aria-label="View ' + esc(q.id) + '"' + tip('View') + '>' + icon('description') + '</button>';
+    tr.cells[1].innerHTML = (on ? '<button type="button" class="' + BTN + '" aria-haspopup="dialog" aria-label="Edit ' + esc(q.id) + '"' + tip('Edit') + '>' + icon('edit') + '</button>'
           : '<button type="button" class="' + BTN + '" disabled aria-label="Edit ' + esc(q.id) + ', inactive questions cannot be edited">' + icon('edit') + '</button>');
-    [TYPE[q.type] || q.type, q.id, q.name, q.subgroup, q.label].forEach(function (v, i) { tr.cells[i + 1].textContent = v; });
-    tr.cells[6].innerHTML = '<span class="badge ' + (on ? 'text-bg-success' : 'text-bg-secondary') + '">' + q.status + '</span>';
+    [TYPE[q.type] || q.type, q.id, q.name, q.subgroup, q.label].forEach(function (v, i) { tr.cells[i + 2].textContent = v; });
+    tr.cells[7].innerHTML = '<span class="badge ' + (on ? 'text-bg-success' : 'text-bg-secondary') + '">' + q.status + '</span>';
   }
 
   /* ---- the forms ---- */

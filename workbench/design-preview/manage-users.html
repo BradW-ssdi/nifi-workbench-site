@@ -153,17 +153,17 @@
             <caption class="visually-hidden">Users. Column headers with buttons are sortable. Status changes are made from the View User screen.</caption>
             <thead>
               <tr>
-                <th scope="col"><span class="visually-hidden">Actions</span></th>
-                <th scope="col" id="userIDColumn" aria-sort="none" tabindex="0" data-sort="1"><span>User ID</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="lastNameColumn" class="sorted" aria-sort="ascending" tabindex="0" data-sort="2"><span>Last Name</span> <i class="bi bi-caret-up-fill sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="firstNameColumn" aria-sort="none" tabindex="0" data-sort="3"><span>First Name</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="jurisdictionColumn" aria-sort="none" tabindex="0" data-sort="4"><span>Jurisdiction</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="programAreaColumn" aria-sort="none" tabindex="0" data-sort="5"><span>Program Area</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="permissionSetColumn" aria-sort="none" tabindex="0" data-sort="6"><span>Permission Set</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="roleColumn" aria-sort="none" tabindex="0" data-sort="7"><span>Role</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="statusColumn" aria-sort="none" tabindex="0" data-sort="8"><span>Status</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="dateCreatedColumn" aria-sort="none" tabindex="0" data-sort="9"><span>Date Created</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="lastLoginColumn" aria-sort="none" tabindex="0" data-sort="10"><span>Last Login</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col"><span class="visually-hidden">View</span></th><th scope="col"><span class="visually-hidden">Edit</span></th>
+                <th scope="col" id="userIDColumn" aria-sort="none" tabindex="0" data-sort="2"><span>User ID</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="lastNameColumn" class="sorted" aria-sort="ascending" tabindex="0" data-sort="3"><span>Last Name</span> <i class="bi bi-caret-up-fill sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="firstNameColumn" aria-sort="none" tabindex="0" data-sort="4"><span>First Name</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="jurisdictionColumn" aria-sort="none" tabindex="0" data-sort="5"><span>Jurisdiction</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="programAreaColumn" aria-sort="none" tabindex="0" data-sort="6"><span>Program Area</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="permissionSetColumn" aria-sort="none" tabindex="0" data-sort="7"><span>Permission Set</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="roleColumn" aria-sort="none" tabindex="0" data-sort="8"><span>Role</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="statusColumn" aria-sort="none" tabindex="0" data-sort="9"><span>Status</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="dateCreatedColumn" aria-sort="none" tabindex="0" data-sort="10"><span>Date Created</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="lastLoginColumn" aria-sort="none" tabindex="0" data-sort="11"><span>Last Login</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
               </tr>
             </thead>
             <!-- DEV: tbody = th:each over users. Multi-value cells (Jurisdiction,
@@ -171,7 +171,7 @@
                  a count with a tooltip. -->
             <tbody class="tableData" id="queueDataTableBody">
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Randi Alvarez (ralvarez)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Randi Alvarez (ralvarez)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Randi Alvarez (ralvarez)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Randi Alvarez (ralvarez)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>ralvarez</td>
                 <td>Alvarez</td>
                 <td>Randi</td>
@@ -184,7 +184,7 @@
                 <td>09/11/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Priya Patel (ppatel)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Priya Patel (ppatel)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Priya Patel (ppatel)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Priya Patel (ppatel)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>ppatel</td>
                 <td>Patel</td>
                 <td>Priya</td>
@@ -197,7 +197,7 @@
                 <td>09/10/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Marcus Lee (mlee)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Marcus Lee (mlee)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Marcus Lee (mlee)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Marcus Lee (mlee)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>mlee</td>
                 <td>Lee</td>
                 <td>Marcus</td>
@@ -210,7 +210,7 @@
                 <td>09/09/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Jasmine Nguyen (jnguyen)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Jasmine Nguyen (jnguyen)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Jasmine Nguyen (jnguyen)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Jasmine Nguyen (jnguyen)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>jnguyen</td>
                 <td>Nguyen</td>
                 <td>Jasmine</td>
@@ -223,7 +223,7 @@
                 <td>09/08/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Daniel Okafor (dokafor)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Daniel Okafor (dokafor)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Daniel Okafor (dokafor)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Daniel Okafor (dokafor)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>dokafor</td>
                 <td>Okafor</td>
                 <td>Daniel</td>
@@ -236,7 +236,7 @@
                 <td>11/30/2025</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Sarah Thompson (sthompson)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Sarah Thompson (sthompson)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Sarah Thompson (sthompson)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Sarah Thompson (sthompson)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>sthompson</td>
                 <td>Thompson</td>
                 <td>Sarah</td>

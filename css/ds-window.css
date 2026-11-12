@@ -12051,6 +12051,18 @@
   margin-left: 4px;
 }
 
+.ds-window .table > tbody > tr > td.ds-row-actions:has(+ td.ds-row-actions):not(.ds-phase2, .ds-phase2 *) {
+  padding-right: 0 !important;
+}
+
+.ds-window .table > tbody > tr > td.ds-row-actions + td.ds-row-actions:not(.ds-phase2, .ds-phase2 *) {
+  padding-left: 4px !important;
+}
+
+.ds-window .table > tbody > tr > td.ds-row-actions:not(.ds-phase2, .ds-phase2 *) {
+  width: 1%;
+}
+
 .ds-window .ds-select-col:not(.ds-phase2, .ds-phase2 *) {
   width: 1%;
   text-align: center;

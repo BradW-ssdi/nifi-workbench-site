@@ -93,8 +93,8 @@
         var icon = '<span class="ds-icon material-symbols-rounded" aria-hidden="true">' + a.icon + '</span>';
         if (a.dialog) return '<button type="button" class="btn btn-light rounded-circle btn-sm" data-record="' + a.dialog + '" data-key="' + key + '" aria-haspopup="dialog" aria-label="' + esc(a.label) + ' ' + label + '" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="' + esc(a.label) + '">' + icon + '</button>';
         return '<a class="btn btn-light rounded-circle btn-sm" href="' + esc(a.href) + '" aria-label="' + esc(a.label) + ' ' + label + '" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="' + esc(a.label) + '">' + icon + '</a>';
-      }).join('');
-      return '<tr data-key="' + key + '">' + (actions.length ? '<td class="ds-row-actions">' + acts + '</td>' : '') + cols.map(function (c, i) { return (i === 0 ? '<th scope="row">' : '<td>') + (r[c] ? cell(c, r[c]) : '<span class="visually-hidden">None</span>') + (i === 0 ? '</th>' : '</td>'); }).join('') + '</tr>';
+      }).map(function (a) { return '<td class="ds-row-actions">' + a + '</td>'; }).join('');   /* a column per button (Team A, Slack 11-10 and 11-12) */
+      return '<tr data-key="' + key + '">' + acts + cols.map(function (c, i) { return (i === 0 ? '<th scope="row">' : '<td>') + (r[c] ? cell(c, r[c]) : '<span class="visually-hidden">None</span>') + (i === 0 ? '</th>' : '</td>'); }).join('') + '</tr>';
     }).join('');
     table.dispatchEvent(new CustomEvent('ds-rows-changed', { bubbles: true }));   // js/list-filters.js starts its filters over
   }

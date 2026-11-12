@@ -151,13 +151,13 @@
             <caption class="visually-hidden">Page library. Column headers with buttons are sortable. Editing a published page creates a new draft.</caption>
             <thead>
               <tr>
-                <th scope="col"><span class="visually-hidden">Actions</span></th>
-                <th scope="col" id="eventTypeColumn" aria-sort="none" tabindex="0" data-sort="1"><span>Event Type</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="pageNameColumn" class="sorted" aria-sort="ascending" tabindex="0" data-sort="2"><span>Page Name</span> <i class="bi bi-caret-up-fill sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="pageStateColumn" aria-sort="none" tabindex="0" data-sort="3"><span>Page State</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="relatedConditionSColumn" aria-sort="none" tabindex="0" data-sort="4"><span>Related Condition(s)</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="lastUpdatedColumn" aria-sort="none" tabindex="0" data-sort="5"><span>Last Updated</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
-                <th scope="col" id="lastUpdatedByColumn" aria-sort="none" tabindex="0" data-sort="6"><span>Last Updated By</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col"><span class="visually-hidden">View</span></th><th scope="col"><span class="visually-hidden">Edit</span></th>
+                <th scope="col" id="eventTypeColumn" aria-sort="none" tabindex="0" data-sort="2"><span>Event Type</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="pageNameColumn" class="sorted" aria-sort="ascending" tabindex="0" data-sort="3"><span>Page Name</span> <i class="bi bi-caret-up-fill sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="pageStateColumn" aria-sort="none" tabindex="0" data-sort="4"><span>Page State</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="relatedConditionSColumn" aria-sort="none" tabindex="0" data-sort="5"><span>Related Condition(s)</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="lastUpdatedColumn" aria-sort="none" tabindex="0" data-sort="6"><span>Last Updated</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
+                <th scope="col" id="lastUpdatedByColumn" aria-sort="none" tabindex="0" data-sort="7"><span>Last Updated By</span> <i class="bi sortable-icon" aria-hidden="true"></i></th>
               </tr>
             </thead>
             <!-- DEV: tbody = th:each over pages. View is a link. Edit is a link on
@@ -166,7 +166,7 @@
                  window.confirm(). -->
             <tbody class="tableData" id="queueDataTableBody">
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View Hepatitis_Case_Map_v2" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><button type="button" class="btn btn-light rounded-circle btn-sm" data-draft="Hepatitis_Case_Map_v2" aria-label="Edit Hepatitis_Case_Map_v2 (creates a draft)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View Hepatitis_Case_Map_v2" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" data-draft="Hepatitis_Case_Map_v2" aria-label="Edit Hepatitis_Case_Map_v2 (creates a draft)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Investigation</td>
                 <td>Hepatitis_Case_Map_v2</td>
                 <td><span class="badge text-bg-success">Published</span></td>
@@ -175,7 +175,7 @@
                 <td>Randi Alvarez</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View Lead_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-page.html" aria-label="Edit Lead_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View Lead_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-page.html" aria-label="Edit Lead_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>Investigation</td>
                 <td>Lead_Case_Map_v1</td>
                 <td><span class="badge text-bg-pending">Initial Draft</span></td>
@@ -184,7 +184,7 @@
                 <td>Priya Patel</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View COVID19_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-page.html" aria-label="Edit COVID19_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View COVID19_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-page.html" aria-label="Edit COVID19_Case_Map_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>Investigation</td>
                 <td>COVID19_Case_Map_v1</td>
                 <td><span class="badge text-bg-info">Published with Draft</span></td>
@@ -193,7 +193,7 @@
                 <td>Randi Alvarez</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View STD_Interview_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><button type="button" class="btn btn-light rounded-circle btn-sm" data-draft="STD_Interview_v1" aria-label="Edit STD_Interview_v1 (creates a draft)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View STD_Interview_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" data-draft="STD_Interview_v1" aria-label="Edit STD_Interview_v1 (creates a draft)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Interview</td>
                 <td>STD_Interview_v1</td>
                 <td><span class="badge text-bg-success">Published</span></td>
@@ -202,7 +202,7 @@
                 <td>Marcus Lee</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View TB_Case_Map_2020" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><button type="button" class="btn btn-light rounded-circle btn-sm" data-draft="TB_Case_Map_2020" aria-label="Edit TB_Case_Map_2020 (creates a draft)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View TB_Case_Map_2020" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" data-draft="TB_Case_Map_2020" aria-label="Edit TB_Case_Map_2020 (creates a draft)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Investigation</td>
                 <td>TB_Case_Map_2020</td>
                 <td><span class="badge text-bg-success">Published</span></td>
@@ -211,7 +211,7 @@
                 <td>Marcus Lee</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View Vaccination_Record_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a><a class="btn btn-light rounded-circle btn-sm" href="edit-page.html" aria-label="Edit Vaccination_Record_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-page.html" aria-label="View Vaccination_Record_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-page.html" aria-label="Edit Vaccination_Record_v1" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
                 <td>Vaccination</td>
                 <td>Vaccination_Record_v1</td>
                 <td><span class="badge text-bg-pending">Draft</span></td>

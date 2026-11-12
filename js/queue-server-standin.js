@@ -86,8 +86,8 @@
             var name = esc(r[Q.actions.name] || "");
             var tip = function (verb) { return ' data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="' + verb + " " + esc(Q.actions.noun) + '"'; };
             return '<td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View ' + name + '"' + tip("View") +
-                '><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button>' +
-                /* Edit: a link to its page, or (no page) a button that opens the Edit dialog */
+                '><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions">' +
+                /* View and Edit in a column each (Team A, Slack 11-10 and 11-12). Edit: a link to its page, or (no page) a button that opens the Edit dialog */
                 (Q.actions.edit ? '<a class="btn btn-light rounded-circle btn-sm" href="' + Q.actions.edit + '"' : '<button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog"') +
                 ' aria-label="Edit ' + name + '"' + tip("Edit") +
                 '><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span>' + (Q.actions.edit ? '</a>' : '</button>') + '</td>';
@@ -109,7 +109,7 @@
     /* The rows endpoint: swapped into tbody.tableData. */
     function rowsHtml(rows, page, size) {
         var n = counts(rows, page, size);
-        if (!n.total) { return '              <tr class="text-center py-2"><td colspan="' + Q.columns.length + '">' + esc(Q.empty) + "</td></tr>"; }
+        if (!n.total) { return '              <tr class="text-center py-2"><td colspan="' + (Q.columns.length + Q.columns.filter(function (c) { return c.type === "actions"; }).length) + '">' + esc(Q.empty) + "</td></tr>"; }
         return rows.slice(n.start, n.end).map(function (r) {
             return "              <tr" + (r[Q.flag] === "true" ? ' class="is-flagged"' : "") + ">" + Q.columns.map(function (c) { return cell(c, r); }).join("") + "</tr>";
         }).join("\n");
