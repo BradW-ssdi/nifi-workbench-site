@@ -13,7 +13,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   .page-body { padding: 24px; display: grid; gap: 16px; }
-  .cond { color: var(--bs-secondary-color); font-size: 13px; }
+  /* Related tests sit on their own line in the same color and size as the condition: Phase 2 keeps one text color and size in a cell. */
+  .cond { color: inherit; font-size: inherit; }
   /* Reflow (WCAG 1.4.10): at 200%/400% zoom the rail stacks on top and nav
      items flow horizontally; the filter input takes the full row. */
   @media (max-width: 820px) {

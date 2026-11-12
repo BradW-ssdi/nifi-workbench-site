@@ -21,6 +21,10 @@
 
   var KEY = 'statusNavBar';
   var SELF = document.currentScript && document.currentScript.src;
+  /* The tooltip, Search clear, error banner and Cancel confirmation scripts below, and the tab icon, are the workbench's
+     stand-ins for what the app already does with Phase 2's scripts. They load only on workbench pages: in the app they
+     would 404 (only this file is copied) or add a second Cancel confirmation on top of Phase 2's. */
+  var WORKBENCH = !!SELF && /\/workbench\//.test(location.pathname) && /\/js\/app-frame\.js(\?.*)?$/.test(SELF);
 
   /* A design preview page (workbench/design-preview, the design system's own layout) says so at the top, and where the
      developers' templates are: workbench/screens, inside Phase 2's header and sidebar. Not shown to automated runs (the
@@ -44,33 +48,33 @@
   }
 
   /* Tooltips on every screen (js/ds-tooltip.js), loaded once from beside this script */
-  if (SELF && !window.dsTooltip && !document.querySelector('script[src$="ds-tooltip.js"]')) {
+  if (WORKBENCH && !window.dsTooltip && !document.querySelector('script[src$="ds-tooltip.js"]')) {
     var tipScript = document.createElement('script');
     tipScript.src = SELF.replace(/app-frame\.js(\?.*)?$/, 'ds-tooltip.js');
     document.head.appendChild(tipScript);
   }
   /* The Texas seal in the browser tab (Phase 3 review, Team B: in the tab we will have the Texas logo), on every screen
      that has none. DEV: in the app, <link rel="icon" href="/images/favicon.png"> in the layout's head. */
-  if (SELF && !document.querySelector('link[rel~="icon"]')) {
+  if (WORKBENCH && !document.querySelector('link[rel~="icon"]')) {
     var icon = document.createElement('link');
     icon.rel = 'icon'; icon.type = 'image/png';
     icon.href = SELF.replace(/js\/app-frame\.js(\?.*)?$/, 'workbench/assets/favicon.png');
     document.head.appendChild(icon);
   }
   /* The clear button in Search to filter (js/ds-search-clear.js), the same way */
-  if (SELF && !window.dsSearchClear && !document.querySelector('script[src$="ds-search-clear.js"]')) {
+  if (WORKBENCH && !window.dsSearchClear && !document.querySelector('script[src$="ds-search-clear.js"]')) {
     var clearScript = document.createElement('script');
     clearScript.src = SELF.replace(/app-frame\.js(\?.*)?$/, 'ds-search-clear.js');
     document.head.appendChild(clearScript);
   }
   /* Phase 2's validation banner and red labels on every form (js/ds-errors.js), the same way */
-  if (SELF && !window.dsErrors && !document.querySelector('script[src$="ds-errors.js"]')) {
+  if (WORKBENCH && !window.dsErrors && !document.querySelector('script[src$="ds-errors.js"]')) {
     var errorsScript = document.createElement('script');
     errorsScript.src = SELF.replace(/app-frame\.js(\?.*)?$/, 'ds-errors.js');
     document.head.appendChild(errorsScript);
   }
   /* Phase 2's Cancel confirmation on every form (js/ds-cancel-confirm.js), the same way */
-  if (SELF && !window.dsCancelConfirm && !document.querySelector('script[src$="ds-cancel-confirm.js"]')) {
+  if (WORKBENCH && !window.dsCancelConfirm && !document.querySelector('script[src$="ds-cancel-confirm.js"]')) {
     var cancelScript = document.createElement('script');
     cancelScript.src = SELF.replace(/app-frame\.js(\?.*)?$/, 'ds-cancel-confirm.js');
     document.head.appendChild(cancelScript);
