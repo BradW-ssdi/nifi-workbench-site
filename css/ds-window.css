@@ -11962,7 +11962,7 @@
   font-weight: 700;
 }
 
-.ds-window .table :is(th[data-sort], th[data-sort-next]):not(.ds-phase2, .ds-phase2 *) {
+.ds-window .table thead th:not(.ds-phase2, .ds-phase2 *), .ds-window .table :is(th[data-sort], th[data-sort-next]):not(.ds-phase2, .ds-phase2 *) {
   cursor: pointer;
 }
 
@@ -14321,7 +14321,6 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
 
 .ds-window .table thead th:not(.ds-phase2, .ds-phase2 *) {
   height: auto;
-  cursor: auto;
   z-index: auto;
 }
 

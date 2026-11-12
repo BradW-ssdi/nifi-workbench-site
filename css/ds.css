@@ -12245,7 +12245,7 @@ th[aria-sort] .ds-sort-btn {
   font-weight: 700;
 }
 
-.table :is(th[data-sort], th[data-sort-next]) {
+.table thead th, .table :is(th[data-sort], th[data-sort-next]) {
   cursor: pointer;
 }
 
