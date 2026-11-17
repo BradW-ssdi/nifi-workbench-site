@@ -14661,6 +14661,10 @@ fieldset.ds-field {
   cursor: inherit;
 }
 
+.ts-wrapper.single.form-select .ts-control::after {
+  content: none;
+}
+
 .ts-wrapper.single.form-select {
   --ts-pr-min: 32px;
   --ts-pr-caret: 0px;

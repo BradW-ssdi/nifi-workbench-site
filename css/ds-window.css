@@ -14584,6 +14584,10 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
   cursor: inherit;
 }
 
+.ds-window .ts-wrapper.single.form-select .ts-control:not(.ds-phase2, .ds-phase2 *)::after {
+  content: none;
+}
+
 .ds-window .ts-wrapper.single.form-select:not(.ds-phase2, .ds-phase2 *) {
   --ts-pr-min: 32px;
   --ts-pr-caret: 0px;

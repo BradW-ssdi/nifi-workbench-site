@@ -635,7 +635,6 @@
           <div class="modal-body bg-body-secondary"><div class="ds-modal-layout">
             <aside class="ds-modal-aside"><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm ds-modal-nav-toggle" aria-expanded="true" aria-controls="editDialogNav" aria-label="Section links" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Hide section links"><span class="ds-icon material-symbols-rounded" aria-hidden="true">left_panel_close</span></button><nav class="ds-modal-nav nav flex-column" id="editDialogNav" aria-label="Edit Question sections"><button type="button" class="btn ds-secnav-group-title" aria-expanded="true" aria-controls="editDialogNavGroup">Edit Question<span class="ds-icon ds-secnav-chevron material-symbols-rounded" aria-hidden="true">keyboard_arrow_up</span></button><div class="nav flex-column ds-secnav-children" id="editDialogNavGroup"><a class="nav-link" href="#e-basic">Basic Information</a><a class="nav-link" href="#e-ui">User Interface</a><a class="nav-link" href="#e-mart">Data Mart</a><a class="nav-link" href="#e-msg">Messaging</a><a class="nav-link" href="#e-admin">Administrative</a></div></nav></aside>
             <div class="ds-modal-content">
-            <p class="legend-note"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
             <div class="alert alert-danger ds-error-banner" id="editErrors" role="alert" aria-labelledby="editErrorsTitle" tabindex="-1" hidden>
               <h3 class="d-flex align-items-center gap-1 h6 fw-normal mb-1" id="editErrorsTitle"><span class="ds-icon material-symbols-rounded" aria-hidden="true">error</span>Please fix the following errors:</h3>
               <ul class="small mb-0 ps-3" data-errors></ul>
@@ -643,7 +642,7 @@
               <button type="button" class="btn btn-more alert-link" data-errors-toggle aria-controls="editErrorsMore" aria-expanded="false" aria-label="Show more errors" hidden><span class="ds-icon material-symbols-rounded" aria-hidden="true">more_horiz</span></button>
             </div>
             <div class="pt-3 d-flex align-items-center ds-modal-section-title"><h3 class="sub ps-1 m-0">Edit Question</h3><button type="button" class="btn btn-link p-0 ms-auto me-2" data-toggle-all aria-controls="editDialog">Collapse All</button></div>
-        <form id="editForm" novalidate>
+        <form id="editForm" class="d-grid gap-3" novalidate>
         <section class="accordion ds-form-accordion" id="e-basic" aria-labelledby="e-basicHeading">
           <div class="accordion-item">
             <h4 class="accordion-header" id="e-basicHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="e-basicBody">Basic Information</button></h4>
@@ -945,7 +944,6 @@
           <div class="modal-body bg-body-secondary"><div class="ds-modal-layout">
             <aside class="ds-modal-aside"><button type="button" class="btn btn-light rounded-circle ds-btn-icon ds-btn-icon-sm ds-modal-nav-toggle" aria-expanded="true" aria-controls="addDialogNav" aria-label="Section links" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Hide section links"><span class="ds-icon material-symbols-rounded" aria-hidden="true">left_panel_close</span></button><nav class="ds-modal-nav nav flex-column" id="addDialogNav" aria-label="Add Question sections"><button type="button" class="btn ds-secnav-group-title" aria-expanded="true" aria-controls="addDialogNavGroup">Add Question<span class="ds-icon ds-secnav-chevron material-symbols-rounded" aria-hidden="true">keyboard_arrow_up</span></button><div class="nav flex-column ds-secnav-children" id="addDialogNavGroup"><a class="nav-link" href="#a-basic">Basic Information</a><a class="nav-link" href="#a-ui">User Interface</a><a class="nav-link" href="#a-mart">Data Mart</a><a class="nav-link" href="#a-msg">Messaging</a><a class="nav-link" href="#a-admin">Administrative</a></div></nav></aside>
             <div class="ds-modal-content">
-            <p class="legend-note"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
             <div class="alert alert-danger ds-error-banner" id="addErrors" role="alert" aria-labelledby="addErrorsTitle" tabindex="-1" hidden>
               <h3 class="d-flex align-items-center gap-1 h6 fw-normal mb-1" id="addErrorsTitle"><span class="ds-icon material-symbols-rounded" aria-hidden="true">error</span>Please fix the following errors:</h3>
               <ul class="small mb-0 ps-3" data-errors></ul>
@@ -953,7 +951,7 @@
               <button type="button" class="btn btn-more alert-link" data-errors-toggle aria-controls="addErrorsMore" aria-expanded="false" aria-label="Show more errors" hidden><span class="ds-icon material-symbols-rounded" aria-hidden="true">more_horiz</span></button>
             </div>
             <div class="pt-3 d-flex align-items-center ds-modal-section-title"><h3 class="sub ps-1 m-0">Add Question</h3><button type="button" class="btn btn-link p-0 ms-auto me-2" data-toggle-all aria-controls="addDialog">Collapse All</button></div>
-        <form id="addForm" novalidate>
+        <form id="addForm" class="d-grid gap-3" novalidate>
         <section class="accordion ds-form-accordion" id="a-basic" aria-labelledby="a-basicHeading">
           <div class="accordion-item">
             <h4 class="accordion-header" id="a-basicHeading"><button type="button" class="accordion-button" aria-expanded="true" aria-controls="a-basicBody">Basic Information</button></h4>

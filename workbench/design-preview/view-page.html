@@ -107,11 +107,11 @@
         <div class="vp-toolbar" role="group" aria-label="Page actions">
           <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" id="detailsBtn">Page details</button>
           <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1">Page rules</button>
-          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1">Page history</button>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" id="historyBtn" aria-haspopup="dialog">Page history</button>
           <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1">Page metadata</button>
           <span class="vp-spacer"></span>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print page"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
-          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1">Save as template</button>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" id="saveTemplateBtn" aria-haspopup="dialog">Save as template</button>
           <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" onclick="location.href='edit-page.html'">Create new draft</button>
         </div>
         <ul class="nav nav-underline vp-tabs" role="tablist" aria-label="Page tabs"><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="true" id="tPatient" aria-controls="pPatient">Patient</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tCase" aria-controls="pCase" tabindex="-1">Case Info</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tContact" aria-controls="pContact" tabindex="-1">Contact Tracing</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tRecords" aria-controls="pRecords" tabindex="-1">Contact Records</button></li><li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tSupp" aria-controls="pSupp" tabindex="-1">Supplemental Info</button></li></ul>
@@ -137,6 +137,111 @@
           <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-primary rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close">Close</button></div>
         </div></div>
       </div>
+
+      <!-- Page History (Sprint 2; legacy pageHistoryPopUpLoad.jsp, "Manage Pages : View Page History"). As Phase 2's
+           Associate Investigations dialog (PI planning, Team B slide 51): the title with Print and Download beside the X,
+           a summary of the page, Search to filter, the versions table (sortable, newest first), and the pager; no
+           footer, the X closes it. DEV: the rows are the page's published versions (legacy pageHistoryList:
+           publishVersionNbr, lastChgTime, firstLastName, descTxt); filter, sort and page on the server as the queues do. The
+           sample is page 1 of 12 versions; the pager stands in for the server's (js/list-filters.js), the filter works on
+           the rows shown, and says how many show. -->
+      <div class="modal ds-modal-p2" id="historyDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="historyTitle" hidden>
+        <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
+          <div class="modal-header bg-body-secondary">
+            <h2 class="modal-title h5" id="historyTitle">Page History</h2>
+            <div class="d-flex align-items-center ms-auto ds-modal-actions"><button type="button" class="btn btn-light rounded-circle me-1" aria-label="Print" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button><button type="button" class="btn btn-light rounded-circle me-1" aria-label="Download" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button><button type="button" class="btn-close" data-close aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button></div>
+          </div>
+          <div class="modal-body bg-body-secondary">
+            <div class="card summary py-2 px-3 mb-3" id="historySummary">
+              <div class="row pb-1 align-items-center sub2 sum-row sum-primary">
+                <div class="col-9 d-flex align-items-center flex-wrap"><span>Acute Flaccid Myelitis</span><span class="vr mx-2"></span><span>Investigation</span></div>
+                <div class="col-3 text-end"><span class="badge text-bg-success">Published</span></div>
+              </div>
+            </div>
+            <div class="ds-toolbar mb-2">
+              <input class="form-control search" type="search" id="filterInput" aria-label="Search to filter page versions" placeholder="Search to filter..." aria-describedby="filterStatus" autocomplete="off">
+            </div>
+            <div id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></div>
+            <div class="table-wrapper">
+              <div class="scrolling-section table-css-queues ds-table-scroll" tabindex="0" role="group" aria-label="Page versions, scrolls horizontally when zoomed">
+              <table class="table table-hover tableCompact ds-table" id="historyTable" data-ds-sort>
+                <caption class="visually-hidden">Published versions of this page. Sortable column headers sort with Enter or Space.</caption>
+                <thead><tr><th scope="col" id="versionColumn" class="sorted" aria-sort="descending" tabindex="0" data-sort="0"><span>Version</span> <i class="bi bi-caret-down-fill sortable-icon" aria-hidden="true"></i></th><th scope="col" id="lastUpdatedColumn" aria-sort="none" tabindex="0" data-sort="1"><span>Last Updated</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="lastUpdatedByColumn" aria-sort="none" tabindex="0" data-sort="2"><span>Last Updated By</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="notesColumn" aria-sort="none" tabindex="0" data-sort="3"><span>Notes</span> <i class="bi sortable-icon" aria-hidden="true"></i></th></tr></thead>
+                <tbody>
+                <tr><td>12</td><td>10/02/2025</td><td>Jordan Reyes</td><td>Added the CDC case classification questions.</td></tr>
+                <tr><td>11</td><td>08/19/2025</td><td>Avery Chen</td><td>Updated the travel history section.</td></tr>
+                <tr><td>10</td><td>06/14/2025</td><td>Avery Chen</td><td>Moved Hospitalization to its own section.</td></tr>
+                <tr><td>9</td><td>04/03/2025</td><td>Morgan Patel</td><td>Added the vaccination history subsection.</td></tr>
+                <tr><td>8</td><td>02/11/2025</td><td>Sam Okafor</td><td>Updated value sets for the 2025 reporting year.</td></tr>
+                <tr><td>7</td><td>01/09/2025</td><td>Avery Chen</td><td>Published for the 2025 reporting year.</td></tr>
+                <tr><td>6</td><td>11/21/2024</td><td>Jordan Reyes</td><td>Corrected the onset date rule.</td></tr>
+                <tr><td>5</td><td>10/02/2024</td><td>Morgan Patel</td><td>Added laboratory testing questions.</td></tr>
+                <tr><td>4</td><td>08/30/2024</td><td>Sam Okafor</td><td>Renamed the Clinical tab.</td></tr>
+                <tr><td>3</td><td>07/15/2024</td><td>Avery Chen</td><td>Added the case notification section.</td></tr>
+                </tbody>
+              </table>
+              <p class="text-center py-3 mb-0" id="historyEmpty" hidden>No page versions match.</p>
+              </div>
+              <div class="ds-table-footer">
+                <span class="ds-page-summary" id="pageSummary">Items 1 - 10 of 12</span>
+                <nav aria-label="Pagination">
+                  <ul class="pagination mb-0">
+                    <li class="page-item"><button type="button" class="page-link disabled" aria-label="Previous page" disabled>Previous</button></li>
+                    <li class="page-item"><button type="button" class="page-link active" aria-current="page" aria-label="Page 1">1</button></li>
+                    <li class="page-item"><button type="button" class="page-link" aria-label="Page 2">2</button></li>
+                    <li class="page-item"><button type="button" class="page-link" aria-label="Next page">Next</button></li>
+                  </ul>
+                </nav>
+                <div class="ds-page-size">
+                  <select class="form-select" id="pageSize"><option>5</option><option selected>10</option><option>25</option><option>50</option><option>100</option></select>
+                  <label for="pageSize">Items per page</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- Save As Template (Sprint 2; legacy SaveAsTemplate.jsp, "Manage Pages: Save As Template"). Template Name (required,
+           50 characters) and Template Description (required, 2000 characters), Cancel and Submit, as Phase 2's form
+           dialogs: the error banner and each field's message under it (.is-invalid on the field). Cancel asks first
+           (js/ds-cancel-confirm.js). DEV: Submit checks the name is unique (legacy getUniqueTemplateNm: "A Template with
+           Template Name <name> already exists in the system") and saves; then the dialog closes and a toast gives legacy's
+           message (MessageResources createtemplate.success: "<name> Investigation page template has been successfully
+           saved."). Legacy then opened the Page Library; here the person stays on the page. -->
+      <div class="modal ds-modal-p2" id="templateDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="templateTitle" hidden>
+        <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content">
+          <div class="modal-header bg-body-secondary">
+            <h2 class="modal-title h5" id="templateTitle">Save As Template</h2>
+            <button type="button" class="btn-close" data-close aria-label="Close"></button>
+          </div>
+          <form class="modal-body bg-body-secondary d-grid gap-3" id="templateForm" novalidate>
+            <div class="alert alert-danger ds-error-banner" id="templateErrors" role="alert" aria-labelledby="templateErrorsTitle" tabindex="-1" hidden>
+              <h3 class="d-flex align-items-center gap-1 h6 fw-normal mb-1" id="templateErrorsTitle"><span class="ds-icon material-symbols-rounded" aria-hidden="true">error</span>Please fix the following errors:</h3>
+              <ul class="small mb-0 ps-3" data-errors></ul>
+              <div class="collapse" id="templateErrorsMore"><ul class="small mb-0 ps-3" data-errors-more></ul></div>
+              <button type="button" class="btn btn-more alert-link" data-errors-toggle aria-controls="templateErrorsMore" aria-expanded="false" aria-label="Show more errors" hidden><span class="ds-icon material-symbols-rounded" aria-hidden="true">more_horiz</span></button>
+            </div>
+            <div class="row g-2 align-items-center">
+              <label for="templateName" class="col-md-3 col-form-label text-md-end ds-required">Template Name:</label>
+              <div class="col-md-8"><input class="form-control" type="text" id="templateName" name="templateNm" maxlength="50" autocomplete="off" required aria-describedby="templateName-error">
+                <div class="invalid-feedback" id="templateName-error">Template Name is a required field.</div></div>
+            </div>
+            <div class="row g-2">
+              <label for="templateDesc" class="col-md-3 col-form-label text-md-end ds-required">Template Description:</label>
+              <div class="col-md-8"><textarea class="form-control" id="templateDesc" name="descTxt" rows="4" maxlength="2000" required aria-describedby="templateDesc-error"></textarea>
+                <div class="invalid-feedback" id="templateDesc-error">Template Description is a required field.</div></div>
+            </div>
+          </form>
+          <div class="modal-footer bg-body-secondary">
+            <button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+            <button type="submit" form="templateForm" class="btn btn-primary rounded-pill px-3" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit">Submit</button>
+          </div>
+        </div></div>
+      </div>
+      <div class="toast-container top-center"><div class="toast alert-success" id="templateSaved" role="status" aria-live="polite" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000" hidden>
+        <div class="d-flex"><span class="ds-icon ds-toast-icon ms-3 material-symbols-rounded" aria-hidden="true">check_circle</span><div class="toast-body"></div>
+          <button type="button" class="btn-close ms-auto me-3" data-bs-dismiss="toast" aria-label="Close"></button></div></div></div>
     </main>
 <!-- app-frame:bottom -->
 </div>
@@ -197,7 +302,60 @@
     if (e.shiftKey && (document.activeElement === f[0] || document.activeElement === dlg)) { e.preventDefault(); f[f.length - 1].focus(); }
     else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
   });
+  /* Page History and Save As Template: open from their buttons, focus the X (History) or the first field, Escape and the
+     X close them and focus goes back to the button (js/ds-dialog.js for the backdrop, inert background and Tab) */
+  function wire(dlg, opener, first, onOpen) {
+    function close() { dsDialog.hide(dlg); opener.focus(); }
+    opener.addEventListener('click', function () { if (onOpen) onOpen(); dsDialog.show(dlg); first().focus(); });
+    $$('[data-close]', dlg).forEach(function (b) { b.addEventListener('click', function (e) { if (!b.hasAttribute('data-confirmed') && b.closest('.modal-footer')) return; close(); }); });
+    dlg.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.preventDefault(); close(); } });
+    return close;
+  }
+  var hist = $('#historyDialog');
+  wire(hist, $('#historyBtn'), function () { return $('.btn-close', hist); });
+  /* Search to filter: the rows that contain the text, how many, announced; focus stays in the field */
+  var hfilter = $('#filterInput', hist), hrows = $$('#historyTable tbody tr', hist), ht;
+  hfilter.addEventListener('input', function () {
+    clearTimeout(ht);
+    ht = setTimeout(function () {
+      var q = hfilter.value.trim().toLowerCase(), n = 0;
+      hrows.forEach(function (r) { var hit = !q || r.textContent.toLowerCase().indexOf(q) !== -1; r.hidden = !hit; if (hit) n++; });
+      $('#historyEmpty', hist).hidden = n > 0;
+      $('#pageSummary', hist).textContent = q ? (n ? 'Items 1 - ' + n + ' of ' + n : 'Items 0 - 0 of 0') : 'Items 1 - 10 of 12';
+      var st = $('#filterStatus', hist); st.textContent = '';
+      setTimeout(function () { st.textContent = q ? n + (n === 1 ? ' version' : ' versions') + ' shown' : 'Filter cleared. 12 versions.'; }, 50);
+    }, 300);
+  });
+  var tpl = $('#templateDialog'), tform = $('#templateForm'), tname = $('#templateName'), tdesc = $('#templateDesc');
+  function clearTemplate() {
+    tform.reset();
+    [tname, tdesc].forEach(function (f) { f.removeAttribute('aria-invalid'); f.classList.remove('is-invalid'); });
+    dsErrors.hide($('#templateErrors'));
+  }
+  var closeTemplate = wire(tpl, $('#saveTemplateBtn'), function () { return tname; }, clearTemplate);
+  /* Cancel: js/ds-cancel-confirm.js asks first, then runs the click again with data-confirmed */
+  $('.modal-footer [data-close]', tpl).addEventListener('click', function (e) { if (e.currentTarget.hasAttribute('data-confirmed')) closeTemplate(); });
+  tform.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var problems = [];
+    [tname, tdesc].forEach(function (f) {
+      var bad = !f.value.trim();
+      if (bad) { f.setAttribute('aria-invalid', 'true'); problems.push({ field: f, required: true }); } else f.removeAttribute('aria-invalid');
+    });
+    if (problems.length) { dsErrors.forFields($('#templateErrors'), problems, function (f) { f.focus(); }); return; }
+    dsErrors.hide($('#templateErrors'));
+    var name = tname.value.trim();
+    closeTemplate();
+    var toast = $('#templateSaved'), body = $('.toast-body', toast), b = document.createElement('b');
+    b.textContent = name; body.textContent = ''; body.appendChild(b); body.appendChild(document.createTextNode(' Investigation page template has been successfully saved.'));
+    dsToast.show(toast);
+  });
+  [tname, tdesc].forEach(function (f) { f.addEventListener('input', function () { if (f.value.trim()) f.removeAttribute('aria-invalid'); }); });
 })();
 </script>
+<script src="../../js/ds-table-sort.js"></script>
+<script src="../../js/list-filters.js"></script>
+<script src="../../js/ds-toast.js"></script>
+<script src="../../js/ds-errors.js"></script>
 </body>
 </html>
