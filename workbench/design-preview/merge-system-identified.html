@@ -74,7 +74,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -125,18 +125,18 @@
 
         <div class="ds-toolbar">
           <!-- Search to filter (BA review), as on the candidate list: narrows the rows of this group. -->
-          <input class="form-control" type="search" id="filterInput" aria-label="Filter candidates" placeholder="Search to filter..." aria-describedby="status">
+          <input class="form-control search" type="search" id="filterInput" aria-label="Filter candidates" placeholder="Search to filter..." aria-describedby="status">
           <span class="ms-auto"></span>
           <!-- The legacy queue's buttons, names, and order (BA review): Skip, No Merge, Exit Merge, each with an icon; the
                tooltips are the button names (Phase 3 review, Team A); the info panel beside the title explains each. Exit Merge leaves the queue without acting on this group, which
                stays in place. DEV: release the group if the server holds it for this user, then go to Home. -->
           <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="skipBtn" data-bs-custom-class="custom-tooltip" data-bs-title="Skip" data-bs-toggle="tooltip"><span aria-hidden="true" class="material-symbols-rounded text me-1">skip_next</span><span>Skip</span></button>
           <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="noMergeBtn" data-bs-custom-class="custom-tooltip" data-bs-title="No Merge" data-bs-toggle="tooltip"><span aria-hidden="true" class="material-symbols-rounded text me-1">do_not_disturb_on</span><span>No Merge</span></button>
-          <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="exitBtn" href="home.html" data-bs-custom-class="custom-tooltip" data-bs-title="Exit Merge" data-bs-toggle="tooltip"><span aria-hidden="true" class="material-symbols-rounded text me-1">logout</span><span>Exit Merge</span></a>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="exitBtn" data-bs-custom-class="custom-tooltip" data-bs-title="Exit Merge" data-bs-toggle="tooltip" onclick="location.href='home.html'"><span aria-hidden="true" class="material-symbols-rounded text me-1">logout</span><span>Exit Merge</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
           <div class="ds-table-settings">
-            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
             <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="candTable">
               <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
               <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
@@ -263,8 +263,8 @@
           <ul class="mb-0 ps-4" id="cList"></ul>
         </div>
         <div class="modal-footer bg-body-tertiary">
-          <button class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button>
-          <button class="btn btn-danger rounded-pill px-3" id="cConfirm">Confirm</button>
+          <button class="btn btn-outline-dark rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+          <button class="btn btn-danger rounded-pill px-3" id="cConfirm" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Confirm">Confirm</button>
         </div>
     </div>
   </div>

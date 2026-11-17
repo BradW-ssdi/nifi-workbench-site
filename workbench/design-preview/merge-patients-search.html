@@ -82,7 +82,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -306,8 +306,8 @@
           </section>
     </form>
     <div class="modal-footer bg-body-secondary">
-      <button type="reset" form="searchForm" class="btn btn-outline-dark rounded-pill px-3 me-auto">Clear</button>
-      <button type="submit" form="searchForm" class="btn btn-primary rounded-pill px-3">Submit</button>
+      <button type="reset" form="searchForm" class="btn btn-outline-dark rounded-pill px-3 me-auto" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Clear">Clear</button>
+      <button type="submit" form="searchForm" class="btn btn-primary rounded-pill px-3" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit">Submit</button>
     </div>
   </div></div>
 </div>

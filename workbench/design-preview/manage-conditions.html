@@ -61,7 +61,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -125,8 +125,8 @@
           <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="addBtn" aria-haspopup="dialog" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Add Condition"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add Condition</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
-          <div class="ds-table-settings">
-            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
+          <div class="ds-table-settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
             <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="condTable">
               <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
               <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
@@ -916,7 +916,7 @@
                   <option value="2.16.840.1.114222.4.5.290">Wound Classification (NHSN ACS)</option>
                   <option value="2.16.840.1.113883.12.136">Yes/No Indicator (HL7)</option>
                 </select>
-                <span class="invalid-feedback" id="a-codingSystem-error" hidden></span>
+                <span class="invalid-feedback" id="a-codingSystem-error"></span>
               </div>
             </div>
             <div class="row g-2 align-items-center">
@@ -924,7 +924,7 @@
               <div class="col-md-5">
                 <input class="form-control" id="a-conditionCode" name="conditionCode" type="text" autocomplete="off" maxlength="16" required aria-describedby="a-conditionCode-help">
                 <span class="form-text" id="a-conditionCode-help">Letters and numbers only, up to 16 characters.</span>
-                <span class="invalid-feedback" id="a-conditionCode-error" hidden></span>
+                <span class="invalid-feedback" id="a-conditionCode-error"></span>
               </div>
             </div>
             <div class="row g-2 align-items-center">
@@ -932,7 +932,7 @@
               <div class="col-md-5">
                 <input class="form-control" id="a-conditionName" name="conditionName" type="text" autocomplete="off" maxlength="50" required aria-describedby="a-conditionName-help">
                 <span class="form-text" id="a-conditionName-help">Up to 50 characters.</span>
-                <span class="invalid-feedback" id="a-conditionName-error" hidden></span>
+                <span class="invalid-feedback" id="a-conditionName-error"></span>
               </div>
             </div>
             <div class="row g-2 align-items-center">
@@ -963,7 +963,7 @@
                   <option value="ZCD">Rabies</option>
                   <option value="ZCD_R">Zoonosis </option>
                 </select>
-                <span class="invalid-feedback" id="a-programArea-error" hidden></span>
+                <span class="invalid-feedback" id="a-programArea-error"></span>
               </div>
             </div>
             <div class="row g-2 align-items-center">
@@ -990,7 +990,7 @@
                   <option value="VISA">VISA\VRSA</option>
                   <option value="WestNile">West Nile</option>
                 </select>
-                <span class="invalid-feedback" id="a-conditionFamily-error" hidden></span>
+                <span class="invalid-feedback" id="a-conditionFamily-error"></span>
               </div>
             </div>
             <div class="row g-2 align-items-center">
@@ -1000,7 +1000,7 @@
                   <option value=""></option>
                   <option value="STD_HIV_GROUP">STD HIV Co-Infection Group</option>
                 </select>
-                <span class="invalid-feedback" id="a-coinfectionGroup-error" hidden></span>
+                <span class="invalid-feedback" id="a-coinfectionGroup-error"></span>
               </div>
             </div>
               </div>
@@ -1063,7 +1063,7 @@
               <div class="col-md-5">
                 <input class="form-control ds-input-short" id="a-daysBefore" name="daysBefore" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="a-daysBefore-help">
                 <span class="form-text" id="a-daysBefore-help">Whole number from 0 to 999.</span>
-                <span class="invalid-feedback" id="a-daysBefore-error" hidden></span>
+                <span class="invalid-feedback" id="a-daysBefore-error"></span>
               </div>
             </div>
             <div class="row g-2 align-items-center">
@@ -1071,7 +1071,7 @@
               <div class="col-md-5">
                 <input class="form-control ds-input-short" id="a-daysAfter" name="daysAfter" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="a-daysAfter-help">
                 <span class="form-text" id="a-daysAfter-help">Whole number from 0 to 999.</span>
-                <span class="invalid-feedback" id="a-daysAfter-error" hidden></span>
+                <span class="invalid-feedback" id="a-daysAfter-error"></span>
               </div>
             </div>
               </div>
@@ -1081,7 +1081,7 @@
         </form>
             </div>
           </div></div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-dismiss data-cancel>Cancel</button><button type="submit" form="addForm" class="btn btn-primary rounded-pill px-3">Submit</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-dismiss data-cancel data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button><button type="submit" form="addForm" class="btn btn-primary rounded-pill px-3" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit">Submit</button></div>
         </div></div>
       </div>
 
@@ -1121,7 +1121,7 @@
               <div class="col-md-5">
                 <input class="form-control" id="e-conditionName" name="conditionName" type="text" autocomplete="off" maxlength="50" value="Syphilis, primary" required aria-describedby="e-conditionName-help">
                 <span class="form-text" id="e-conditionName-help">Up to 50 characters.</span>
-                <span class="invalid-feedback" id="e-conditionName-error" hidden></span>
+                <span class="invalid-feedback" id="e-conditionName-error"></span>
               </div>
             </div>
             <div class="row g-2 align-items-center">
@@ -1152,7 +1152,7 @@
                   <option value="VISA">VISA\VRSA</option>
                   <option value="WestNile">West Nile</option>
                 </select>
-                <span class="invalid-feedback" id="e-conditionFamily-error" hidden></span>
+                <span class="invalid-feedback" id="e-conditionFamily-error"></span>
               </div>
             </div>
             <div class="row g-2 align-items-center">
@@ -1162,7 +1162,7 @@
                   <option value=""></option>
                   <option value="STD_HIV_GROUP" selected>STD HIV Co-Infection Group</option>
                 </select>
-                <span class="invalid-feedback" id="e-coinfectionGroup-error" hidden></span>
+                <span class="invalid-feedback" id="e-coinfectionGroup-error"></span>
               </div>
             </div>
             <div class="row g-2 align-items-center">
@@ -1229,7 +1229,7 @@
               <div class="col-md-5">
                 <input class="form-control ds-input-short" id="e-daysBefore" name="daysBefore" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="e-daysBefore-help">
                 <span class="form-text" id="e-daysBefore-help">Whole number from 0 to 999.</span>
-                <span class="invalid-feedback" id="e-daysBefore-error" hidden></span>
+                <span class="invalid-feedback" id="e-daysBefore-error"></span>
               </div>
             </div>
             <div class="row g-2 align-items-center">
@@ -1237,7 +1237,7 @@
               <div class="col-md-5">
                 <input class="form-control ds-input-short" id="e-daysAfter" name="daysAfter" type="text" autocomplete="off" maxlength="3" required inputmode="numeric" disabled aria-describedby="e-daysAfter-help">
                 <span class="form-text" id="e-daysAfter-help">Whole number from 0 to 999.</span>
-                <span class="invalid-feedback" id="e-daysAfter-error" hidden></span>
+                <span class="invalid-feedback" id="e-daysAfter-error"></span>
               </div>
             </div>
               </div>
@@ -1247,7 +1247,7 @@
         </form>
             </div>
           </div></div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-dismiss data-cancel>Cancel</button><button type="submit" form="editForm" class="btn btn-primary rounded-pill px-3">Submit</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-dismiss data-cancel data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button><button type="submit" form="editForm" class="btn btn-primary rounded-pill px-3" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit">Submit</button></div>
         </div></div>
       </div>
 
@@ -1255,16 +1255,16 @@
         <div class="modal-dialog"><div class="modal-content">
           <div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="discardTitle">Cancel</h2><button type="button" class="btn-close" id="discardClose" aria-label="Close"></button></div>
           <div class="modal-body bg-body-secondary"><p class="mb-0" id="discardText"></p></div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="keepEditing">Cancel</button>
-            <button type="button" class="btn btn-primary rounded-pill px-3" id="discardYes">OK</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="keepEditing" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+            <button type="button" class="btn btn-primary rounded-pill px-3" id="discardYes" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="OK">OK</button></div>
         </div></div>
       </div>
       <div class="modal ds-modal-confirm ds-modal-status" id="statusDialog" tabindex="-1" role="alertdialog" aria-modal="true" aria-labelledby="statusTitle" aria-describedby="statusText" hidden>
         <div class="modal-dialog"><div class="modal-content">
           <div class="modal-header bg-body-tertiary"><h2 class="modal-title h5" id="statusTitle">Make this condition inactive?</h2></div>
           <div class="modal-body bg-body-tertiary"><p class="mb-0" id="statusText"></p></div>
-          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="statusNo">Cancel</button>
-            <button type="button" class="btn btn-primary rounded-pill px-3" id="statusYes">OK</button></div>
+          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="statusNo" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+            <button type="button" class="btn btn-primary rounded-pill px-3" id="statusYes" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="OK">OK</button></div>
         </div></div>
       </div>
     </main>

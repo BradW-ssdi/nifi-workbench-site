@@ -18,8 +18,9 @@
      field's own (its <label for>, aria-labelledby, aria-label, or fieldset legend, without the star or a colon)
      unless the problem names one.
    - dsErrors.hide(banner) hides it.
-   - Every field marked aria-invalid="true" gets its label in the error color (.ds-label-invalid), as Phase 2, on any
-     page that loads this script (app-frame.js loads it on every page). */
+   - Every field marked aria-invalid="true" gets its label in the error color (.ds-label-invalid) and .is-invalid (on the
+     field, or on the wrapper before its message), as Phase 2, on any page that loads this script (app-frame.js loads it
+     on every page). Bootstrap then shows the field's .invalid-feedback; no rule of ours does. */
 (function () {
   'use strict';
   if (window.dsErrors) return;
@@ -54,11 +55,24 @@
       return [p.field, p.label || labelOf(p.field), p.required ? ' is required.' : ' ' + p.msg];
     }), go);
   }
-  /* The label of an invalid field in the error color */
+  /* An invalid field: its label in the error color, and .is-invalid as Phase 2 (validations.js addClassIfInvalid), so
+     Bootstrap shows the .invalid-feedback after it. A radio or check box (and a field inside a wrapper: a radio group, a
+     lookup, a date field) marks the wrapper that comes before its message instead; the radios keep their own look. */
+  function messagesOf(f) {
+    var ids = (f.getAttribute('aria-describedby') || '').split(' ').concat(f.id ? [f.id + '-error'] : []);
+    return ids.map(function (i) { return i && document.getElementById(i); })
+      .filter(function (m, i, a) { return m && m.classList.contains('invalid-feedback') && a.indexOf(m) === i; });
+  }
   function syncLabel(f) {
     if (!f || f.nodeType !== 1) return;
     var on = f.getAttribute('aria-invalid') === 'true';
     labelsFor(f).forEach(function (l) { l.classList.toggle('ds-label-invalid', on); });
+    if (!/^(checkbox|radio)$/.test(f.type || '')) f.classList.toggle('is-invalid', on);
+    messagesOf(f).forEach(function (m) {
+      var a = f;
+      while (a && a.parentElement !== m.parentElement) a = a.parentElement;
+      if (a && a !== f && (a.compareDocumentPosition(m) & 4)) a.classList.toggle('is-invalid', on);
+    });
   }
   if (window.MutationObserver) {
     new MutationObserver(function (list) { list.forEach(function (m) { syncLabel(m.target); }); })

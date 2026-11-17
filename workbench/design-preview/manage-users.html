@@ -49,7 +49,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -78,13 +78,13 @@
         </div>
 
         <div class="ds-toolbar">
-          <input class="form-control" type="search" id="filterInput" aria-label="Filter users" placeholder="Search to filter..." aria-describedby="filterStatus">
+          <input class="form-control search" type="search" id="filterInput" aria-label="Filter users" placeholder="Search to filter..." aria-describedby="filterStatus">
           <span class="ms-auto"></span>
-          <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" href="edit-user.html"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add New</span></a>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" onclick="location.href='edit-user.html'"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add New</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
-          <div class="ds-table-settings">
-            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
+          <div class="ds-table-settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
             <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="userTable">
               <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
               <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
@@ -171,7 +171,7 @@
                  a count with a tooltip. -->
             <tbody class="tableData" id="queueDataTableBody">
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Randi Alvarez (ralvarez)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Randi Alvarez (ralvarez)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View Randi Alvarez (ralvarez)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View" onclick="location.href='view-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="Edit Randi Alvarez (ralvarez)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit" onclick="location.href='edit-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>ralvarez</td>
                 <td>Alvarez</td>
                 <td>Randi</td>
@@ -184,7 +184,7 @@
                 <td>09/11/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Priya Patel (ppatel)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Priya Patel (ppatel)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View Priya Patel (ppatel)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View" onclick="location.href='view-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="Edit Priya Patel (ppatel)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit" onclick="location.href='edit-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>ppatel</td>
                 <td>Patel</td>
                 <td>Priya</td>
@@ -197,7 +197,7 @@
                 <td>09/10/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Marcus Lee (mlee)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Marcus Lee (mlee)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View Marcus Lee (mlee)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View" onclick="location.href='view-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="Edit Marcus Lee (mlee)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit" onclick="location.href='edit-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>mlee</td>
                 <td>Lee</td>
                 <td>Marcus</td>
@@ -210,7 +210,7 @@
                 <td>09/09/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Jasmine Nguyen (jnguyen)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Jasmine Nguyen (jnguyen)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View Jasmine Nguyen (jnguyen)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View" onclick="location.href='view-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="Edit Jasmine Nguyen (jnguyen)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit" onclick="location.href='edit-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>jnguyen</td>
                 <td>Nguyen</td>
                 <td>Jasmine</td>
@@ -223,7 +223,7 @@
                 <td>09/08/2026</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Daniel Okafor (dokafor)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Daniel Okafor (dokafor)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View Daniel Okafor (dokafor)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View" onclick="location.href='view-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="Edit Daniel Okafor (dokafor)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit" onclick="location.href='edit-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>dokafor</td>
                 <td>Okafor</td>
                 <td>Daniel</td>
@@ -236,7 +236,7 @@
                 <td>11/30/2025</td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="view-user.html" aria-label="View Sarah Thompson (sthompson)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="edit-user.html" aria-label="Edit Sarah Thompson (sthompson)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View Sarah Thompson (sthompson)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View" onclick="location.href='view-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="Edit Sarah Thompson (sthompson)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit" onclick="location.href='edit-user.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>sthompson</td>
                 <td>Thompson</td>
                 <td>Sarah</td>

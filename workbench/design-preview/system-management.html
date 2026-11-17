@@ -86,7 +86,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -218,7 +218,7 @@
     <div class="modal-dialog"><div class="modal-content">
       <div class="modal-header bg-body-tertiary"><h2 class="modal-title h5" id="resetCacheTitle">Reset the lab mapping cache?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
       <div class="modal-body bg-body-tertiary"><p id="resetCacheText" class="mb-0">The lab test program area mappings are loaded again. The application server must then be restarted for the change to take effect.</p></div>
-      <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="resetCacheYes">Reset Cache</button></div>
+      <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="resetCacheYes" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Reset Cache">Reset Cache</button></div>
     </div></div>
   </div>
 </main>

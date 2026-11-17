@@ -54,7 +54,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -99,16 +99,16 @@
               <div class="ds-entry-grid">
                 <div class="ds-field"><label class="ds-required" for="eventType">Event Type:</label>
                   <select class="form-select" id="eventType" name="eventType" required data-errmsg="Select an event type"><option value="">Select an event type</option><option>Contact Record</option><option>Interview</option><option>Investigation</option><option>Lab Isolate Tracking</option><option>Lab Report</option><option>Lab Susceptibility</option><option>Vaccination</option></select>
-                  <span class="invalid-feedback" id="eventType-error" hidden></span></div>
+                  <span class="invalid-feedback" id="eventType-error"></span></div>
                 <div class="ds-field"><label class="ds-required" for="template">Template:</label>
                   <select class="form-select" id="template" name="template" required data-errmsg="Select a template"><option value="">Select a template</option><option>Acute Flaccid Myelitis Prod</option><option>AMEBIASIS</option><option>Arboviral Human Investigation</option><option>BOTULISM</option><option>BRUCELLOSIS</option><option>CAMPYLOBACTERIOSIS</option><option>Chagas Investigation</option><option>CHOLERA</option><option>CREUTZFELDT-JAKOB DISEASE</option><option>CRYPTOSPORIDIOSIS</option><option>CYSTICERCOSIS</option><option>Generic Investigation</option><option>GIARDIASIS</option><option>Hepatitis A, acute - Texas Prod</option><option>Hepatitis B and C, chronic Texas Prod</option><option>Hepatitis Core Texas Prod</option><option>INFLUENZA A</option><option>LEGACY CYCLOSPORIASIS</option></select>
-                  <span class="invalid-feedback" id="template-error" hidden></span></div>
+                  <span class="invalid-feedback" id="template-error"></span></div>
                 <div class="ds-field ds-field-wide"><label class="ds-required" for="mappingGuide">Message Mapping Guide:</label>
                   <select class="form-select" id="mappingGuide" name="mappingGuide" required data-errmsg="Select a message mapping guide"><option value="">Select a message mapping guide</option><option>Arboviral Case Notification Message Mapping Guide v.1</option><option>Congenital Syphilis Case Notification Message Mapping Guide v.1</option><option>Generic Case Notification Message Mapping Guide v.1</option><option>Generic Case Notification Message Mapping Guide v.2</option><option>HAI MDRO Case Notification Message Mapping Guide v.1</option><option>Hepatitis Message Mapping Guide v1</option><option>Malaria Message Mapping Guide v1.0</option><option>Measles Case Notification Message Mapping Guide v.1</option><option>Mumps Message Mapping Guide v1.0</option><option>No Reporting Mechanism (Not NND Reportable)</option><option>Pertussis Case Notification Message Mapping Guide v.1</option><option>Rubella Message Mapping Guide v1</option><option>Sexually Transmitted Disease (STD) Message Mapping Guide v1</option><option>Streptococcus Pneumoniae Message Mapping Guide v1</option><option>TB Case Notification Message Mapping Guide v3.0</option><option>Varicella Case Notification Message Mapping Guide v.3</option></select>
-                  <span class="invalid-feedback" id="mappingGuide-error" hidden></span></div>
+                  <span class="invalid-feedback" id="mappingGuide-error"></span></div>
                 <div class="ds-field"><label class="ds-required" for="pageName">Page Name:</label>
                   <input class="form-control" id="pageName" name="pageName" type="text" autocomplete="off" required data-errmsg="Enter a page name">
-                  <span class="invalid-feedback" id="pageName-error" hidden></span></div>
+                  <span class="invalid-feedback" id="pageName-error"></span></div>
                 <div class="ds-field"><label for="dataMartName">Data Mart Name:</label>
                   <input class="form-control" id="dataMartName" name="dataMartName" type="text" autocomplete="off"></div>
                 <div class="ds-field ds-field-wide"><label for="pageDescription">Page Description:</label>
@@ -135,8 +135,8 @@
           </section>
 
           <div class="ds-form-footer" style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg)">
-            <a class="btn btn-outline-dark rounded-pill px-3" href="manage-pages.html">Cancel</a>
-            <button class="btn btn-primary rounded-pill px-3" type="submit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">save</span>Submit</button>
+            <button type="button" class="btn btn-outline-dark rounded-pill px-3" onclick="location.href='manage-pages.html'" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+            <button class="btn btn-primary rounded-pill px-3" type="submit" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">save</span>Submit</button>
           </div>
         </form>
       </div>

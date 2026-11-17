@@ -54,7 +54,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -76,14 +76,14 @@
       </div>
       <div class="page-body">
         <div class="ds-toolbar">
-          <input class="form-control" type="search" id="filterInput" aria-label="Filter algorithms" placeholder="Search to filter..." aria-describedby="filterStatus">
+          <input class="form-control search" type="search" id="filterInput" aria-label="Filter algorithms" placeholder="Search to filter..." aria-describedby="filterStatus">
           <span class="ms-auto"></span>
-          <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" href="wds-add-algorithm.html"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add New</span></a>
-          <button class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="importBtn"><span aria-hidden="true" class="material-symbols-rounded text me-1">upload_file</span><span>Import</span></button>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" onclick="location.href='wds-add-algorithm.html'"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add New</span></button>
+          <button class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="importBtn" type="button" aria-haspopup="dialog"><span aria-hidden="true" class="material-symbols-rounded text me-1">upload_file</span><span>Import</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
-          <div class="ds-table-settings">
-            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
+          <div class="ds-table-settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
             <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="algTable">
               <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
               <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
@@ -156,7 +156,7 @@
                  inactive first. -->
             <tbody class="tableData" id="queueDataTableBody">
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 000_A_HepB_CI" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-edit-algorithm.html" aria-label="Edit 000_A_HepB_CI" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Algorithm"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></a></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View 000_A_HepB_CI" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm" onclick="location.href='wds-view-algorithm.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="Edit 000_A_HepB_CI" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit Algorithm" onclick="location.href='wds-edit-algorithm.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Laboratory Report</td>
                 <td>000_A_HepB_CI</td>
                 <td>Hepatitis B, acute (10100)<div class="cond">Hepatitis B virus DNA (42595-9)</div></td>
@@ -165,7 +165,7 @@
                 <td><span class="badge text-bg-secondary">Inactive</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 000_B_HepB_MAR" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 000_B_HepB_MAR, active algorithms cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View 000_B_HepB_MAR" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm" onclick="location.href='wds-view-algorithm.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 000_B_HepB_MAR, active algorithms cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Laboratory Report</td>
                 <td>000_B_HepB_MAR</td>
                 <td>Hepatitis B, acute (10100)<div class="cond">Hepatitis B virus DNA (42595-9)</div></td>
@@ -174,7 +174,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 1_1_TX_COVID19_Positive_MarkAsReviewed" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_1_TX_COVID19_Positive_MarkAsReviewed, active algorithms cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View 1_1_TX_COVID19_Positive_MarkAsReviewed" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm" onclick="location.href='wds-view-algorithm.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_1_TX_COVID19_Positive_MarkAsReviewed, active algorithms cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Laboratory Report</td>
                 <td>1_1_TX_COVID19_Positive_MarkAsReviewed</td>
                 <td>TRYPANOSOMA CRUZI AB.IGG (13291-0)<div class="cond">SARS-CoV-2 RNA Pnl XXX NAA+probe (94306-8) · SARS-CoV-2 N gene (94307-6) …</div></td>
@@ -183,7 +183,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 1_TB_Neg_CulNAAT_MR_AssociateTB" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_TB_Neg_CulNAAT_MR_AssociateTB, active algorithms cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View 1_TB_Neg_CulNAAT_MR_AssociateTB" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm" onclick="location.href='wds-view-algorithm.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_TB_Neg_CulNAAT_MR_AssociateTB, active algorithms cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Laboratory Report</td>
                 <td>1_TB_Neg_CulNAAT_MR_AssociateTB</td>
                 <td>Tuberculosis (2020 RVCT) (102201)<div class="cond">MICROSCOPIC OBSERVATION (11545-1) · PYRAZINAMIDE 100.0 UG/ML (25229-6) …</div></td>
@@ -192,7 +192,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 1_TB_Neg_IGRA_MR_AssociateTB" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_TB_Neg_IGRA_MR_AssociateTB, active algorithms cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View 1_TB_Neg_IGRA_MR_AssociateTB" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm" onclick="location.href='wds-view-algorithm.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_TB_Neg_IGRA_MR_AssociateTB, active algorithms cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Laboratory Report</td>
                 <td>1_TB_Neg_IGRA_MR_AssociateTB</td>
                 <td>Tuberculosis (2020 RVCT) (102201)<div class="cond">M. tuberculosis tuberculin stimulated gamma interferon (45323-3) …</div></td>
@@ -201,7 +201,7 @@
                 <td><span class="badge text-bg-success">Active</span></td>
               </tr>
               <tr>
-                <td class="ds-row-actions"><a class="btn btn-light rounded-circle btn-sm" href="wds-view-algorithm.html" aria-label="View 1_TX_COVID19_Positive_MarkAsReviwed" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></a></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_TX_COVID19_Positive_MarkAsReviwed, active algorithms cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
+                <td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-label="View 1_TX_COVID19_Positive_MarkAsReviwed" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="View Algorithm" onclick="location.href='wds-view-algorithm.html'"><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" disabled aria-label="Edit 1_TX_COVID19_Positive_MarkAsReviwed, active algorithms cannot be edited"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>
                 <td>Laboratory Report</td>
                 <td>1_TX_COVID19_Positive_MarkAsReviwed</td>
                 <td>Novel Coronavirus 2019 (11065)<div class="cond">SARS-CoV-2 RNA Pnl XXX NAA+probe (94306-8) …</div></td>
@@ -243,7 +243,9 @@
 
 <!-- Import: Phase 2's file dialog (bulktransfer/bulkTransfer.html, Choose Bulk Transfer File; BA review): the title, the
      blue banner with what to choose, the file field with its label to the left, Cancel and Submit. Replaces the legacy
-     inline block that disabled the whole page. DEV: post the file; on success go to the imported algorithm. -->
+     inline block that disabled the whole page. Submit with no file: the field and its label get .is-invalid and Bootstrap
+     shows "Algorithm File Name is a required field." under the field, as Phase 2's (Transfer File Name is a required
+     field.); choosing a file or closing the dialog clears it. DEV: post the file; on success go to the imported algorithm. -->
 <div class="modal ds-modal-p2" id="importModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="importTitle" aria-describedby="importBanner" hidden>
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
@@ -255,12 +257,13 @@
           <div class="alert alert-info d-flex align-items-center gap-2 mb-0" id="importBanner"><span class="ds-icon flex-shrink-0 material-symbols-rounded" aria-hidden="true">info</span>Please browse to the Decision Support Algorithm you would like to import.</div>
           <div class="row g-2 align-items-center">
             <label for="importFile" class="col-md-3 col-form-label text-md-end ds-required">Algorithm File Name:</label>
-            <div class="col-md-8"><input class="form-control" type="file" id="importFile" name="importFile" accept=".xml" required></div>
+            <div class="col-md-8"><input class="form-control" type="file" id="importFile" name="importFile" accept=".xml" aria-describedby="importFileMessage" required>
+              <div class="invalid-feedback" id="importFileMessage">Algorithm File Name is a required field.</div></div>
           </div>
         </form>
         <div class="modal-footer bg-body-secondary">
-          <button type="button" class="btn btn-outline-dark rounded-pill px-3">Cancel</button>
-          <button type="submit" form="importForm" class="btn btn-primary rounded-pill px-3">Submit</button>
+          <button type="button" class="btn btn-outline-dark rounded-pill px-3" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+          <button type="submit" form="importForm" class="btn btn-primary rounded-pill px-3" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit">Submit</button>
         </div>
     </div>
   </div>
@@ -319,11 +322,22 @@
   var backdrop = document.getElementById('importModal');
   var dialog = backdrop;
   var opener = document.getElementById('importBtn');
-  function open() { dsDialog.show(backdrop); dialog.focus(); }
-  function close() { dsDialog.hide(backdrop); opener.focus(); }
+  var file = document.getElementById('importFile'), fileLabel = document.querySelector('label[for="importFile"]');
+  /* Phase 2 (bulkTransfer.html): .is-invalid on the field and its label; aria-invalid for screen readers */
+  function invalid(on) {
+    file.classList.toggle('is-invalid', on); fileLabel.classList.toggle('is-invalid', on);
+    if (on) file.setAttribute('aria-invalid', 'true'); else file.removeAttribute('aria-invalid');
+  }
+  function open() { document.getElementById('importForm').reset(); invalid(false); dsDialog.show(backdrop); dialog.focus(); }
+  function close() { dsDialog.hide(backdrop); invalid(false); opener.focus(); }
   opener.addEventListener('click', open);
   backdrop.querySelectorAll('.btn-close, .modal-footer .btn-outline-dark').forEach(function (b) { b.addEventListener('click', close); });
-  document.getElementById('importForm').addEventListener('submit', function (e) { e.preventDefault(); });
+  file.addEventListener('change', function () { if (file.files.length) invalid(false); });
+  document.getElementById('importForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!file.files.length) { invalid(true); file.focus(); return; }
+    close();
+  });
   backdrop.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { close(); return; }
     if (e.key !== 'Tab') return;

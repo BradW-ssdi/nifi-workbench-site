@@ -50,7 +50,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -98,7 +98,7 @@
             <p class="mb-0">Choose the condition to port from Legacy Varicella Investigation to Varicella Investigation, then get its case count.</p>
             <div class="ds-field"><label class="ds-required" for="portCondition">Condition:</label>
               <select class="form-select" id="portCondition"><option value="">Select a condition</option><option value="10030">Varicella (Chickenpox)</option></select>
-              <span class="invalid-feedback" id="portCondition-error" hidden></span></div>
+              <span class="invalid-feedback" id="portCondition-error"></span></div>
             <div><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="getCount">Get Case Count</button></div>
             <p class="mb-0" id="caseCount" hidden><strong>Cases to port:</strong> <span id="caseCountValue"></span></p>
           </div></section>
@@ -117,7 +117,7 @@
             <div class="ds-field"><label class="ds-required" for="records">Number of Records to Migrate:</label>
               <input class="form-control" id="records" type="text" inputmode="numeric" autocomplete="off" aria-describedby="records-hint" style="max-width:12rem">
               <span class="form-text" id="records-hint">4 remaining</span>
-              <span class="invalid-feedback" id="records-error" hidden></span></div>
+              <span class="invalid-feedback" id="records-error"></span></div>
             <div><button type="button" class="btn btn-primary rounded-pill px-3" id="runConv" aria-haspopup="dialog">Run Conversion</button></div>
           </div></section>
         <section class="d-grid gap-2" aria-labelledby="logTitle">
@@ -139,8 +139,8 @@
               </tbody></table></div></div>
         </section>
         <div class="ds-form-footer" style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg)">
-          <a class="btn btn-outline-dark rounded-pill px-3" href="port-review-mapping.html">Back</a>
-          <a class="btn btn-primary rounded-pill px-3" href="manage-page-porting.html">Done</a>
+          <button type="button" class="btn btn-outline-dark rounded-pill px-3" onclick="location.href='port-review-mapping.html'" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Back">Back</button>
+          <button type="button" class="btn btn-primary rounded-pill px-3" onclick="location.href='manage-page-porting.html'" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Done">Done</button>
         </div>
       </div>
       <div class="modal" id="runDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="runTitle" aria-describedby="runText" hidden>
@@ -161,7 +161,7 @@
             </ul>
             <p class="mb-0">If you have not backed up the database, cancel and do that first.</p>
           </div>
-          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="runYes">Run Conversion</button></div>
+          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="runYes" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Run Conversion">Run Conversion</button></div>
         </div></div>
       </div>
       <script type="application/json" id="portData">{"cases": 4, "caseIds": ["CAS495191022TX01", "CAS495191023TX01", "CAS495241000TX01", "CAS495242000TX01"]}</script>

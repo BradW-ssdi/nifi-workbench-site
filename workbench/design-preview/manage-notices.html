@@ -59,7 +59,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -91,7 +91,7 @@
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
           <div class="ds-table-settings">
-            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
             <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="noticeTable">
               <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
               <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
@@ -145,7 +145,7 @@
         <div class="modal-dialog modal-lg"><div class="modal-content">
           <div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="viewTitle">View Notice</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
           <div class="modal-body bg-body-secondary"><dl class="ds-dl" id="viewList"></dl></div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Close</button><button type="button" class="btn btn-primary rounded-pill px-3" id="viewEdit">Edit</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close">Close</button><button type="button" class="btn btn-primary rounded-pill px-3" id="viewEdit" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit">Edit</button></div>
         </div></div>
       </div>
       <div class="modal" id="noticeDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="noticeTitle" hidden>
@@ -154,22 +154,22 @@
           <div class="modal-body d-grid gap-3 bg-body-secondary">
             <p class="legend-note mb-0"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
             <div class="ds-entry-grid">
-              <div class="ds-field ds-field-wide" id="nType-field"><label class="ds-required" for="nType">Type:</label><select class="form-select" id="nType" aria-describedby="nType-hint"><option value="">Select a type</option><option>Subheading</option><option>Text</option><option>Hyperlink</option></select><span class="form-text" id="nType-hint">Subheading: a bold line that starts a group of notices. Text: a message. Hyperlink: text followed by a link.</span><span class="invalid-feedback" id="nType-error" hidden></span></div>
-              <div class="ds-field ds-field-wide" id="nLabel-field"><label class="ds-required" for="nLabel">Notice text:</label><textarea class="form-control" id="nLabel" rows="3" maxlength="300"></textarea><span class="form-text" id="nLabel-hint">Up to 300 characters.</span><span class="invalid-feedback" id="nLabel-error" hidden></span></div>
-              <div class="ds-field ds-field-wide" id="nOrder-field"><label class="ds-required" for="nOrder">Display order:</label><input class="form-control" id="nOrder" type="text" inputmode="numeric" maxlength="5" autocomplete="off" aria-describedby="nOrder-hint"><span class="form-text" id="nOrder-hint">Notices show from the lowest number up. Notices with the same number show in the order they were added.</span><span class="invalid-feedback" id="nOrder-error" hidden></span></div>
-              <div class="ds-field ds-field-wide" id="nUrl-field" hidden><label class="ds-required" for="nUrl">Link URL:</label><input class="form-control" id="nUrl" type="url" maxlength="2000" autocomplete="off" aria-describedby="nUrl-hint"><span class="form-text" id="nUrl-hint">Starts with https:// or http://. The link opens in a new tab.</span><span class="invalid-feedback" id="nUrl-error" hidden></span></div>
-              <div class="ds-field ds-field-wide" id="nTip-field" hidden><label for="nTip">Tooltip:</label><textarea class="form-control" id="nTip" rows="2" maxlength="2000" aria-describedby="nTip-hint"></textarea><span class="form-text" id="nTip-hint">Shows when the pointer rests on the notice.</span><span class="invalid-feedback" id="nTip-error" hidden></span></div>
-              <div class="ds-field ds-field-wide" id="nComment-field"><label for="nComment">Comments:</label><textarea class="form-control" id="nComment" rows="2" maxlength="2000" aria-describedby="nComment-hint"></textarea><span class="form-text" id="nComment-hint">For administrators. Not shown on Home.</span><span class="invalid-feedback" id="nComment-error" hidden></span></div>
+              <div class="ds-field ds-field-wide" id="nType-field"><label class="ds-required" for="nType">Type:</label><select class="form-select" id="nType" aria-describedby="nType-hint"><option value="">Select a type</option><option>Subheading</option><option>Text</option><option>Hyperlink</option></select><span class="form-text" id="nType-hint">Subheading: a bold line that starts a group of notices. Text: a message. Hyperlink: text followed by a link.</span><span class="invalid-feedback" id="nType-error"></span></div>
+              <div class="ds-field ds-field-wide" id="nLabel-field"><label class="ds-required" for="nLabel">Notice text:</label><textarea class="form-control" id="nLabel" rows="3" maxlength="300"></textarea><span class="form-text" id="nLabel-hint">Up to 300 characters.</span><span class="invalid-feedback" id="nLabel-error"></span></div>
+              <div class="ds-field ds-field-wide" id="nOrder-field"><label class="ds-required" for="nOrder">Display order:</label><input class="form-control" id="nOrder" type="text" inputmode="numeric" maxlength="5" autocomplete="off" aria-describedby="nOrder-hint"><span class="form-text" id="nOrder-hint">Notices show from the lowest number up. Notices with the same number show in the order they were added.</span><span class="invalid-feedback" id="nOrder-error"></span></div>
+              <div class="ds-field ds-field-wide" id="nUrl-field" hidden><label class="ds-required" for="nUrl">Link URL:</label><input class="form-control" id="nUrl" type="url" maxlength="2000" autocomplete="off" aria-describedby="nUrl-hint"><span class="form-text" id="nUrl-hint">Starts with https:// or http://. The link opens in a new tab.</span><span class="invalid-feedback" id="nUrl-error"></span></div>
+              <div class="ds-field ds-field-wide" id="nTip-field" hidden><label for="nTip">Tooltip:</label><textarea class="form-control" id="nTip" rows="2" maxlength="2000" aria-describedby="nTip-hint"></textarea><span class="form-text" id="nTip-hint">Shows when the pointer rests on the notice.</span><span class="invalid-feedback" id="nTip-error"></span></div>
+              <div class="ds-field ds-field-wide" id="nComment-field"><label for="nComment">Comments:</label><textarea class="form-control" id="nComment" rows="2" maxlength="2000" aria-describedby="nComment-hint"></textarea><span class="form-text" id="nComment-hint">For administrators. Not shown on Home.</span><span class="invalid-feedback" id="nComment-error"></span></div>
             </div>
           </div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="noticeSave">Save</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="noticeSave" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Save">Save</button></div>
         </div></div>
       </div>
       <div class="modal" id="deleteDialog" tabindex="-1" role="alertdialog" aria-modal="true" aria-labelledby="deleteTitle" aria-describedby="deleteText" hidden>
         <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
           <div class="modal-header bg-body-tertiary"><h2 class="modal-title h5" id="deleteTitle">Delete this notice?</h2></div>
           <div class="modal-body bg-body-tertiary"><p class="mb-0" id="deleteText"></p></div>
-          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button><button type="button" class="btn btn-danger rounded-pill px-3" id="deleteYes">Delete notice</button></div>
+          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button><button type="button" class="btn btn-danger rounded-pill px-3" id="deleteYes" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Delete notice">Delete notice</button></div>
         </div></div>
       </div>
       <div class="modal" id="previewDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="previewTitle" hidden>
@@ -182,7 +182,7 @@
               <div class="card-body"><ul class="notice-list" id="previewList"></ul></div>
             </div>
           </div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-primary rounded-pill px-3" data-close>Close</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-primary rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close">Close</button></div>
         </div></div>
       </div>
       <script type="application/json" id="noticeData">[{"id": 1183449, "type": "Subheading", "order": 1, "label": "NEDSS Portal:", "url": "", "tooltip": "", "comment": ""}, {"id": 1186137, "type": "Subheading", "order": 1, "label": "New UI", "url": "", "tooltip": "The new homepage is live!", "comment": ""}, {"id": 1183450, "type": "Text", "order": 2, "label": "NEDSS login page will be disabled on October 2, 2025. After that date, all users are required to log in to NEDSS through the NEDSS Portal login page.", "url": "", "tooltip": "", "comment": ""}, {"id": 1183451, "type": "Hyperlink", "order": 3, "label": "Portal Login Page (remember to bookmark):", "url": "https://newNEDSSportal.com", "tooltip": "", "comment": ""}, {"id": 1183452, "type": "Subheading", "order": 4, "label": "NEDSS Offline:", "url": "", "tooltip": "", "comment": ""}, {"id": 1183453, "type": "Text", "order": 5, "label": "NEDSS will be offline beginning 9/30/2025 5:00pm CST to 10/1/2025 8:00am CST.", "url": "", "tooltip": "", "comment": ""}]</script>

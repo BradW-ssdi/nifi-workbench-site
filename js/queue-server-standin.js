@@ -87,10 +87,10 @@
             var tip = function (verb) { return ' data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="' + verb + " " + esc(Q.actions.noun) + '"'; };
             return '<td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog" aria-label="View ' + name + '"' + tip("View") +
                 '><span class="ds-icon material-symbols-rounded" aria-hidden="true">description</span></button></td><td class="ds-row-actions">' +
-                /* View and Edit in a column each (Team A, Slack 11-10 and 11-12). Edit: a link to its page, or (no page) a button that opens the Edit dialog */
-                (Q.actions.edit ? '<a class="btn btn-light rounded-circle btn-sm" href="' + Q.actions.edit + '"' : '<button type="button" class="btn btn-light rounded-circle btn-sm" aria-haspopup="dialog"') +
+                /* View and Edit in a column each (Team A, Slack 11-10 and 11-12). Edit: a button that goes to its page, or (no page) opens the Edit dialog */
+                '<button type="button" class="btn btn-light rounded-circle btn-sm"' + (Q.actions.edit ? ' onclick="location.href=\'' + Q.actions.edit + '\'"' : ' aria-haspopup="dialog"') +
                 ' aria-label="Edit ' + name + '"' + tip("Edit") +
-                '><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span>' + (Q.actions.edit ? '</a>' : '</button>') + '</td>';
+                '><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button></td>';
         }
         var v = r[c.field] || "", none = '<span class="visually-hidden">None</span>';
         if (c.type === "badge") { return '<td><span class="badge ' + (c.badges[v] || c.otherBadge) + '">' + esc(v) + "</span></td>"; }

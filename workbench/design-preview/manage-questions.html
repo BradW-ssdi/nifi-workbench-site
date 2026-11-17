@@ -57,7 +57,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -91,8 +91,8 @@
           <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" id="addBtn" aria-haspopup="dialog" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Add Question"><span aria-hidden="true" class="material-symbols-rounded text me-1">add</span><span>Add Question</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Print" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Print"><span class="ds-icon material-symbols-rounded" aria-hidden="true">print</span></button>
           <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Download" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Download"><span class="ds-icon material-symbols-rounded" aria-hidden="true">download</span></button>
-          <div class="ds-table-settings">
-            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
+          <div class="ds-table-settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings">
+            <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="tableSettingsBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-controls="tableSettingsMenu" aria-label="Table settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
             <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="tableSettingsMenu" role="group" aria-labelledby="tableSettingsTitle" data-table="questionTable">
               <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="tableSettingsTitle">Table Settings</p>
               <div class="form-check form-switch"><input class="form-check-input" id="compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="compactSwitch">Compact Rows</label></div>
@@ -673,7 +673,7 @@
                 <label class="col-md-5 col-form-label text-md-end" for="e-description"><span class="ds-required-mark" aria-hidden="true">*</span>Description:</label>
                 <div class="col-md-5">
                   <textarea class="form-control" id="e-description" name="description" rows="2" maxlength="300" required></textarea>
-                  <span class="invalid-feedback" id="e-description-error" hidden></span>
+                  <span class="invalid-feedback" id="e-description-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="dataType">
@@ -688,7 +688,7 @@
                 <label class="col-md-5 col-form-label text-md-end" for="e-defaultCoded">Default Value:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="e-defaultCoded" name="defaultCoded"><option value=""></option></select>
-                  <span class="invalid-feedback" id="e-defaultCoded-error" hidden></span>
+                  <span class="invalid-feedback" id="e-defaultCoded-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="allowOther" data-when="dataType=Coded">
@@ -698,14 +698,14 @@
                     <label class="ds-check"><input class="form-check-input" type="radio" name="allowOther" id="e-allowOther-y" value="Yes"> Yes</label>
                     <label class="ds-check"><input class="form-check-input" type="radio" name="allowOther" id="e-allowOther-n" value="No"> No</label>
                   </div>
-                  <span class="invalid-feedback" id="e-allowOther-error" hidden></span>
+                  <span class="invalid-feedback" id="e-allowOther-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="mask" data-when="dataType=Date|Numeric|Text">
                 <label class="col-md-5 col-form-label text-md-end" for="e-mask"><span class="ds-required-mark" aria-hidden="true">*</span>Mask:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="e-mask" name="mask" required><option value=""></option></select>
-                  <span class="invalid-feedback" id="e-mask-error" hidden></span>
+                  <span class="invalid-feedback" id="e-mask-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="futureDates" data-when="dataType=Date">
@@ -715,35 +715,35 @@
                     <label class="ds-check"><input class="form-check-input" type="radio" name="futureDates" id="e-futureDates-y" value="Yes"> Yes</label>
                     <label class="ds-check"><input class="form-check-input" type="radio" name="futureDates" id="e-futureDates-n" value="No"> No</label>
                   </div>
-                  <span class="invalid-feedback" id="e-futureDates-error" hidden></span>
+                  <span class="invalid-feedback" id="e-futureDates-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="fieldLength" data-when="dataType=Numeric|Text">
                 <label class="col-md-5 col-form-label text-md-end" for="e-fieldLength"><span class="ds-required-mark" aria-hidden="true">*</span>Field Length:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="e-fieldLength" name="fieldLength" type="text" autocomplete="off" maxlength="10" required>
-                  <span class="invalid-feedback" id="e-fieldLength-error" hidden></span>
+                  <span class="invalid-feedback" id="e-fieldLength-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="defaultValue" data-when="dataType=Numeric|Text">
                 <label class="col-md-5 col-form-label text-md-end" for="e-defaultValue">Default Value:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="e-defaultValue" name="defaultValue" type="text" autocomplete="off" maxlength="50">
-                  <span class="invalid-feedback" id="e-defaultValue-error" hidden></span>
+                  <span class="invalid-feedback" id="e-defaultValue-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="minValue" data-when="dataType=Numeric">
                 <label class="col-md-5 col-form-label text-md-end" for="e-minValue">Minimum Value:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="e-minValue" name="minValue" type="text" autocomplete="off" maxlength="10">
-                  <span class="invalid-feedback" id="e-minValue-error" hidden></span>
+                  <span class="invalid-feedback" id="e-minValue-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="maxValue" data-when="dataType=Numeric">
                 <label class="col-md-5 col-form-label text-md-end" for="e-maxValue">Maximum Value:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="e-maxValue" name="maxValue" type="text" autocomplete="off" maxlength="10">
-                  <span class="invalid-feedback" id="e-maxValue-error" hidden></span>
+                  <span class="invalid-feedback" id="e-maxValue-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="relatedUnits" data-when="dataType=Numeric">
@@ -753,28 +753,28 @@
                     <label class="ds-check"><input class="form-check-input" type="radio" name="relatedUnits" id="e-relatedUnits-y" value="Yes"> Yes</label>
                     <label class="ds-check"><input class="form-check-input" type="radio" name="relatedUnits" id="e-relatedUnits-n" value="No"> No</label>
                   </div>
-                  <span class="invalid-feedback" id="e-relatedUnits-error" hidden></span>
+                  <span class="invalid-feedback" id="e-relatedUnits-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="unitsType" data-when="dataType=Numeric;relatedUnits=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="e-unitsType"><span class="ds-required-mark" aria-hidden="true">*</span>Units Type:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="e-unitsType" name="unitsType" required><option value=""></option><option>Coded Value</option><option>Literal Value</option></select>
-                  <span class="invalid-feedback" id="e-unitsType-error" hidden></span>
+                  <span class="invalid-feedback" id="e-unitsType-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="unitsValueSet" data-when="dataType=Numeric;relatedUnits=Yes;unitsType=Coded Value">
                 <label class="col-md-5 col-form-label text-md-end" for="e-unitsValueSet"><span class="ds-required-mark" aria-hidden="true">*</span>Related Units Value Set:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="e-unitsValueSet" name="unitsValueSet" required><option value=""></option><option>3rd generation cephalosporin set</option><option>730_JUSTIFICATION</option><option>900 Result Provide</option><option>900 Test at Event</option><option>900 Test Results</option><option>Abdominal Imaging Result (MIS)</option><option>Abdominal Imaging Type (MIS)</option><option>Act Encounter Code</option><option>AFM Pathogen tests</option><option>Age Units</option><option>Age Units Short List</option><option>ALRT_PUBLIC_HEALTH_EVENT</option><option>NBS Act Class</option><option>NBS Act Coding System</option><option>NBS Act ID Assigning Authority</option><option>NBS Act ID Type</option><option>NBS Act Mode</option><option>NBS Add Reason</option><option>Referral Priority (HL7)</option><option>Result status (HL7)</option><option>Yes No Unknown (YNU)</option></select>
-                  <span class="invalid-feedback" id="e-unitsValueSet-error" hidden></span>
+                  <span class="invalid-feedback" id="e-unitsValueSet-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="unitsLiteral" data-when="dataType=Numeric;relatedUnits=Yes;unitsType=Literal Value">
                 <label class="col-md-5 col-form-label text-md-end" for="e-unitsLiteral"><span class="ds-required-mark" aria-hidden="true">*</span>Literal Units Value:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="e-unitsLiteral" name="unitsLiteral" type="text" autocomplete="off" maxlength="50" required>
-                  <span class="invalid-feedback" id="e-unitsLiteral-error" hidden></span>
+                  <span class="invalid-feedback" id="e-unitsLiteral-error"></span>
                 </div>
               </div>
               </div>
@@ -790,21 +790,21 @@
                 <label class="col-md-5 col-form-label text-md-end" for="e-label"><span class="ds-required-mark" aria-hidden="true">*</span>Label on Screen:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="e-label" name="label" type="text" autocomplete="off" maxlength="100" required>
-                  <span class="invalid-feedback" id="e-label-error" hidden></span>
+                  <span class="invalid-feedback" id="e-label-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="toolTip">
                 <label class="col-md-5 col-form-label text-md-end" for="e-toolTip"><span class="ds-required-mark" aria-hidden="true">*</span>Tool Tip:</label>
                 <div class="col-md-5">
                   <textarea class="form-control" id="e-toolTip" name="toolTip" rows="2" maxlength="2000" required></textarea>
-                  <span class="invalid-feedback" id="e-toolTip-error" hidden></span>
+                  <span class="invalid-feedback" id="e-toolTip-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="displayControl">
                 <label class="col-md-5 col-form-label text-md-end" for="e-displayControl"><span class="ds-required-mark" aria-hidden="true">*</span>Display Control:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="e-displayControl" name="displayControl" required><option value=""></option></select>
-                  <span class="invalid-feedback" id="e-displayControl-error" hidden></span>
+                  <span class="invalid-feedback" id="e-displayControl-error"></span>
                 </div>
               </div>
               </div>
@@ -820,7 +820,7 @@
                 <label class="col-md-5 col-form-label text-md-end" for="e-reportLabel"><span class="ds-required-mark" aria-hidden="true">*</span>Default Label in Report:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="e-reportLabel" name="reportLabel" type="text" autocomplete="off" maxlength="50" required>
-                  <span class="invalid-feedback" id="e-reportLabel-error" hidden></span>
+                  <span class="invalid-feedback" id="e-reportLabel-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="rdbTable">
@@ -835,7 +835,7 @@
                 <label class="col-md-5 col-form-label text-md-end" for="e-martColumn">Data Mart Column Name:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="e-martColumn" name="martColumn" type="text" autocomplete="off" maxlength="21">
-                  <span class="invalid-feedback" id="e-martColumn-error" hidden></span>
+                  <span class="invalid-feedback" id="e-martColumn-error"></span>
                 </div>
               </div>
               </div>
@@ -854,28 +854,28 @@
                     <label class="ds-check"><input class="form-check-input" type="radio" name="included" id="e-included-y" value="Yes"> Yes</label>
                     <label class="ds-check"><input class="form-check-input" type="radio" name="included" id="e-included-n" value="No"> No</label>
                   </div>
-                  <span class="invalid-feedback" id="e-included-error" hidden></span>
+                  <span class="invalid-feedback" id="e-included-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="msgVariable" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="e-msgVariable"><span class="ds-required-mark" aria-hidden="true">*</span>Message Variable ID:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="e-msgVariable" name="msgVariable" type="text" autocomplete="off" maxlength="50" required>
-                  <span class="invalid-feedback" id="e-msgVariable-error" hidden></span>
+                  <span class="invalid-feedback" id="e-msgVariable-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="msgLabel" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="e-msgLabel"><span class="ds-required-mark" aria-hidden="true">*</span>Label in Message:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="e-msgLabel" name="msgLabel" type="text" autocomplete="off" maxlength="100" required>
-                  <span class="invalid-feedback" id="e-msgLabel-error" hidden></span>
+                  <span class="invalid-feedback" id="e-msgLabel-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="codeSystem" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="e-codeSystem"><span class="ds-required-mark" aria-hidden="true">*</span>Code System Name:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="e-codeSystem" name="codeSystem" required><option value=""></option><option>Abnormal flags (HL7)</option><option>Accept/application acknowledgment conditions</option><option>Acknowledgment code (HL7)</option><option>Act Code (HL7)</option><option>Act Priority (HL7)</option><option>Action Code (HL7)</option><option>ActMood (HL7)</option><option>ActReason</option><option>ActStatus</option><option>Additive (HL7)</option><option>Address Type (HL7)</option><option>Address Use (HL7)</option><option>Administration device (HL7)</option><option>Administration method (HL7)</option><option>Administrative sex (HL7)</option><option>AdministrativeGender</option><option>Admission level of care code (HL7)</option><option>Admission type (HL7)</option><option>Admit source (HL7)</option><option>Allergen type (HL7)</option><option>Allergy severity (HL7)</option><option>Alternate character set handling scheme (HL7)</option><option>Alternate character sets (HL7)</option><option>Application Error Code (HL7)</option><option>Authorization Mode (HL7)</option><option>BioSense RT observations (Census) - CDC</option><option>Birth Defects Diagnostic Confirmation (HL7)</option><option>Birth Defects Laterality at Diagnosis (HL7)</option><option>Body Site (HL7)</option><option>CDC GS1 VIS BarCodes</option><option>Check Digit Scheme (HL7)</option><option>Coding System (HL7)</option><option>Comment type (HL7)</option><option>Completion Status for Valid Values (HL7)</option><option>Confidentiality code (HL7)</option><option>ConfidentialityCode (HL7)</option><option>Contact Role (HL7)</option><option>Country (FIPS 10-4)</option><option>Country (ISO 3166-1)</option><option>Degree (HL7)</option><option>Diagnosis priority (HL7)</option><option>Diagnosis type (HL7)</option><option>Diagnostic service section ID (HL7)</option><option>Discharge disposition (HL7)</option><option>Document availability status (HL7)</option><option>EducationLevel</option><option>Emergency Department Acuity - CDC</option><option>Encoding (HL7)</option><option>Entity Code (HL7)</option><option>Entity Handling (HL7)</option><option>EntityNamePartQualifier (HL7)</option><option>EntityNameUse (HL7)</option><option>EPA SRS</option><option>Error Severity (HL7)</option><option>Ethnic Group (HL7)</option><option>Event Consequence (HL7)</option><option>Event Reason (HL7)</option><option>Event Reported to (HL7)</option><option>Event Type (HL7)</option></select>
-                  <span class="invalid-feedback" id="e-codeSystem-error" hidden></span>
+                  <span class="invalid-feedback" id="e-codeSystem-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="reqInMsg" data-when="included=Yes">
@@ -885,28 +885,28 @@
                     <label class="ds-check"><input class="form-check-input" type="radio" name="reqInMsg" id="e-reqInMsg-y" value="Yes"> Yes</label>
                     <label class="ds-check"><input class="form-check-input" type="radio" name="reqInMsg" id="e-reqInMsg-n" value="No"> No</label>
                   </div>
-                  <span class="invalid-feedback" id="e-reqInMsg-error" hidden></span>
+                  <span class="invalid-feedback" id="e-reqInMsg-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="hl7Type" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="e-hl7Type"><span class="ds-required-mark" aria-hidden="true">*</span>HL7 Data Type:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="e-hl7Type" name="hl7Type" required><option value=""></option><option>CE</option><option>CWE</option><option>CX</option><option>DT</option><option>HD</option><option>ID</option><option>IS</option><option>NM</option><option>SN</option><option>ST</option><option>TS</option><option>TX</option><option>XPN</option><option>XTN</option></select>
-                  <span class="invalid-feedback" id="e-hl7Type-error" hidden></span>
+                  <span class="invalid-feedback" id="e-hl7Type-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="hl7Segment" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="e-hl7Segment">HL7 Segment:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="e-hl7Segment" name="hl7Segment"><option value=""></option><option>MSH-10.0</option><option>NK1-14.0</option><option>NK1-16.0</option><option>NK1-28.0</option><option>NK1-3.0</option><option>NK1-35.0</option><option>NK1-4.4</option><option>NK1-4.5</option><option>NK1-4.6</option><option>NK1-4.9</option><option>OBR-22.0</option><option>OBR-3.1</option><option>OBR-31.0</option><option>OBR-7.0</option><option>OBX-3.0</option><option>OBX-5.9</option><option>OBX-6-Units</option><option>PID-10.0</option><option>PID-11.10</option><option>PID-11.4</option><option>PID-11.5</option><option>PID-11.9</option><option>PID-22.0</option><option>PID-29.0</option><option>PID-3.1</option><option>PID-7.0</option><option>PID-8.0</option></select>
-                  <span class="invalid-feedback" id="e-hl7Segment-error" hidden></span>
+                  <span class="invalid-feedback" id="e-hl7Segment-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="orderGroup" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="e-orderGroup">Group Number (Order Group ID):</label>
                 <div class="col-md-5">
                   <input class="form-control" id="e-orderGroup" name="orderGroup" type="text" autocomplete="off" maxlength="10">
-                  <span class="invalid-feedback" id="e-orderGroup-error" hidden></span>
+                  <span class="invalid-feedback" id="e-orderGroup-error"></span>
                 </div>
               </div>
               </div>
@@ -922,7 +922,7 @@
                 <label class="col-md-5 col-form-label text-md-end" for="e-adminComment">Administrative Comments:</label>
                 <div class="col-md-5">
                   <textarea class="form-control" id="e-adminComment" name="adminComment" rows="2" maxlength="2000"></textarea>
-                  <span class="invalid-feedback" id="e-adminComment-error" hidden></span>
+                  <span class="invalid-feedback" id="e-adminComment-error"></span>
                 </div>
               </div>
               </div>
@@ -932,7 +932,7 @@
         </form>
             </div>
           </div></div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-dismiss data-cancel>Cancel</button><button type="submit" form="editForm" class="btn btn-primary rounded-pill px-3">Submit</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-dismiss data-cancel data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button><button type="submit" form="editForm" class="btn btn-primary rounded-pill px-3" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit">Submit</button></div>
         </div></div>
       </div>
 
@@ -963,56 +963,56 @@
                 <label class="col-md-5 col-form-label text-md-end" for="a-type"><span class="ds-required-mark" aria-hidden="true">*</span>Question Type:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-type" name="type" required><option value=""></option><option>Locally Defined</option><option>PHIN Standard</option></select>
-                  <span class="invalid-feedback" id="a-type-error" hidden></span>
+                  <span class="invalid-feedback" id="a-type-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="id">
                 <label class="col-md-5 col-form-label text-md-end" for="a-id"><span class="ds-required-mark" aria-hidden="true">*</span>Unique ID:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-id" name="id" type="text" autocomplete="off" maxlength="50" required>
-                  <span class="invalid-feedback" id="a-id-error" hidden></span>
+                  <span class="invalid-feedback" id="a-id-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="name">
                 <label class="col-md-5 col-form-label text-md-end" for="a-name"><span class="ds-required-mark" aria-hidden="true">*</span>Unique Name:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-name" name="name" type="text" autocomplete="off" maxlength="50" required>
-                  <span class="invalid-feedback" id="a-name-error" hidden></span>
+                  <span class="invalid-feedback" id="a-name-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="subgroup">
                 <label class="col-md-5 col-form-label text-md-end" for="a-subgroup"><span class="ds-required-mark" aria-hidden="true">*</span>Subgroup:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-subgroup" name="subgroup" required><option value=""></option><option>Administrative Information</option><option>Clinical Information</option><option>Complications</option><option>Contact Tracing</option><option>Death Information</option><option>Epidemiologic Information</option><option>HIV Information</option><option>Isolate Tracking &amp; Genotyping</option><option>Laboratory Findings</option><option>Medical History</option><option>Mother&#x27;s Information</option><option>Other (Misc./Unknown)</option><option>Patient Demographic Information</option><option>Pregnancy &amp; Birth Information</option><option>Residency Information</option><option>Risk Factors</option><option>Signs &amp; Symptoms</option><option>Social History</option><option>Travel History</option><option>Treatment Information</option><option>Underlying Conditions</option><option>Vaccination Information</option></select>
-                  <span class="invalid-feedback" id="a-subgroup-error" hidden></span>
+                  <span class="invalid-feedback" id="a-subgroup-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="description">
                 <label class="col-md-5 col-form-label text-md-end" for="a-description"><span class="ds-required-mark" aria-hidden="true">*</span>Description:</label>
                 <div class="col-md-5">
                   <textarea class="form-control" id="a-description" name="description" rows="2" maxlength="300" required></textarea>
-                  <span class="invalid-feedback" id="a-description-error" hidden></span>
+                  <span class="invalid-feedback" id="a-description-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="dataType">
                 <label class="col-md-5 col-form-label text-md-end" for="a-dataType"><span class="ds-required-mark" aria-hidden="true">*</span>Data Type:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-dataType" name="dataType" required><option value=""></option><option>Coded</option><option>Date</option><option>Numeric</option><option>Text</option></select>
-                  <span class="invalid-feedback" id="a-dataType-error" hidden></span>
+                  <span class="invalid-feedback" id="a-dataType-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="valueSet" data-when="dataType=Coded">
                 <label class="col-md-5 col-form-label text-md-end" for="a-valueSet"><span class="ds-required-mark" aria-hidden="true">*</span>Value Set:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-valueSet" name="valueSet" required><option value=""></option><option>3rd generation cephalosporin set</option><option>730_JUSTIFICATION</option><option>900 Result Provide</option><option>900 Test at Event</option><option>900 Test Results</option><option>Abdominal Imaging Result (MIS)</option><option>Abdominal Imaging Type (MIS)</option><option>Act Encounter Code</option><option>AFM Pathogen tests</option><option>Age Units</option><option>Age Units Short List</option><option>ALRT_PUBLIC_HEALTH_EVENT</option><option>NBS Act Class</option><option>NBS Act Coding System</option><option>NBS Act ID Assigning Authority</option><option>NBS Act ID Type</option><option>NBS Act Mode</option><option>NBS Add Reason</option><option>Referral Priority (HL7)</option><option>Result status (HL7)</option><option>Yes No Unknown (YNU)</option></select>
-                  <span class="invalid-feedback" id="a-valueSet-error" hidden></span>
+                  <span class="invalid-feedback" id="a-valueSet-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="defaultCoded" data-when="dataType=Coded">
                 <label class="col-md-5 col-form-label text-md-end" for="a-defaultCoded">Default Value:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-defaultCoded" name="defaultCoded"><option value=""></option></select>
-                  <span class="invalid-feedback" id="a-defaultCoded-error" hidden></span>
+                  <span class="invalid-feedback" id="a-defaultCoded-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="allowOther" data-when="dataType=Coded">
@@ -1022,14 +1022,14 @@
                     <label class="ds-check"><input class="form-check-input" type="radio" name="allowOther" id="a-allowOther-y" value="Yes"> Yes</label>
                     <label class="ds-check"><input class="form-check-input" type="radio" name="allowOther" id="a-allowOther-n" value="No"> No</label>
                   </div>
-                  <span class="invalid-feedback" id="a-allowOther-error" hidden></span>
+                  <span class="invalid-feedback" id="a-allowOther-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="mask" data-when="dataType=Date|Numeric|Text">
                 <label class="col-md-5 col-form-label text-md-end" for="a-mask"><span class="ds-required-mark" aria-hidden="true">*</span>Mask:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-mask" name="mask" required><option value=""></option></select>
-                  <span class="invalid-feedback" id="a-mask-error" hidden></span>
+                  <span class="invalid-feedback" id="a-mask-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="futureDates" data-when="dataType=Date">
@@ -1039,35 +1039,35 @@
                     <label class="ds-check"><input class="form-check-input" type="radio" name="futureDates" id="a-futureDates-y" value="Yes"> Yes</label>
                     <label class="ds-check"><input class="form-check-input" type="radio" name="futureDates" id="a-futureDates-n" value="No"> No</label>
                   </div>
-                  <span class="invalid-feedback" id="a-futureDates-error" hidden></span>
+                  <span class="invalid-feedback" id="a-futureDates-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="fieldLength" data-when="dataType=Numeric|Text">
                 <label class="col-md-5 col-form-label text-md-end" for="a-fieldLength"><span class="ds-required-mark" aria-hidden="true">*</span>Field Length:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-fieldLength" name="fieldLength" type="text" autocomplete="off" maxlength="10" required>
-                  <span class="invalid-feedback" id="a-fieldLength-error" hidden></span>
+                  <span class="invalid-feedback" id="a-fieldLength-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="defaultValue" data-when="dataType=Numeric|Text">
                 <label class="col-md-5 col-form-label text-md-end" for="a-defaultValue">Default Value:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-defaultValue" name="defaultValue" type="text" autocomplete="off" maxlength="50">
-                  <span class="invalid-feedback" id="a-defaultValue-error" hidden></span>
+                  <span class="invalid-feedback" id="a-defaultValue-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="minValue" data-when="dataType=Numeric">
                 <label class="col-md-5 col-form-label text-md-end" for="a-minValue">Minimum Value:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-minValue" name="minValue" type="text" autocomplete="off" maxlength="10">
-                  <span class="invalid-feedback" id="a-minValue-error" hidden></span>
+                  <span class="invalid-feedback" id="a-minValue-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="maxValue" data-when="dataType=Numeric">
                 <label class="col-md-5 col-form-label text-md-end" for="a-maxValue">Maximum Value:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-maxValue" name="maxValue" type="text" autocomplete="off" maxlength="10">
-                  <span class="invalid-feedback" id="a-maxValue-error" hidden></span>
+                  <span class="invalid-feedback" id="a-maxValue-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="relatedUnits" data-when="dataType=Numeric">
@@ -1077,28 +1077,28 @@
                     <label class="ds-check"><input class="form-check-input" type="radio" name="relatedUnits" id="a-relatedUnits-y" value="Yes"> Yes</label>
                     <label class="ds-check"><input class="form-check-input" type="radio" name="relatedUnits" id="a-relatedUnits-n" value="No"> No</label>
                   </div>
-                  <span class="invalid-feedback" id="a-relatedUnits-error" hidden></span>
+                  <span class="invalid-feedback" id="a-relatedUnits-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="unitsType" data-when="dataType=Numeric;relatedUnits=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="a-unitsType"><span class="ds-required-mark" aria-hidden="true">*</span>Units Type:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-unitsType" name="unitsType" required><option value=""></option><option>Coded Value</option><option>Literal Value</option></select>
-                  <span class="invalid-feedback" id="a-unitsType-error" hidden></span>
+                  <span class="invalid-feedback" id="a-unitsType-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="unitsValueSet" data-when="dataType=Numeric;relatedUnits=Yes;unitsType=Coded Value">
                 <label class="col-md-5 col-form-label text-md-end" for="a-unitsValueSet"><span class="ds-required-mark" aria-hidden="true">*</span>Related Units Value Set:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-unitsValueSet" name="unitsValueSet" required><option value=""></option><option>3rd generation cephalosporin set</option><option>730_JUSTIFICATION</option><option>900 Result Provide</option><option>900 Test at Event</option><option>900 Test Results</option><option>Abdominal Imaging Result (MIS)</option><option>Abdominal Imaging Type (MIS)</option><option>Act Encounter Code</option><option>AFM Pathogen tests</option><option>Age Units</option><option>Age Units Short List</option><option>ALRT_PUBLIC_HEALTH_EVENT</option><option>NBS Act Class</option><option>NBS Act Coding System</option><option>NBS Act ID Assigning Authority</option><option>NBS Act ID Type</option><option>NBS Act Mode</option><option>NBS Add Reason</option><option>Referral Priority (HL7)</option><option>Result status (HL7)</option><option>Yes No Unknown (YNU)</option></select>
-                  <span class="invalid-feedback" id="a-unitsValueSet-error" hidden></span>
+                  <span class="invalid-feedback" id="a-unitsValueSet-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="unitsLiteral" data-when="dataType=Numeric;relatedUnits=Yes;unitsType=Literal Value">
                 <label class="col-md-5 col-form-label text-md-end" for="a-unitsLiteral"><span class="ds-required-mark" aria-hidden="true">*</span>Literal Units Value:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-unitsLiteral" name="unitsLiteral" type="text" autocomplete="off" maxlength="50" required>
-                  <span class="invalid-feedback" id="a-unitsLiteral-error" hidden></span>
+                  <span class="invalid-feedback" id="a-unitsLiteral-error"></span>
                 </div>
               </div>
               </div>
@@ -1114,21 +1114,21 @@
                 <label class="col-md-5 col-form-label text-md-end" for="a-label"><span class="ds-required-mark" aria-hidden="true">*</span>Label on Screen:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-label" name="label" type="text" autocomplete="off" maxlength="100" required>
-                  <span class="invalid-feedback" id="a-label-error" hidden></span>
+                  <span class="invalid-feedback" id="a-label-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="toolTip">
                 <label class="col-md-5 col-form-label text-md-end" for="a-toolTip"><span class="ds-required-mark" aria-hidden="true">*</span>Tool Tip:</label>
                 <div class="col-md-5">
                   <textarea class="form-control" id="a-toolTip" name="toolTip" rows="2" maxlength="2000" required></textarea>
-                  <span class="invalid-feedback" id="a-toolTip-error" hidden></span>
+                  <span class="invalid-feedback" id="a-toolTip-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="displayControl">
                 <label class="col-md-5 col-form-label text-md-end" for="a-displayControl"><span class="ds-required-mark" aria-hidden="true">*</span>Display Control:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-displayControl" name="displayControl" required><option value=""></option></select>
-                  <span class="invalid-feedback" id="a-displayControl-error" hidden></span>
+                  <span class="invalid-feedback" id="a-displayControl-error"></span>
                 </div>
               </div>
               </div>
@@ -1144,28 +1144,28 @@
                 <label class="col-md-5 col-form-label text-md-end" for="a-reportLabel"><span class="ds-required-mark" aria-hidden="true">*</span>Default Label in Report:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-reportLabel" name="reportLabel" type="text" autocomplete="off" maxlength="50" required>
-                  <span class="invalid-feedback" id="a-reportLabel-error" hidden></span>
+                  <span class="invalid-feedback" id="a-reportLabel-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="rdbTable">
                 <label class="col-md-5 col-form-label text-md-end" for="a-rdbTable"><span class="ds-required-mark" aria-hidden="true">*</span>Default RDB Table Name:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-rdbTable" name="rdbTable" type="text" autocomplete="off" required>
-                  <span class="invalid-feedback" id="a-rdbTable-error" hidden></span>
+                  <span class="invalid-feedback" id="a-rdbTable-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="rdbColumn">
                 <label class="col-md-5 col-form-label text-md-end" for="a-rdbColumn"><span class="ds-required-mark" aria-hidden="true">*</span>RDB Column Name:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-rdbColumn" name="rdbColumn" type="text" autocomplete="off" maxlength="21" required>
-                  <span class="invalid-feedback" id="a-rdbColumn-error" hidden></span>
+                  <span class="invalid-feedback" id="a-rdbColumn-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="martColumn">
                 <label class="col-md-5 col-form-label text-md-end" for="a-martColumn">Data Mart Column Name:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-martColumn" name="martColumn" type="text" autocomplete="off" maxlength="21">
-                  <span class="invalid-feedback" id="a-martColumn-error" hidden></span>
+                  <span class="invalid-feedback" id="a-martColumn-error"></span>
                 </div>
               </div>
               </div>
@@ -1184,28 +1184,28 @@
                     <label class="ds-check"><input class="form-check-input" type="radio" name="included" id="a-included-y" value="Yes"> Yes</label>
                     <label class="ds-check"><input class="form-check-input" type="radio" name="included" id="a-included-n" value="No"> No</label>
                   </div>
-                  <span class="invalid-feedback" id="a-included-error" hidden></span>
+                  <span class="invalid-feedback" id="a-included-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="msgVariable" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="a-msgVariable"><span class="ds-required-mark" aria-hidden="true">*</span>Message Variable ID:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-msgVariable" name="msgVariable" type="text" autocomplete="off" maxlength="50" required>
-                  <span class="invalid-feedback" id="a-msgVariable-error" hidden></span>
+                  <span class="invalid-feedback" id="a-msgVariable-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="msgLabel" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="a-msgLabel"><span class="ds-required-mark" aria-hidden="true">*</span>Label in Message:</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-msgLabel" name="msgLabel" type="text" autocomplete="off" maxlength="100" required>
-                  <span class="invalid-feedback" id="a-msgLabel-error" hidden></span>
+                  <span class="invalid-feedback" id="a-msgLabel-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="codeSystem" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="a-codeSystem"><span class="ds-required-mark" aria-hidden="true">*</span>Code System Name:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-codeSystem" name="codeSystem" required><option value=""></option><option>Abnormal flags (HL7)</option><option>Accept/application acknowledgment conditions</option><option>Acknowledgment code (HL7)</option><option>Act Code (HL7)</option><option>Act Priority (HL7)</option><option>Action Code (HL7)</option><option>ActMood (HL7)</option><option>ActReason</option><option>ActStatus</option><option>Additive (HL7)</option><option>Address Type (HL7)</option><option>Address Use (HL7)</option><option>Administration device (HL7)</option><option>Administration method (HL7)</option><option>Administrative sex (HL7)</option><option>AdministrativeGender</option><option>Admission level of care code (HL7)</option><option>Admission type (HL7)</option><option>Admit source (HL7)</option><option>Allergen type (HL7)</option><option>Allergy severity (HL7)</option><option>Alternate character set handling scheme (HL7)</option><option>Alternate character sets (HL7)</option><option>Application Error Code (HL7)</option><option>Authorization Mode (HL7)</option><option>BioSense RT observations (Census) - CDC</option><option>Birth Defects Diagnostic Confirmation (HL7)</option><option>Birth Defects Laterality at Diagnosis (HL7)</option><option>Body Site (HL7)</option><option>CDC GS1 VIS BarCodes</option><option>Check Digit Scheme (HL7)</option><option>Coding System (HL7)</option><option>Comment type (HL7)</option><option>Completion Status for Valid Values (HL7)</option><option>Confidentiality code (HL7)</option><option>ConfidentialityCode (HL7)</option><option>Contact Role (HL7)</option><option>Country (FIPS 10-4)</option><option>Country (ISO 3166-1)</option><option>Degree (HL7)</option><option>Diagnosis priority (HL7)</option><option>Diagnosis type (HL7)</option><option>Diagnostic service section ID (HL7)</option><option>Discharge disposition (HL7)</option><option>Document availability status (HL7)</option><option>EducationLevel</option><option>Emergency Department Acuity - CDC</option><option>Encoding (HL7)</option><option>Entity Code (HL7)</option><option>Entity Handling (HL7)</option><option>EntityNamePartQualifier (HL7)</option><option>EntityNameUse (HL7)</option><option>EPA SRS</option><option>Error Severity (HL7)</option><option>Ethnic Group (HL7)</option><option>Event Consequence (HL7)</option><option>Event Reason (HL7)</option><option>Event Reported to (HL7)</option><option>Event Type (HL7)</option></select>
-                  <span class="invalid-feedback" id="a-codeSystem-error" hidden></span>
+                  <span class="invalid-feedback" id="a-codeSystem-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="reqInMsg" data-when="included=Yes">
@@ -1215,28 +1215,28 @@
                     <label class="ds-check"><input class="form-check-input" type="radio" name="reqInMsg" id="a-reqInMsg-y" value="Yes"> Yes</label>
                     <label class="ds-check"><input class="form-check-input" type="radio" name="reqInMsg" id="a-reqInMsg-n" value="No"> No</label>
                   </div>
-                  <span class="invalid-feedback" id="a-reqInMsg-error" hidden></span>
+                  <span class="invalid-feedback" id="a-reqInMsg-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="hl7Type" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="a-hl7Type"><span class="ds-required-mark" aria-hidden="true">*</span>HL7 Data Type:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-hl7Type" name="hl7Type" required><option value=""></option><option>CE</option><option>CWE</option><option>CX</option><option>DT</option><option>HD</option><option>ID</option><option>IS</option><option>NM</option><option>SN</option><option>ST</option><option>TS</option><option>TX</option><option>XPN</option><option>XTN</option></select>
-                  <span class="invalid-feedback" id="a-hl7Type-error" hidden></span>
+                  <span class="invalid-feedback" id="a-hl7Type-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="hl7Segment" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="a-hl7Segment">HL7 Segment:</label>
                 <div class="col-md-5">
                   <select class="form-select" id="a-hl7Segment" name="hl7Segment"><option value=""></option><option>MSH-10.0</option><option>NK1-14.0</option><option>NK1-16.0</option><option>NK1-28.0</option><option>NK1-3.0</option><option>NK1-35.0</option><option>NK1-4.4</option><option>NK1-4.5</option><option>NK1-4.6</option><option>NK1-4.9</option><option>OBR-22.0</option><option>OBR-3.1</option><option>OBR-31.0</option><option>OBR-7.0</option><option>OBX-3.0</option><option>OBX-5.9</option><option>OBX-6-Units</option><option>PID-10.0</option><option>PID-11.10</option><option>PID-11.4</option><option>PID-11.5</option><option>PID-11.9</option><option>PID-22.0</option><option>PID-29.0</option><option>PID-3.1</option><option>PID-7.0</option><option>PID-8.0</option></select>
-                  <span class="invalid-feedback" id="a-hl7Segment-error" hidden></span>
+                  <span class="invalid-feedback" id="a-hl7Segment-error"></span>
                 </div>
               </div>
               <div class="row g-2 align-items-center" data-row="orderGroup" data-when="included=Yes">
                 <label class="col-md-5 col-form-label text-md-end" for="a-orderGroup">Group Number (Order Group ID):</label>
                 <div class="col-md-5">
                   <input class="form-control" id="a-orderGroup" name="orderGroup" type="text" autocomplete="off" maxlength="10">
-                  <span class="invalid-feedback" id="a-orderGroup-error" hidden></span>
+                  <span class="invalid-feedback" id="a-orderGroup-error"></span>
                 </div>
               </div>
               </div>
@@ -1252,7 +1252,7 @@
                 <label class="col-md-5 col-form-label text-md-end" for="a-adminComment">Administrative Comments:</label>
                 <div class="col-md-5">
                   <textarea class="form-control" id="a-adminComment" name="adminComment" rows="2" maxlength="2000"></textarea>
-                  <span class="invalid-feedback" id="a-adminComment-error" hidden></span>
+                  <span class="invalid-feedback" id="a-adminComment-error"></span>
                 </div>
               </div>
               </div>
@@ -1262,7 +1262,7 @@
         </form>
             </div>
           </div></div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-dismiss data-cancel>Cancel</button><button type="submit" form="addForm" class="btn btn-primary rounded-pill px-3">Submit</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-dismiss data-cancel data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button><button type="submit" form="addForm" class="btn btn-primary rounded-pill px-3" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit">Submit</button></div>
         </div></div>
       </div>
 
@@ -1270,16 +1270,16 @@
         <div class="modal-dialog"><div class="modal-content">
           <div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="discardTitle">Cancel</h2><button type="button" class="btn-close" id="discardClose" aria-label="Close"></button></div>
           <div class="modal-body bg-body-secondary"><p class="mb-0" id="discardText"></p></div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="keepEditing">Cancel</button>
-            <button type="button" class="btn btn-primary rounded-pill px-3" id="discardYes">OK</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="keepEditing" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+            <button type="button" class="btn btn-primary rounded-pill px-3" id="discardYes" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="OK">OK</button></div>
         </div></div>
       </div>
       <div class="modal ds-modal-confirm ds-modal-status" id="statusDialog" tabindex="-1" role="alertdialog" aria-modal="true" aria-labelledby="statusTitle" aria-describedby="statusText" hidden>
         <div class="modal-dialog"><div class="modal-content">
           <div class="modal-header bg-body-tertiary"><h2 class="modal-title h5" id="statusTitle">Make this question inactive?</h2></div>
           <div class="modal-body bg-body-tertiary"><p class="mb-0" id="statusText"></p></div>
-          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="statusNo">Cancel</button>
-            <button type="button" class="btn btn-primary rounded-pill px-3" id="statusYes">OK</button></div>
+          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="statusNo" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+            <button type="button" class="btn btn-primary rounded-pill px-3" id="statusYes" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="OK">OK</button></div>
         </div></div>
       </div>
       <script type="application/json" id="questionData">{"questions":[{"id":"10109","name":"Streptomycin","type":"PHIN Standard","status":"Active","subgroup":"Treatment Information","description":"Streptomycin","dataType":"Coded","label":"Streptomycin","toolTip":"Streptomycin","displayControl":"Single-Select (Drop down)","reportLabel":"Streptomycin","rdbTable":"D_INV_TREATMENT","rdbColumn":"TRT_STREPTOMYCIN_IND","martColumn":"STREPTOMYCIN_IND","included":"Yes","adminComment":"Created for implementing DRAFT Tuberculosis and LTBI message mapping guide (MMG) internal version 79 dated 09/18/2018","msgVariable":"10109","msgLabel":"Streptomycin","codeSystem":"RxNorm","reqInMsg":"No","hl7Type":"CWE","hl7Segment":"OBX-3.0","orderGroup":"2","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"1023001","name":"Did the patient have apnea?","type":"Locally Defined","status":"Active","subgroup":"Signs & Symptoms","description":"Did the patients illness include the symptom of apnea?","dataType":"Coded","label":"Did the patient have apnea?","toolTip":"Did the patients illness include the symptom of apnea?","displayControl":"Single-Select (Drop down)","reportLabel":"Apnea Indicator","rdbTable":"D_INV_SYMPTOM","rdbColumn":"SYM_APNEA_IND","martColumn":"APNEA_IND","included":"Yes","adminComment":"","msgVariable":"1023001","msgLabel":"Apnea Indicator","codeSystem":"SNOMED-CT","reqInMsg":"No","hl7Type":"CWE","hl7Segment":"OBX-3.0","orderGroup":"2","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"102478008","name":"Pre-Existing Condition(s)","type":"PHIN Standard","status":"Active","subgroup":"Medical History","description":"Pre-existing condition (finding)","dataType":"Coded","label":"Pre-existing medical conditions?","toolTip":"Does the patient have a history of pre-existing medical conditions?","displayControl":"Single-Select (Drop down)","reportLabel":"Pre-existing Medical Conditions","rdbTable":"D_INV_MEDICAL_HISTORY","rdbColumn":"MDH_PREEXISTING_COND_IND","martColumn":"PREEXISTING_COND_IND","included":"No","adminComment":"Added during COVID-19 response; element from Human Infection with 2019 Novel Coronavirus Person Under Investigation (PUI) and Case Report Form, March 2020.","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"102594003","name":"Abnormal Electrocardiogram EKG","type":"PHIN Standard","status":"Active","subgroup":"Clinical Information","description":"Did the patient have an abnormal EKG?","dataType":"Coded","label":"Did the patient have an abnormal EKG?","toolTip":"Did the patient have an abnormal EKG?","displayControl":"Single-Select (Drop down)","reportLabel":"Abnormal EKG","rdbTable":"D_INV_CLINICAL","rdbColumn":"CLN_EKG_ABNORMAL","martColumn":"EKG_ABNORMAL","included":"No","adminComment":"Added to support COVID-19 response.","valueSet":"YesNoUnknownNA","values":["No","Not Applicable","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"102957003","name":"Neurologic Signs/Symptoms","type":"PHIN Standard","status":"Active","subgroup":"Signs & Symptoms","description":"What neurologic manifestations of syphilis are present?","dataType":"Coded","label":"Neurologic Signs/Symptoms","toolTip":"What neurologic manifestations of syphilis are present?","displayControl":"Multi-Select (List Box)","reportLabel":"Neurologic Signs/Symptoms","rdbTable":"D_INV_SYMPTOM","rdbColumn":"SYM_NEUROLOGIC_SIGN_SYM","martColumn":"NEUROLOGIC_SIGN_SYM","included":"Yes","adminComment":"Added to support NBS 5.2 Upgrade to STD/HIV Pages for Pilot-Test Ready version of the Sexually Transmitted Diseases (STD) Case Notification MMG v1 (Share Point Version 0.142 dated, March 15, 2017).","msgVariable":"102957003","msgLabel":"Neurologic Signs/Symptoms","codeSystem":"SNOMED-CT","reqInMsg":"No","hl7Type":"CWE","hl7Segment":"OBX-3.0","orderGroup":"2","valueSet":"Neurological Manifestation (STD)","values":["Altered mental state","Asymptomatic","Cerebrovascular accident","Headache","Hearing loss","Other","Unknown","Visual impairment"],"defaultValue":"","allowOther":"Yes"},{"id":"103001002","name":"Feverish","type":"PHIN Standard","status":"Active","subgroup":"Signs & Symptoms","description":"Feeling feverish (finding)","dataType":"Coded","label":"Subjective fever (felt feverish)","toolTip":"Did the patient have subjective fever (felt feverish)?","displayControl":"Single-Select (Drop down)","reportLabel":"Feverish","rdbTable":"D_INV_SYMPTOM","rdbColumn":"SYM_FEVERISH","martColumn":"FEVERISH_IND","included":"No","adminComment":"Added during COVID-19 response; element from Human Infection with 2019 Novel Coronavirus Person Under Investigation (PUI) and Case Report Form, March 2020.","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"103514009","name":"C. pneumoniae Result","type":"PHIN Standard","status":"Active","subgroup":"Laboratory Findings","description":"C. pneumoniae Result","dataType":"Coded","label":"C. pneumoniae","toolTip":"C. pneumoniae Result","displayControl":"Single-Select (Drop down)","reportLabel":"C. pneumoniae Result","rdbTable":"D_INV_LAB_FINDING","rdbColumn":"LAB_C_PNEUMONIAE_RSLT","martColumn":"C_PNEUMONIAE_RSLT","included":"No","adminComment":"Added during COVID-19 response; element from Human Infection with 2019 Novel Coronavirus Person Under Investigation (PUI) and Case Report Form, March 2020.","valueSet":"Respiratory Diagnostic Tesing Result (COVID-19)","values":["Indeterminate","Negative","Not Done","Pending","Positive"],"defaultValue":"","allowOther":"No"},{"id":"10665004","name":"Pancreatitis Indicator","type":"PHIN Standard","status":"Active","subgroup":"Complications","description":"Pancreatitis","dataType":"Coded","label":"Pancreatitis?","toolTip":"Pancreatitis","displayControl":"Single-Select (Drop down)","reportLabel":"Pancreatitis Indicator","rdbTable":"D_INV_COMPLICATION","rdbColumn":"CMP_PANCREATITIS_IND","martColumn":"PANCREATITIS_IND","included":"Yes","adminComment":"Added to support updates in PHVS_Complications_Mumps version 6 of the Mumps Module on 03152019","msgVariable":"10665004","msgLabel":"Pancreatitis","codeSystem":"SNOMED-CT","reqInMsg":"No","hl7Type":"CWE","hl7Segment":"OBX-3.0","orderGroup":"2","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"110359009","name":"Neuro/Intellectual Disability","type":"PHIN Standard","status":"Active","subgroup":"Medical History","description":"Intellectual disability","dataType":"Coded","label":"Neurologic/neurodevelopmental/intellectual disability","toolTip":"Does the patient have a history of neurologic/neurodevelopmental/intellectual disability?","displayControl":"Single-Select (Drop down)","reportLabel":"Nuero/Intellectual Disability","rdbTable":"D_INV_MEDICAL_HISTORY","rdbColumn":"MDH_NEURO_DISABLITY_IND","martColumn":"NEURO_DISABLITY_IND","included":"No","adminComment":"Added during COVID-19 response; element from Human Infection with 2019 Novel Coronavirus Person Under Investigation (PUI) and Case Report Form, March 2020.","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"11833005","name":"Dry Cough","type":"PHIN Standard","status":"Active","subgroup":"Signs & Symptoms","description":"Dry Cough","dataType":"Coded","label":"Dry Cough","toolTip":"Dry Cough","displayControl":"Single-Select (Drop down)","reportLabel":"Dry Cough","rdbTable":"D_INV_SYMPTOM","rdbColumn":"SYM_DRY_COUGH","martColumn":"DRY_COUGH","included":"No","adminComment":"","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"118940003","name":"Nervous System Disorder Indicator","type":"PHIN Standard","status":"Active","subgroup":"Clinical Information","description":"Did the patient have nervous system disorder(s) (e.g. CVA, aseptic meningitis, encephalopDid the patient have nervous system disorder(s) (e.g. CVA, aseptic meningitis, encephalopathy)?","dataType":"Coded","label":"Nervous system disorder","toolTip":"Did the patient have nervous system disorder(s) (e.g. CVA, aseptic meningitis, encephalopathy)?","displayControl":"Single-Select (Drop down)","reportLabel":"Nervous system disorder","rdbTable":"D_INV_CLINICAL","rdbColumn":"CLN_NERV_SYS_DISORDER_IND","martColumn":"NERV_SYS_DISORDER_IND","included":"Yes","adminComment":"Added during COVID-19 response; element from Multisystem Inflammatory Syndrome (MIS) Associated with COVID-19 Case Report Form, May 2020.","msgVariable":"118940003","msgLabel":"Nervous system disorder","codeSystem":"SNOMED-CT","reqInMsg":"No","hl7Type":"CWE","hl7Segment":"OBX-3.0","orderGroup":"2","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"11920_8","name":"Liver Enzyme Test AST_SGOT","type":"PHIN Standard","status":"Active","subgroup":"Laboratory Findings","description":"Liver enzyme test type (INV825) and result (INV850) for AST/SGOT (LN)","dataType":"Numeric","label":"AST [SGOT] Result","toolTip":"Enter patients AST/SGOT result","displayControl":"User entered text, number, or date","reportLabel":"AST Result","rdbTable":"D_INV_LAB_FINDING","rdbColumn":"LAB_AST_Result","martColumn":"AST_Result","included":"Yes","adminComment":"","msgVariable":"11920-8","msgLabel":"AST/SGOT","codeSystem":"LOINC","reqInMsg":"No","hl7Type":"SN","hl7Segment":"OBX-3.0","orderGroup":"2","mask":"Integer (no defined mask)","fieldLength":"4","defaultValue":"","minValue":"0","maxValue":"0","relatedUnits":"No"},{"id":"119292006","name":"Gastrointestinal Disorder Indicator","type":"PHIN Standard","status":"Active","subgroup":"Clinical Information","description":"Did the patient have gastrointestinal disorder(s) (e.g. elevated bilirubin, elevated liver enzymes, or diarrhea).","dataType":"Coded","label":"Gastrointestinal disorder","toolTip":"Did the patient have gastrointestinal disorder(s) (e.g. elevated bilirubin, elevated liver enzymes, or diarrhea).","displayControl":"Single-Select (Drop down)","reportLabel":"Gastrointestinal disorder","rdbTable":"D_INV_CLINICAL","rdbColumn":"CLN_GASTRO_DISORDER_IND","martColumn":"GASTRO_DISORDER_IND","included":"Yes","adminComment":"Added during COVID-19 response; element from Multisystem Inflammatory Syndrome (MIS) Associated with COVID-19 Case Report Form, May 2020.","msgVariable":"119292006","msgLabel":"Disorder of gastrointestinal tract","codeSystem":"SNOMED-CT","reqInMsg":"No","hl7Type":"CWE","hl7Segment":"OBX-3.0","orderGroup":"2","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"12063002","name":"Rectal Bleeding","type":"PHIN Standard","status":"Active","subgroup":"Signs & Symptoms","description":"Did patient have rectal bleeding?","dataType":"Coded","label":"Rectal Bleeding","toolTip":"Did patient have rectal bleeding?","displayControl":"Single-Select (Drop down)","reportLabel":"Rectal Bleeding","rdbTable":"D_INV_SYMPTOM","rdbColumn":"SYM_RECTAL_BLEEDING","martColumn":"RECTAL_BLEEDING","included":"No","adminComment":"","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"1221000119103","name":"History of Tobacco Usage","type":"PHIN Standard","status":"Active","subgroup":"Medical History","description":"History of Tobacco Usage","dataType":"Coded","label":"History of Tobacco Usage","toolTip":"History of Tobacco Usage","displayControl":"Single-Select (Drop down)","reportLabel":"History of Tobacco Use","rdbTable":"D_INV_MEDICAL_HISTORY","rdbColumn":"MDH_HX_TOBACCO_USE","martColumn":"HX_TOBACCO_USE","included":"No","adminComment":"","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"127086001","name":"Cervical Lymphadenopathy Indicator","type":"PHIN Standard","status":"Active","subgroup":"Signs & Symptoms","description":"Did the patient have cervical lymphadenopathy?","dataType":"Coded","label":"Cervical lymphadenopathy","toolTip":"Did the patient have cervical lymphadenopathy?","displayControl":"Single-Select (Drop down)","reportLabel":"Cervical lymphadenopathy","rdbTable":"D_INV_SYMPTOM","rdbColumn":"SYM_CERVICAL_LYMPH_IND","martColumn":"CERVICAL_LYMPH_IND","included":"Yes","adminComment":"Added during COVID-19 response; element from Multisystem Inflammatory Syndrome (MIS) Associated with COVID-19 Case Report Form, May 2020.","msgVariable":"127086001","msgLabel":"Cervical lymphadenopathy","codeSystem":"SNOMED-CT","reqInMsg":"No","hl7Type":"CWE","hl7Segment":"OBX-3.0","orderGroup":"2","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"128045006","name":"Cellulitis","type":"PHIN Standard","status":"Active","subgroup":"Signs & Symptoms","description":"Did the subject have cellulitis?","dataType":"Coded","label":"Cellulitis","toolTip":"Did the subject have cellulitis?","displayControl":"Single-Select (Drop down)","reportLabel":"Cellulitis Indicator","rdbTable":"D_INV_SYMPTOM","rdbColumn":"SYM_CELLULITIS_INDICATOR","martColumn":"CELLULITIS_INDICATOR","included":"Yes","adminComment":"Added to support The Pilot Test Ready FoodNet (MMG) version 1, Release 1, dated 8/15/2018.","msgVariable":"128045006","msgLabel":"Cellulitis","codeSystem":"SNOMED-CT","reqInMsg":"No","hl7Type":"CWE","hl7Segment":"OBX-3.0","orderGroup":"2","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"128241005","name":"Hepatitis","type":"PHIN Standard","status":"Active","subgroup":"Complications","description":"Did the patient  develop Hepatitis?","dataType":"Coded","label":"Hepatitis","toolTip":"Did the patient  develop Hepatitis?","displayControl":"Single-Select (Drop down)","reportLabel":"Hepatitis Indicator","rdbTable":"D_INV_COMPLICATION","rdbColumn":"CMP_HEPATITIS_INDICATOR","martColumn":"HEPATITIS_INDICATOR","included":"Yes","adminComment":"Added to support,Pilot Test-Ready Measles message mapping guide (MMG) version 1, 08/27/2018","msgVariable":"128241005","msgLabel":"Hepatitis","codeSystem":"SNOMED-CT","reqInMsg":"No","hl7Type":"CWE","hl7Segment":"OBX-3.0","orderGroup":"2","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"128480004","name":"Acute Hematologic Disorder","type":"PHIN Standard","status":"Active","subgroup":"Clinical Information","description":"Did the patient experience actual hematologic disorder(s) (e.g. elevated D-dimers, thrombophilia, or thrombocytopenia)?","dataType":"Coded","label":"Acute hematologic disorder","toolTip":"Did the patient experience actual hematologic disorder(s) (e.g. elevated D-dimers, thrombophilia, or thrombocytopenia)?","displayControl":"Single-Select (Drop down)","reportLabel":"Acute hematologic disorder","rdbTable":"D_INV_CLINICAL","rdbColumn":"CLN_ACUTE_HEMA_DISORDER","martColumn":"ACUTE_HEMA_DISORDER","included":"Yes","adminComment":"Added during COVID-19 response; element from Multisystem Inflammatory Syndrome (MIS) Associated with COVID-19 Case Report Form, May 2020.","msgVariable":"128480004","msgLabel":"Acute hematologic disorder","codeSystem":"SNOMED-CT","reqInMsg":"No","hl7Type":"CWE","hl7Segment":"OBX-3.0","orderGroup":"2","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"128487001","name":"Cardiovascular Disease","type":"PHIN Standard","status":"Active","subgroup":"Medical History","description":"Acute disease of cardiovascular system (disorder)","dataType":"Coded","label":"Cardiovascular disease","toolTip":"Does the patient have a history of cardiovascular disease?","displayControl":"Single-Select (Drop down)","reportLabel":"Cardiovascular disease","rdbTable":"D_INV_MEDICAL_HISTORY","rdbColumn":"MDH_CV_DISEASE_IND","martColumn":"CV_DISEASE_IND","included":"No","adminComment":"Added during COVID-19 response; element from Human Infection with 2019 Novel Coronavirus Person Under Investigation (PUI) and Case Report Form, March 2020.","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"NBS559","name":"Animal Exposure","type":"PHIN Standard","status":"Inactive","subgroup":"Epidemiologic Information","description":"Did the patient have animal exposure","dataType":"Coded","label":"Animal Exposure","toolTip":"Did the patient have animal exposure","displayControl":"Single-Select (Drop down)","reportLabel":"Animal Exposure","rdbTable":"D_INV_EPIDEMIOLOGY","rdbColumn":"EPI_ANIMAL_EXPOSURE_IND","martColumn":"ANIMAL_EXPOSURE_IND","included":"No","adminComment":"Added during COVID-19 response; element from Human Infection with 2019 Novel Coronavirus Person Under Investigation (PUI) and Case Report Form, March 2020.","valueSet":"Yes No Unknown (YNU)","values":["No","Unknown","Yes"],"defaultValue":"","allowOther":"No"},{"id":"413947000","name":"Date treatment Stopped","type":"PHIN Standard","status":"Active","subgroup":"Treatment Information","description":"Date Treatment Stopped","dataType":"Date","label":"Date Treatment Stopped","toolTip":"Date Treatment Stopped","displayControl":"User entered text, number, or date","reportLabel":"Treatment End Date","rdbTable":"D_INV_TREATMENT","rdbColumn":"TRT_TREATMENT_END_DT","martColumn":"TREATMENT_END_DT","included":"Yes","adminComment":"Added to support DRAFT version of the Foodborne and Diarrheal Disease (FDD) Case Notification MMG v1 dated October 25, 2017.","msgVariable":"413947000","msgLabel":"Date Treatment Stopped","codeSystem":"SNOMED-CT","reqInMsg":"No","hl7Type":"DT","hl7Segment":"OBX-3.0","orderGroup":"2","mask":"Generic Date (MM/DD/YYYY)","futureDates":"No"},{"id":"276654001_OTH","name":"Other Congenital Malformations","type":"PHIN Standard","status":"Active","subgroup":"Medical History","description":"Specify other congenital malformations","dataType":"Text","label":"Specify other congenital malformations","toolTip":"Specify other congenital malformations.","displayControl":"User entered text, number, or date","reportLabel":"Other Congenital Malformations","rdbTable":"D_INV_MEDICAL_HISTORY","rdbColumn":"MDH_CONG_MALFORMATION_OTH","martColumn":"CONG_MALFORMATION_OTH","included":"Yes","adminComment":"Added during COVID-19 response; element from Multisystem Inflammatory Syndrome (MIS) Associated with COVID-19 Case Report Form, May 2020.","msgVariable":"276654001_OTH","msgLabel":"Other Congenital Malformations","codeSystem":"NEDSS Base System","reqInMsg":"No","hl7Type":"ST","hl7Segment":"OBX-3.0","orderGroup":"2","mask":"Alphanumeric (no defined mask)","fieldLength":"100","defaultValue":""},{"id":"65490_5","name":"Weight Lost Amount","type":"PHIN Standard","status":"Active","subgroup":"Clinical Information","description":"If the subject had weight loss, specify how much weight was lost","dataType":"Numeric","label":"If the subject had weight loss, how much weight was lost?","toolTip":"If the subject had weight loss, specify how much weight was lost","displayControl":"User entered text, number, or date","reportLabel":"Weight Lost Amount","rdbTable":"D_INV_CLINICAL","rdbColumn":"CLN_WEIGHT_LOST_AMOUNT","martColumn":"WEIGHT_LOST_AMOUNT","included":"Yes","adminComment":"Added to support The Pilot Test Ready Cyclosporiasis (MMG) version 1, Release 1, dated 8/15/2018.","msgVariable":"65490-5","msgLabel":"Amount Weight Lost","codeSystem":"LOINC","reqInMsg":"No","hl7Type":"SN","hl7Segment":"OBX-3.0","orderGroup":"2","mask":"Integer (no defined mask)","fieldLength":"3","defaultValue":"","minValue":"1","maxValue":"999","relatedUnits":"Yes","unitsType":"Coded Value","unitsValueSet":"Weight Unit"},{"id":"74200_7","name":"Intensive Care Duration","type":"PHIN Standard","status":"Active","subgroup":"Clinical Information","description":"Indicate the number of days the patient was in intensive care.","dataType":"Numeric","label":"Number of days in the ICU","toolTip":"Indicate the number of days the patient was in intensive care.","displayControl":"User entered text, number, or date","reportLabel":"Number of days in the ICU","rdbTable":"D_INV_CLINICAL","rdbColumn":"CLN_ICU_DURATION","martColumn":"ICU_DURATION","included":"Yes","adminComment":"Added during COVID-19 response; element from Multisystem Inflammatory Syndrome (MIS) Associated with COVID-19 Case Report Form, May 2020.","msgVariable":"74200-7","msgLabel":"Number of days in the ICU","codeSystem":"LOINC","reqInMsg":"No","hl7Type":"SN","hl7Segment":"OBX-3.0","orderGroup":"2","mask":"Integer (no defined mask)","fieldLength":"3","defaultValue":"","minValue":"0","maxValue":"364","relatedUnits":"Yes","unitsType":"Literal Value","unitsLiteral":"d^days^UCUM"}],"fields":[{"s":"basic","k":"type","label":"Question Type","kind":"select","opts":"questionTypes","when":[],"add":"edit","edit":"fixed","req":true,"ml":null,"data":"type"},{"s":"basic","k":"id","label":"Unique ID","kind":"text","opts":null,"when":[],"add":"edit","edit":"fixed","req":true,"ml":50,"data":"id"},{"s":"basic","k":"name","label":"Unique Name","kind":"text","opts":null,"when":[],"add":"edit","edit":"fixed","req":true,"ml":50,"data":"name"},{"s":"basic","k":"status","label":"Status","kind":"text","opts":null,"when":[],"add":null,"edit":"fixed","req":true,"ml":null,"data":"status"},{"s":"basic","k":"subgroup","label":"Subgroup","kind":"select","opts":"subgroups","when":[],"add":"edit","edit":"fixed","req":true,"ml":null,"data":"subgroup"},{"s":"basic","k":"description","label":"Description","kind":"area","opts":null,"when":[],"add":"edit","edit":"edit","req":true,"ml":300,"data":"description"},{"s":"basic","k":"dataType","label":"Data Type","kind":"select","opts":"dataTypes","when":[],"add":"edit","edit":"fixed","req":true,"ml":null,"data":"dataType"},{"s":"basic","k":"valueSet","label":"Value Set","kind":"select","opts":"valueSets","when":[["dataType",["Coded"]]],"add":"edit","edit":"fixed","req":true,"ml":null,"data":"valueSet"},{"s":"basic","k":"defaultCoded","label":"Default Value","kind":"select","opts":"values","when":[["dataType",["Coded"]]],"add":"edit","edit":"edit","req":false,"ml":null,"data":"defaultValue"},{"s":"basic","k":"allowOther","label":"Allow for Entry of Other Value","kind":"radio","opts":null,"when":[["dataType",["Coded"]]],"add":"edit","edit":"edit","req":true,"ml":null,"data":"allowOther"},{"s":"basic","k":"mask","label":"Mask","kind":"select","opts":"masks","when":[["dataType",["Date","Numeric","Text"]]],"add":"edit","edit":"edit","req":true,"ml":null,"data":"mask"},{"s":"basic","k":"futureDates","label":"Allow for Future Dates","kind":"radio","opts":null,"when":[["dataType",["Date"]]],"add":"edit","edit":"edit","req":true,"ml":null,"data":"futureDates"},{"s":"basic","k":"fieldLength","label":"Field Length","kind":"text","opts":null,"when":[["dataType",["Numeric","Text"]]],"add":"edit","edit":"edit","req":true,"ml":10,"data":"fieldLength"},{"s":"basic","k":"defaultValue","label":"Default Value","kind":"text","opts":null,"when":[["dataType",["Numeric","Text"]]],"add":"edit","edit":"edit","req":false,"ml":50,"data":"defaultValue"},{"s":"basic","k":"minValue","label":"Minimum Value","kind":"text","opts":null,"when":[["dataType",["Numeric"]]],"add":"edit","edit":"edit","req":false,"ml":10,"data":"minValue"},{"s":"basic","k":"maxValue","label":"Maximum Value","kind":"text","opts":null,"when":[["dataType",["Numeric"]]],"add":"edit","edit":"edit","req":false,"ml":10,"data":"maxValue"},{"s":"basic","k":"relatedUnits","label":"Related Units","kind":"radio","opts":null,"when":[["dataType",["Numeric"]]],"add":"edit","edit":"edit","req":true,"ml":null,"data":"relatedUnits"},{"s":"basic","k":"unitsType","label":"Units Type","kind":"select","opts":"unitsTypes","when":[["dataType",["Numeric"]],["relatedUnits",["Yes"]]],"add":"edit","edit":"edit","req":true,"ml":null,"data":"unitsType"},{"s":"basic","k":"unitsValueSet","label":"Related Units Value Set","kind":"select","opts":"valueSets","when":[["dataType",["Numeric"]],["relatedUnits",["Yes"]],["unitsType",["Coded Value"]]],"add":"edit","edit":"edit","req":true,"ml":null,"data":"unitsValueSet"},{"s":"basic","k":"unitsLiteral","label":"Literal Units Value","kind":"text","opts":null,"when":[["dataType",["Numeric"]],["relatedUnits",["Yes"]],["unitsType",["Literal Value"]]],"add":"edit","edit":"edit","req":true,"ml":50,"data":"unitsLiteral"},{"s":"ui","k":"label","label":"Label on Screen","kind":"text","opts":null,"when":[],"add":"edit","edit":"edit","req":true,"ml":100,"data":"label"},{"s":"ui","k":"toolTip","label":"Tool Tip","kind":"area","opts":null,"when":[],"add":"edit","edit":"edit","req":true,"ml":2000,"data":"toolTip"},{"s":"ui","k":"displayControl","label":"Display Control","kind":"select","opts":"displayControls","when":[],"add":"edit","edit":"edit","req":true,"ml":null,"data":"displayControl"},{"s":"mart","k":"reportLabel","label":"Default Label in Report","kind":"text","opts":null,"when":[],"add":"edit","edit":"edit","req":true,"ml":50,"data":"reportLabel"},{"s":"mart","k":"rdbTable","label":"Default RDB Table Name","kind":"text","opts":null,"when":[],"add":"edit","edit":"fixed","req":true,"ml":null,"data":"rdbTable"},{"s":"mart","k":"rdbColumn","label":"RDB Column Name","kind":"text","opts":null,"when":[],"add":"edit","edit":"fixed","req":true,"ml":21,"data":"rdbColumn"},{"s":"mart","k":"martColumn","label":"Data Mart Column Name","kind":"text","opts":null,"when":[],"add":"edit","edit":"edit","req":false,"ml":21,"data":"martColumn"},{"s":"msg","k":"included","label":"Included in Message","kind":"radio","opts":null,"when":[],"add":"edit","edit":"edit","req":true,"ml":null,"data":"included"},{"s":"msg","k":"msgVariable","label":"Message Variable ID","kind":"text","opts":null,"when":[["included",["Yes"]]],"add":"edit","edit":"edit","req":true,"ml":50,"data":"msgVariable"},{"s":"msg","k":"msgLabel","label":"Label in Message","kind":"text","opts":null,"when":[["included",["Yes"]]],"add":"edit","edit":"edit","req":true,"ml":100,"data":"msgLabel"},{"s":"msg","k":"codeSystem","label":"Code System Name","kind":"select","opts":"codeSystems","when":[["included",["Yes"]]],"add":"edit","edit":"edit","req":true,"ml":null,"data":"codeSystem"},{"s":"msg","k":"reqInMsg","label":"Required in Message","kind":"radio","opts":null,"when":[["included",["Yes"]]],"add":"edit","edit":"edit","req":true,"ml":null,"data":"reqInMsg"},{"s":"msg","k":"hl7Type","label":"HL7 Data Type","kind":"select","opts":"hl7Types","when":[["included",["Yes"]]],"add":"edit","edit":"edit","req":true,"ml":null,"data":"hl7Type"},{"s":"msg","k":"hl7Segment","label":"HL7 Segment","kind":"select","opts":"hl7Segments","when":[["included",["Yes"]]],"add":"edit","edit":"edit","req":false,"ml":null,"data":"hl7Segment"},{"s":"msg","k":"orderGroup","label":"Group Number (Order Group ID)","kind":"text","opts":null,"when":[["included",["Yes"]]],"add":"edit","edit":"edit","req":false,"ml":10,"data":"orderGroup"},{"s":"admin","k":"adminComment","label":"Administrative Comments","kind":"area","opts":null,"when":[],"add":"edit","edit":"edit","req":false,"ml":2000,"data":"adminComment"}],"masks":{"Date":["Generic Date (MM/DD/YYYY)"],"Numeric":["2-digit Day (DD)","2-digit Month (MM)","4-digit Year (YYYY)","Integer (no defined mask)","Phone Number Extension (99999999)","Structured Numeric (e.g., > 0.5)","Temperature (999.9)"],"Text":["Alphanumeric (no defined mask)","Census Tract (^(\\d{4}|\\d{4}.(?!99)\\d{2})$)","Email Address (^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$)","ID Number (10-alphanumeric)","ID Number (12-alphanumeric)","ID Number (15-alphanumeric)","Phone Number (999-000-0000)","Social Security Number (SSN)","TB CDC Case Number (YYYY->LL-AAAAAAAAA)","Zip Code (00000-9999)"]},"displayControls":{"Coded":["Single-Select (Drop down)","Multi-Select (List Box)","READONLY SINGLE-SELECT SAVE","READONLY MULTI-SELECT SAVE","READONLY SINGLE-SELECT NO SAVE","READONLY MULTI-SELECT NO SAVE","Code Lookup"],"Date":["User entered text, number, or date","READONLY USER ENTERED TEXT, NUMBER, OR DATE","READONLY USER TEXT, NUMBER, OR DATE NO SAVE"],"Numeric":["User entered text, number, or date","READONLY USER ENTERED TEXT, NUMBER, OR DATE","READONLY USER TEXT, NUMBER, OR DATE NO SAVE"],"Text":["User entered text, number, or date","Multi-line user-entered text","Multi-line Notes with User/Date Stamp","READONLY USER ENTERED TEXT, NUMBER, OR DATE","READONLY USER TEXT, NUMBER, OR DATE NO SAVE"]},"valueSets":{"3rd generation cephalosporin set":["Cefdinir","Cefetamet","Cefixime","Cefmenoxime","Cefodizime","Cefoperazone","Cefotaxime","Cefpodoxime","Ceftazidime","Ceftibuten","Ceftizoxime","Ceftriaxone","Other"],"730_JUSTIFICATION":[],"900 Result Provide":[],"900 Test Results":[],"900 Test at Event":[],"Abdominal Imaging Result (MIS)":[],"Abdominal Imaging Type (MIS)":[],"NBS Act Coding System":[],"NBS Act Class":[],"Act Encounter Code":[],"NBS Act Mode":[],"Result status (HL7)":[],"Referral Priority (HL7)":[],"NBS Add Reason":[],"AFM Pathogen tests":[],"Age Units":[],"Age Units Short List":[],"NBS Act ID Assigning Authority":[],"NBS Act ID Type":[],"ALRT_PUBLIC_HEALTH_EVENT":[],"Yes No Unknown (YNU)":["No","Unknown","Yes"]}}</script>

@@ -89,7 +89,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -116,7 +116,7 @@
              visually hidden word No, so every cell has a value for screen readers. A system defined set cannot be
              changed, so it offers Add from this set (legacy Add From Template) instead of Edit. -->
         <div class="d-flex flex-wrap gap-2 justify-content-end">
-          <a class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" href="edit-permission-set.html">Add from this set</a>
+          <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" onclick="location.href='edit-permission-set.html'">Add from this set</button>
         </div>
         <section class="card ds-form-section">
           <h2 class="card-header h6 mb-0 fw-semibold">Permission Set Information</h2>

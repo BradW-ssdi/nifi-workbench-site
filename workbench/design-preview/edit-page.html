@@ -104,7 +104,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -129,8 +129,8 @@
           <p class="mb-0 mt-2 d-flex flex-wrap align-items-center gap-2"><span class="fw-semibold">Cyclosporiasis Investigation (PageBuilder)</span><span class="badge text-bg-warning">Draft</span></p>
         </div>
         <div class="pb-actions">
-          <a class="btn btn-outline-dark rounded-pill px-3" href="#">Preview</a>
-          <a class="btn btn-primary rounded-pill px-3" href="view-page.html">Done editing</a>
+          <button type="button" class="btn btn-outline-dark rounded-pill px-3">Preview</button>
+          <button type="button" class="btn btn-primary rounded-pill px-3" onclick="location.href='view-page.html'">Done editing</button>
         </div>
       </div>
       <div class="page-body">
@@ -197,7 +197,7 @@
             </div>
             <p class="mb-0 fw-semibold" id="moveConfirm" tabindex="-1" hidden></p>
           </div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="moveBack" hidden>Back</button><button type="button" class="btn btn-primary rounded-pill px-3" id="moveDo">Move</button><button type="button" class="btn btn-primary rounded-pill px-3" id="moveYes" aria-describedby="moveConfirm" hidden>Confirm move</button></div>
+          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button><button type="button" class="btn btn-outline-dark rounded-pill px-3" id="moveBack" hidden data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Back">Back</button><button type="button" class="btn btn-primary rounded-pill px-3" id="moveDo" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Move">Move</button><button type="button" class="btn btn-primary rounded-pill px-3" id="moveYes" aria-describedby="moveConfirm" hidden>Confirm move</button></div>
         </div></div>
       </div>
     </main>
@@ -218,8 +218,8 @@
           <p class="mb-0" id="dmDesc" style="margin:0"></p>
         </div>
         <div class="modal-footer bg-body-tertiary">
-          <button class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button>
-          <button class="btn btn-primary rounded-pill px-3" id="dmConfirm">Create draft</button>
+          <button class="btn btn-outline-dark rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+          <button class="btn btn-primary rounded-pill px-3" id="dmConfirm" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Create draft">Create draft</button>
         </div>
     </div>
   </div>

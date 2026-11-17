@@ -5,9 +5,11 @@
  *   .table-sm to it
  * - the choice is kept for the session per table, under compactRows__<table id>
  * - a table replaced by a results request (htmx) gets the setting again
- * Markup (scripts/screens/phase3-queue.py table_settings()): a button #tableSettingsBtn (aria-controls the menu) and
- * the menu #tableSettingsMenu[data-table="<table id>"]. The button opens and closes the menu; Escape or a click
- * outside closes it and Escape returns focus to the button.
+ * Markup (scripts/screens/phase3-queue.py table_settings()), as the dev team's (Slack 11-14): the wrapper
+ * .ds-table-settings carries the Settings tooltip, the button #tableSettingsBtn carries data-bs-toggle="dropdown", and the
+ * menu is #tableSettingsMenu[data-table="<table id>"] right after the button, so Tab goes from the button into the switch.
+ * Bootstrap's dropdown opens and closes the menu, sets aria-expanded, closes it on Escape or a click outside, and Escape
+ * puts focus back on the button; on a page without Bootstrap's JS this script does the same.
  *
  * Tables start compact, as Phase 2's (Phase 3 review, Team B slide 2, 11/11: compact rows on by default).
  */
@@ -37,23 +39,24 @@
         if (!menu || !btn) { return; }
         menu.classList.toggle("show", open);
         btn.setAttribute("aria-expanded", String(open));
-        if (open) { var sw = document.getElementById("compactSwitch"); if (sw) { sw.focus(); } }
-        else if (focusButton) { btn.focus(); }
+        if (!open && focusButton) { btn.focus(); }
     }
 
+    // Where Bootstrap's JS is on the page (the app, and the templates in the Phase 2 layout), its dropdown does all of
+    // this. The standalone templates (design-preview) have no Bootstrap JS, so this script opens and closes the menu there.
+    function bootstrapDoesIt() { return !!(window.bootstrap && window.bootstrap.Dropdown); }
     document.addEventListener("click", function (evt) {
+        if (bootstrapDoesIt()) { return; }
         var btn = evt.target.closest && evt.target.closest("#tableSettingsBtn");
         var menu = document.getElementById("tableSettingsMenu");
         if (!menu) { return; }
         if (btn) { setOpen(!menu.classList.contains("show"), false); }
         else if (!evt.target.closest("#tableSettingsMenu") && menu.classList.contains("show")) { setOpen(false, false); }
     });
-    // Bootstrap's dropdown key handler throws on Escape and the arrow keys inside a .dropdown-menu that has no
-    // data-bs-toggle button, so those keys stop here.
     window.addEventListener("keydown", function (evt) {
+        if (bootstrapDoesIt()) { return; }
         var menu = document.getElementById("tableSettingsMenu");
         if (!menu || !evt.target.closest || !evt.target.closest(".ds-table-settings")) { return; }
-        if (evt.key === "ArrowUp" || evt.key === "ArrowDown") { evt.stopPropagation(); return; }
         if (evt.key !== "Escape" || !menu.classList.contains("show")) { return; }
         evt.preventDefault();
         evt.stopPropagation();

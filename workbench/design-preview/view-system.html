@@ -49,7 +49,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -70,7 +70,7 @@
       <div class="page-body">
         <!-- View System modernizes ReceivingSystem.do viewRecFacility: the same sections as Add and Edit System, read only. -->
         <div class="d-flex flex-wrap gap-2 justify-content-end mb-3">
-          <a class="btn btn-light rounded-circle me-1" href="edit-system.html" aria-label="Edit system" data-bs-custom-class="custom-tooltip" data-bs-title="Edit" data-bs-toggle="tooltip"><span aria-hidden="true" class="material-symbols-rounded">edit</span></a>
+          <button type="button" class="btn btn-light rounded-circle me-1" aria-label="Edit system" data-bs-custom-class="custom-tooltip" data-bs-title="Edit" data-bs-toggle="tooltip" onclick="location.href='edit-system.html'"><span aria-hidden="true" class="material-symbols-rounded">edit</span></button>
         </div>
         <section class="card ds-form-section"><h2 class="card-header h6 mb-0 fw-semibold">System</h2>
           <div class="card-body"><dl class="ds-dl"><div><dt>Report Type Sent or Received:</dt><dd>Case Report</dd></div><div><dt>Display Name:</dt><dd>qa System</dd></div><div><dt>Application Name:</dt><dd>qa System</dd></div><div><dt>Application OID:</dt><dd>qa System</dd></div></dl></div></section>

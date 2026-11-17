@@ -61,12 +61,6 @@
     icon.href = SELF.replace(/js\/app-frame\.js(\?.*)?$/, 'workbench/assets/favicon.png');
     document.head.appendChild(icon);
   }
-  /* The clear button in Search to filter (js/ds-search-clear.js), the same way */
-  if (WORKBENCH && !window.dsSearchClear && !document.querySelector('script[src$="ds-search-clear.js"]')) {
-    var clearScript = document.createElement('script');
-    clearScript.src = SELF.replace(/app-frame\.js(\?.*)?$/, 'ds-search-clear.js');
-    document.head.appendChild(clearScript);
-  }
   /* Phase 2's validation banner and red labels on every form (js/ds-errors.js), the same way */
   if (WORKBENCH && !window.dsErrors && !document.querySelector('script[src$="ds-errors.js"]')) {
     var errorsScript = document.createElement('script');

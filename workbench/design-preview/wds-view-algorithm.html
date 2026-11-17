@@ -49,7 +49,7 @@
   <header class="ds-header d-flex align-items-center bg-body border-bottom">
     <a class="ds-logo" href="home.html"><img src="../../workbench/assets/texas-logo-main.png" alt="Texas Health and Human Services home"></a>
     <span class="ms-auto"></span>
-    <a class="btn btn-light rounded-circle ds-btn-icon" href="#" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></a>
+    <button type="button" class="btn btn-light rounded-circle ds-btn-icon" aria-label="Help"><span class="ds-icon material-symbols-rounded" aria-hidden="true">help</span></button>
     <div class="dropdown">
       <button type="button" class="btn ds-profile-btn" id="accountBtn" data-menu-button aria-expanded="false" aria-controls="accountMenu"><span class="ds-avatar" aria-hidden="true">PP</span><span class="visually-hidden">Account menu, P. Preparer</span></button>
       <ul class="dropdown-menu dropdown-menu-end" id="accountMenu" hidden>
@@ -83,7 +83,7 @@
           <div class="d-flex align-items-center flex-wrap">
             <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" data-bs-custom-class="custom-tooltip" data-bs-title="Export" data-bs-toggle="tooltip"><span aria-hidden="true" class="material-symbols-rounded text me-1">download</span><span>Export</span></button>
             <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" id="toggleStatus" data-status-toggle data-status-noun="algorithm" data-status-name="1_TB_Pos_IGRA_MR_AssociateTB" aria-haspopup="dialog" data-bs-custom-class="custom-tooltip" data-bs-title="Make Inactive" data-bs-toggle="tooltip" data-confirm-inactive="You have indicated that you would like to inactivate the {name} algorithm. Once inactivated, this algorithm will no longer be applied as a part of Workflow Decision Support. Select OK to continue or Cancel to return to View Algorithm." data-confirm-active="You have indicated that you would like to activate the {name} algorithm. Once activated, this algorithm will be applied as a part of Workflow Decision Support. Select OK to continue or Cancel to return to View Algorithm." data-done-inactive="{name} has been made inactive in the system." data-done-active="{name} has been made active in the system.">Make Inactive</button>
-            <a class="btn btn-light rounded-circle me-1" href="wds-edit-algorithm.html" aria-label="Edit algorithm" data-hide-when-active data-bs-custom-class="custom-tooltip" data-bs-title="Edit" data-bs-toggle="tooltip"><span aria-hidden="true" class="material-symbols-rounded">edit</span></a>
+            <button type="button" class="btn btn-light rounded-circle me-1" aria-label="Edit algorithm" data-hide-when-active data-bs-custom-class="custom-tooltip" data-bs-title="Edit" data-bs-toggle="tooltip" onclick="location.href='wds-edit-algorithm.html'"><span aria-hidden="true" class="material-symbols-rounded">edit</span></button>
             <button type="button" class="btn btn-light rounded-circle" aria-label="Print algorithm" data-bs-custom-class="custom-tooltip" data-bs-title="Print" data-bs-toggle="tooltip"><span aria-hidden="true" class="material-symbols-rounded">print</span></button>
           </div>
         </div>
@@ -335,7 +335,7 @@
         <div class="modal-dialog"><div class="modal-content">
           <div class="modal-header bg-body-tertiary"><h2 class="modal-title h5" id="statusTitle">Make this algorithm inactive?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
           <div class="modal-body bg-body-tertiary"><p id="statusText" class="mb-0"></p></div>
-          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close>Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="statusYes">Make Inactive</button></div>
+          <div class="modal-footer bg-body-tertiary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="statusYes" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Make Inactive">Make Inactive</button></div>
         </div></div>
       </div>
     </main>

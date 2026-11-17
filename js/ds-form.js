@@ -108,7 +108,7 @@
     var source = document.getElementById(field.getAttribute('data-lookup'));
     $('#lookupTitle').textContent = field.getAttribute('data-lookup-title');
     var list = $('#lookupList');
-    list.innerHTML = '';
+    list.innerHTML = ''; list.removeAttribute('aria-invalid'); $('#lookupError').textContent = '';
     $$('li', source).forEach(function (li, i) {
       var id = 'lk' + i;
       var row = document.createElement('div');
@@ -135,8 +135,10 @@
     $('#lookupSelect').addEventListener('click', function () {
       var pick = $('input[name="lookupPick"]:checked', lookupDlg);
       var err = $('#lookupError');
-      if (!pick) { err.hidden = false; err.textContent = 'Choose one, or Cancel.'; $('#lookupList input').focus(); return; }
-      err.hidden = true;
+      /* the list is the field: aria-invalid and the message (js/ds-errors.js adds .is-invalid, Bootstrap shows the message) */
+      var list = $('#lookupList');
+      if (!pick) { err.textContent = 'Choose one, or Cancel.'; list.setAttribute('aria-describedby', 'lookupError'); list.setAttribute('aria-invalid', 'true'); $('#lookupList input').focus(); return; }
+      err.textContent = ''; list.removeAttribute('aria-invalid');
       lookupTarget.value = txt(pick.parentElement);
       lookupTarget.setAttribute('data-code', pick.value);
       lookupTarget.dispatchEvent(new Event('change', { bubbles: true }));
@@ -189,7 +191,7 @@
     } else {
       control = '<input class="form-control" type="' + (type === 'number' ? 'number' : 'text') + '" id="' + id + '" data-role="value" data-entry-required data-errmsg="Enter a value">';
     }
-    valueWrap.innerHTML = '<label class="ds-required" for="' + id + '">' + label + (/:$/.test(label) ? '' : ':') + '</label>' + control + '<span class="invalid-feedback" id="' + id + '-error" hidden></span>';
+    valueWrap.innerHTML = '<label class="ds-required" for="' + id + '">' + label + (/:$/.test(label) ? '' : ':') + '</label>' + control + '<span class="invalid-feedback" id="' + id + '-error"></span>';
   }
   $$('[data-repeat] [data-role="question"]', form).forEach(function (q) {
     var entry = q.closest('[data-entry]');
