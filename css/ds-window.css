@@ -5497,7 +5497,7 @@
     overflow-y: auto;
   }
 }
-.ds-window .tooltip:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .tooltip:not(.ds-phase2, .ds-phase2 *) {
+.ds-window .tooltip:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .tooltip:not(.custom-tooltip):not(.ds-phase2, .ds-phase2 *) {
   --bs-tooltip-zindex: 1080;
   --bs-tooltip-max-width: 200px;
   --bs-tooltip-padding-x: 0.5rem;
@@ -5531,59 +5531,59 @@
   word-wrap: break-word;
   opacity: 0;
 }
-.ds-window .tooltip.show:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .tooltip.show:not(.ds-phase2, .ds-phase2 *) {
+.ds-window .tooltip.show:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .tooltip.show:not(.custom-tooltip):not(.ds-phase2, .ds-phase2 *) {
   opacity: var(--bs-tooltip-opacity);
 }
-.ds-window .tooltip .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .tooltip .tooltip-arrow:not(.ds-phase2, .ds-phase2 *) {
+.ds-window .tooltip .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .tooltip:not(.custom-tooltip) .tooltip-arrow:not(.ds-phase2, .ds-phase2 *) {
   display: block;
   width: var(--bs-tooltip-arrow-width);
   height: var(--bs-tooltip-arrow-height);
 }
-.ds-window .tooltip .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, body:has(.ds-window) > .tooltip .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before {
+.ds-window .tooltip .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, body:has(.ds-window) > .tooltip:not(.custom-tooltip) .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before {
   position: absolute;
   content: "";
   border-color: transparent;
   border-style: solid;
 }
 
-.ds-window .bs-tooltip-top .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), .ds-window .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *) {
+.ds-window .bs-tooltip-top .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), .ds-window .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=top]:not(.custom-tooltip) .tooltip-arrow:not(.ds-phase2, .ds-phase2 *) {
   bottom: calc(-1 * var(--bs-tooltip-arrow-height));
 }
-.ds-window .bs-tooltip-top .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, .ds-window .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before {
+.ds-window .bs-tooltip-top .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, .ds-window .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=top]:not(.custom-tooltip) .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before {
   top: -1px;
   border-width: var(--bs-tooltip-arrow-height) calc(var(--bs-tooltip-arrow-width) * 0.5) 0;
   border-top-color: var(--bs-tooltip-bg);
 }
 
 /* rtl:begin:ignore */
-.ds-window .bs-tooltip-end .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), .ds-window .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *) {
+.ds-window .bs-tooltip-end .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), .ds-window .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=right]:not(.custom-tooltip) .tooltip-arrow:not(.ds-phase2, .ds-phase2 *) {
   left: calc(-1 * var(--bs-tooltip-arrow-height));
   width: var(--bs-tooltip-arrow-height);
   height: var(--bs-tooltip-arrow-width);
 }
-.ds-window .bs-tooltip-end .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, .ds-window .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before {
+.ds-window .bs-tooltip-end .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, .ds-window .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=right]:not(.custom-tooltip) .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before {
   right: -1px;
   border-width: calc(var(--bs-tooltip-arrow-width) * 0.5) var(--bs-tooltip-arrow-height) calc(var(--bs-tooltip-arrow-width) * 0.5) 0;
   border-right-color: var(--bs-tooltip-bg);
 }
 
 /* rtl:end:ignore */
-.ds-window .bs-tooltip-bottom .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), .ds-window .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *) {
+.ds-window .bs-tooltip-bottom .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), .ds-window .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=bottom]:not(.custom-tooltip) .tooltip-arrow:not(.ds-phase2, .ds-phase2 *) {
   top: calc(-1 * var(--bs-tooltip-arrow-height));
 }
-.ds-window .bs-tooltip-bottom .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, .ds-window .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before {
+.ds-window .bs-tooltip-bottom .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, .ds-window .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=bottom]:not(.custom-tooltip) .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before {
   bottom: -1px;
   border-width: 0 calc(var(--bs-tooltip-arrow-width) * 0.5) var(--bs-tooltip-arrow-height);
   border-bottom-color: var(--bs-tooltip-bg);
 }
 
 /* rtl:begin:ignore */
-.ds-window .bs-tooltip-start .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), .ds-window .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *) {
+.ds-window .bs-tooltip-start .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), .ds-window .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *), body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=left]:not(.custom-tooltip) .tooltip-arrow:not(.ds-phase2, .ds-phase2 *) {
   right: calc(-1 * var(--bs-tooltip-arrow-height));
   width: var(--bs-tooltip-arrow-height);
   height: var(--bs-tooltip-arrow-width);
 }
-.ds-window .bs-tooltip-start .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, .ds-window .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before {
+.ds-window .bs-tooltip-start .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, .ds-window .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before, body:has(.ds-window) > .bs-tooltip-auto[data-popper-placement^=left]:not(.custom-tooltip) .tooltip-arrow:not(.ds-phase2, .ds-phase2 *)::before {
   left: -1px;
   border-width: calc(var(--bs-tooltip-arrow-width) * 0.5) 0 calc(var(--bs-tooltip-arrow-width) * 0.5) var(--bs-tooltip-arrow-height);
   border-left-color: var(--bs-tooltip-bg);
