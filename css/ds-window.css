@@ -1792,13 +1792,13 @@
   --bs-table-bg-type: initial;
   --bs-table-color-state: initial;
   --bs-table-bg-state: initial;
-  --bs-table-color: var(--bs-body-color);
+  --bs-table-color: var(--bs-emphasis-color);
   --bs-table-bg: var(--bs-body-bg);
   --bs-table-border-color: #d0d5d7;
   --bs-table-accent-bg: transparent;
-  --bs-table-striped-color: var(--bs-body-color);
+  --bs-table-striped-color: var(--bs-emphasis-color);
   --bs-table-striped-bg: var(--bs-body-bg);
-  --bs-table-active-color: var(--bs-body-color);
+  --bs-table-active-color: var(--bs-emphasis-color);
   --bs-table-active-bg: rgba(var(--bs-emphasis-color-rgb), 0.1);
   --bs-table-hover-color: var(--bs-body-color);
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
@@ -11490,7 +11490,6 @@
   --ds-success-alert-bg: #E8F5E9;
   --ds-icon-hover: #e9ecef;
   --ds-icon-pressed: #dde1e5;
-  --ds-row-icon-hover: #e1e1e1;
   --ds-on-primary: #ffffff;
   --ds-table-header-bg: #CCCCCC;
   --ds-table-outline: #999999;
@@ -11520,7 +11519,6 @@
   --ds-success-alert-bg: var(--bs-success-bg-subtle);
   --ds-icon-hover: #333333;
   --ds-icon-pressed: #444444;
-  --ds-row-icon-hover: #444444;
   --ds-on-primary: #0C1114;
   --ds-table-header-bg: #303030;
   --ds-table-outline: #5A666C;
@@ -11560,6 +11558,10 @@
   height: 18px;
   font-size: 18px;
   margin-right: 8px;
+}
+
+.ds-window .btn.rounded-circle .ds-icon:not(.ds-phase2, .ds-phase2 *) {
+  margin-right: 0;
 }
 
 .ds-window .alert a:not(.btn):not(.ds-phase2, .ds-phase2 *) {
@@ -11925,6 +11927,12 @@
   color: var(--bs-body-color);
 }
 
+.ds-window .table.ds-table > thead > tr > th:not(.ds-phase2, .ds-phase2 *), .ds-window .table-css-queues .table > thead > tr > th:not(.ds-phase2, .ds-phase2 *) {
+  height: 37px;
+  padding: 0 6px;
+  vertical-align: middle;
+}
+
 .ds-window .table.ds-table > tbody > tr:last-child > td:not(.ds-phase2, .ds-phase2 *) {
   border-bottom: 0;
 }
@@ -12019,10 +12027,10 @@
   color: var(--bs-btn-color);
   --bs-btn-bg: var(--bs-body-bg);
   --bs-btn-border-color: var(--bs-body-bg);
-  --bs-btn-hover-bg: var(--ds-row-icon-hover);
-  --bs-btn-hover-border-color: var(--ds-row-icon-hover);
-  --bs-btn-active-bg: var(--ds-row-icon-hover);
-  --bs-btn-active-border-color: var(--ds-row-icon-hover);
+  --bs-btn-hover-bg: var(--ds-icon-hover);
+  --bs-btn-hover-border-color: var(--ds-icon-hover);
+  --bs-btn-active-bg: var(--ds-icon-hover);
+  --bs-btn-active-border-color: var(--ds-icon-hover);
   margin-block: -4px;
   vertical-align: top;
 }
@@ -12185,6 +12193,24 @@
   padding-top: 3px;
   padding-bottom: 3px;
   border-color: var(--ds-field-border-on-gray);
+}
+
+.ds-window .ds-table-footer:not(.ds-phase2, .ds-phase2 *), .ds-window .ds-table-scroll + .table-footer-css .pag-bar:not(.ds-phase2, .ds-phase2 *) {
+  padding: 4px 16px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.ds-window :is(.ds-table-footer, .ds-table-scroll + .table-footer-css .pag-bar) .page-link:not(.ds-phase2, .ds-phase2 *) {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding: 4px 8px;
+}
+
+.ds-window :is(.ds-table-footer, .ds-table-scroll + .table-footer-css .pag-bar) .form-select:not(.ds-phase2, .ds-phase2 *) {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding: 4px 36px 4px 8px;
 }
 
 .ds-window .toast-container.top-center:not(.ds-phase2, .ds-phase2 *) {
@@ -14274,7 +14300,6 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
 }
 
 .ds-window .table thead th:not(.ds-phase2, .ds-phase2 *) {
-  height: auto;
   z-index: auto;
 }
 
