@@ -11754,6 +11754,10 @@
   padding-top: 0;
 }
 
+.ds-window .page-body:has(.table-wrapper > #myScrollableTable):not(.ds-phase2, .ds-phase2 *) {
+  padding-bottom: 0;
+}
+
 .ds-window .breadcrumb-item a:not(.ds-phase2, .ds-phase2 *) {
   text-decoration: underline;
 }
@@ -14737,6 +14741,9 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
 .ds-window:is([data-bs-theme=dark] *) .ds-p2-view-page .accordion-body {
   border-color: var(--bs-border-color);
 }
+.ds-window:is([data-bs-theme=dark] *) .ds-p2-view-page :is(.form-control, .form-select):not(:focus):not([aria-invalid=true]):not(.is-invalid), .ds-window:is([data-bs-theme=dark] *) .ds-p2-view-page .ts-wrapper:not(.focus) > .ts-control {
+  border-color: #8A949A !important;
+}
 .ds-window:is([data-bs-theme=dark] *) .ds-p2-view-page .static-text {
   background-color: #000 !important;
   border-color: #2A363C;
@@ -14783,6 +14790,22 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
 
 .ds-window .ds-p2-view-page #secondaryNavToggle {
   margin-right: 8px;
+}
+
+.ds-window .ds-p2-view-page .ts-wrapper.ts-form-control.focus > .ts-control {
+  border-color: #0070C0 !important;
+  outline: 2px solid #0070C0;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--bs-body-bg);
+}
+
+.ds-window .ds-p2-view-page .ts-wrapper.ts-form-control > .ts-control > input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.ds-window .ds-p2-view-page #secondaryNav :is(.chevron-button, .nav-link) {
+  scroll-margin-block: 8px;
 }
 
 .ds-window .ds-p2-view-page .scrollspy {
@@ -14879,6 +14902,10 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
 
 .ds-window .ds-results-head + .ds-phase2:has([data-list-chips]) {
   margin-top: -12px;
+}
+
+.ds-window .table-wrapper {
+  height: auto;
 }
 /* Phase 2 components inside the window (.ds-phase2): Phase 2's own variables and base text, from its stylesheets on
    main 79931d0e5 (20 files). The design system rules above skip .ds-phase2 and everything inside it. */

@@ -75,3 +75,43 @@
     document.addEventListener("htmx:afterSettle", applyAll);
     if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", applyAll); } else { applyAll(); }
 })();
+
+/*
+ * Only the table scrolls (Phase 3 review, Team B slide 21: no second scroll bar outside the table's). Phase 2's queues.js
+ * sizes the results (#myScrollableTable) to 80% of the window less 150px, which fits its queues; a library has a
+ * breadcrumb, and some have a banner or a toast above the table, so the page ran past the window and scrolled as well.
+ * The table takes Phase 2's size or the space left under it in the window, whichever is less (never under 200px), again
+ * when the window or anything above the table changes height. At 992px wide and below, and on short windows, the table
+ * is not capped and the page scrolls (1.4.10), as Phase 2's.
+ * DEV: in the app, run this after queues.js's resizeTableHeight (its window resize handler), or give that function the
+ * same rule.
+ */
+(function () {
+    "use strict";
+    var box = null, ro = null;
+    function fit() {
+        box = document.getElementById("myScrollableTable");
+        if (!box || !box.closest(".table-wrapper")) { return; }
+        if (window.innerWidth <= 992 || window.innerHeight <= 600) { box.style.maxHeight = "none"; return; }
+        var phase2 = window.innerHeight * 0.8 - 150;
+        var scroller = box.closest("main") || document.scrollingElement;
+        var top = box.getBoundingClientRect().top + (scroller.scrollTop || 0);
+        var foot = box.nextElementSibling, footH = foot && foot.getClientRects().length ? foot.getBoundingClientRect().height : 0;
+        var room = window.innerHeight - top - footH - 1;
+        box.style.maxHeight = Math.max(200, Math.min(phase2, room)) + "px";
+    }
+    function watch() {
+        fit();
+        if (!box || !window.ResizeObserver) { return; }
+        if (ro) { ro.disconnect(); }
+        ro = new ResizeObserver(function () { window.requestAnimationFrame(fit); });
+        /* what sits above the table: each ancestor's earlier siblings, up to the page body */
+        for (var el = box; el && el !== document.body; el = el.parentElement) {
+            for (var s = el.previousElementSibling; s; s = s.previousElementSibling) { ro.observe(s); }
+            if (el.matches && el.matches("main")) { break; }
+        }
+    }
+    window.addEventListener("resize", fit);
+    document.addEventListener("htmx:afterSettle", watch);
+    if (document.readyState === "complete") { watch(); } else { window.addEventListener("load", watch); }
+})();

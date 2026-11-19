@@ -48,8 +48,8 @@
     g.setAttribute('aria-expanded', String(open));
     var list = document.getElementById(g.getAttribute('aria-controls'));
     if (list) list.hidden = !open;
-    var glyph = g.querySelector('.material-symbols-rounded');
-    if (glyph) glyph.textContent = open ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
+    /* the chevron stays keyboard_arrow_up; the CSS turns it down while open and right while closed (Phase 3 review,
+       Team B slides 17 and 18: a down arrow turned for closed pointed left) */
   }
   function setNav(t, open) {
     t.setAttribute('aria-expanded', String(open));

@@ -84,11 +84,15 @@
       </div>
       <div class="page-body">
         <!-- Post-action feedback as a toast (BA review), in Phase 2's global toast markup (fragments/globalToast.html),
-             top center. DEV: rendered by the server after a create, with showToast. role="status" because it confirms
-             rather than blocks. It holds a link, so js/ds-toast.js keeps it until it is closed (Phase 2 hides toasts
-             after 5 seconds). Legacy equivalent: ConfirmMesgCreate + "Click Here" in ManageConditionLibrary.jsp. -->
+             top center. role="status" because it confirms rather than blocks. It holds a link, so js/ds-toast.js keeps
+             it until it is closed (Phase 2 hides toasts after 5 seconds). Legacy equivalent: ConfirmMesgCreate + "Click
+             Here" in ManageConditionLibrary.jsp. Since Sprint 2, Add Condition's Submit opens View Condition with this
+             message in its own toast (Phase 3 review, Team B slide 16), so the library does not show it on load: shown on
+             load, a toast with a link sits in the page and pushed the table below the window, a second scroll bar outside
+             the table's (slide 21). DEV: render it (with data-ds-toast, without hidden) only if the library is ever
+             reached straight after a create. -->
         <div class="toast-container top-center">
-          <div class="toast alert-success" id="globalToastContainer" role="status" aria-live="polite" aria-atomic="true" data-ds-toast data-bs-autohide="true" data-bs-delay="5000">
+          <div class="toast alert-success" id="globalToastContainer" role="status" aria-live="polite" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000" hidden>
             <div class="d-flex">
               <span class="ds-icon ds-toast-icon ms-3 material-symbols-rounded" aria-hidden="true">check_circle</span>
               <div class="toast-body"><b>Lead, Elevated Blood Levels</b> has been successfully added to the system. This condition will not be available in the system for individual investigation entry until it has been associated to a page and published. <a href="manage-pages.html">Click Here</a> to access the Page Library.</div>

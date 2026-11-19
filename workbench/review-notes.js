@@ -12,7 +12,7 @@
      after  when the pinned element only appears after an action, what that action is
 
    Status values: draft, ready (ready for BA review), changes (changes requested), approved.
-   Record a decision with the date and the source (the Jira story or meeting), never a person's name. */
+   Record a decision with the date and the source (the GitHub issue, Jira story or meeting), never a person's name. */
 (function () {
   'use strict';
 
@@ -515,15 +515,8 @@
 
   window.REVIEW = {
     status: { draft: 'Draft', ready: 'Ready for BA review', changes: 'Changes requested', approved: 'Approved' },
-    templates: T,
-    /* Feedback on this page is saved as comments on Jira stories, through the proxy in tools/ba-review-proxy (see its
-       README). proxy: the service's /api/feedback address; empty means not connected yet. issues: template id to its
-       Jira story; a template without one uses defaultIssue. Every story here must also be in the proxy's ISSUES. */
-    jira: {
-      site: 'https://hhsc-pha.atlassian.net',
-      proxy: '',
-      defaultIssue: '',
-      issues: {}
-    }
+    templates: T
+    /* Feedback on this page is filed as GitHub issues in the design system repository: review-feedback.js, with the
+       repository and form set in wb.js (window.WB_GITHUB). */
   };
 })();

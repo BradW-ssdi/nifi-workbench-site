@@ -12037,6 +12037,10 @@ span.ds-icon, span.ds-nav-icon, span.ds-nav-chevron, span.ds-card-icon {
   padding-top: 0;
 }
 
+.page-body:has(.table-wrapper > #myScrollableTable) {
+  padding-bottom: 0;
+}
+
 .breadcrumb-item a {
   text-decoration: underline;
 }
@@ -14863,6 +14867,19 @@ fieldset.ds-field {
 .ds-p2-view-page #secondaryNav > nav {
   padding: 4px 3.2px 0 24px;
 }
+.ds-p2-view-page .ts-wrapper.ts-form-control.focus > .ts-control {
+  border-color: #0070C0 !important;
+  outline: 2px solid #0070C0;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--bs-body-bg);
+}
+.ds-p2-view-page .ts-wrapper.ts-form-control > .ts-control > input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.ds-p2-view-page #secondaryNav :is(.chevron-button, .nav-link) {
+  scroll-margin-block: 8px;
+}
 .ds-p2-view-page .chevron-button {
   position: relative;
   display: block;
@@ -14945,16 +14962,16 @@ fieldset.ds-field {
   box-shadow: 0 0 0 5px #fff !important;
   border-color: #fff;
 }
-.ds-p2-view-page #secondaryNav > nav {
+.ds-p2-view-page #secondaryNav > nav, .ds-p2-view-page.ds-phase2 #secondaryNav > nav {
   padding-right: 8px;
 }
-.ds-p2-view-page #secondaryNavToggle {
+.ds-p2-view-page #secondaryNavToggle, .ds-p2-view-page.ds-phase2 #secondaryNavToggle {
   margin-right: 8px;
 }
 .ds-p2-view-page .scrollspy {
   scroll-padding-block: 8px;
 }
-.ds-p2-view-page .scrollspy:focus-visible, .ds-p2-view-page .ds-table-scroll:focus-visible {
+.ds-p2-view-page .scrollspy:focus-visible, .ds-p2-view-page .ds-table-scroll:focus-visible, .ds-p2-view-page.ds-phase2 .scrollspy:focus-visible {
   outline-offset: -3px !important;
 }
 .ds-p2-view-page #secondaryNav .nav-link.text-truncate {
@@ -14989,10 +15006,14 @@ fieldset.ds-field {
   border-radius: 8px !important;
 }
 .ds-p2-view-page .accordion-title {
-  font-size: 20px !important;
+  font-size: 1.35rem;
   font-weight: 600;
-  line-height: 24px;
+  line-height: 1.2;
   color: #fff;
+}
+.ds-p2-view-page .accordion-title.fs-5 {
+  font-size: 20px !important;
+  line-height: 24px;
 }
 .ds-p2-view-page .accordion-collapse, .ds-p2-view-page .accordion-body {
   background-color: #f0f1f4;
@@ -15102,6 +15123,9 @@ fieldset.ds-field {
 }
 [data-bs-theme=dark] .ds-p2-view-page .accordion-body {
   border-color: var(--bs-border-color);
+}
+[data-bs-theme=dark] .ds-p2-view-page :is(.form-control, .form-select):not(:focus):not([aria-invalid=true]):not(.is-invalid), [data-bs-theme=dark] .ds-p2-view-page .ts-wrapper:not(.focus) > .ts-control {
+  border-color: #8A949A !important;
 }
 [data-bs-theme=dark] .ds-p2-view-page .static-text {
   background-color: #000 !important;

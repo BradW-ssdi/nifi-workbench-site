@@ -17,7 +17,7 @@
     return '<tr' + (here ? ' class="is-selected"' : '') + '><th scope="row"><a href="?t=' + t.id + '#review"' + (here ? ' aria-current="page"' : '') + '>' + esc(t.title) + '</a></th>' +
       '<td>' + esc(t.priority) + '</td><td>' + badge(t.status) + '</td><td>' + t.notes.length + '</td>' +
       '<td>' + (t.decision ? esc(t.decision.date + ': ' + t.decision.text) : '<span class="text-body-secondary">None yet</span>') + '</td>' +
-      '<td data-open-actions="' + t.id + '"></td></tr>';
+      '<td><a href="' + esc(window.WB_GITHUB.search(['[' + t.id + ']'])) + '" target="_blank" rel="noopener">On GitHub<span class="visually-hidden">: feedback on ' + esc(t.title) + ' (opens in a new tab)</span></a></td></tr>';
   }).join('');
 
   /* ---- the template under review ---- */
@@ -121,7 +121,7 @@
     }
     if (b.hasAttribute('data-copy')) {
       var m = current.notes[+b.getAttribute('data-copy')], text = current.title + ', note ' + m.code + ' (' + m.title + '): ';
-      var done = function () { say('Copied "' + text.trim() + '". Paste it into your comment on the Jira story.'); };
+      var done = function () { say('Copied "' + text.trim() + '". Paste it into your feedback.'); };
       if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
       function fallback() { var t = document.createElement('textarea'); t.value = text; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0'; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (x) { say('Copy is not available here. The reference is ' + m.code + '.'); } t.remove(); b.focus(); }
     }

@@ -82,6 +82,28 @@
     ]}
   ];
 
+  /* Feedback is filed as GitHub issues in the design system repository. The repository is private, so the links work
+     for people signed in to GitHub with access to it; no token or service is involved. The form is
+     .github/ISSUE_TEMPLATE/workbench-feedback.yml (GitHub offers it once it is on main); these links open it with its
+     fields filled in, by field id. The BA review page uses the same (workbench/review-feedback.js). */
+  var GH = window.WB_GITHUB = {
+    repo: 'https://github.com/BradW-ssdi/nifi-design-system',
+    form: 'workbench-feedback.yml',
+    label: 'workbench-feedback',
+    /* f: { screen, note, kind, feedback, owner, due, link, summary }; summary goes in the title only */
+    newIssue: function (f) {
+      var title = '[' + f.screen + '] ' + [f.note, f.kind].filter(Boolean).join(' ') + (f.summary ? ': ' + f.summary : '');
+      var q = ['template=' + encodeURIComponent(GH.form), 'title=' + encodeURIComponent(title.trim() + (f.summary ? '' : ' '))];
+      ['screen', 'note', 'kind', 'feedback', 'owner', 'due', 'link'].forEach(function (k) { if (f[k]) q.push(k + '=' + encodeURIComponent(f[k])); });
+      return GH.repo + '/issues/new?' + q.join('&');
+    },
+    /* the issues whose title carries every term, open and closed */
+    search: function (terms) {
+      return GH.repo + '/issues?q=' + encodeURIComponent('is:issue ' + terms.map(function (t) { return '"' + t + '" in:title'; }).join(' ') + ' sort:updated-desc');
+    },
+    all: function () { return GH.repo + '/issues?q=' + encodeURIComponent('is:issue is:open label:' + GH.label + ' sort:updated-desc'); }
+  };
+
   function esc(s) {
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
@@ -235,6 +257,13 @@
 
   function buildSidebar() {
     var here = location.pathname.split('/').pop() || 'index.html';
+    var page = here.replace(/\.html$/, '');
+    /* right after Start, so it is in view without scrolling the menu */
+    PAGES.splice(1, 0, { group: 'Feedback', items: [
+      { title: 'Give feedback on this page', href: GH.newIssue({ screen: page, link: location.href.split('#')[0] }), ext: true, icon: 'open_in_new' },
+      { title: 'Feedback on this page', href: GH.search(['[' + page + ']']), ext: true, icon: 'open_in_new' },
+      { title: 'All open feedback', href: GH.all(), ext: true, icon: 'open_in_new' }
+    ]});
     var aside = document.createElement('aside');
     aside.className = 'wb-sidebar';
     var ic = function (name) {
