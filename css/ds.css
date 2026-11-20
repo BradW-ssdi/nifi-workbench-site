@@ -11951,6 +11951,11 @@ span.ds-icon, span.ds-nav-icon, span.ds-nav-chevron, span.ds-card-icon {
   margin-right: 4px;
 }
 
+.btn.btn-sm.d-flex.align-items-center:not(:has(> .ds-icon, > .material-symbols-rounded, > svg)), .btn-group-sm > .btn.d-flex.align-items-center:not(:has(> .ds-icon, > .material-symbols-rounded, > svg)) {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 .btn.ds-btn-icon .ds-icon {
   width: 24px;
   height: 24px;
@@ -12178,7 +12183,7 @@ span.ds-icon, span.ds-nav-icon, span.ds-nav-chevron, span.ds-card-icon {
   scroll-padding: 3.5rem 8px 8px;
 }
 
-@media (max-height: 600px) {
+@media (max-width: 992px) {
   .table-wrapper > .scrolling-section.ds-table-scroll {
     max-height: none !important;
   }
@@ -15227,6 +15232,164 @@ fieldset.ds-field {
     height: auto;
     overflow: visible;
   }
+}
+
+.ds-p2-view-page:where(.page-builder-page) .pbp-required-legend {
+  font-size: 14px;
+  line-height: 21px;
+  margin: 8px 0 12px;
+}
+.ds-p2-view-page:where(.page-builder-page) .is-required {
+  color: var(--bs-form-invalid-color);
+}
+.ds-p2-view-page:where(.page-builder-page) .form-label {
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.ds-p2-view-page:where(.page-builder-page) .invalid-feedback {
+  font-size: 14px;
+  line-height: 21px;
+}
+.ds-p2-view-page:where(.page-builder-page) .form-select {
+  height: 32px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.ds-p2-view-page:where(.page-builder-page) .accordion-body input[type=date] {
+  width: 200px;
+}
+.ds-p2-view-page:where(.page-builder-page) .form-check-input {
+  width: 1em;
+  height: 1em;
+  margin-top: 4px;
+}
+.ds-p2-view-page:where(.page-builder-page) .form-check-label {
+  font-size: 14px;
+  line-height: 21px;
+}
+.ds-p2-view-page:where(.page-builder-page) #secondaryNav .nav-link {
+  border-color: transparent;
+}
+.ds-p2-view-page:where(.page-builder-page) .ts-wrapper {
+  --ts-pr-clear-button: 0rem;
+  --ts-pr-caret: 2rem;
+}
+.ds-p2-view-page:where(.page-builder-page) .ts-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 32px;
+  max-width: 500px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 8px;
+  border-color: #6c757d;
+  border-radius: 6px;
+}
+.ds-p2-view-page:where(.page-builder-page) .ts-control::after {
+  content: "";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 12px;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") no-repeat center/16px 12px;
+}
+.ds-p2-view-page:where(.page-builder-page) .table > thead > tr > th {
+  height: 37px;
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 21px;
+  padding: 0 6px;
+}
+.ds-p2-view-page:where(.page-builder-page) .table > thead > tr > th > span {
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.ds-p2-view-page:where(.page-builder-page) .table > tbody > tr > td {
+  font-size: 14px;
+  line-height: 21px;
+  padding-left: 6px;
+}
+.ds-p2-view-page:where(.page-builder-page) .table .lead {
+  font-size: 16px;
+  line-height: 24px;
+}
+.ds-p2-view-page:where(.page-builder-page) .btn-secondary {
+  --bs-btn-bg: #2c6777;
+  --bs-btn-border-color: #2c6777;
+  --bs-btn-color: #fff;
+  --bs-btn-hover-bg: #1f4d5a;
+  --bs-btn-hover-border-color: #1f4d5a;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: #1f4d5a;
+  --bs-btn-active-border-color: #1f4d5a;
+  --bs-btn-active-color: #fff;
+  font-weight: 400;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.ds-p2-view-page:where(.page-builder-page) .btn-secondary:disabled {
+  --bs-btn-disabled-bg: #6c757d;
+  --bs-btn-disabled-border-color: #6c757d;
+}
+.ds-p2-view-page:where(.page-builder-page) .btn-outline-dark:disabled {
+  color: #2c6777;
+  border-color: #2c6777;
+  background-color: transparent;
+}
+.ds-p2-view-page:where(.page-builder-page) .sum-primary .badge {
+  font-size: 15px;
+  line-height: 15px;
+  padding: 5.25px 9.75px;
+}
+
+.ds-p2-view-page:where(.page-builder-page):not([data-bs-theme=dark] *) .form-label.is-disabled {
+  color: #5a5f66;
+}
+.ds-p2-view-page:where(.page-builder-page):not([data-bs-theme=dark] *) :is(.form-control, .form-select):disabled {
+  color: #333;
+  background-color: #f1f3f5;
+}
+.ds-p2-view-page:where(.page-builder-page):not([data-bs-theme=dark] *) .accordion-button {
+  color: #052c65;
+}
+.ds-p2-view-page:where(.page-builder-page):not([data-bs-theme=dark] *) .table > thead > tr > th {
+  color: #333;
+  background-color: #ccc;
+}
+
+[data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) :is(.form-control, .form-select):disabled {
+  color: #b9bfc3;
+  background-color: #212121;
+}
+[data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) .form-check-input {
+  border-color: #6c757d;
+}
+[data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) .accordion-button {
+  background-color: #2c6777;
+}
+[data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) aside.secondary-nav .btn-light, [data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) header .btn-light.rounded-circle {
+  background-color: #212121;
+  border-color: #212121;
+}
+[data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) .table, [data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) .table > :is(thead, tbody) > tr, [data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) .table > :is(thead, tbody) > tr > :is(th, td) {
+  border-color: #999;
+}
+[data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) .table > thead > tr > th {
+  color: #fff;
+  background-color: #212121;
+}
+[data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) .table > tbody > tr > td, [data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) .table .lead {
+  color: #fff;
+}
+[data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) .static-text {
+  border-color: #335d68;
 }
 
 @media (max-width: 640px) {

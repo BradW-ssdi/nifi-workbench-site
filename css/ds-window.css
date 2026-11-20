@@ -11668,6 +11668,11 @@
   margin-right: 4px;
 }
 
+.ds-window .btn.btn-sm.d-flex.align-items-center:not(:has(> .ds-icon, > .material-symbols-rounded, > svg)):not(.ds-phase2, .ds-phase2 *), .ds-window .btn-group-sm > .btn.d-flex.align-items-center:not(:has(> .ds-icon, > .material-symbols-rounded, > svg)):not(.ds-phase2, .ds-phase2 *) {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 .ds-window .btn.ds-btn-icon .ds-icon:not(.ds-phase2, .ds-phase2 *) {
   width: 24px;
   height: 24px;
@@ -11895,7 +11900,7 @@
   scroll-padding: 3.5rem 8px 8px;
 }
 
-@media (max-height: 600px) {
+@media (max-width: 992px) {
   .ds-window .table-wrapper > .scrolling-section.ds-table-scroll:not(.ds-phase2, .ds-phase2 *) {
     max-height: none !important;
   }
@@ -14815,6 +14820,11 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
 
 .ds-window .ds-p2-view-page #secondaryNavToggle {
   margin-right: 8px;
+}
+
+.ds-window .ds-p2-view-page .btn.btn-sm.d-flex.align-items-center:not(:has(> .ds-icon, > .material-symbols-rounded, > svg)), .ds-window .ds-p2-view-page .btn-group-sm > .btn.d-flex.align-items-center:not(:has(> .ds-icon, > .material-symbols-rounded, > svg)) {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .ds-window .ds-p2-view-page .ts-wrapper.ts-form-control.focus > .ts-control {
