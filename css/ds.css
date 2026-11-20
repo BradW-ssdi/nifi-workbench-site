@@ -15348,6 +15348,9 @@ fieldset.ds-field {
   line-height: 15px;
   padding: 5.25px 9.75px;
 }
+.ds-p2-view-page:where(.page-builder-page) .fs-6 {
+  font-size: 16px !important;
+}
 
 .ds-p2-view-page:where(.page-builder-page):not([data-bs-theme=dark] *) .form-label.is-disabled {
   color: #5a5f66;
@@ -15390,6 +15393,9 @@ fieldset.ds-field {
 }
 [data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) .static-text {
   border-color: #335d68;
+}
+[data-bs-theme=dark] .ds-p2-view-page:where(.page-builder-page) header {
+  border-bottom: 1px solid var(--bs-border-color);
 }
 
 @media (max-width: 640px) {
