@@ -54,6 +54,8 @@
   window.addEventListener('keydown', function (e) {
     var top = window.dsDialog && dsDialog.top();
     if (!top || !top.matches('#searchDialog, #patientDialog')) return;
+    // an open list in the dialog (the identifier type) takes Escape first: it closes the list, not the dialog
+    if (e.key === 'Escape' && top.querySelector('.ds-id-type[aria-expanded="true"]')) return;
     if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(top); return; }
     if (e.key !== 'Tab') return;
     var items = $$('input:not([type=hidden]), select, textarea, button, a[href], [tabindex="0"]', top).filter(function (el) {
@@ -62,6 +64,57 @@
     if (!items.length) return;
     if (e.shiftKey && (document.activeElement === items[0] || document.activeElement === top)) { e.preventDefault(); items[items.length - 1].focus(); }
     else if (!e.shiftKey && document.activeElement === items[items.length - 1]) { e.preventDefault(); items[0].focus(); }
+  }, true);
+
+  /* ============================================== Phase 2's dropdown with an input (identifier type)
+     Phase 2 (js/components/dropdowns.js dropdownLiOptionSelected): a choice from the list sets the button's first span
+     and its hidden input. Bootstrap's dropdown opens and closes the list where its JS is loaded (the Phase 2 layout and
+     the app); on the standalone templates this does the same: the button toggles it, ArrowDown opens it on the first
+     item, the arrows move, Escape and a click outside close it, and after a choice focus goes back to the button. */
+  if (typeof window.dropdownLiOptionSelected !== 'function') {
+    window.dropdownLiOptionSelected = function (e) {
+      var item = e.target.closest('.dropdown-item');
+      if (!item) return;
+      e.preventDefault();
+      var toggle = item.closest('.dropdown-menu').previousElementSibling;
+      if (toggle && toggle.classList.contains('dropdown-toggle')) {
+        var text = toggle.querySelector('span:first-child'), input = toggle.querySelector('input');
+        if (text) { text.textContent = item.textContent; input.value = item.getAttribute('value'); }
+      }
+    };
+  }
+  var ddMenu = function (btn) { return document.getElementById(btn.getAttribute('aria-controls')); };
+  var ddItems = function (menu) { return $$('.dropdown-item', menu); };
+  var ddOpen = function (btn, open, focusFirst) {
+    var menu = ddMenu(btn); menu.classList.toggle('show', open); btn.setAttribute('aria-expanded', String(open));
+    if (open && focusFirst) ddItems(menu)[0].focus();
+  };
+  var bootstrapDropdown = function () { return !!(window.bootstrap && window.bootstrap.Dropdown); };
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('.ds-id-type');
+    var item = e.target.closest && e.target.closest('.ds-id-type-menu .dropdown-item');
+    if (item) {
+      var owner = document.querySelector('.ds-id-type[aria-controls="' + item.closest('.dropdown-menu').id + '"]');
+      if (!bootstrapDropdown()) ddOpen(owner, false);
+      window.setTimeout(function () { owner.focus(); }, 0);
+      return;
+    }
+    if (bootstrapDropdown()) return;
+    if (btn) { ddOpen(btn, !ddMenu(btn).classList.contains('show'), false); return; }
+    $$('.ds-id-type[aria-expanded="true"]').forEach(function (b) { if (!ddMenu(b).contains(e.target)) ddOpen(b, false); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (bootstrapDropdown()) return;
+    var btn = e.target.closest && e.target.closest('.ds-id-type');
+    var menu = e.target.closest && e.target.closest('.ds-id-type-menu');
+    if (btn && e.key === 'ArrowDown') { e.preventDefault(); ddOpen(btn, true, true); return; }
+    if (btn && e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') { e.preventDefault(); e.stopPropagation(); ddOpen(btn, false); return; }
+    if (!menu) return;
+    var owner = document.querySelector('.ds-id-type[aria-controls="' + menu.id + '"]'), items = ddItems(menu), i = items.indexOf(e.target);
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); ddOpen(owner, false); owner.focus(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); items[Math.min(i + 1, items.length - 1)].focus(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); items[Math.max(i - 1, 0)].focus(); }
+    else if (e.key === 'Tab') { ddOpen(owner, false); }
   }, true);
 
   /* =========================================================== Find Patient */
@@ -79,10 +132,18 @@
     dobOp.addEventListener('change', syncDob);
     // The criteria: every named field except the selects with a default (the operators and the identifier type),
     // which only go with a field that has a value.
-    var fields = function () { return $$('input[name]:not([type="checkbox"]), select[name]:not([data-default])', form); };
+    var fields = function () { return $$('input[name]:not([type="checkbox"]):not([data-default]), select[name]:not([data-default])', form); };
     // Include Records (Active, Deleted, Superceded): checkboxes, Active on by default as Phase 2's
     var records = function () { return $$('input[type="checkbox"][name]', form); };
-    var paired = function () { return $$('select[data-default]', form); };
+    var paired = function () { return $$('select[data-default], input[data-default]', form); };
+    // The identifier type (Phase 2's dropdown button): its label follows its hidden value
+    var idType = $('#msIdType', search), idLabel = $('#msIdTypeSelected', search);
+    var syncIdType = function () {
+      if (!idType) return;
+      var v = idType.value, def = idType.getAttribute('data-default');
+      var item = $('#msIdTypeMenu .dropdown-item[value="' + v + '"]', search);
+      idLabel.textContent = v === def || !item ? idType.getAttribute('data-default-label') : item.textContent;
+    };
     var pairOf = function (sel) {
       var name = sel.getAttribute('data-for') || sel.name.replace(/Operator$/, '');
       if (sel === dobOp) return $$('#msDobParts input, #msDobRange input', form);
@@ -92,14 +153,14 @@
       fields().forEach(function (el) { el.value = ''; });
       records().forEach(function (el) { el.checked = el.defaultChecked; });
       paired().forEach(function (s) { s.value = s.getAttribute('data-default'); });
-      syncDob(); summary.hidden = true;
+      syncIdType(); syncDob(); summary.hidden = true;
     };
     form.addEventListener('reset', function (e) { e.preventDefault(); clear(); if (status) status.textContent = 'Search criteria cleared.'; $('#msLast', search).focus(); });
     var params = new URLSearchParams(location.search);
     var fromUrl = function () {
       clear();
       paired().forEach(function (el) { if (params.has(el.name)) el.value = params.get(el.name); });
-      syncDob();
+      syncIdType(); syncDob();
       fields().forEach(function (el) { if (params.has(el.name)) el.value = params.get(el.name); });
       if (params.has('personSearch.recordsSet')) records().forEach(function (el) { el.checked = params.has(el.name); });
     };

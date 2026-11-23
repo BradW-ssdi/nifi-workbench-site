@@ -43,9 +43,11 @@
     /* Inside the Phase 2 frame Bootstrap's tooltip script runs: an icon-only control gets Phase 2's tooltip markup and a
        Bootstrap tooltip, styled and placed as Phase 2's are (ours is styled only in the design system layout) */
     if (!el.matches(SEL) && window.bootstrap && bootstrap.Tooltip) {
-      /* A control's own data-bs-toggle (Filter's dropdown, a dialog opener) is left alone: the tooltip is made from
-         options, so the control keeps working */
-      if (!el.hasAttribute('data-bs-toggle')) el.setAttribute('data-bs-toggle', 'tooltip');
+      /* A control with its own data-bs-toggle (a dropdown such as Filter or the identifier type, a dialog opener) gets
+         none: Bootstrap keeps one component per element, so a tooltip made on it first leaves its dropdown unregistered
+         (the list opened but a choice did not close it). Phase 2 puts such a tooltip on a wrapper. */
+      if (el.hasAttribute('data-bs-toggle')) return;
+      el.setAttribute('data-bs-toggle', 'tooltip');
       el.setAttribute('data-bs-custom-class', 'custom-tooltip'); el.setAttribute('data-bs-title', textOf(el));
       el.setAttribute('data-ds-auto-tip', '');   // its title is its name: the click handler below keeps the two the same
       bootstrap.Tooltip.getOrCreateInstance(el, { title: textOf(el), customClass: 'custom-tooltip' }).show();

@@ -14004,32 +14004,35 @@ fieldset.ds-field {
   gap: 8px;
 }
 
-.input-group > .ds-input-group-select {
-  flex: 0 1 auto;
-  width: auto;
-  max-width: 50%;
-}
-
-#msIdType.ds-input-group-select {
-  background-color: var(--bs-primary);
-  border-color: var(--bs-primary);
-  color: #fff;
+.btn.ds-id-type {
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-color: #fff;
+  --bs-btn-hover-bg: var(--ds-primary-hover);
+  --bs-btn-hover-border-color: var(--ds-primary-hover);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: var(--ds-primary-pressed);
+  --bs-btn-active-border-color: var(--ds-primary-pressed);
+  --bs-btn-active-color: #fff;
   font-size: 1rem;
   font-weight: 400;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-  background-size: 24px 24px;
-  background-position: right 8px center;
-  padding-right: 36px;
-  cursor: pointer;
+  padding: 6px 12px;
+  gap: 2px;
+  white-space: nowrap;
 }
 
-#msIdType.ds-input-group-select:hover {
-  background-color: color-mix(in srgb, var(--bs-primary) 85%, #000);
+.btn.ds-id-type::after {
+  display: none;
 }
 
-#msIdType.ds-input-group-select option {
-  background-color: var(--bs-body-bg);
-  color: var(--bs-body-color);
+.btn.ds-id-type .material-symbols-rounded {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.dropdown-menu.ds-id-type-menu {
+  max-height: 50vh;
+  overflow-y: auto;
 }
 
 .btn.ds-btn-icon.ds-btn-icon-sm {

@@ -16,10 +16,6 @@
   .page-builder-page .ts-wrapper, .ds-window .page-builder-page .ts-wrapper { min-width: 300px; }
   .ds-window .page-builder-page .accordion-body input[type="date"] { width: 200px; }   /* Phase 2 styles.css, which the rule above would outrank here */
   .page-builder-page .pbpBatchEntryTable, .ds-window .page-builder-page .pbpBatchEntryTable { table-layout: auto; }
-  .vp-details { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 16px; margin: 0; }
-  .vp-details dt { font-weight: 600; }
-  .vp-details dd { margin: 0; overflow-wrap: break-word; }
-  @media (max-width: 480px) { .vp-details { grid-template-columns: minmax(0, 1fr); } .vp-details dd { margin-bottom: 8px; } }
 </style>
 <link rel="stylesheet" href="../vendor/tom-select/tom-select.min.css">
 <script src="../vendor/tom-select/tom-select.complete.min.js" defer></script>
@@ -80,7 +76,8 @@
              Published: Create New Draft.
              Published with Draft and Initial Draft: the draft is shown, with the Draft label in the summary, and Edit Page,
              Publish, and Delete Draft.
-           Page Details, Page Rules, Page History, Page Metadata, and Save As Template are always there. In the
+           Page Details, Page Rules, Page History, Page Metadata, and Save As Template are always there; Page Details goes
+           to its own page (PI planning, Team B slide 52: not a modal). In the
            workbench, ?state=published-with-draft or ?state=initial-draft shows those states. -->
       <div class="ds-phase2 ds-p2-view-page page-builder-page" data-state="published">
       <header class="mx-3 pt-3">
@@ -94,7 +91,7 @@
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 py-1 my-3">
           <div class="d-flex align-items-center page-title"><h1 class="display-6 mb-0">View Page</h1></div>
           <div class="d-flex align-items-center flex-wrap row-gap-2" role="group" aria-label="Page actions">
-            <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" id="detailsBtn" aria-haspopup="dialog">Page Details</button>
+            <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" id="detailsBtn" onclick="location.href='view-page-details.html'">Page Details</button>
             <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" onclick="location.href='#'">Page Rules</button>
             <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" id="historyBtn" aria-haspopup="dialog">Page History</button>
             <button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center px-3 me-1" onclick="location.href='#'">Page Metadata</button>
@@ -1068,23 +1065,6 @@
       </div>
       </div>
 
-      <div class="modal" id="detailsDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="detailsTitle" hidden>
-        <div class="modal-dialog"><div class="modal-content">
-          <div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="detailsTitle">Page Details</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
-          <div class="modal-body bg-body-secondary">
-            <dl class="vp-details">
-              <dt>Event type:</dt><dd>Investigation</dd>
-              <dt>Page name:</dt><dd>Acute Flaccid Myelitis</dd>
-              <dt>Description:</dt><dd>Investigation page for acute flaccid myelitis.</dd>
-              <dt>Related conditions:</dt><dd>Acute Flaccid Myelitis (AFM) (11120)</dd>
-              <dt>Data mart name:</dt><dd>AFM</dd>
-              <dt>Status:</dt><dd><span class="badge text-bg-success" id="detailsStatus">Published</span></dd>
-            </dl>
-          </div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-primary rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close">Close</button></div>
-        </div></div>
-      </div>
-
       <!-- Page History (Sprint 2; legacy pageHistoryPopUpLoad.jsp, "Manage Pages : View Page History"). As Phase 2's
            Associate Investigations dialog (PI planning, Team B slide 51): Search to filter with Print and Download on its
            row at the queues' size (Phase 3 review, Team B slide 19), the versions table (sortable, newest first), and the
@@ -1240,7 +1220,7 @@
   page.setAttribute('data-state', state);
   /* the server renders only the state's actions and label (DEV: th:if on the state); here the others are taken out */
   $$('[data-when]', page).forEach(function (el) { if ((el.getAttribute('data-when') === 'draft') !== draft) el.parentNode.removeChild(el); });
-  [$('#statusBadge'), $('#detailsStatus')].forEach(function (b) { if (b) { b.textContent = STATES[state][0]; b.className = 'badge ' + STATES[state][1]; } });
+  [$('#statusBadge')].forEach(function (b) { if (b) { b.textContent = STATES[state][0]; b.className = 'badge ' + STATES[state][1]; } });
 
   var phase2 = !!(window.bootstrap && document.querySelector('script[src*="sec-nav-collapse.js"]'));
   if (!phase2) {
@@ -1329,7 +1309,7 @@
   }
   if (document.readyState === 'complete') multi(); else window.addEventListener('load', multi);
 
-  /* Page Details, Page History, Save As Template, Delete Draft: open from their buttons, focus the X (or the first field),
+  /* Page History, Save As Template, Delete Draft: open from their buttons, focus the X (or the first field),
      Escape and the X close them and focus goes back to the button (js/ds-dialog.js for the backdrop, inert background
      and Tab) */
   function wire(dlg, opener, first, onOpen) {
@@ -1347,8 +1327,6 @@
     });
     return close;
   }
-  var details = $('#detailsDialog');
-  wire(details, $('#detailsBtn'), function () { return $('.btn-close', details); });
   var del = $('#deleteDraftDialog');
   if ($('#deleteDraftBtn')) wire(del, $('#deleteDraftBtn'), function () { return $('#deleteDraftYes'); });   /* drafts only */
   $('#deleteDraftYes').addEventListener('click', function () { location.href = 'manage-pages.html'; });

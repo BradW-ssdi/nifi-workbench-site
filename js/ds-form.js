@@ -19,6 +19,9 @@
    - Validation on Submit: required controls that are visible, and every repeating table marked data-min="1".
      A field with data-not-in="a|b|c" rejects a value already in use (any case); data-not-in-msg is the message, and
      {value} in it is replaced with what was entered. DEV: the server makes the same check.
+     A field with data-not-pattern="<regular expression>" rejects a value that matches it, with data-not-pattern-msg
+     (Edit Page Details: a data mart name cannot start with a number).
+     A form with data-next="<url>" goes there after a Submit with no problems (the View screen; DEV: after the post).
      The error banner (Phase 2's, js/ds-errors.js) lists problems in form order; its links focus the control and switch to its tab first. On success the form's data-saved
      message is announced (DEV: post the form). */
 (function () {
@@ -406,6 +409,12 @@
       var empty = f.type === 'radio' ? !$$('[name="' + f.name + '"]', form).some(function (r) { return r.checked; }) : !f.value.trim();
       if (empty && !bad.some(function (b) { return b.f.name && b.f.name === f.name && f.type === 'radio'; })) { setError(f, f.getAttribute('data-errmsg')); bad.push({ f: f, msg: f.getAttribute('data-errmsg'), req: true }); }
     });
+    $$('[data-not-pattern]', form).forEach(function (f) {
+      if (!visible(f) || bad.some(function (b) { return b.f === f; })) return;
+      clearError(f);
+      var v = f.value.trim();
+      if (v && new RegExp(f.getAttribute('data-not-pattern')).test(v)) { var m = f.getAttribute('data-not-pattern-msg'); setError(f, m); bad.push({ f: f, msg: m }); }
+    });
     $$('[data-not-in]', form).forEach(function (f) {
       if (!visible(f) || bad.some(function (b) { return b.f === f; })) return;
       clearError(f);
@@ -422,7 +431,12 @@
     });
     bad.sort(function (a, b) { return a.f === b.f ? 0 : (a.f.compareDocumentPosition(b.f) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1); });
     markTabs(bad);
-    if (!bad.length) { summary.hidden = true; say(form.getAttribute('data-saved') || 'Algorithm saved.'); /* DEV: post the form; on success go to the View screen with a success alert. */ return; }
+    if (!bad.length) {
+      summary.hidden = true; say(form.getAttribute('data-saved') || 'Algorithm saved.');
+      /* DEV: post the form; on success go to the View screen with a success alert. */
+      if (form.hasAttribute('data-next')) { form.setAttribute('data-saved-ok', ''); window.setTimeout(function () { location.href = form.getAttribute('data-next'); }, 300); }
+      return;
+    }
     /* Phase 2's banner (js/ds-errors.js): "<field> is required.", Show more after three */
     dsErrors.forFields(summary, bad.map(function (b) { return { field: b.f, msg: b.msg, required: !!b.req }; }), function (f) { revealTab(f); f.focus(); });
   });
