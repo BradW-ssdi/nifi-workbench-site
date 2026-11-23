@@ -14565,6 +14565,11 @@ fieldset.ds-field {
   font-weight: 500;
 }
 
+[data-bs-theme=dark] .ds-phase2 .filterChipsDiv .chip-button.filter-chip {
+  color: #2c6777 !important;
+  border-color: #2c6777 !important;
+}
+
 .ds-phase2 .filterChipsDiv .filter-chip.dropdown-toggle::after {
   display: none;
 }

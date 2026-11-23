@@ -79,7 +79,7 @@
         <!-- Add Page modernizes ManagePage.do addPageLoad. Two sections, as in the legacy screen: Page Details, and Page
              Conditions, which applies to Investigation pages only. The legacy two-list condition picker becomes a list
              of checkboxes with a Find box, and the chosen conditions show as removable chips.
-             DEV: Submit posts the page, then opens Edit Page for the new draft. The template list follows the event
+             DEV: Submit posts the page, then opens View Page for the new draft (PI planning, Team B slide 53). The template list follows the event
              type; the condition list holds only conditions not already mapped to a page. -->
         <p class="legend-note"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
 
@@ -136,7 +136,7 @@
 
           <div class="ds-form-footer" style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg)">
             <button type="button" class="btn btn-outline-dark rounded-pill px-3" onclick="location.href='manage-pages.html'" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
-            <button class="btn btn-primary rounded-pill px-3" type="submit" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">save</span>Submit</button>
+            <button class="btn btn-primary rounded-pill px-3" type="submit" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit">Submit</button>
           </div>
         </form>
       </div>
@@ -213,8 +213,8 @@
       return;
     }
     sum.hidden = true;
-    /* DEV: POST the page, then open Edit Page for the new draft. */
-    window.location.href = 'edit-page.html';
+    /* DEV: POST the page, then open View Page for the new draft (PI planning, Team B slide 53; legacy shows no message) */
+    window.location.href = 'view-page.html';
   });
   syncSection();
 })();

@@ -87,6 +87,10 @@
             <button type="button" class="btn btn-light rounded-circle" aria-label="Print algorithm" data-bs-custom-class="custom-tooltip" data-bs-title="Print" data-bs-toggle="tooltip"><span aria-hidden="true" class="material-symbols-rounded">print</span></button>
           </div>
         </div>
+        <div class="toast-container top-center"><div class="toast alert-success" id="algSaved" role="status" aria-live="polite" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000" hidden>
+          <div class="d-flex"><span class="ds-icon ds-toast-icon ms-3 material-symbols-rounded" aria-hidden="true">check_circle</span><div class="toast-body"><b>1_TB_Pos_IGRA_MR_AssociateTB</b> has been successfully <span data-saved-verb>added</span> to the system.</div>
+          <button type="button" class="btn-close ms-auto me-3" data-bs-dismiss="toast" aria-label="Close"></button></div>
+        </div></div>
         <div class="toast-container top-center"><div class="toast alert-success" id="statusDone" role="status" aria-live="polite" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000" hidden>
           <div class="d-flex"><span class="ds-icon ds-toast-icon ms-3 material-symbols-rounded" aria-hidden="true">check_circle</span><div class="toast-body"></div>
           <button type="button" class="btn-close ms-auto me-3" data-bs-dismiss="toast" aria-label="Close"></button></div>
@@ -422,6 +426,9 @@
       panel.hidden = false; b.setAttribute('aria-expanded', 'true'); panel.focus();
     });
   });
+  /* After Add or Edit Algorithm saves (?saved=added or ?saved=updated): legacy's message, in a toast (js/ds-toast.js) */
+  var saved = /[?&]saved=(added|updated)/.exec(location.search), toast = document.getElementById('algSaved');
+  if (saved && toast) { toast.querySelector('[data-saved-verb]').textContent = saved[1]; toast.hidden = false; if (window.dsToast) dsToast.show(toast); }
 })();
 </script>
 </body>
