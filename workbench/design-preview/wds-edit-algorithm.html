@@ -568,7 +568,7 @@
     wrap.style.height = Math.max(240, window.innerHeight - top) + 'px';
   }
   fit(); window.addEventListener('resize', fit);
-  if (window.ResizeObserver) new ResizeObserver(fit).observe($('header', page));
+  if (window.ResizeObserver) new ResizeObserver(fit).observe($('header', page), { box: 'border-box' });  /* border-box: the dark theme's header rule adds a border */
 })();
 </script>
 </body>
