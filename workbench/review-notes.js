@@ -17,8 +17,8 @@
   'use strict';
 
   var WDS_FORM = [
-    { code: 'WA-1', title: 'Two tabs', pin: { sel: '#tabBasic' },
-      text: 'Basic Criteria and Action are tabs. "Next: Action" ends the first tab. After a failed save each tab with errors shows how many.' },
+    { code: 'WA-1', title: 'Side navigation', pin: { sel: '#secondaryNav' },
+      text: 'The add page layout of Phase 2, as View Algorithm: the sections on one page in two groups, Basic Criteria and Action, with the section navigation at the left. A section the answers do not use is hidden, with its link.' },
     { code: 'WA-2', title: 'Algorithm Name and Event Type', pin: { sel: '#algName' },
       text: 'Both required. Event Type is Laboratory Report for this template; Case Report algorithms are not in the November 1 scope.' },
     { code: 'WA-3', title: 'Frequency', pin: { sel: '#frequency' },
@@ -27,16 +27,16 @@
       text: 'Electronic Document always applies. Documents Entered By External Users is optional.' },
     { code: 'WA-5', title: 'Sending Systems', pin: { sel: '#sendingHint' },
       text: 'Choosing no sending system means the algorithm applies to every system.' },
-    { code: 'WA-6', title: 'Action', pin: { sel: '#actionType', tab: '#tabAction' },
+    { code: 'WA-6', title: 'Action', pin: { sel: '#actionType' },
       text: 'Mark as Reviewed, Create Investigation, or Create Investigation with Notification. Each action adds its own "On failure" choice; the Create actions add the Investigation Type, which comes from the condition.' },
-    { code: 'WA-7', title: 'Lab Criteria', pin: { sel: 'h2', text: 'Lab Criteria', tab: '#tabAction' },
+    { code: 'WA-7', title: 'Lab Criteria', pin: { sel: '.accordion-title', text: 'Lab Criteria' },
       text: 'ANY or ALL of the rows must match. Each row is a resulted test (LOINC lookup) and one result: coded (SNOMED lookup), numeric (operator, number, units; Between takes two numbers), or text. At least one row is required.' },
-    { code: 'WA-8', title: 'Advanced and investigation criteria', pin: { sel: 'h2', text: 'Advanced Lab Criteria', tab: '#tabAction' },
+    { code: 'WA-8', title: 'Advanced and investigation criteria', pin: { sel: '.accordion-title', text: 'Advanced Lab Criteria' },
       text: 'Shown only after answering Yes to their questions. The question chosen decides the logic and the value: coded questions use Equal or Not Equal and a list, numbers use comparisons, dates use Before, On, After, text uses Contains, Equal, Not Equal, Starts With.' },
-    { code: 'WA-9', title: 'Investigation Default Values', pin: { sel: 'h2', text: 'Investigation Default Values', tab: '#tabAction' }, after: 'choose a Create Investigation action',
+    { code: 'WA-9', title: 'Investigation Default Values', pin: { sel: '.accordion-title', text: 'Investigation Default Values' }, after: 'choose a Create Investigation action',
       text: 'Only for the Create Investigation actions. Each row sets a question on the new investigation to a value.' },
     { code: 'WA-10', title: 'Saving', pin: { sel: 'button[type=submit]' },
-      text: 'Save checks required fields on both tabs, skipping sections that are hidden. The error list links to each field and opens its tab. After saving, View opens with a confirmation.' }
+      text: 'Submit checks the required fields, skipping sections that are hidden. The error list links to each field and opens its section. After saving, View opens with a confirmation.' }
   ];
 
   var T = [
@@ -120,8 +120,8 @@
       ] },
     { id: 'wds-add-algorithm', title: 'WDS: Add Algorithm', priority: 'November 1, priority 2', status: 'ready', notes: WDS_FORM },
     { id: 'wds-edit-algorithm', title: 'WDS: Edit Algorithm', priority: 'November 1, priority 2', status: 'ready',
-      notes: [{ code: 'WE-1', title: 'Edit opens filled in', pin: { sel: 'h1' },
-        text: 'The same form as Add with the saved algorithm loaded and its name in the title. Cancel returns to View.' }].concat(WDS_FORM) },
+      notes: [{ code: 'WE-1', title: 'Edit opens filled in', pin: { sel: '#algSummary' },
+        text: 'The same form as Add with the saved algorithm loaded, its name and ID in the summary under the title. Cancel returns to View.' }].concat(WDS_FORM) },
     { id: 'wds-view-algorithm', title: 'WDS: View Algorithm', priority: 'November 1, priority 2', status: 'ready',
       notes: [
         { code: 'WV-1', title: 'Name, status, last updated', pin: { sel: 'h1' },
@@ -129,7 +129,7 @@
         { code: 'WV-2', title: 'Print, Export, Edit', pin: { sel: 'button', text: 'Export' },
           text: 'Export downloads the algorithm as the XML file that Import in the library reads.' },
         { code: 'WV-3', title: 'One page, read only', pin: { sel: 'h2', text: 'Basic Criteria' },
-          text: 'The same sections as Add, on one page instead of tabs, with the criteria as tables.' }
+          text: 'The same sections and navigation as Add, read only, with the criteria as tables.' }
       ] },
     { id: 'add-page', title: 'Add Page', priority: 'Page Builder (priority 3)', status: 'ready',
       notes: [

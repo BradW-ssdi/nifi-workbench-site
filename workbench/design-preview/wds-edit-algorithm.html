@@ -60,7 +60,17 @@
   </header>
 <!-- /app-frame:top -->
 <main id="main" tabindex="-1">
-      <div class="ds-page-header">
+      <!-- Edit Algorithm. Legacy: DecisionSupport.do (editLoad), Laboratory Report algorithms, with every legacy field. In
+           Phase 2's add page layout (pagedataentry/investigations/addEditInvestigation.html), as View Algorithm (Team A
+           review, 11-23): the header (breadcrumb, the title with Cancel and Submit on the right, the error banner) stays
+           in place, the section navigation is fixed at the left, and the sections scroll beside it in two groups, Basic
+           Criteria and Action, each section a dark teal accordion over a gray body with a field a row. The sections and
+           their navigation links follow the answers (an action's own fields, the advanced and investigation criteria
+           after Yes). DEV: js/ds-form.js holds the reference behavior (conditional sections, repeating tables, lookups,
+           validation); Phase 2's scripts drive the accordions and the navigation. Case Report algorithms use the same
+           layout with Case Report criteria in place of Lab Criteria. -->
+      <form id="algForm" data-saved="Algorithm saved." data-next="wds-view-algorithm.html?saved=updated" class="ds-phase2 ds-p2-view-page page-builder-page" novalidate>
+      <header class="mx-3 pt-3">
         <nav aria-label="Breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="system-management.html">System Management</a></li>
@@ -69,116 +79,103 @@
             <li class="breadcrumb-item active" aria-current="page">Edit Algorithm</li>
           </ol>
         </nav>
-        <h1 class="display-6 mb-0 mt-2">Edit Algorithm</h1>
-        <p class="mb-0 mt-2 text-body-secondary">1_TB_Pos_IGRA_MR_AssociateTB</p>
-      </div>
-      <div class="page-body">
-        <!-- Edit Algorithm. Legacy: DecisionSupport.do (editLoad), Laboratory Report algorithms: two tabs, Basic Criteria and Action, with
-             every legacy field. The Action tab shows only the parts the chosen action uses. DEV: js/ds-form.js holds
-             the reference behavior (tabs, conditional sections, repeating tables, lookups, validation). Case Report
-             algorithms use the same layout with Case Report criteria in place of Lab Criteria. -->
-        <p class="legend-note"><span class="req" aria-hidden="true">*</span> Indicates a required field</p>
-
-        <div class="alert alert-danger ds-error-banner" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 py-1 my-3">
+          <div class="d-flex align-items-center page-title"><h1 class="display-6 mb-0">Edit Algorithm</h1></div>
+          <div class="d-flex align-items-center">
+            <button type="button" class="btn btn-outline-dark rounded-pill px-3" onclick="location.href='wds-view-algorithm.html'">Cancel</button>
+            <button class="btn btn-primary rounded-pill px-3 ms-3" type="submit">Submit</button>
+          </div>
+        </div>
+        <div class="card summary py-2 px-3" id="algSummary">
+          <div class="row pb-1 align-items-center sub2 sum-row sum-primary">
+            <div class="col-8 d-flex align-items-center"><span>1_TB_Pos_IGRA_MR_AssociateTB</span></div>
+            <div class="col-4 text-end"><span>Algorithm ID: 17</span></div>
+          </div>
+        </div>
+        <div class="alert alert-danger ds-error-banner mt-3" id="errorSummary" role="alert" aria-labelledby="errorSummaryTitle" tabindex="-1" hidden>
           <h2 class="d-flex align-items-center gap-1 h6 fw-normal mb-1" id="errorSummaryTitle"><span class="ds-icon material-symbols-rounded" aria-hidden="true">error</span>Please fix the following errors:</h2>
           <ul class="small mb-0 ps-3" id="errorList" data-errors></ul>
           <div class="collapse" id="errorSummaryMore"><ul class="small mb-0 ps-3" data-errors-more></ul></div>
           <button type="button" class="btn btn-more alert-link" data-errors-toggle aria-controls="errorSummaryMore" aria-expanded="false" aria-label="Show more errors" hidden><span class="ds-icon material-symbols-rounded" aria-hidden="true">more_horiz</span></button>
         </div>
         <div id="formStatus" class="visually-hidden" role="status" aria-live="polite"></div>
-
-        <ul class="nav nav-underline" role="tablist" aria-label="Algorithm sections" style="margin-bottom:20px">
-          <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="true" id="tabBasic" aria-controls="panelBasic">Basic Criteria</button></li>
-          <li class="nav-item" role="presentation"><button type="button" class="nav-link" role="tab" aria-selected="false" id="tabAction" aria-controls="panelAction" tabindex="-1">Action</button></li>
-        </ul>
-
-        <form id="algForm" data-saved="Algorithm saved." data-next="wds-view-algorithm.html?saved=updated" novalidate>
-          <div id="panelBasic" role="tabpanel" aria-labelledby="tabBasic">
-            <section class="card ds-form-section">
-              <h2 class="card-header h6 mb-0 fw-semibold">Basic Criteria</h2>
-              <div class="card-body d-grid gap-3">
-                <div class="ds-field"><label class="ds-required" for="algName">Algorithm Name:</label>
-                  <input class="form-control" id="algName" name="algorithmName" type="text" required data-errmsg="Enter an algorithm name" value="1_TB_Pos_IGRA_MR_AssociateTB">
-                  <span class="invalid-feedback" id="algName-error"></span></div>
-                <div class="ds-field"><label class="ds-required" for="eventType">Event Type:</label>
-                  <select class="form-select" id="eventType" name="eventType" required data-errmsg="Choose an event type"><option value="">Select an event type</option><option value="Laboratory Report" selected>Laboratory Report</option><option value="Case Report">Case Report</option></select>
-                  <span class="invalid-feedback" id="eventType-error"></span></div>
-              </div>
-            </section>
-            <section class="card ds-form-section">
-              <h2 class="card-header h6 mb-0 fw-semibold">Frequency and Scope</h2>
-              <div class="card-body d-grid gap-3">
-                <div class="ds-field"><label class="ds-required" for="frequency">Frequency:</label>
-                  <!-- Laboratory Report algorithms run in real time only (legacy shows the field locked). -->
-                  <select class="form-select" id="frequency" name="frequency" required data-errmsg="Choose a frequency" aria-describedby="frequencyHint"><option value="Real-Time" selected>Real-Time</option></select>
-                  <span class="form-text" id="frequencyHint">Laboratory report algorithms run in real time, as each report arrives.</span>
-                  <span class="invalid-feedback" id="frequency-error"></span></div>
-                <fieldset class="ds-field ds-field-wide"><legend class="ds-required">Apply To:</legend>
-                  <div class="apply-group">
-                    <label class="ds-check"><input class="form-check-input" type="checkbox" name="applyTo" value="ELECTRONIC" checked disabled aria-describedby="applyHint"> Electronic Document</label>
-                    <label class="ds-check"><input class="form-check-input" type="checkbox" name="applyTo" value="EXTERNAL"> Documents Entered By External Users</label>
-                  </div>
-                  <span class="form-text" id="applyHint">Electronic documents are always included.</span></fieldset>
-                <fieldset class="ds-field ds-field-wide" aria-describedby="sendingHint"><legend>Sending Systems:</legend>
-                  <span class="form-text" id="sendingHint">If you choose none, the algorithm applies to every sending system.</span>
-                  <div class="ds-check-list"><label class="ds-check"><input class="form-check-input" type="checkbox" name="sendingSystems" value="Austin Public Health Lab"> Austin Public Health Lab</label><label class="ds-check"><input class="form-check-input" type="checkbox" name="sendingSystems" value="DSHS Austin Laboratory" checked> DSHS Austin Laboratory</label><label class="ds-check"><input class="form-check-input" type="checkbox" name="sendingSystems" value="Quest Diagnostics"> Quest Diagnostics</label><label class="ds-check"><input class="form-check-input" type="checkbox" name="sendingSystems" value="LabCorp"> LabCorp</label><label class="ds-check"><input class="form-check-input" type="checkbox" name="sendingSystems" value="qa System"> qa System</label></div></fieldset>
-              </div>
-            </section>
-            <section class="card ds-form-section">
-              <h2 class="card-header h6 mb-0 fw-semibold">Administrative Information</h2>
-              <div class="card-body d-grid gap-3">
-                <div class="ds-field ds-field-wide"><label for="adminComments">Administrative Comments:</label>
-                  <textarea class="form-control" id="adminComments" name="comment" rows="4" aria-describedby="adminHelp">Associates a positive IGRA result with the patient&#x27;s existing TB investigation from the last year.</textarea>
-                  <span class="form-text" id="adminHelp">Visible to other administrators in the algorithm library.</span></div>
-              </div>
-            </section>
-            <div class="ds-tab-next"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-goto-tab="tabAction" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Next: Action">Next: Action</button></div>
+      </header>
+      <div class="content-wrap">
+        <!-- Jumper Links -->
+        <aside class="secondary-nav">
+          <button aria-controls="secondaryNav" aria-expanded="true" aria-label="Toggle section navigation" class="btn btn-light rounded-circle d-inline-flex align-items-center" data-bs-target="#secondaryNav" data-bs-toggle="collapse" id="secondaryNavToggle" type="button"><span aria-hidden="true" class="material-symbols-rounded me-1">left_panel_close</span></button>
+          <div class="collapse collapse-horizontal show" id="secondaryNav">
+            <nav aria-label="Section navigation"><nav aria-label="Basic Criteria" id="tab-0-jumper"><button aria-controls="tab-0-sections-jumper" aria-expanded="true" class="btn btn-light d-inline-block text-truncate chevron-button" data-bs-target="#tab-0-sections-jumper" data-bs-toggle="collapse" type="button"><span>Basic Criteria</span><span aria-hidden="true" class="material-symbols-rounded chevron-icon">keyboard_arrow_up</span></button><div class="collapse show" id="tab-0-sections-jumper"><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#basicCriteria">Basic Criteria</a></div><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#frequencyScope">Frequency &amp; Scope</a></div><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#adminInfo">Administrative Information</a></div></div></nav><nav aria-label="Action" id="tab-1-jumper"><button aria-controls="tab-1-sections-jumper" aria-expanded="true" class="btn btn-light d-inline-block text-truncate chevron-button" data-bs-target="#tab-1-sections-jumper" data-bs-toggle="collapse" type="button"><span>Action</span><span aria-hidden="true" class="material-symbols-rounded chevron-icon">keyboard_arrow_up</span></button><div class="collapse show" id="tab-1-sections-jumper"><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#action">Action</a></div><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#labLogic">Lab Criteria Logic</a></div><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#labCriteria">Lab Criteria</a></div><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#advLab">Advanced Lab Criteria</a></div><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#advLabLogic">Advanced Lab Criteria Logic</a></div><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#advLabIf">Advanced Lab Criteria [IF Logic]</a></div><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#invCriteria">Investigation Criteria</a></div><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#advInvIf">Advanced Investigation Criteria [IF Logic]</a></div><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#timeFrame">Time Frame Logic</a></div><div class="nav flex-column ms-3"><a class="nav-link text-truncate" href="#invDefaults">Investigation Default Values</a></div></div></nav></nav>
           </div>
-
-          <div id="panelAction" role="tabpanel" aria-labelledby="tabAction" hidden>
-            <section class="card ds-form-section">
-              <h2 class="card-header h6 mb-0 fw-semibold">Action</h2>
-              <div class="card-body d-grid gap-3">
-                <div class="ds-field"><label class="ds-required" for="actionType">Action:</label>
-                  <select class="form-select" id="actionType" name="action" required data-errmsg="Choose an action"><option value="">Select an action</option><option value="MAR" selected>Mark as Reviewed</option><option value="CI">Create Investigation</option><option value="CIN">Create Investigation with Notification</option></select>
-                  <span class="invalid-feedback" id="actionType-error"></span></div>
-                <div class="ds-field"><label class="ds-required" for="condition">Condition:</label>
-                  <select class="form-select" id="condition" name="condition" required data-errmsg="Choose a condition"><option value="">Select a condition</option><option value="10100" data-page="Hepatitis B Investigation">Hepatitis B, acute (10100)</option><option value="11065" data-page="COVID-19 Investigation">Novel Coronavirus 2019 (11065)</option><option value="102201" data-page="TB 2020 RVCT Investigation" selected>Tuberculosis (2020 RVCT) (102201)</option><option value="502582" data-page="LTBI 2020 TBLISS Investigation">Latent Tuberculosis Infection (2020 TBLISS) (502582)</option><option value="10311" data-page="STD Investigation">Syphilis, primary (10311)</option><option value="11720" data-page="Lead Investigation">Lead, Elevated Blood Levels (11720)</option></select>
-                  <span class="invalid-feedback" id="condition-error"></span></div>
-                <div class="ds-field" data-show-when="action=CI|CIN"><span class="ds-label" id="invTypeLabel">Investigation Type (Related Page)</span>
-                  <output class="ds-field-value" id="invType" aria-labelledby="invTypeLabel"></output></div>
-                <div class="ds-field" data-show-when="action=CI|CIN"><label class="ds-required" for="onFailInv">On Failure to Create Investigation:</label>
-                  <select class="form-select" id="onFailInv" name="onFailureToCreateInvestigation" required data-errmsg="Choose what happens if the investigation cannot be created"><option value="Retain Event Record" selected>Retain Event Record</option><option value="Roll-Back All (including event record)">Roll-Back All (including event record)</option></select>
-                  <span class="invalid-feedback" id="onFailInv-error"></span></div>
-                <div class="ds-field" data-show-when="action=CIN"><label class="ds-required" for="onFailNnd">On Failure to Create Notification:</label>
-                  <select class="form-select" id="onFailNnd" name="onFailureToCreateNND" required data-errmsg="Choose what happens if the notification cannot be created"><option value="Retain Investigation and Event Record" selected>Retain Investigation and Event Record</option></select>
-                  <span class="invalid-feedback" id="onFailNnd-error"></span></div>
-                <div class="ds-field" data-show-when="action=MAR"><label class="ds-required" for="onFailMar">On Failure to Mark as Reviewed:</label>
-                  <select class="form-select" id="onFailMar" name="onFailureToMarkAsReviewed" required data-errmsg="Choose what happens if the report cannot be marked as reviewed"><option value="Retain Event Record" selected>Retain Event Record</option><option value="Roll-Back All (including event record)">Roll-Back All (including event record)</option></select>
-                  <span class="invalid-feedback" id="onFailMar-error"></span></div>
-              </div>
-            </section>
-
-            <section class="card ds-form-section">
-              <h2 class="card-header h6 mb-0 fw-semibold">Lab Criteria</h2>
-              <div class="card-body d-grid gap-3">
-                <fieldset class="ds-field ds-radio-group"><legend class="ds-required">Apply this logic to the lab criteria:</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="radio" name="labLogic" id="labLogic-OR" value="OR" checked required data-errmsg="Choose apply this logic to the lab criteria" data-default> ANY of the criteria are met (OR logic)</label><label class="ds-check"><input class="form-check-input" type="radio" name="labLogic" id="labLogic-AND" value="AND"> ALL of the criteria are met (AND logic)</label></div></fieldset>
-                <div class="ds-repeat" data-repeat data-name="labCriteria" data-noun="Lab criterion" data-columns="[{&quot;field&quot;: &quot;resultedTest&quot;, &quot;read&quot;: &quot;test&quot;}, {&quot;field&quot;: &quot;operator&quot;, &quot;read&quot;: &quot;labOp&quot;}, {&quot;field&quot;: &quot;result&quot;, &quot;read&quot;: &quot;labResult&quot;}]" data-validate="labResult" data-min="1" data-min-msg="Add at least one lab criterion">
+        </aside>
+        <div class="content-area ps-2 pe-4">
+          <div class="scrollspy" data-bs-smooth-scroll="false" data-bs-spy="scroll" data-bs-target="#secondaryNav" tabindex="0" role="region" aria-label="Algorithm criteria">
+                    <p class="pbp-required-legend"><span class="is-required">*</span> indicates a required field</p>
+                    <span id="tab-0-sect-0">
+                        <div class="pt-3 d-flex">
+                            <h2 class="sub ps-1 m-0">Basic Criteria</h2>
+                            <button class="btn btn-link p-0 ms-auto me-2 text-decoration-none" type="button" id="toggle-link">Collapse All</button>
+                        </div>
+                        <div class="my-2 mx-1" id="basicCriteria"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="basicCriteriaBody" class="accordion-button" data-bs-target="#basicCriteriaBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Basic Criteria</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="basicCriteriaBody"><div class="accordion-body">
+<div class="pbp-row-wrapper"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label" for="algName"><span class="is-required">* </span><span class="label-value">Algorithm Name:</span></label></div><div class="col-7 my-1"><input class="form-control" id="algName" name="algorithmName" type="text" required data-errmsg="Enter an algorithm name" value="1_TB_Pos_IGRA_MR_AssociateTB"><span class="invalid-feedback" id="algName-error"></span></div></div></div>
+<div class="pbp-row-wrapper"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label" for="eventType"><span class="is-required">* </span><span class="label-value">Event Type:</span></label></div><div class="col-7 my-1"><select class="form-select" id="eventType" name="eventType" required data-errmsg="Choose an event type"><option value="">Select an event type</option><option value="Laboratory Report" selected>Laboratory Report</option><option value="Case Report">Case Report</option></select><span class="invalid-feedback" id="eventType-error"></span></div></div></div>
+                            </div></div>
+                        </div></div></div>
+                        <div class="my-2 mx-1" id="frequencyScope"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="frequencyScopeBody" class="accordion-button" data-bs-target="#frequencyScopeBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Frequency &amp; Scope</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="frequencyScopeBody"><div class="accordion-body">
+<div class="pbp-row-wrapper"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label" for="frequency"><span class="is-required">* </span><span class="label-value">Frequency:</span></label></div><div class="col-7 my-1"><select class="form-select" id="frequency" name="frequency" required data-errmsg="Choose a frequency" aria-describedby="frequencyHint"><option value="Real-Time" selected>Real-Time</option></select><span class="invalid-feedback" id="frequency-error"></span><span class="form-text d-block" id="frequencyHint">Laboratory report algorithms run in real time, as each report arrives.</span></div></div></div>
+<fieldset class="row pbp-row-wrapper"><legend class="col-5 form-label d-flex align-items-center justify-content-end text-end my-1"><span><span class="is-required">* </span>Apply To:</span></legend><div class="col-7 my-1"><div class="form-check"><input class="form-check-input" type="checkbox" name="applyTo" id="applyTo-ELECTRONIC" value="ELECTRONIC" checked disabled aria-describedby="applyHint"><label class="form-check-label" for="applyTo-ELECTRONIC">Electronic Document</label></div><div class="form-check"><input class="form-check-input" type="checkbox" name="applyTo" id="applyTo-EXTERNAL" value="EXTERNAL"><label class="form-check-label" for="applyTo-EXTERNAL">Documents Entered By External Users</label></div><span class="form-text d-block" id="applyHint">Electronic documents are always included.</span></div></fieldset>
+<fieldset class="row pbp-row-wrapper" aria-describedby="sendingHint"><legend class="col-5 form-label d-flex align-items-center justify-content-end text-end my-1"><span>Sending Systems:</span></legend><div class="col-7 my-1"><span class="form-text d-block" id="sendingHint">If you choose none, the algorithm applies to every sending system.</span><div class="form-check"><input class="form-check-input" type="checkbox" name="sendingSystems" id="sending-0" value="Austin Public Health Lab"><label class="form-check-label" for="sending-0">Austin Public Health Lab</label></div><div class="form-check"><input class="form-check-input" type="checkbox" name="sendingSystems" id="sending-1" value="DSHS Austin Laboratory" checked><label class="form-check-label" for="sending-1">DSHS Austin Laboratory</label></div><div class="form-check"><input class="form-check-input" type="checkbox" name="sendingSystems" id="sending-2" value="Quest Diagnostics"><label class="form-check-label" for="sending-2">Quest Diagnostics</label></div><div class="form-check"><input class="form-check-input" type="checkbox" name="sendingSystems" id="sending-3" value="LabCorp"><label class="form-check-label" for="sending-3">LabCorp</label></div><div class="form-check"><input class="form-check-input" type="checkbox" name="sendingSystems" id="sending-4" value="qa System"><label class="form-check-label" for="sending-4">qa System</label></div></div></fieldset>
+                            </div></div>
+                        </div></div></div>
+                        <div class="my-2 mx-1" id="adminInfo"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="adminInfoBody" class="accordion-button" data-bs-target="#adminInfoBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Administrative Information</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="adminInfoBody"><div class="accordion-body">
+<div class="pbp-row-wrapper"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label" for="adminComments"><span class="label-value">Administrative Comments:</span></label></div><div class="col-7 my-1"><textarea class="form-control" id="adminComments" name="comment" rows="4" aria-describedby="adminHelp">Associates a positive IGRA result with the patient&#x27;s existing TB investigation from the last year.</textarea><span class="form-text d-block" id="adminHelp">Visible to other administrators in the algorithm library.</span></div></div></div>
+                            </div></div>
+                        </div></div></div>
+                    </span>
+                    <span id="tab-1-sect-0">
+                        <div class="pt-3 d-flex"><h2 class="sub ps-1 m-0">Action</h2></div>
+                        <div class="my-2 mx-1" id="action"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="actionBody" class="accordion-button" data-bs-target="#actionBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Action</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="actionBody"><div class="accordion-body">
+<div class="pbp-row-wrapper"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label" for="actionType"><span class="is-required">* </span><span class="label-value">Action:</span></label></div><div class="col-7 my-1"><select class="form-select" id="actionType" name="action" required data-errmsg="Choose an action"><option value="">Select an action</option><option value="MAR" selected>Mark as Reviewed</option><option value="CI">Create Investigation</option><option value="CIN">Create Investigation with Notification</option></select><span class="invalid-feedback" id="actionType-error"></span></div></div></div>
+<div class="pbp-row-wrapper"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label" for="condition"><span class="is-required">* </span><span class="label-value">Condition:</span></label></div><div class="col-7 my-1"><select class="form-select" id="condition" name="condition" required data-errmsg="Choose a condition"><option value="">Select a condition</option><option value="10100" data-page="Hepatitis B Investigation">Hepatitis B, acute (10100)</option><option value="11065" data-page="COVID-19 Investigation">Novel Coronavirus 2019 (11065)</option><option value="102201" data-page="TB 2020 RVCT Investigation" selected>Tuberculosis (2020 RVCT) (102201)</option><option value="502582" data-page="LTBI 2020 TBLISS Investigation">Latent Tuberculosis Infection (2020 TBLISS) (502582)</option><option value="10311" data-page="STD Investigation">Syphilis, primary (10311)</option><option value="11720" data-page="Lead Investigation">Lead, Elevated Blood Levels (11720)</option></select><span class="invalid-feedback" id="condition-error"></span></div></div></div>
+<div class="pbp-row-wrapper" data-show-when="action=CI|CIN"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label" id="invTypeLabel">Investigation Type (Related Page):</span></div><div class="col-7 my-1"><output class="answer" id="invType" aria-labelledby="invTypeLabel"></output></div></div></div>
+<div class="pbp-row-wrapper" data-show-when="action=CI|CIN"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label" for="onFailInv"><span class="is-required">* </span><span class="label-value">On Failure to Create Investigation:</span></label></div><div class="col-7 my-1"><select class="form-select" id="onFailInv" name="onFailureToCreateInvestigation" required data-errmsg="Choose what happens if the investigation cannot be created"><option value="Retain Event Record" selected>Retain Event Record</option><option value="Roll-Back All (including event record)">Roll-Back All (including event record)</option></select><span class="invalid-feedback" id="onFailInv-error"></span></div></div></div>
+<div class="pbp-row-wrapper" data-show-when="action=CIN"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label" for="onFailNnd"><span class="is-required">* </span><span class="label-value">On Failure to Create Notification:</span></label></div><div class="col-7 my-1"><select class="form-select" id="onFailNnd" name="onFailureToCreateNND" required data-errmsg="Choose what happens if the notification cannot be created"><option value="Retain Investigation and Event Record" selected>Retain Investigation and Event Record</option></select><span class="invalid-feedback" id="onFailNnd-error"></span></div></div></div>
+<div class="pbp-row-wrapper" data-show-when="action=MAR"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label" for="onFailMar"><span class="is-required">* </span><span class="label-value">On Failure to Mark as Reviewed:</span></label></div><div class="col-7 my-1"><select class="form-select" id="onFailMar" name="onFailureToMarkAsReviewed" required data-errmsg="Choose what happens if the report cannot be marked as reviewed"><option value="Retain Event Record" selected>Retain Event Record</option><option value="Roll-Back All (including event record)">Roll-Back All (including event record)</option></select><span class="invalid-feedback" id="onFailMar-error"></span></div></div></div>
+                            </div></div>
+                        </div></div></div>
+                        <div class="my-2 mx-1" id="labLogic"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="labLogicBody" class="accordion-button" data-bs-target="#labLogicBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Lab Criteria Logic</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="labLogicBody"><div class="accordion-body">
+<fieldset class="row pbp-row-wrapper"><legend class="col-5 form-label d-flex align-items-center justify-content-end text-end my-1"><span><span class="is-required">* </span>Apply this logic to the lab criteria:</span></legend><div class="col-7 my-1"><div class="form-check"><input class="form-check-input" type="radio" name="labLogic" id="labLogic-OR" value="OR" checked required data-errmsg="Choose apply this logic to the lab criteria" data-default><label class="form-check-label" for="labLogic-OR">ANY of the criteria are met (OR logic)</label></div><div class="form-check"><input class="form-check-input" type="radio" name="labLogic" id="labLogic-AND" value="AND"><label class="form-check-label" for="labLogic-AND">ALL of the criteria are met (AND logic)</label></div></div></fieldset>
+                            </div></div>
+                        </div></div></div>
+                        <div class="my-2 mx-1" id="labCriteria"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="labCriteriaBody" class="accordion-button" data-bs-target="#labCriteriaBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Lab Criteria</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="labCriteriaBody"><div class="accordion-body">
+<div class="ds-repeat" data-repeat data-name="labCriteria" data-noun="Lab criterion" data-columns="[{&quot;field&quot;: &quot;resultedTest&quot;, &quot;read&quot;: &quot;test&quot;}, {&quot;field&quot;: &quot;operator&quot;, &quot;read&quot;: &quot;labOp&quot;}, {&quot;field&quot;: &quot;result&quot;, &quot;read&quot;: &quot;labResult&quot;}]" data-validate="labResult" data-min="1" data-min-msg="Add at least one lab criterion">
                   <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Lab Criteria, scrolls horizontally when zoomed">
                   <table class="table table-sm ds-table"><caption class="visually-hidden">Lab criteria for this algorithm</caption><thead><tr><th scope="col">Resulted Test</th><th scope="col">Operator</th><th scope="col">Result</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead><tbody><tr data-row data-state="{&quot;f&quot;: {&quot;resultedTest&quot;: [&quot;Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)&quot;, &quot;39017-9&quot;], &quot;codedResult&quot;: [&quot;Positive (10828004)&quot;, &quot;10828004&quot;]}, &quot;r&quot;: {&quot;includeResult&quot;: &quot;Y&quot;}}"><td>Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)<input type="hidden" data-field="resultedTest" value="39017-9"></td><td>=<input type="hidden" data-field="operator" value="="></td><td>Positive (10828004)<input type="hidden" data-field="result" value="10828004"></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" data-edit aria-label="Edit Lab criterion: Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" data-delete aria-label="Delete Lab criterion: Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Delete"><span class="ds-icon material-symbols-rounded" aria-hidden="true">delete</span></button></td></tr><tr data-row data-state="{&quot;f&quot;: {&quot;resultedTest&quot;: [&quot;Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)&quot;, &quot;45323-3&quot;], &quot;numericOp&quot;: [&quot;&gt;=&quot;, &quot;&quot;], &quot;numericValue&quot;: [&quot;0.35&quot;, &quot;&quot;], &quot;numericUnits&quot;: [&quot;IU/mL&quot;, &quot;&quot;]}, &quot;r&quot;: {&quot;includeResult&quot;: &quot;Y&quot;}}"><td>Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)<input type="hidden" data-field="resultedTest" value="45323-3"></td><td>&gt;=<input type="hidden" data-field="operator" value="&gt;="></td><td>0.35 IU/mL<input type="hidden" data-field="result" value="0.35 IU/mL"></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" data-edit aria-label="Edit Lab criterion: Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" data-delete aria-label="Delete Lab criterion: Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Delete"><span class="ds-icon material-symbols-rounded" aria-hidden="true">delete</span></button></td></tr><tr data-row data-state="{&quot;f&quot;: {&quot;resultedTest&quot;: [&quot;Mycobacterium tuberculosis stimulated gamma interferon (71773-6)&quot;, &quot;71773-6&quot;], &quot;textOp&quot;: [&quot;CT&quot;, &quot;&quot;], &quot;textValue&quot;: [&quot;positive&quot;, &quot;&quot;]}, &quot;r&quot;: {&quot;includeResult&quot;: &quot;Y&quot;}}"><td>Mycobacterium tuberculosis stimulated gamma interferon (71773-6)<input type="hidden" data-field="resultedTest" value="71773-6"></td><td>Contains<input type="hidden" data-field="operator" value="CT"></td><td>positive<input type="hidden" data-field="result" value="positive"></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" data-edit aria-label="Edit Lab criterion: Mycobacterium tuberculosis stimulated gamma interferon (71773-6)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" data-delete aria-label="Delete Lab criterion: Mycobacterium tuberculosis stimulated gamma interferon (71773-6)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Delete"><span class="ds-icon material-symbols-rounded" aria-hidden="true">delete</span></button></td></tr></tbody></table>
                   <p class="ds-empty" data-empty>No lab criteria yet.</p></div></div>
                   <div class="ds-repeat-entry" data-entry role="group" aria-label="Lab criterion entry"><div class="ds-entry-grid">
                       <div class="ds-field ds-field-wide"><label class="ds-required" for="resultedTest">Resulted Test:</label>
-                        <div class="ds-lookup"><input class="form-control" id="resultedTest" type="text" readonly value="" data-lookup="srcTests" data-lookup-title="Find a resulted test" data-entry-required data-errmsg="Choose a resulted test">
-                          <button type="button" class="btn btn-outline-dark px-3" data-lookup-search aria-label="Search resulted test"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
+                        <div class="ds-lookup"><input class="form-control" id="resultedTest" type="text" readonly value="" data-lookup="" data-lookup-title="Find a resulted test" data-entry-required data-errmsg="Choose a resulted test" data-search-dialog="algResultedTestModal">
+                          <button type="button" class="btn btn-outline-dark px-3" data-lookup-search aria-label="Search resulted test" aria-haspopup="dialog"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
                           <button type="button" class="btn btn-link" data-lookup-clear aria-label="Clear resulted test">Clear</button></div>
                         <span class="invalid-feedback" id="resultedTest-error"></span></div>
                       <fieldset class="ds-field ds-radio-group"><legend class="">Include test result in algorithm:</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="radio" name="includeResult" id="includeResult-Y" value="Y" checked data-default> Yes</label><label class="ds-check"><input class="form-check-input" type="radio" name="includeResult" id="includeResult-N" value="N"> No</label></div></fieldset>
                       <div data-show-when="includeResult=Y" class="ds-field-wide ds-stack">
                         <p class="form-text mb-0" id="resultHint">Enter one result for this test: a coded result, a numeric result, or a text result.</p>
                         <div class="ds-field ds-field-wide"><label class="" for="codedResult">Coded Result:</label>
-                        <div class="ds-lookup"><input class="form-control" id="codedResult" type="text" readonly value="" data-lookup="srcCoded" data-lookup-title="Find a coded result">
-                          <button type="button" class="btn btn-outline-dark px-3" data-lookup-search aria-label="Search coded result"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
+                        <div class="ds-lookup"><input class="form-control" id="codedResult" type="text" readonly value="" data-lookup="" data-lookup-title="Find a coded result" data-search-dialog="algCodedResultModal">
+                          <button type="button" class="btn btn-outline-dark px-3" data-lookup-search aria-label="Search coded result" aria-haspopup="dialog"><span class="ds-icon material-symbols-rounded" aria-hidden="true">search</span>Search</button>
                           <button type="button" class="btn btn-link" data-lookup-clear aria-label="Clear coded result">Clear</button></div>
                         <span class="invalid-feedback" id="codedResult-error"></span></div>
                         <div class="ds-field"><label for="numericValue">Numeric Result:</label>
@@ -192,17 +189,25 @@
                     <div><button type="button" class="btn btn-outline-dark rounded-pill" data-add data-add-label="&lt;span class=&quot;ds-icon material-symbols-rounded&quot; aria-hidden=&quot;true&quot;&gt;add&lt;/span&gt;Add lab criterion"><span class="ds-icon material-symbols-rounded" aria-hidden="true">add</span>Add lab criterion</button></div>
                   </div>
                 </div>
-              </div>
-            </section>
-
-            <section class="card ds-form-section">
-              <h2 class="card-header h6 mb-0 fw-semibold">Advanced Lab Criteria</h2>
-              <div class="card-body d-grid gap-3">
-                <p class="mb-0" id="advLabHelp">Advanced lab criteria are checked on the incoming report in addition to the lab criteria above.</p>
-                <fieldset class="ds-field ds-radio-group" aria-describedby="advLabHelp"><legend class="ds-required">Apply advanced lab criteria to this algorithm:</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="radio" name="useAdvanced" id="useAdvanced-Y" value="Y" required data-errmsg="Choose apply advanced lab criteria to this algorithm"> Yes</label><label class="ds-check"><input class="form-check-input" type="radio" name="useAdvanced" id="useAdvanced-N" value="N" checked data-default> No</label></div></fieldset>
-                <div data-show-when="useAdvanced=Y" class="ds-stack">
-                  <fieldset class="ds-field ds-radio-group"><legend class="ds-required">Apply this logic to the advanced lab criteria:</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="radio" name="advLogic" id="advLogic-OR" value="OR" checked required data-errmsg="Choose apply this logic to the advanced lab criteria" data-default> ANY of the criteria are met (OR logic)</label><label class="ds-check"><input class="form-check-input" type="radio" name="advLogic" id="advLogic-AND" value="AND"> ALL of the criteria are met (AND logic)</label></div></fieldset>
-                  <div class="ds-repeat" data-repeat data-name="advancedLabCriteria" data-noun="Advanced lab criterion" data-columns="[{&quot;field&quot;: &quot;question&quot;, &quot;read&quot;: &quot;question&quot;}, {&quot;field&quot;: &quot;logic&quot;, &quot;read&quot;: &quot;logic&quot;}, {&quot;field&quot;: &quot;value&quot;, &quot;read&quot;: &quot;value&quot;}]" data-min="1" data-min-msg="Add at least one advanced lab criterion, or choose No">
+                            </div></div>
+                        </div></div></div>
+                        <div class="my-2 mx-1" id="advLab"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="advLabBody" class="accordion-button" data-bs-target="#advLabBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Advanced Lab Criteria</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="advLabBody"><div class="accordion-body">
+<div class="row m-0"><div class="col-12 static-text" id="advLabHelp"><i>Advanced lab criteria are checked on the incoming report in addition to the lab criteria above.</i></div></div>
+<fieldset class="row pbp-row-wrapper" aria-describedby="advLabHelp"><legend class="col-5 form-label d-flex align-items-center justify-content-end text-end my-1"><span><span class="is-required">* </span>Apply advanced lab criteria to this algorithm:</span></legend><div class="col-7 my-1"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="useAdvanced" id="useAdvanced-Y" value="Y" required data-errmsg="Choose apply advanced lab criteria to this algorithm"><label class="form-check-label" for="useAdvanced-Y">Yes</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="useAdvanced" id="useAdvanced-N" value="N" checked data-default><label class="form-check-label" for="useAdvanced-N">No</label></div></div></fieldset>
+                            </div></div>
+                        </div></div></div>
+                        <div class="my-2 mx-1" id="advLabLogic" data-show-when="useAdvanced=Y"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="advLabLogicBody" class="accordion-button" data-bs-target="#advLabLogicBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Advanced Lab Criteria Logic</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="advLabLogicBody"><div class="accordion-body">
+<fieldset class="row pbp-row-wrapper"><legend class="col-5 form-label d-flex align-items-center justify-content-end text-end my-1"><span><span class="is-required">* </span>Apply this logic to the advanced lab criteria:</span></legend><div class="col-7 my-1"><div class="form-check"><input class="form-check-input" type="radio" name="advLogic" id="advLogic-OR" value="OR" checked required data-errmsg="Choose apply this logic to the advanced lab criteria" data-default><label class="form-check-label" for="advLogic-OR">ANY of the criteria are met (OR logic)</label></div><div class="form-check"><input class="form-check-input" type="radio" name="advLogic" id="advLogic-AND" value="AND"><label class="form-check-label" for="advLogic-AND">ALL of the criteria are met (AND logic)</label></div></div></fieldset>
+                            </div></div>
+                        </div></div></div>
+                        <div class="my-2 mx-1" id="advLabIf" data-show-when="useAdvanced=Y"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="advLabIfBody" class="accordion-button" data-bs-target="#advLabIfBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Advanced Lab Criteria [IF Logic]</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="advLabIfBody"><div class="accordion-body">
+<div class="ds-repeat" data-repeat data-name="advancedLabCriteria" data-noun="Advanced lab criterion" data-columns="[{&quot;field&quot;: &quot;question&quot;, &quot;read&quot;: &quot;question&quot;}, {&quot;field&quot;: &quot;logic&quot;, &quot;read&quot;: &quot;logic&quot;}, {&quot;field&quot;: &quot;value&quot;, &quot;read&quot;: &quot;value&quot;}]" data-min="1" data-min-msg="Add at least one advanced lab criterion, or choose No">
                   <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Advanced Lab Criteria, scrolls horizontally when zoomed">
                   <table class="table table-sm ds-table"><caption class="visually-hidden">Advanced Lab Criteria</caption><thead><tr><th scope="col">Question</th><th scope="col">Logic</th><th scope="col">Value(s)</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead><tbody></tbody></table>
                   <p class="ds-empty" data-empty>No advanced lab criteria yet.</p></div></div>
@@ -214,21 +219,23 @@
                     <div><button type="button" class="btn btn-outline-dark rounded-pill" data-add data-add-label="&lt;span class=&quot;ds-icon material-symbols-rounded&quot; aria-hidden=&quot;true&quot;&gt;add&lt;/span&gt;Add advanced criterion"><span class="ds-icon material-symbols-rounded" aria-hidden="true">add</span>Add advanced criterion</button></div>
                   </div>
                 </div>
-                </div>
-              </div>
-            </section>
-
-            <section class="card ds-form-section">
-              <h2 class="card-header h6 mb-0 fw-semibold">Investigation Criteria</h2>
-              <div class="card-body d-grid gap-3">
-                <p class="mb-0" id="invHelp">When the action is Mark as Reviewed and the investigation logic below is met, the incoming report is associated with the existing investigation it finds. If you also choose additional conditions, it is associated with the most recently created investigation across all of them.</p>
-                <fieldset class="ds-field ds-radio-group" aria-describedby="invHelp"><legend class="ds-required">Apply investigation logic to this algorithm:</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="radio" name="useInvestigationLogic" id="useInvestigationLogic-Y" value="Y" checked required data-errmsg="Choose apply investigation logic to this algorithm" data-default> Yes</label><label class="ds-check"><input class="form-check-input" type="radio" name="useInvestigationLogic" id="useInvestigationLogic-N" value="N"> No</label></div></fieldset>
-                <div data-show-when="useInvestigationLogic=Y" class="ds-stack">
-                  <fieldset class="ds-field ds-radio-group"><legend class="ds-required">Check for conditions in addition to the one selected for this algorithm:</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="radio" name="checkAdditional" id="checkAdditional-Y" value="Y" required data-errmsg="Choose check for conditions in addition to the one selected for this algorithm"> Yes</label><label class="ds-check"><input class="form-check-input" type="radio" name="checkAdditional" id="checkAdditional-N" value="N" checked data-default> No</label></div></fieldset>
-                  <fieldset class="ds-field ds-field-wide" data-show-when="checkAdditional=Y"><legend class="ds-required">Additional Conditions:</legend>
-                    <div class="ds-check-list"><label class="ds-check"><input class="form-check-input" type="checkbox" name="additionalConditions" value="10100"> Hepatitis B, acute (10100)</label><label class="ds-check"><input class="form-check-input" type="checkbox" name="additionalConditions" value="11065"> Novel Coronavirus 2019 (11065)</label><label class="ds-check"><input class="form-check-input" type="checkbox" name="additionalConditions" value="102201"> Tuberculosis (2020 RVCT) (102201)</label><label class="ds-check"><input class="form-check-input" type="checkbox" name="additionalConditions" value="502582"> Latent Tuberculosis Infection (2020 TBLISS) (502582)</label><label class="ds-check"><input class="form-check-input" type="checkbox" name="additionalConditions" value="10311"> Syphilis, primary (10311)</label><label class="ds-check"><input class="form-check-input" type="checkbox" name="additionalConditions" value="11720"> Lead, Elevated Blood Levels (11720)</label></div></fieldset>
-                  <h3 class="h6 mb-0">Advanced Investigation Criteria</h3>
-                  <div class="ds-repeat" data-repeat data-name="advancedInvestigationCriteria" data-noun="Investigation criterion" data-columns="[{&quot;field&quot;: &quot;question&quot;, &quot;read&quot;: &quot;question&quot;}, {&quot;field&quot;: &quot;logic&quot;, &quot;read&quot;: &quot;logic&quot;}, {&quot;field&quot;: &quot;value&quot;, &quot;read&quot;: &quot;value&quot;}]">
+                            </div></div>
+                        </div></div></div>
+                        <div class="my-2 mx-1" id="invCriteria"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="invCriteriaBody" class="accordion-button" data-bs-target="#invCriteriaBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Investigation Criteria</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="invCriteriaBody"><div class="accordion-body">
+<div class="row m-0"><div class="col-12 static-text" id="invHelp"><i>When the action is Mark as Reviewed and the investigation logic below is met, the incoming report is associated with the existing investigation it finds. If you also choose additional conditions, it is associated with the most recently created investigation across all of them.</i></div></div>
+<fieldset class="row pbp-row-wrapper" aria-describedby="invHelp"><legend class="col-5 form-label d-flex align-items-center justify-content-end text-end my-1"><span><span class="is-required">* </span>Apply investigation logic to this algorithm:</span></legend><div class="col-7 my-1"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="useInvestigationLogic" id="useInvestigationLogic-Y" value="Y" checked required data-errmsg="Choose apply investigation logic to this algorithm" data-default><label class="form-check-label" for="useInvestigationLogic-Y">Yes</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="useInvestigationLogic" id="useInvestigationLogic-N" value="N"><label class="form-check-label" for="useInvestigationLogic-N">No</label></div></div></fieldset>
+<div data-show-when="useInvestigationLogic=Y">
+<fieldset class="row pbp-row-wrapper"><legend class="col-5 form-label d-flex align-items-center justify-content-end text-end my-1"><span><span class="is-required">* </span>Check for conditions in addition to the one selected for this algorithm:</span></legend><div class="col-7 my-1"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="checkAdditional" id="checkAdditional-Y" value="Y" required data-errmsg="Choose check for conditions in addition to the one selected for this algorithm"><label class="form-check-label" for="checkAdditional-Y">Yes</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="checkAdditional" id="checkAdditional-N" value="N" checked data-default><label class="form-check-label" for="checkAdditional-N">No</label></div></div></fieldset>
+<fieldset class="row pbp-row-wrapper" data-show-when="checkAdditional=Y"><legend class="col-5 form-label d-flex align-items-center justify-content-end text-end my-1"><span><span class="is-required">* </span>Additional Conditions:</span></legend><div class="col-7 my-1"><div class="form-check"><input class="form-check-input" type="checkbox" name="additionalConditions" id="addCond-10100" value="10100"><label class="form-check-label" for="addCond-10100">Hepatitis B, acute (10100)</label></div><div class="form-check"><input class="form-check-input" type="checkbox" name="additionalConditions" id="addCond-11065" value="11065"><label class="form-check-label" for="addCond-11065">Novel Coronavirus 2019 (11065)</label></div><div class="form-check"><input class="form-check-input" type="checkbox" name="additionalConditions" id="addCond-102201" value="102201"><label class="form-check-label" for="addCond-102201">Tuberculosis (2020 RVCT) (102201)</label></div><div class="form-check"><input class="form-check-input" type="checkbox" name="additionalConditions" id="addCond-502582" value="502582"><label class="form-check-label" for="addCond-502582">Latent Tuberculosis Infection (2020 TBLISS) (502582)</label></div><div class="form-check"><input class="form-check-input" type="checkbox" name="additionalConditions" id="addCond-10311" value="10311"><label class="form-check-label" for="addCond-10311">Syphilis, primary (10311)</label></div><div class="form-check"><input class="form-check-input" type="checkbox" name="additionalConditions" id="addCond-11720" value="11720"><label class="form-check-label" for="addCond-11720">Lead, Elevated Blood Levels (11720)</label></div></div></fieldset>
+</div>
+                            </div></div>
+                        </div></div></div>
+                        <div class="my-2 mx-1" id="advInvIf" data-show-when="useInvestigationLogic=Y"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="advInvIfBody" class="accordion-button" data-bs-target="#advInvIfBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Advanced Investigation Criteria [IF Logic]</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="advInvIfBody"><div class="accordion-body">
+<div class="ds-repeat" data-repeat data-name="advancedInvestigationCriteria" data-noun="Investigation criterion" data-columns="[{&quot;field&quot;: &quot;question&quot;, &quot;read&quot;: &quot;question&quot;}, {&quot;field&quot;: &quot;logic&quot;, &quot;read&quot;: &quot;logic&quot;}, {&quot;field&quot;: &quot;value&quot;, &quot;read&quot;: &quot;value&quot;}]">
                   <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Advanced Investigation Criteria, scrolls horizontally when zoomed">
                   <table class="table table-sm ds-table"><caption class="visually-hidden">Advanced Investigation Criteria</caption><thead><tr><th scope="col">Question</th><th scope="col">Logic</th><th scope="col">Value</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead><tbody><tr data-row data-state="{&quot;f&quot;: {&quot;invQ&quot;: [&quot;INV163&quot;, &quot;&quot;], &quot;invL&quot;: [&quot;=&quot;, &quot;&quot;], &quot;invV&quot;: [&quot;Confirmed&quot;, &quot;&quot;]}, &quot;r&quot;: {}}"><td>Investigation Case Status (INV163)<input type="hidden" data-field="question" value="INV163"></td><td>Equal<input type="hidden" data-field="logic" value="="></td><td>Confirmed<input type="hidden" data-field="value" value="Confirmed"></td><td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" data-edit aria-label="Edit Investigation criterion: Investigation Case Status (INV163)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button><button type="button" class="btn btn-light rounded-circle btn-sm" data-delete aria-label="Delete Investigation criterion: Investigation Case Status (INV163)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Delete"><span class="ds-icon material-symbols-rounded" aria-hidden="true">delete</span></button></td></tr></tbody></table>
                   <p class="ds-empty" data-empty>No advanced investigation criteria yet.</p></div></div>
@@ -240,27 +247,25 @@
                     <div><button type="button" class="btn btn-outline-dark rounded-pill" data-add data-add-label="&lt;span class=&quot;ds-icon material-symbols-rounded&quot; aria-hidden=&quot;true&quot;&gt;add&lt;/span&gt;Add investigation criterion"><span class="ds-icon material-symbols-rounded" aria-hidden="true">add</span>Add investigation criterion</button></div>
                   </div>
                 </div>
-                  <h3 class="h6 mb-0">Time Frame</h3>
-                  <p class="form-text mb-0" id="timeHelp">The number of days between the incoming report (specimen collection date) and an existing investigation for the same patient and condition. If you choose No, any investigation counts, however old.</p>
-                  <fieldset class="ds-field ds-radio-group" aria-describedby="timeHelp"><legend class="ds-required">Apply time frame logic to this algorithm:</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="radio" name="useTimeFrame" id="useTimeFrame-Y" value="Y" checked required data-errmsg="Choose apply time frame logic to this algorithm" data-default> Yes</label><label class="ds-check"><input class="form-check-input" type="radio" name="useTimeFrame" id="useTimeFrame-N" value="N"> No</label></div></fieldset>
-                  <div data-show-when="useTimeFrame=Y" class="ds-entry-grid">
-                    <div class="ds-field"><label class="ds-required" for="eventDate">Event Date:</label>
-                      <select class="form-select" id="eventDate" name="eventDate" required data-errmsg="Choose the event date"><option value="">Select an event date</option><option value="Date Received by Public Health">Date Received by Public Health</option><option value="Date Specimen Collected" selected>Date Specimen Collected</option><option value="Document Create Date">Document Create Date</option><option value="Investigation Create Date">Investigation Create Date</option><option value="Lab Report Date">Lab Report Date</option></select>
-                      <span class="invalid-feedback" id="eventDate-error"></span></div>
-                    <div class="ds-field"><label class="ds-required" for="timeDays">Time Frame (days):</label>
-                      <div class="ds-op-field"><select class="form-select" id="timeOp" name="timeFrameOperator" aria-label="Time Frame operator"><option value="&lt;">&lt;</option><option value="&lt;=" selected>&lt;=</option><option value="&gt;">&gt;</option><option value="&gt;=">&gt;=</option></select><input class="form-control" id="timeDays" name="timeFrameDays" type="number" min="0" required data-errmsg="Enter the number of days" value="365"></div>
-                      <span class="invalid-feedback" id="timeDays-error"></span></div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section class="card ds-form-section" data-show-when="action=CI|CIN">
-              <h2 class="card-header h6 mb-0 fw-semibold">Investigation Default Values</h2>
-              <div class="card-body d-grid gap-3">
-                <p class="mb-0">Values set on the investigation the algorithm creates.</p>
-                <fieldset class="ds-field ds-radio-group"><legend class="ds-required">When the investigation already has a value:</legend><div class="apply-group"><label class="ds-check"><input class="form-check-input" type="radio" name="defaultBehavior" id="defaultBehavior-OVERWRITE" value="OVERWRITE" required data-errmsg="Choose when the investigation already has a value"> Overwrite existing values</label><label class="ds-check"><input class="form-check-input" type="radio" name="defaultBehavior" id="defaultBehavior-NULL_ONLY" value="NULL_ONLY" checked data-default> Update only empty values</label></div></fieldset>
-                <div class="ds-repeat" data-repeat data-name="defaultValues" data-noun="Default value" data-columns="[{&quot;field&quot;: &quot;question&quot;, &quot;read&quot;: &quot;question&quot;}, {&quot;field&quot;: &quot;logic&quot;, &quot;read&quot;: &quot;logic&quot;}, {&quot;field&quot;: &quot;value&quot;, &quot;read&quot;: &quot;value&quot;}]">
+                            </div></div>
+                        </div></div></div>
+                        <div class="my-2 mx-1" id="timeFrame" data-show-when="useInvestigationLogic=Y"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="timeFrameBody" class="accordion-button" data-bs-target="#timeFrameBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Time Frame Logic</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="timeFrameBody"><div class="accordion-body">
+<div class="row m-0"><div class="col-12 static-text" id="timeHelp"><i>The number of days between the incoming report (specimen collection date) and an existing investigation for the same patient and condition. If you choose No, any investigation counts, however old.</i></div></div>
+<fieldset class="row pbp-row-wrapper" aria-describedby="timeHelp"><legend class="col-5 form-label d-flex align-items-center justify-content-end text-end my-1"><span><span class="is-required">* </span>Apply time frame logic to this algorithm:</span></legend><div class="col-7 my-1"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="useTimeFrame" id="useTimeFrame-Y" value="Y" checked required data-errmsg="Choose apply time frame logic to this algorithm" data-default><label class="form-check-label" for="useTimeFrame-Y">Yes</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="useTimeFrame" id="useTimeFrame-N" value="N"><label class="form-check-label" for="useTimeFrame-N">No</label></div></div></fieldset>
+<div data-show-when="useTimeFrame=Y">
+<div class="pbp-row-wrapper"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label" for="eventDate"><span class="is-required">* </span><span class="label-value">Event Date:</span></label></div><div class="col-7 my-1"><select class="form-select" id="eventDate" name="eventDate" required data-errmsg="Choose the event date"><option value="">Select an event date</option><option value="Date Received by Public Health">Date Received by Public Health</option><option value="Date Specimen Collected" selected>Date Specimen Collected</option><option value="Document Create Date">Document Create Date</option><option value="Investigation Create Date">Investigation Create Date</option><option value="Lab Report Date">Lab Report Date</option></select><span class="invalid-feedback" id="eventDate-error"></span></div></div></div>
+<div class="pbp-row-wrapper"><div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label" for="timeDays"><span class="is-required">* </span><span class="label-value">Time Frame (days):</span></label></div><div class="col-7 my-1"><div class="ds-op-field"><select class="form-select" id="timeOp" name="timeFrameOperator" aria-label="Time Frame operator"><option value="&lt;">&lt;</option><option value="&lt;=" selected>&lt;=</option><option value="&gt;">&gt;</option><option value="&gt;=">&gt;=</option></select><input class="form-control" id="timeDays" name="timeFrameDays" type="number" min="0" required data-errmsg="Enter the number of days" value="365"></div><span class="invalid-feedback" id="timeDays-error"></span></div></div></div>
+</div>
+                            </div></div>
+                        </div></div></div>
+                        <div class="my-2 mx-1" id="invDefaults" data-show-when="action=CI|CIN"><div class="accordion"><div class="accordion-item">
+                            <h3 class="accordion-header"><button aria-expanded="true" aria-controls="invDefaultsBody" class="accordion-button" data-bs-target="#invDefaultsBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Investigation Default Values</span></button></h3>
+                            <div class="accordion-collapse collapse show pb-subsection" id="invDefaultsBody"><div class="accordion-body">
+<div class="row m-0"><div class="col-12 static-text"><i>Values set on the investigation the algorithm creates.</i></div></div>
+<fieldset class="row pbp-row-wrapper"><legend class="col-5 form-label d-flex align-items-center justify-content-end text-end my-1"><span><span class="is-required">* </span>When the investigation already has a value:</span></legend><div class="col-7 my-1"><div class="form-check"><input class="form-check-input" type="radio" name="defaultBehavior" id="defaultBehavior-OVERWRITE" value="OVERWRITE" required data-errmsg="Choose when the investigation already has a value"><label class="form-check-label" for="defaultBehavior-OVERWRITE">Overwrite existing values</label></div><div class="form-check"><input class="form-check-input" type="radio" name="defaultBehavior" id="defaultBehavior-NULL_ONLY" value="NULL_ONLY" checked data-default><label class="form-check-label" for="defaultBehavior-NULL_ONLY">Update only empty values</label></div></div></fieldset>
+<div class="ds-repeat" data-repeat data-name="defaultValues" data-noun="Default value" data-columns="[{&quot;field&quot;: &quot;question&quot;, &quot;read&quot;: &quot;question&quot;}, {&quot;field&quot;: &quot;logic&quot;, &quot;read&quot;: &quot;logic&quot;}, {&quot;field&quot;: &quot;value&quot;, &quot;read&quot;: &quot;value&quot;}]">
                   <div class="ds-table-frame"><div class="ds-table-scroll" tabindex="0" role="group" aria-label="Default Values, scrolls horizontally when zoomed">
                   <table class="table table-sm ds-table"><caption class="visually-hidden">Default Values</caption><thead><tr><th scope="col">Question</th><th scope="col">Logic</th><th scope="col">Value</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead><tbody></tbody></table>
                   <p class="ds-empty" data-empty>No default values yet.</p></div></div>
@@ -272,32 +277,216 @@
                     <div><button type="button" class="btn btn-outline-dark rounded-pill" data-add data-add-label="&lt;span class=&quot;ds-icon material-symbols-rounded&quot; aria-hidden=&quot;true&quot;&gt;add&lt;/span&gt;Add default value"><span class="ds-icon material-symbols-rounded" aria-hidden="true">add</span>Add default value</button></div>
                   </div>
                 </div>
-              </div>
-            </section>
+                            </div></div>
+                        </div></div></div>
+                    </span>
           </div>
-
-          <div class="ds-form-footer" style="border:1px solid var(--bs-border-color);border-radius:var(--bs-border-radius-lg)">
-            <button type="button" class="btn btn-outline-dark rounded-pill px-3" onclick="location.href='wds-view-algorithm.html'" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
-            <button class="btn btn-primary rounded-pill px-3" type="submit" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit">Submit</button>
-          </div>
-        </form>
+        </div>
       </div>
+      </form>
 
-      <!-- Data for the lookup dialogs. DEV: the dialogs search the server (LOINC resulted tests, SNOMED coded results). -->
-      <ul hidden id="srcTests"><li data-value="42595-9">Hepatitis B virus DNA (42595-9)</li><li data-value="94306-8">SARS-CoV-2 RNA Pnl XXX NAA+probe (94306-8)</li><li data-value="94307-6">SARS-CoV-2 N gene XXX Ql NAA N1 (94307-6)</li><li data-value="45323-3">Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)</li><li data-value="71773-6">Mycobacterium tuberculosis stimulated gamma interferon (71773-6)</li><li data-value="39017-9">Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)</li><li data-value="11545-1">MICROSCOPIC OBSERVATION (11545-1)</li><li data-value="13291-0">TRYPANOSOMA CRUZI AB.IGG (13291-0)</li></ul>
-      <ul hidden id="srcCoded"><li data-value="10828004">Positive (10828004)</li><li data-value="260385009">Negative (260385009)</li><li data-value="260373001">Detected (260373001)</li><li data-value="260415000">Not detected (260415000)</li><li data-value="11214006">Reactive (11214006)</li><li data-value="82334004">Indeterminate (82334004)</li></ul>
-
-      <div class="modal" id="lookupDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="lookupTitle" hidden>
-        <div class="modal-dialog modal-dialog-scrollable"><div class="modal-content">
-          <div class="modal-header bg-body-secondary"><h2 class="modal-title h5" id="lookupTitle">Find</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
-          <div class="modal-body d-grid gap-3 bg-body-secondary">
-            <div class="ds-field"><label for="lookupFilter">Search:</label><input class="form-control" id="lookupFilter" type="search" autocomplete="off" aria-describedby="lookupCount"><span class="form-text" id="lookupCount" role="status"></span></div>
-            <div role="radiogroup" aria-labelledby="lookupTitle" id="lookupList" class="ds-check-list ds-check-list-tall"></div>
-            <p class="invalid-feedback mb-0" id="lookupError"></p>
+      <!-- Resulted Test and Coded Result searches (PI planning, Team A slide 13), as Phase 2's two-step search dialogs
+           (pagedataentry/labreports/resultedTestModalFragments.html, codedResultModalFragments.html): Search opens the
+           search form; Submit shows the results in the same dialog; Select on a row fills the field and closes it; New
+           Search and Refine Search go back to the form, empty or as it was; Clear (beside Search) empties the field.
+           js/wds-lab-search.js runs them. Phase 2's ids and classes, but the dialogs' own ids are algResultedTestModal and
+           algCodedResultModal: Phase 2's frame already has an empty #resultedTestModal (the lab report's) on its pages. Its X, Cancel and Escape close the dialog without
+           asking (Phase 2's search dialogs do not ask). DEV: render Phase 2's fragments, with these changes on top: the
+           labels are for= their fields; Search: names its radio group; the Select button is not wrapped in an <a> (a
+           button in a link is not valid); the error shows with the field marked invalid; Escape closes the dialog. The
+           rows come from the server (hx-post search-resulted-test, search-coded-result); the sample lists are in
+           #labSearchData. -->
+      <div class="modal ds-modal-p2 ds-lab-search" id="algResultedTestModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="rtest-modal-title" hidden
+           data-lab-search="test" data-target="resultedTest" data-select-tip="Select Resulted Test" data-row-id="resulted-test-result-row-" data-noun="resulted tests" data-criteria="Resulted Test">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content" id="algResultedTestModal_Content">
+          <form id="rtest-searchResultedTestForm" data-step="search" novalidate>
+            <div class="modal-header bg-body-secondary">
+              <h2 class="modal-title h5" id="rtest-modal-title">Search for Test</h2>
+              <button type="button" class="btn-close" data-close aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button>
+            </div>
+            <div class="modal-body bg-body-secondary">
+              <div class="alert alert-danger align-items-center mb-0 d-none" id="rtest-error-messages-container" role="alert">
+                <span aria-hidden="true" class="material-symbols-rounded danger me-2">error</span>
+                <span id="rtest-error-messages">Please enter a test name to search.</span>
+              </div>
+              <div class="tab-content">
+                <div class="tab-pane fade show active">
+                  <div class="row mx-1 my-2">
+                    <div class="col-4 d-flex align-items-center justify-content-end">
+                      <label class="form-label mb-0" for="rtest-resultedTest">Resulted Test:</label>
+                    </div>
+                    <div class="col-8">
+                      <input class="form-control" id="rtest-resultedTest" maxlength="50" name="testName" size="50" title="Please enter all or part of a test name or the code associated with the test." type="text" autocomplete="off">
+                      <div id="rtest-resultedTest-Feedback"></div>
+                    </div>
+                  </div>
+                  <div class="row mx-1 my-3">
+                    <div class="col-4 d-flex align-items-center justify-content-end">
+                      <span class="form-label mb-0" id="rtest-search-label">Search:</span>
+                    </div>
+                    <div class="col-8" role="radiogroup" aria-labelledby="rtest-search-label">
+                        <div class="form-check">
+                          <input class="form-check-input" id="rtest-search-short-list" name="searchType" value="LOCAL" title="Short list, includes local tests" type="radio" checked>
+                          <label class="form-check-label" for="rtest-search-short-list">Short list, includes local tests</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" id="rtest-search-long-list" name="searchType" value="LOINC" title="Long list, includes standard (LOINC) tests" type="radio">
+                          <label class="form-check-label" for="rtest-search-long-list">Long list, includes standard (LOINC) tests</label>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer bg-body-secondary">
+              <button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-no-confirm data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+              <button type="submit" class="btn btn-primary rounded-pill px-3" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit">Submit</button>
+            </div>
+          </form>
+          <div data-step="results" hidden>
+            <div class="modal-header bg-body-secondary">
+              <h2 class="modal-title h5" id="rtest-results-title" tabindex="-1">Resulted Test Search Results</h2>
+              <button type="button" class="btn-close" data-close aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button>
+            </div>
+            <div class="modal-body bg-body-secondary">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                <div class="d-flex align-items-center">
+                  <input class="form-control search" type="search" id="rtest-filter" data-filter-table="#rtest-search-results-table" placeholder="Search to filter..." aria-label="Search to filter resulted tests" autocomplete="off">
+                </div>
+                <div class="d-flex flex-wrap align-items-center">
+                <div data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="New Search"><button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" data-new-search><span aria-hidden="true" class="material-symbols-rounded text me-1">content_paste_search</span><span>New Search</span></button></div>
+                <div data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Refine Search"><button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" data-refine-search><span aria-hidden="true" class="material-symbols-rounded text me-1">content_paste_search</span><span>Refine Search</span></button></div>
+                <div class="ds-table-settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings">
+                  <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="rtest-tableSettingsBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-controls="rtest-tableSettingsMenu" aria-label="Table settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
+                  <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="rtest-tableSettingsMenu" role="group" aria-labelledby="rtest-tableSettingsTitle" data-table="rtest-search-results-table">
+                    <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="rtest-tableSettingsTitle">Table Settings</p>
+                    <div class="form-check form-switch"><input class="form-check-input" id="rtest-compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="rtest-compactSwitch">Compact Rows</label></div>
+                  </div>
+                </div>
+                </div>
+              </div>
+              <p class="mb-0" id="rtest-criteria"></p>
+              <div class="visually-hidden" id="rtest-status" role="status" aria-live="polite" data-table-status></div>
+              <div class="table-wrapper">
+                <div class="scrolling-section table-css-queues ds-table-scroll" tabindex="0" role="group" aria-label="Resulted Test Search Results, scrolls when zoomed" style="max-height:500px">
+                <table class="table table-hover tableCompact ds-table" id="rtest-search-results-table" data-ds-sort>
+                  <caption class="visually-hidden">Resulted Test Search Results. Sortable column headers sort with Enter or Space.</caption>
+                  <thead><tr><th scope="col" style="width:5%"><span class="visually-hidden">Select</span></th><th scope="col" id="rtest-CodeColumn" aria-sort="none" tabindex="0" data-sort="1"><span>Code</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="rtest-TestNameColumn" aria-sort="none" tabindex="0" data-sort="2"><span>Test Name</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="rtest-MethodColumn" aria-sort="none" tabindex="0" data-sort="3" data-list="LOINC" hidden><span>Method</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="rtest-SystemColumn" aria-sort="none" tabindex="0" data-sort="4" data-list="LOINC" hidden><span>System</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="rtest-PriorityColumn" aria-sort="none" tabindex="0" data-sort="5" data-list="LOINC" hidden><span>Priority</span> <i class="bi sortable-icon" aria-hidden="true"></i></th></tr></thead>
+                  <tbody class="tableData" id="tableDataResultedTestSearchResults"></tbody>
+                </table>
+                </div>
+                <div class="ds-table-footer">
+                  <span class="ds-page-summary" id="rtest-pageSummary"></span>
+                  <nav aria-label="Resulted Test Search Results pagination"><ul class="pagination mb-0" id="rtest-pagination"></ul></nav>
+                  <div class="ds-page-size">
+                    <select class="form-select" id="rtest-pageSize"><option>5</option><option selected>10</option><option>25</option><option>50</option><option>100</option></select>
+                    <label for="rtest-pageSize">Items per page</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer bg-body-secondary">
+              <button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-no-confirm data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+            </div>
           </div>
-          <div class="modal-footer bg-body-secondary"><button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button><button type="button" class="btn btn-primary rounded-pill px-3" id="lookupSelect" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Select">Select</button></div>
         </div></div>
       </div>
+      <div class="modal ds-modal-p2 ds-lab-search" id="algCodedResultModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cresult-modal-title" hidden
+           data-lab-search="coded" data-target="codedResult" data-select-tip="Select Coded Result" data-row-id="coded-result-result-row-" data-noun="coded results" data-criteria="Coded Result Description">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content" id="algCodedResultModal_Content">
+          <form id="cresult-searchCodedResultForm" data-step="search" novalidate>
+            <div class="modal-header bg-body-secondary">
+              <h2 class="modal-title h5" id="cresult-modal-title">Search for Coded Result</h2>
+              <button type="button" class="btn-close" data-close aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button>
+            </div>
+            <div class="modal-body bg-body-secondary">
+              <div class="alert alert-danger align-items-center mb-0 d-none" id="cresult-error-messages-container" role="alert">
+                <span aria-hidden="true" class="material-symbols-rounded danger me-2">error</span>
+                <span id="cresult-error-messages">Please enter item to search on and try again.</span>
+              </div>
+              <div class="tab-content">
+                <div class="tab-pane fade show active">
+                  <div class="row mx-1 my-2">
+                    <div class="col-4 d-flex align-items-center justify-content-end">
+                      <label class="form-label mb-0" for="cresult-codedResult">Coded Result:</label>
+                    </div>
+                    <div class="col-8">
+                      <input class="form-control" id="cresult-codedResult" maxlength="50" name="codedResult" size="50" title="Please enter all or part of a coded result description or the code associated with the description." type="text" autocomplete="off">
+                      <div id="cresult-codedResult-Feedback"></div>
+                    </div>
+                  </div>
+                  <div class="row mx-1 my-3">
+                    <div class="col-4 d-flex align-items-center justify-content-end">
+                      <span class="form-label mb-0" id="cresult-search-label">Search:</span>
+                    </div>
+                    <div class="col-8" role="radiogroup" aria-labelledby="cresult-search-label">
+                        <div class="form-check">
+                          <input class="form-check-input" id="cresult-search-short-list" name="searchType" value="LOCALRESULT" title="Short list, includes local coded results" type="radio" checked>
+                          <label class="form-check-label" for="cresult-search-short-list">Short list, includes local coded results</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" id="cresult-search-long-list" name="searchType" value="SNOMEDRESULT" title="Long list, includes standard (SNOMED) coded results" type="radio">
+                          <label class="form-check-label" for="cresult-search-long-list">Long list, includes standard (SNOMED) coded results</label>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer bg-body-secondary">
+              <button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-no-confirm data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+              <button type="submit" class="btn btn-primary rounded-pill px-3" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Submit">Submit</button>
+            </div>
+          </form>
+          <div data-step="results" hidden>
+            <div class="modal-header bg-body-secondary">
+              <h2 class="modal-title h5" id="cresult-results-title" tabindex="-1">Coded Result Search Results</h2>
+              <button type="button" class="btn-close" data-close aria-label="Close" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Close"></button>
+            </div>
+            <div class="modal-body bg-body-secondary">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                <div class="d-flex align-items-center">
+                  <input class="form-control search" type="search" id="cresult-filter" data-filter-table="#cresult-search-results-table" placeholder="Search to filter..." aria-label="Search to filter coded results" autocomplete="off">
+                </div>
+                <div class="d-flex flex-wrap align-items-center">
+                <div data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="New Search"><button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" data-new-search><span aria-hidden="true" class="material-symbols-rounded text me-1">content_paste_search</span><span>New Search</span></button></div>
+                <div data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Refine Search"><button type="button" class="btn btn-outline-dark btn-sm rounded-pill d-flex align-items-center pe-3 me-1" data-refine-search><span aria-hidden="true" class="material-symbols-rounded text me-1">content_paste_search</span><span>Refine Search</span></button></div>
+                <div class="ds-table-settings" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Settings">
+                  <button type="button" class="btn btn-light rounded-circle ds-btn-icon" id="cresult-tableSettingsBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-controls="cresult-tableSettingsMenu" aria-label="Table settings"><span class="ds-icon material-symbols-rounded" aria-hidden="true">settings</span></button>
+                  <div class="dropdown-menu dropdown-menu-end table-settings p-3" id="cresult-tableSettingsMenu" role="group" aria-labelledby="cresult-tableSettingsTitle" data-table="cresult-search-results-table">
+                    <p class="dropdown-header px-0 pt-0 pb-3 mb-0" id="cresult-tableSettingsTitle">Table Settings</p>
+                    <div class="form-check form-switch"><input class="form-check-input" id="cresult-compactSwitch" role="switch" type="checkbox"><label class="form-check-label" for="cresult-compactSwitch">Compact Rows</label></div>
+                  </div>
+                </div>
+                </div>
+              </div>
+              <p class="mb-0" id="cresult-criteria"></p>
+              <div class="visually-hidden" id="cresult-status" role="status" aria-live="polite" data-table-status></div>
+              <div class="table-wrapper">
+                <div class="scrolling-section table-css-queues ds-table-scroll" tabindex="0" role="group" aria-label="Coded Result Search Results, scrolls when zoomed" style="max-height:500px">
+                <table class="table table-hover tableCompact ds-table" id="cresult-search-results-table" data-ds-sort>
+                  <caption class="visually-hidden">Coded Result Search Results. Sortable column headers sort with Enter or Space.</caption>
+                  <thead><tr><th scope="col" style="width:5%"><span class="visually-hidden">Select</span></th><th scope="col" id="cresult-CodeColumn" aria-sort="none" tabindex="0" data-sort="1"><span>Code</span> <i class="bi sortable-icon" aria-hidden="true"></i></th><th scope="col" id="cresult-DescriptionColumn" aria-sort="none" tabindex="0" data-sort="2"><span>Description</span> <i class="bi sortable-icon" aria-hidden="true"></i></th></tr></thead>
+                  <tbody class="tableData" id="tableDataCodedResultSearchResults"></tbody>
+                </table>
+                </div>
+                <div class="ds-table-footer">
+                  <span class="ds-page-summary" id="cresult-pageSummary"></span>
+                  <nav aria-label="Coded Result Search Results pagination"><ul class="pagination mb-0" id="cresult-pagination"></ul></nav>
+                  <div class="ds-page-size">
+                    <select class="form-select" id="cresult-pageSize"><option>5</option><option selected>10</option><option>25</option><option>50</option><option>100</option></select>
+                    <label for="cresult-pageSize">Items per page</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer bg-body-secondary">
+              <button type="button" class="btn btn-outline-dark rounded-pill px-3" data-close data-no-confirm data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Cancel">Cancel</button>
+            </div>
+          </div>
+        </div></div>
+      </div>
+      <script type="application/json" id="labSearchData">{"test": {"LOCAL": [["HBVDNA", "Hepatitis B virus DNA"], ["HBSAG", "Hepatitis B surface antigen"], ["COVPCR", "SARS-CoV-2 RNA, PCR"], ["COVAG", "SARS-CoV-2 antigen"], ["QFTPLUS", "QuantiFERON-TB Gold Plus"], ["AFBSMEAR", "Acid fast bacilli smear"], ["RPR", "Rapid plasma reagin"], ["PBLEAD", "Lead, blood"]], "LOINC": [["42595-9", "Hepatitis B virus DNA", "Probe.amp.tar", "Ser/Plas", "ACnc"], ["5195-3", "Hepatitis B virus surface Ag", "", "Ser", "PrThr"], ["94306-8", "SARS-CoV-2 RNA Pnl XXX NAA+probe", "Probe.amp.tar", "XXX", "-"], ["94307-6", "SARS-CoV-2 N gene XXX Ql NAA N1", "Probe.amp.tar", "XXX", "PrThr"], ["94500-6", "SARS-CoV-2 RNA", "Probe.amp.tar", "Respiratory", "PrThr"], ["45323-3", "Mycobacterium tuberculosis tuberculin stimulated gamma interferon", "", "Bld", "ACnc"], ["71773-6", "Mycobacterium tuberculosis stimulated gamma interferon", "", "Bld", "ACnc"], ["39017-9", "Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon", "", "Bld", "RelRto"], ["11545-1", "MICROSCOPIC OBSERVATION", "Acid fast stain", "XXX", "Prid"], ["13291-0", "TRYPANOSOMA CRUZI AB.IGG", "", "Ser", "ACnc"], ["20507-0", "Reagin Ab", "RPR", "Ser", "PrThr"], ["5671-3", "Lead", "", "Bld", "MCnc"]]}, "coded": {"LOCALRESULT": [["POS", "Positive"], ["NEG", "Negative"], ["DET", "Detected"], ["NDET", "Not detected"], ["REACT", "Reactive"], ["IND", "Indeterminate"]], "SNOMEDRESULT": [["10828004", "Positive"], ["260385009", "Negative"], ["260373001", "Detected"], ["260415000", "Not detected"], ["11214006", "Reactive"], ["131194007", "Non-Reactive"], ["82334004", "Indeterminate"], ["419984006", "Inconclusive"], ["720735008", "Presumptive positive"], ["125154007", "Specimen unsatisfactory for evaluation"], ["385660001", "Not done"]]}}</script>
       <div class="modal" id="confirmDialog" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmText" hidden>
         <div class="modal-dialog"><div class="modal-content">
           <div class="modal-header bg-body-tertiary"><h2 class="modal-title h5" id="confirmTitle">Delete row?</h2><button type="button" class="btn-close" data-close aria-label="Close"></button></div>
@@ -311,5 +500,76 @@
 <!-- /app-frame:bottom -->
 <script src="../../js/ds-dialog.js"></script>
 <script src="../../js/ds-form.js"></script>
+<script src="../../js/ds-table-sort.js"></script>
+<script src="../../js/table-settings.js"></script>
+<script src="../../js/wds-lab-search.js"></script>
+<script>
+/* Add and Edit Algorithm in Phase 2's add page layout. In the app and in the Phase 2 layout, Phase 2's scripts drive the
+   sections, the navigation's groups and toggle, Collapse All, and the section in view (as on View Algorithm); here they
+   do the same when those scripts are not on the page (the design preview). Both: a navigation link whose section is
+   hidden (the sections follow the answers, js/ds-form.js) is hidden with it, and the content fills the window below the
+   header, also when the error banner opens. */
+(function () {
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  var page = $('.ds-p2-view-page'), links = $$('#secondaryNav .nav-link', page);
+  var phase2 = !!(window.bootstrap && document.querySelector('script[src*="sec-nav-collapse.js"]'));
+  var target = function (a) { return document.getElementById(a.getAttribute('href').slice(1)); };
+  if (!phase2) {
+    var setOpen = function (btn, on) {
+      var t = document.querySelector(btn.getAttribute('data-bs-target'));
+      btn.setAttribute('aria-expanded', String(on)); btn.classList.toggle('collapsed', !on);
+      if (t) t.classList.toggle('show', on);
+    };
+    var sections = function () { return $$('.scrollspy .accordion-button', page); };
+    var all = $('#toggle-link', page);
+    var syncAll = function () { all.textContent = sections().some(function (b) { return b.getAttribute('aria-expanded') === 'true'; }) ? 'Collapse All' : 'Expand All'; };
+    $$('[data-bs-toggle="collapse"]', page).forEach(function (b) {
+      b.addEventListener('click', function () { setOpen(b, b.getAttribute('aria-expanded') !== 'true'); if (b.classList.contains('accordion-button')) syncAll(); });
+    });
+    all.addEventListener('click', function () { var on = all.textContent === 'Expand All'; sections().forEach(function (b) { setOpen(b, on); }); syncAll(); });
+    var box = $('.scrollspy', page), lock = 0;
+    var mark = function (a) { links.forEach(function (x) { x.classList.toggle('active', x === a); if (x === a) x.setAttribute('aria-current', 'location'); else x.removeAttribute('aria-current'); }); };
+    var track = function () {
+      if (Date.now() < lock) return;
+      var shown = links.filter(function (a) { var t = target(a); return t && !t.hidden; });
+      var top = box.getBoundingClientRect().top + 80, cur = shown[0];
+      if (box.scrollTop + box.clientHeight >= box.scrollHeight - 2) cur = shown[shown.length - 1];
+      else shown.forEach(function (a) { if (target(a).getBoundingClientRect().top <= top) cur = a; });
+      mark(cur);
+    };
+    box.addEventListener('scroll', track);
+    links.forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        var t = target(a), b = $('.accordion-button', t);
+        if (b && b.getAttribute('aria-expanded') !== 'true') { setOpen(b, true); syncAll(); }
+        lock = Date.now() + 700; mark(a);
+        box.scrollTop += t.getBoundingClientRect().top - box.getBoundingClientRect().top;
+        if (b) b.focus({ preventScroll: true });
+      });
+    });
+    mark(links[0]);
+  }
+  /* a section the answers hide takes its navigation link with it */
+  function syncNav() {
+    links.forEach(function (a) { var t = target(a), hide = !!(t && t.hidden); if (a.parentElement.hidden !== hide) a.parentElement.hidden = hide; });
+  }
+  syncNav();
+  new MutationObserver(syncNav).observe($('.scrollspy', page), { subtree: true, attributes: true, attributeFilter: ['hidden'] });
+  /* the header stays and the content scrolls beside the fixed navigation, filling the window below the header; below
+     768px wide (and at high zoom) the page scrolls as one, so nothing is cut off (1.4.10) */
+  function fit() {
+    var wrap = $('.content-wrap', page);
+    wrap.style.height = '';
+    if (window.innerWidth < 768) return;
+    var top = wrap.getBoundingClientRect().top, sc = page.closest('main');
+    if (sc) top += sc.scrollTop;
+    wrap.style.height = Math.max(240, window.innerHeight - top) + 'px';
+  }
+  fit(); window.addEventListener('resize', fit);
+  if (window.ResizeObserver) new ResizeObserver(fit).observe($('header', page));
+})();
+</script>
 </body>
 </html>

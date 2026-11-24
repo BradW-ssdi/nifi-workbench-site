@@ -13010,6 +13010,11 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])):has(.ds-window):not(.ds-phase2
   background-color: var(--bs-secondary-bg);
 }
 
+.ds-window .ds-lab-search .form-check:not(.ds-phase2, .ds-phase2 *) {
+  min-height: 24px;
+  margin-bottom: 2px;
+}
+
 .ds-window .ds-multiselect:not(.ds-phase2, .ds-phase2 *) {
   display: flex;
   flex-wrap: wrap;

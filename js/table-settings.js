@@ -12,6 +12,10 @@
  * puts focus back on the button; on a page without Bootstrap's JS this script does the same.
  *
  * Tables start compact, as Phase 2's (Phase 3 review, Team B slide 2, 11/11: compact rows on by default).
+ *
+ * A page with more than one table (Add and Edit Algorithm: the Resulted Test and Coded Result search dialogs) gives each
+ * menu its own ids. The script works on each .ds-table-settings: its dropdown button, its .table-settings menu
+ * (data-table), and the switch in it (role="switch").
  */
 (function () {
     "use strict";
@@ -23,53 +27,56 @@
         try { v = sessionStorage.getItem(key(tableId)); } catch (x) { v = null; }
         return v === null ? START_COMPACT : v === "true";
     }
+    function parts(wrap) {
+        var menu = wrap && wrap.querySelector(".table-settings[data-table]");
+        return menu ? { wrap: wrap, menu: menu, btn: wrap.querySelector('[data-bs-toggle="dropdown"]'), sw: menu.querySelector('[role="switch"]') } : null;
+    }
+    function all() { return Array.prototype.map.call(document.querySelectorAll(".ds-table-settings"), parts).filter(Boolean); }
     function applyAll() {
-        var menu = document.getElementById("tableSettingsMenu");
-        var tableId = menu && menu.getAttribute("data-table");
-        var table = tableId && document.getElementById(tableId);
-        if (!table || !table.classList.contains("tableCompact")) { return; }
-        var on = isCompact(tableId);
-        table.classList.toggle("table-sm", on);
-        var sw = document.getElementById("compactSwitch");
-        if (sw) { sw.checked = on; }
+        all().forEach(function (p) {
+            var tableId = p.menu.getAttribute("data-table"), table = document.getElementById(tableId);
+            if (!table || !table.classList.contains("tableCompact")) { return; }
+            var on = isCompact(tableId);
+            table.classList.toggle("table-sm", on);
+            if (p.sw) { p.sw.checked = on; }
+        });
     }
 
-    function setOpen(open, focusButton) {
-        var menu = document.getElementById("tableSettingsMenu"), btn = document.getElementById("tableSettingsBtn");
-        if (!menu || !btn) { return; }
-        menu.classList.toggle("show", open);
-        btn.setAttribute("aria-expanded", String(open));
-        if (!open && focusButton) { btn.focus(); }
+    function setOpen(p, open, focusButton) {
+        if (!p || !p.btn) { return; }
+        p.menu.classList.toggle("show", open);
+        p.btn.setAttribute("aria-expanded", String(open));
+        if (!open && focusButton) { p.btn.focus(); }
     }
 
     // Where Bootstrap's JS is on the page (the app, and the templates in the Phase 2 layout), its dropdown does all of
     // this. The standalone templates (design-preview) have no Bootstrap JS, so this script opens and closes the menu there.
     function bootstrapDoesIt() { return !!(window.bootstrap && window.bootstrap.Dropdown); }
     document.addEventListener("click", function (evt) {
-        if (bootstrapDoesIt()) { return; }
-        var btn = evt.target.closest && evt.target.closest("#tableSettingsBtn");
-        var menu = document.getElementById("tableSettingsMenu");
-        if (!menu) { return; }
-        if (btn) { setOpen(!menu.classList.contains("show"), false); }
-        else if (!evt.target.closest("#tableSettingsMenu") && menu.classList.contains("show")) { setOpen(false, false); }
+        if (bootstrapDoesIt() || !evt.target.closest) { return; }
+        var here = parts(evt.target.closest(".ds-table-settings"));
+        all().forEach(function (p) {
+            if (here && p.menu === here.menu) {
+                if (evt.target.closest('[data-bs-toggle="dropdown"]')) { setOpen(p, !p.menu.classList.contains("show"), false); }
+            } else if (p.menu.classList.contains("show")) { setOpen(p, false, false); }
+        });
     });
     window.addEventListener("keydown", function (evt) {
-        if (bootstrapDoesIt()) { return; }
-        var menu = document.getElementById("tableSettingsMenu");
-        if (!menu || !evt.target.closest || !evt.target.closest(".ds-table-settings")) { return; }
-        if (evt.key !== "Escape" || !menu.classList.contains("show")) { return; }
+        if (bootstrapDoesIt() || evt.key !== "Escape" || !evt.target.closest) { return; }
+        var p = parts(evt.target.closest(".ds-table-settings"));
+        if (!p || !p.menu.classList.contains("show")) { return; }
         evt.preventDefault();
         evt.stopPropagation();
-        setOpen(false, true);
+        setOpen(p, false, true);
     }, true);
     document.addEventListener("change", function (evt) {
-        if (evt.target.id !== "compactSwitch") { return; }
-        var menu = document.getElementById("tableSettingsMenu");
+        if (evt.target.getAttribute("role") !== "switch" || !evt.target.closest) { return; }
+        var menu = evt.target.closest(".table-settings[data-table]");
         var tableId = menu && menu.getAttribute("data-table");
         if (!tableId) { return; }
         try { sessionStorage.setItem(key(tableId), String(evt.target.checked)); sessionStorage.setItem("compactRows", String(evt.target.checked)); } catch (x) { /* storage blocked: this view only */ }
         applyAll();
-        var status = document.querySelector("[data-phase3-queue-status], #filterStatus");
+        var status = (menu.closest(".modal") || document).querySelector("[data-phase3-queue-status], [data-table-status], #filterStatus");
         if (status) { status.textContent = ""; setTimeout(function () { status.textContent = evt.target.checked ? "Compact rows on." : "Compact rows off."; }, 100); }
     });
     document.addEventListener("htmx:afterSettle", applyAll);

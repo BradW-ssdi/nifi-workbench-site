@@ -15,7 +15,8 @@
      Edit (loads the row back into the entry, the button reads Update) and Delete (confirmed in the page dialog, focus
      moves to the next row or to the first entry field). Rows post as hidden inputs named <data-name>[i].<field>.
    - Lookups ([data-lookup]): a read-only field with Search and Clear. Search opens a dialog with a filter box and a
-     list of options; Select fills the field and returns focus to Search.
+     list of options; Select fills the field and returns focus to Search. A field with data-search-dialog="<modal id>"
+     opens that dialog instead (Add and Edit Algorithm: js/wds-lab-search.js); Clear works the same.
    - Validation on Submit: required controls that are visible, and every repeating table marked data-min="1".
      A field with data-not-in="a|b|c" rejects a value already in use (any case); data-not-in-msg is the message, and
      {value} in it is replaced with what was entered. DEV: the server makes the same check.
@@ -57,6 +58,9 @@
   function revealTab(el) {
     var panel = el.closest('[role="tabpanel"]');
     if (panel && panel.hidden) selectTab(document.getElementById(panel.getAttribute('aria-labelledby')), false);
+    /* a field in a closed section (Phase 2's accordion, closed with its header or Collapse All) opens it */
+    var closed = el.closest('.accordion-collapse:not(.show)'), opener = closed && document.querySelector('[data-bs-target="#' + closed.id + '"]');
+    if (opener) opener.click();
   }
 
   /* --- Conditional sections --- */
@@ -152,7 +156,7 @@
   }
   $$('[data-lookup]', form).forEach(function (field) {
     var wrap = field.closest('.ds-lookup');
-    $('[data-lookup-search]', wrap).addEventListener('click', function (e) { openLookup(field, e.currentTarget); });
+    if (!field.hasAttribute('data-search-dialog')) $('[data-lookup-search]', wrap).addEventListener('click', function (e) { openLookup(field, e.currentTarget); });
     $('[data-lookup-clear]', wrap).addEventListener('click', function () { field.value = ''; field.removeAttribute('data-code'); say('Cleared.'); });
   });
 

@@ -13293,6 +13293,11 @@ body:has(> .ds-bulkbar.is-floating:not([hidden])) {
   background-color: var(--bs-secondary-bg);
 }
 
+.ds-lab-search .form-check {
+  min-height: 24px;
+  margin-bottom: 2px;
+}
+
 .ds-multiselect {
   display: flex;
   flex-wrap: wrap;
