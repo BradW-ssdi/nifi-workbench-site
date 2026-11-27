@@ -44,10 +44,21 @@
   }
   function labelOf(f) {
     var l = labelsFor(f)[0], t = '';
+    /* a radio or check box in a group (Phase 2's role="radiogroup" aria-labelledby, or a fieldset) is named by the group,
+       not by its own option */
+    var grp = f && (f.type === 'radio' || f.type === 'checkbox') && f.closest('[role="radiogroup"][aria-labelledby], [role="group"][aria-labelledby], fieldset');
+    if (grp) l = null;
+    if (grp && !grp.matches('fieldset')) {
+      var c0 = document.createElement('div');
+      grp.getAttribute('aria-labelledby').split(' ').forEach(function (i) { var n = document.getElementById(i); if (n) c0.appendChild(n.cloneNode(true)); });
+      Array.prototype.forEach.call(c0.querySelectorAll('.is-required, .req, .ds-required-mark, .visually-hidden'), function (x) { x.remove(); });
+      t = txt(c0);
+    }
     if (l) { var c = l.cloneNode(true); Array.prototype.forEach.call(c.querySelectorAll('.req, .ds-required-mark, .visually-hidden'), function (x) { x.remove(); }); t = txt(c); }
     if (!t && f.getAttribute('aria-labelledby')) t = f.getAttribute('aria-labelledby').split(' ').map(function (i) { return txt(document.getElementById(i)); }).join(' ');
     if (!t) t = f.getAttribute('aria-label') || '';
     if (!t && f.closest('fieldset')) t = txt(f.closest('fieldset').querySelector('legend'));
+    if (/\?$/.test(t)) return t.replace(/^\*\s*/, '').trim();
     return t.replace(/^\*\s*/, '').replace(/\s*\*$/, '').replace(/:\s*$/, '').trim();
   }
   function forFields(banner, problems, go) {

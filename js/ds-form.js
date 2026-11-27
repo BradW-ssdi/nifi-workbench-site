@@ -6,7 +6,11 @@
    - Tabs: WAI-ARIA tabs, roving tabindex, Left and Right arrows.
    - Conditional sections: an element with data-show-when="name=value[|value]" shows only while the named control
      (select, checked radio, or checked checkbox) has one of the values. Hidden sections keep their values but are not validated.
-   - Repeating tables ([data-repeat]): an entry area under the table with an Add button. Each column in data-columns
+   - Repeating tables ([data-repeat]): an entry area under the table with an Add button. With data-actions-first (Add and
+     Edit Algorithm: Phase 2's repeating blocks) the row buttons are the first column and are View, Edit and Delete; an
+     empty table shows its tr[data-empty-row] ("No Data Found"); View shows the row in the fields, read only, and Add New
+     (button[data-add-new]) clears them for the next one; a block with data-errors-banner="<id>" lists the entry's
+     problems in that banner above the block when Add finds any (Phase 2's batchEntryErrorMsg). Each column in data-columns
      names how it reads the entry: a WDS reader (READ below) or a generic one, select:<id> (the option text) or
      check:<id> (Yes or No). data-validate="unique" with data-unique="<fields>" rejects a row that repeats another
      row's values in those fields. Rows are named by their first column, or by the first N with
@@ -17,7 +21,7 @@
    - Lookups ([data-lookup]): a read-only field with Search and Clear. Search opens a dialog with a filter box and a
      list of options; Select fills the field and returns focus to Search. A field with data-search-dialog="<modal id>"
      opens that dialog instead (Add and Edit Algorithm: js/wds-lab-search.js); Clear works the same.
-   - Validation on Submit: required controls that are visible, and every repeating table marked data-min="1".
+   - Validation on Submit: required controls that are visible and not disabled, and every repeating table marked data-min="1".
      A field with data-not-in="a|b|c" rejects a value already in use (any case); data-not-in-msg is the message, and
      {value} in it is replaced with what was entered. DEV: the server makes the same check.
      A field with data-not-pattern="<regular expression>" rejects a value that matches it, with data-not-pattern-msg
@@ -73,6 +77,12 @@
   }
   /* Part of the form as it stands: not inside a hidden conditional section. An inactive tab still counts, so Submit
      validates both tabs. */
+  /* A lookup's chosen value is text, not a Tab stop (Phase 2's codelookup.html shows it as text); a script that sends
+     focus to the field (an error link, Add, Update) lands on its Search button */
+  function focusTarget(f) {
+    var w = f && f.hasAttribute('data-lookup') && f.closest('.ds-lookup');
+    return (w && w.querySelector('[data-lookup-search]')) || f;
+  }
   function visible(el) {
     for (var n = el; n && n !== form; n = n.parentElement) {
       if (n.hidden && n.getAttribute('role') !== 'tabpanel') return false;
@@ -198,7 +208,14 @@
     } else {
       control = '<input class="form-control" type="' + (type === 'number' ? 'number' : 'text') + '" id="' + id + '" data-role="value" data-entry-required data-errmsg="Enter a value">';
     }
-    valueWrap.innerHTML = '<label class="ds-required" for="' + id + '">' + label + (/:$/.test(label) ? '' : ':') + '</label>' + control + '<span class="invalid-feedback" id="' + id + '-error"></span>';
+    var colon = /:$/.test(label) ? '' : ':';
+    if (valueWrap.classList.contains('pbp-row-wrapper')) {
+      /* Phase 2's field row: the label in col-5 (its tooltip, the required star), the control in col-7 */
+      valueWrap.innerHTML = '<div class="row"><div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label mb-0" for="' + id + '" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="' + esc(label) + '">' +
+        '<span class="is-required">* </span><span class="label-value">' + esc(label) + colon + '</span></label></div><div class="col-7 my-1">' + control + '<span class="invalid-feedback" id="' + id + '-error"></span></div></div>';
+      return;
+    }
+    valueWrap.innerHTML = '<label class="ds-required" for="' + id + '">' + label + colon + '</label>' + control + '<span class="invalid-feedback" id="' + id + '-error"></span>';
   }
   $$('[data-repeat] [data-role="question"]', form).forEach(function (q) {
     var entry = q.closest('[data-entry]');
@@ -251,18 +268,26 @@
       if (!dup) return [];
       var first = $('select, input', entry);
       setError(first, block.getAttribute('data-unique-msg'));
-      return [first];
+      return [{ f: first, msg: block.getAttribute('data-unique-msg') }];
     },
     labResult: function (entry) {
+      var coded = $('#codedResult'), nv = $('#numericValue'), nv2 = $('#numericValue2');
+      [coded, nv, nv2].forEach(clearError);
       if (($('input[name="includeResult"]:checked', entry) || {}).value === 'N') return [];
-      var coded = $('#codedResult'), filled = [coded.value, $('#numericValue').value, $('#textValue').value || ($('#textOp').value === 'NN' ? 'x' : '')].filter(Boolean).length;
-      clearError(coded);
-      if (filled === 1) {
-        if (numOp.value === 'BET' && $('#numericValue').value && !$('#numericValue2').value) { setError($('#numericValue2'), 'Enter the second number for Between'); return [$('#numericValue2')]; }
-        return [];
+      var filled = [coded.value, nv.value.trim(), $('#textValue').value || ($('#textOp').value === 'NN' ? 'x' : '')].filter(Boolean).length;
+      var ONE = 'Coded Result, Numeric Result, or Text Result';
+      if (filled !== 1) {
+        setError(coded, filled === 0 ? 'Enter one result: a coded result, a numeric result, or a text result' : 'Enter only one result: coded, numeric, or text');
+        return [filled === 0 ? { f: coded, label: ONE, required: true } : { f: coded, label: ONE, msg: 'takes one result only.' }];
       }
-      setError(coded, filled === 0 ? 'Enter one result: a coded result, a numeric result, or a text result' : 'Enter only one result: coded, numeric, or text');
-      return [$('[data-lookup-search]', coded.closest('.ds-lookup'))];
+      /* a whole number or a decimal (legacy's numeric check) */
+      var NUM = /^-?(\d+\.?\d*|\.\d+)$/, out = [];
+      if (nv.value.trim() && !NUM.test(nv.value.trim())) { setError(nv, 'Enter a number, such as 5 or 0.35'); out.push({ f: nv, label: 'Numeric Result', msg: 'must be a number, such as 5 or 0.35.' }); }
+      if (nv.value.trim() && numOp.value === 'BET') {
+        if (!nv2.value.trim()) { setError(nv2, 'Enter the second number for Between'); out.push({ f: nv2, label: 'Numeric Result, second number', required: true }); }
+        else if (!NUM.test(nv2.value.trim())) { setError(nv2, 'Enter a number, such as 5 or 0.35'); out.push({ f: nv2, label: 'Numeric Result, second number', msg: 'must be a number, such as 5 or 0.35.' }); }
+      }
+      return out;
     }
   };
 
@@ -284,9 +309,17 @@
   function initRepeat(block) {
     var tbody = $('tbody', block), entry = $('[data-entry]', block), addBtn = $('[data-add]', block), empty = $('[data-empty]', block);
     var name = block.getAttribute('data-name'), noun = block.getAttribute('data-noun');
-    var editing = null;
+    var first = block.hasAttribute('data-actions-first'), emptyRow = $('tr[data-empty-row]', tbody), addNew = $('[data-add-new]', block);
+    var banner = block.getAttribute('data-errors-banner') && document.getElementById(block.getAttribute('data-errors-banner'));
+    var editing = null, viewing = null;
     function rows() { return $$('tr[data-row]', tbody); }
-    function syncEmpty() { if (empty) empty.hidden = rows().length > 0; renumber(); }
+    function syncEmpty() { var n = rows().length; if (empty) empty.hidden = n > 0; if (emptyRow) emptyRow.hidden = n > 0; renumber(); }
+    /* View: the row in the fields, read only, until Add New (Phase 2's viewRow and addNewFunctionality) */
+    function lock(on) {
+      $$('input, select, textarea, button', entry).forEach(function (el) { if (el !== addNew && el !== addBtn) el.disabled = on; });
+      addBtn.hidden = on; if (addNew) addNew.hidden = !on;
+      if (!on) viewing = null;
+    }
     function renumber() {
       rows().forEach(function (tr, i) {
         $$('input[type=hidden]', tr).forEach(function (h) { h.name = name + '[' + i + '].' + h.getAttribute('data-field'); });
@@ -298,12 +331,18 @@
       var errs = [];
       $$('[data-entry-required]', entry).filter(visible).forEach(function (f) {
         clearError(f);
-        if (!f.value.trim()) { setError(f, f.getAttribute('data-errmsg')); errs.push(f); }
+        if (!f.value.trim()) { setError(f, f.getAttribute('data-errmsg')); errs.push({ f: f, required: true }); }
       });
       var cells = spec.map(function (c) { return { field: c.field, text: reader(c.read)(entry), value: reader(c.read)(entry, true) }; });
       var custom = block.getAttribute('data-validate');
       if (!errs.length && custom) errs = errs.concat(VALIDATE[custom](entry, block, editing, cells));
-      if (errs.length) { errs[0].focus(); return null; }
+      if (errs.length) {
+        /* Phase 2's banner above the block (js/ds-errors.js), its links to the fields; or the first field */
+        if (banner && window.dsErrors) dsErrors.forFields(banner, errs.map(function (x) { return { field: x.f, msg: x.msg, label: x.label, required: !!x.required }; }), function (f) { revealTab(f); focusTarget(f).focus(); });
+        else focusTarget(errs[0].f).focus();
+        return null;
+      }
+      if (banner && window.dsErrors) dsErrors.hide(banner);
       return cells;
     }
     /* The entry's own values, kept on the row so Edit can load them back */
@@ -331,9 +370,10 @@
     function makeRow(cells) {
       var tr = document.createElement('tr');
       tr.setAttribute('data-row', '');
-      tr.innerHTML = cells.map(function (c) { return '<td>' + esc(c.text || '') + '<input type="hidden" data-field="' + c.field + '" value="' + esc(c.value || '') + '"></td>'; }).join('') +
-        '<td class="ds-row-actions"><button type="button" class="btn btn-light rounded-circle btn-sm" data-edit aria-label="Edit ' + esc(noun) + ': ' + esc(rowLabel(cells)) + '" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><span class="ds-icon material-symbols-rounded" aria-hidden="true">edit</span></button>' +
-        '<button type="button" class="btn btn-light rounded-circle btn-sm" data-delete aria-label="Delete ' + esc(noun) + ': ' + esc(rowLabel(cells)) + '" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Delete"><span class="ds-icon material-symbols-rounded" aria-hidden="true">delete</span></button></td>';
+      var btn = function (act, icon, t) { return '<button type="button" class="btn btn-light rounded-circle btn-sm" data-' + act + ' aria-label="' + t + ' ' + esc(noun) + ': ' + esc(rowLabel(cells)) + '" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="' + t + '"><span class="ds-icon material-symbols-rounded" aria-hidden="true">' + icon + '</span></button>'; };
+      var tds = cells.map(function (c) { return '<td>' + esc(c.text || '') + '<input type="hidden" data-field="' + c.field + '" value="' + esc(c.value || '') + '"></td>'; }).join('');
+      tr.innerHTML = first ? '<td class="ds-row-actions be-row-actions">' + btn('view', 'description', 'View') + btn('edit', 'edit', 'Edit') + btn('delete', 'delete', 'Delete') + '</td>' + tds
+                           : tds + '<td class="ds-row-actions">' + btn('edit', 'edit', 'Edit') + btn('delete', 'delete', 'Delete') + '</td>';
       tr._cells = cells;
       tr.setAttribute('data-state', JSON.stringify(entryState()));
       return tr;
@@ -354,37 +394,52 @@
         addBtn.innerHTML = addBtn.getAttribute('data-add-label');
         say(noun + ' updated: ' + label + '.');
       } else {
-        tbody.appendChild(makeRow(cells));
+        tbody.insertBefore(makeRow(cells), emptyRow || null);
         say(noun + ' added: ' + label + '. ' + rows().length + ' in the table.');
       }
       clearEntry(); syncEmpty();
-      var first = entryFields()[0] || $('[data-lookup-search]', entry); if (first) first.focus();
+      var first = focusTarget(entryFields()[0]) || $('[data-lookup-search]', entry); if (first) first.focus();
     });
     tbody.addEventListener('click', function (e) {
       var btn = e.target.closest('button'); if (!btn) return;
       var tr = btn.closest('tr');
+      if (btn.hasAttribute('data-view')) {
+        editing = null; addBtn.innerHTML = addBtn.getAttribute('data-add-label');
+        lock(false); clearEntry(); loadState(JSON.parse(tr.getAttribute('data-state'))); syncConditions(); lock(true); viewing = tr;
+        if (banner && window.dsErrors) dsErrors.hide(banner);
+        if (addNew) addNew.focus();
+        say('Viewing ' + noun.toLowerCase() + ': ' + rowLabel(tr._cells) + '. The fields are read only; Add New clears them.');
+        return;
+      }
       if (btn.hasAttribute('data-delete')) {
         confirmAction('Delete this ' + noun.toLowerCase() + ': ' + (tr._cells ? rowLabel(tr._cells) : txt(tr.cells[0])) + '?', btn, function () {
           var next = tr.nextElementSibling || tr.previousElementSibling;
           if (editing === tr) { editing = null; addBtn.innerHTML = addBtn.getAttribute('data-add-label'); clearEntry(); }
+          if (viewing === tr) { lock(false); clearEntry(); }
           tr.remove(); syncEmpty();
           say(noun + ' deleted. ' + rows().length + ' in the table.');
-          var target = next && next.hasAttribute('data-row') ? $('[data-edit]', next) : (entryFields()[0] || $('[data-lookup-search]', entry));
+          var target = next && next.hasAttribute('data-row') ? $('[data-edit]', next) : (focusTarget(entryFields()[0]) || $('[data-lookup-search]', entry));
           if (target) target.focus();
         });
       }
       if (btn.hasAttribute('data-edit')) {
+        if (viewing) lock(false);
         editing = tr;
         clearEntry();
         loadState(JSON.parse(tr.getAttribute('data-state')));
         syncConditions();
-        addBtn.innerHTML = '<span class="ds-icon material-symbols-rounded" aria-hidden="true">save</span>Update ' + noun.toLowerCase();
-        var f = entryFields()[0] || $('[data-lookup-search]', entry); if (f) f.focus();
+        addBtn.innerHTML = first ? '<span class="ds-icon material-symbols-rounded fs-6 me-1" aria-hidden="true">save</span>Update' : '<span class="ds-icon material-symbols-rounded" aria-hidden="true">save</span>Update ' + noun.toLowerCase();
+        var f = focusTarget(entryFields()[0]) || $('[data-lookup-search]', entry); if (f) f.focus();
         say('Editing ' + noun.toLowerCase() + ': ' + rowLabel(tr._cells) + '. Change the fields, then Update.');
       }
     });
+    if (addNew) addNew.addEventListener('click', function () {
+      lock(false); clearEntry();
+      var f = focusTarget(entryFields()[0]) || $('[data-lookup-search]', entry); if (f) f.focus();
+      say('Enter a new ' + noun.toLowerCase() + '.');
+    });
     // rows rendered by the server: keep their cells for labels
-    rows().forEach(function (tr) { tr._cells = $$('td', tr).slice(0, -1).map(function (td) { return { text: txt(td) }; }); });
+    rows().forEach(function (tr) { tr._cells = $$('td', tr).filter(function (td) { return !td.classList.contains('ds-row-actions'); }).map(function (td) { return { text: txt(td) }; }); });
     syncEmpty();
     block._rows = rows;
   }
@@ -409,7 +464,7 @@
     var bad = [];
     $$('[required]', form).forEach(function (f) {
       clearError(f);
-      if (!visible(f)) return;
+      if (!visible(f) || f.disabled) return;
       var empty = f.type === 'radio' ? !$$('[name="' + f.name + '"]', form).some(function (r) { return r.checked; }) : !f.value.trim();
       if (empty && !bad.some(function (b) { return b.f.name && b.f.name === f.name && f.type === 'radio'; })) { setError(f, f.getAttribute('data-errmsg')); bad.push({ f: f, msg: f.getAttribute('data-errmsg'), req: true }); }
     });
@@ -442,7 +497,7 @@
       return;
     }
     /* Phase 2's banner (js/ds-errors.js): "<field> is required.", Show more after three */
-    dsErrors.forFields(summary, bad.map(function (b) { return { field: b.f, msg: b.msg, required: !!b.req }; }), function (f) { revealTab(f); f.focus(); });
+    dsErrors.forFields(summary, bad.map(function (b) { return { field: b.f, msg: b.msg, required: !!b.req }; }), function (f) { revealTab(f); focusTarget(f).focus(); });
   });
   $$('[required]', form).forEach(function (f) {
     f.addEventListener('change', function () { if (f.value.trim()) clearError(f); });

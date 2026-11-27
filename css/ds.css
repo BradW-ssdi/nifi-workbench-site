@@ -14852,6 +14852,31 @@ fieldset.ds-field {
 .ds-p2-view-page .sum-divider {
   opacity: 0.3;
 }
+.ds-p2-view-page #case-summary.is-compact {
+  padding-bottom: 0.2rem !important;
+  border-color: transparent;
+}
+.ds-p2-view-page #case-summary.is-compact .sum-extra {
+  height: 0;
+  opacity: 0;
+  padding: 0.05rem !important;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ds-p2-view-page #case-summary.is-compact .sum-divider {
+  height: 0;
+  opacity: 0;
+  margin: 0;
+  border: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ds-p2-view-page #case-summary {
+    transition: padding 160ms ease, border-color 160ms ease;
+  }
+  .ds-p2-view-page #case-summary .sum-extra, .ds-p2-view-page #case-summary .sum-divider {
+    transition: opacity 140ms ease, height 140ms ease, margin 140ms ease;
+  }
+}
 .ds-p2-view-page .badge.text-bg-success {
   background-color: #198754 !important;
 }
@@ -14920,6 +14945,12 @@ fieldset.ds-field {
 .ds-p2-view-page .ts-wrapper.ts-form-control > .ts-control > input:focus {
   outline: none !important;
   box-shadow: none !important;
+}
+@media (forced-colors: active) {
+  .ds-p2-view-page .ts-wrapper.ts-form-control.focus > .ts-control {
+    border-color: Highlight !important;
+    outline-color: Highlight;
+  }
 }
 .ds-p2-view-page #secondaryNav :is(.chevron-button, .nav-link) {
   scroll-margin-block: 8px;
@@ -15170,6 +15201,10 @@ fieldset.ds-field {
 }
 [data-bs-theme=dark] .ds-p2-view-page :is(.form-control, .form-select):not(:focus):not([aria-invalid=true]):not(.is-invalid), [data-bs-theme=dark] .ds-p2-view-page .ts-wrapper:not(.focus) > .ts-control {
   border-color: #8A949A !important;
+}
+[data-bs-theme=dark] .ds-p2-view-page .ts-wrapper.ts-form-control.focus > .ts-control {
+  border-color: #7CC4FF !important;
+  outline-color: #7CC4FF;
 }
 [data-bs-theme=dark] .ds-p2-view-page .static-text {
   background-color: #000 !important;

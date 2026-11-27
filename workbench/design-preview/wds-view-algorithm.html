@@ -97,8 +97,9 @@
         </div></div>
         <!-- The legacy summary (AlgorithmSummary.jsp) as Phase 2's summary card (#case-summary: card summary py-2 px-3):
              the algorithm's name and ID in the .sub2 row, a divider, then Event Type, Status, Date Last Run and Action in
-             Phase 2's three columns. -->
-        <div class="card summary py-2 px-3" id="algSummary">
+             Phase 2's three columns. While the content scrolls it shows its first row only (Phase 2's sum-collapse.js,
+             js/ds-sum-collapse.js in the design preview), watching #summary-sentinel at the top of the content. -->
+        <div class="card summary py-2 px-3" id="case-summary">
           <div class="row pb-1 align-items-center sub2 sum-row sum-primary">
             <div class="col-8 d-flex align-items-center"><span>1_TB_Pos_IGRA_MR_AssociateTB</span></div>
             <div class="col-4 text-end"><span>Algorithm ID: 17</span></div>
@@ -124,6 +125,7 @@
         </aside>
         <div class="content-area ps-2 pe-4" id="view">
           <div class="scrollspy" data-bs-smooth-scroll="false" data-bs-spy="scroll" data-bs-target="#secondaryNav" tabindex="0" role="region" aria-label="Algorithm details">
+                    <div id="summary-sentinel" style="height:1px"></div>
                     <span id="tab-0-sect-0">
                         <div class="pt-3 d-flex">
                             <h2 class="sub ps-1 m-0">Basic Criteria</h2>
@@ -224,9 +226,16 @@
                                     <h3 class="accordion-header"><button aria-expanded="true" aria-controls="labCriteriaBody" class="accordion-button" data-bs-target="#labCriteriaBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Lab Criteria</span></button></h3>
                                     <div class="accordion-collapse collapse show" id="labCriteriaBody"><div class="accordion-body">
                                 <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Lab criteria, scrolls horizontally when zoomed">
-                                <table class="pbpBatchEntryTable batchEntry table table-sm table-hover table-css mb-0"><caption class="visually-hidden">Lab criteria</caption><thead><tr><th scope="col" aria-label="Actions"><span class="visually-hidden">Actions</span></th><th scope="col"><span>Resulted Test</span></th><th scope="col"><span>Operator</span></th><th scope="col"><span>Result</span></th></tr></thead><tbody><tr><td><button aria-label="View row" class="btn btn-light rounded-circle btn-sm" data-bs-custom-class="custom-tooltip" data-bs-title="View" data-bs-toggle="tooltip" type="button" aria-expanded="false" aria-controls="labDetail" data-detail='[[&quot;Resulted Test&quot;, &quot;Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)&quot;], [&quot;Include test result in algorithm&quot;, &quot;Yes&quot;], [&quot;Coded Result&quot;, &quot;Positive (10828004)&quot;], [&quot;Numeric Result&quot;, &quot;&quot;], [&quot;Text Result&quot;, &quot;&quot;], [&quot;Operator&quot;, &quot;=&quot;]]'><span aria-hidden="true" class="material-symbols-rounded">description</span></button></td><td><span>Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)</span></td><td><span>=</span></td><td><span>Positive (10828004)</span></td></tr><tr><td><button aria-label="View row" class="btn btn-light rounded-circle btn-sm" data-bs-custom-class="custom-tooltip" data-bs-title="View" data-bs-toggle="tooltip" type="button" aria-expanded="false" aria-controls="labDetail" data-detail='[[&quot;Resulted Test&quot;, &quot;Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)&quot;], [&quot;Include test result in algorithm&quot;, &quot;Yes&quot;], [&quot;Coded Result&quot;, &quot;&quot;], [&quot;Numeric Result&quot;, &quot;&gt;= 0.35 IU/mL&quot;], [&quot;Text Result&quot;, &quot;&quot;], [&quot;Operator&quot;, &quot;&gt;=&quot;]]'><span aria-hidden="true" class="material-symbols-rounded">description</span></button></td><td><span>Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)</span></td><td><span>&gt;=</span></td><td><span>0.35 IU/mL</span></td></tr><tr><td><button aria-label="View row" class="btn btn-light rounded-circle btn-sm" data-bs-custom-class="custom-tooltip" data-bs-title="View" data-bs-toggle="tooltip" type="button" aria-expanded="false" aria-controls="labDetail" data-detail='[[&quot;Resulted Test&quot;, &quot;Mycobacterium tuberculosis stimulated gamma interferon (71773-6)&quot;], [&quot;Include test result in algorithm&quot;, &quot;Yes&quot;], [&quot;Coded Result&quot;, &quot;&quot;], [&quot;Numeric Result&quot;, &quot;&quot;], [&quot;Text Result&quot;, &quot;positive&quot;], [&quot;Operator&quot;, &quot;Contains&quot;]]'><span aria-hidden="true" class="material-symbols-rounded">description</span></button></td><td><span>Mycobacterium tuberculosis stimulated gamma interferon (71773-6)</span></td><td><span>Contains</span></td><td><span>positive</span></td></tr></tbody></table>
+                                <table class="pbpBatchEntryTable batchEntry table table-sm table-hover table-css mb-0"><caption class="visually-hidden">Lab criteria</caption><thead><tr><th scope="col" aria-label="Actions"><span class="visually-hidden">Actions</span></th><th scope="col"><span>Resulted Test</span></th><th scope="col"><span>Operator</span></th><th scope="col"><span>Result</span></th></tr></thead><tbody><tr><td><button aria-label="View row" class="btn btn-light rounded-circle btn-sm" data-bs-custom-class="custom-tooltip" data-bs-title="View" data-bs-toggle="tooltip" type="button" aria-controls="labDetail" data-detail='[[&quot;Resulted Test&quot;, &quot;Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)&quot;], [&quot;Include test result in algorithm&quot;, &quot;Yes&quot;], [&quot;Coded Result&quot;, &quot;Positive (10828004)&quot;], [&quot;Numeric Result&quot;, &quot;&quot;], [&quot;Text Result&quot;, &quot;&quot;], [&quot;Operator&quot;, &quot;=&quot;]]'><span aria-hidden="true" class="material-symbols-rounded">description</span></button></td><td><span>Mycobacterium tuberculosis tuberculin stimulated gamma interferon/Mitogen stimulated gamma interferon (39017-9)</span></td><td><span>=</span></td><td><span>Positive (10828004)</span></td></tr><tr><td><button aria-label="View row" class="btn btn-light rounded-circle btn-sm" data-bs-custom-class="custom-tooltip" data-bs-title="View" data-bs-toggle="tooltip" type="button" aria-controls="labDetail" data-detail='[[&quot;Resulted Test&quot;, &quot;Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)&quot;], [&quot;Include test result in algorithm&quot;, &quot;Yes&quot;], [&quot;Coded Result&quot;, &quot;&quot;], [&quot;Numeric Result&quot;, &quot;&gt;= 0.35 IU/mL&quot;], [&quot;Text Result&quot;, &quot;&quot;], [&quot;Operator&quot;, &quot;&gt;=&quot;]]'><span aria-hidden="true" class="material-symbols-rounded">description</span></button></td><td><span>Mycobacterium tuberculosis tuberculin stimulated gamma interferon (45323-3)</span></td><td><span>&gt;=</span></td><td><span>0.35 IU/mL</span></td></tr><tr><td><button aria-label="View row" class="btn btn-light rounded-circle btn-sm" data-bs-custom-class="custom-tooltip" data-bs-title="View" data-bs-toggle="tooltip" type="button" aria-controls="labDetail" data-detail='[[&quot;Resulted Test&quot;, &quot;Mycobacterium tuberculosis stimulated gamma interferon (71773-6)&quot;], [&quot;Include test result in algorithm&quot;, &quot;Yes&quot;], [&quot;Coded Result&quot;, &quot;&quot;], [&quot;Numeric Result&quot;, &quot;&quot;], [&quot;Text Result&quot;, &quot;positive&quot;], [&quot;Operator&quot;, &quot;Contains&quot;]]'><span aria-hidden="true" class="material-symbols-rounded">description</span></button></td><td><span>Mycobacterium tuberculosis stimulated gamma interferon (71773-6)</span></td><td><span>Contains</span></td><td><span>positive</span></td></tr></tbody></table>
                                 </div>
-                                <div class="inputFields batchEntryDetailsDiv" id="labDetail" tabindex="-1" role="region" aria-label="Lab criteria details" hidden></div>
+                                <div class="inputFields batchEntryDetailsDiv" id="labDetail" tabindex="-1" role="region" aria-label="Lab criteria details">
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Resulted Test:</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Include test result in algorithm:</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Coded Result:</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Numeric Result:</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Text Result:</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Operator:</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                </div>
                                     </div></div>
                                 </div>
                             </div>
@@ -253,7 +262,7 @@
                                 <div class="row m-0"><div class="col-12 static-text"><i>The type of logic that should be applied to the advanced lab criteria entered in the table below. All advanced lab criteria entered below will have either AND or OR logic applied.</i></div></div>
                                 <div class="row py-2">
                                     <div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label"><span>And/Or Logic Setting:</span></label></div>
-                                    <span class="col-7 text-start answer ps-2">OR</span>
+                                    <span class="col-7 text-start answer ps-2">AND</span>
                                 </div>
                                     </div></div>
                                 </div>
@@ -267,7 +276,11 @@
                                 <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Advanced lab criteria, scrolls horizontally when zoomed">
                                 <table class="pbpBatchEntryTable batchEntry table table-sm table-hover table-css mb-0"><caption class="visually-hidden">Advanced lab criteria</caption><thead><tr><th scope="col" aria-label="Actions"><span class="visually-hidden">Actions</span></th><th scope="col"><span>Question</span></th><th scope="col"><span>Logic</span></th><th scope="col"><span>Value(s)</span></th></tr></thead><tbody><tr><td class="text-center py-2" colspan="4"><div class="lead">No Data Found</div></td></tr></tbody></table>
                                 </div>
-                                <div class="inputFields batchEntryDetailsDiv" id="advLabIfDetail" tabindex="-1" role="region" aria-label="Advanced lab criteria details" hidden></div>
+                                <div class="inputFields batchEntryDetailsDiv" id="advLabIfDetail" tabindex="-1" role="region" aria-label="Advanced lab criteria details">
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Question:</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Logic:</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Value(s):</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                </div>
                                     </div></div>
                                 </div>
                             </div>
@@ -283,13 +296,13 @@
                                     <span class="col-7 text-start answer ps-2">Yes</span>
                                 </div>
                                 <div class="row py-2">
-                                    <div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label"><span>Would you like to check for condition(s) in addition to Tuberculosis (2020 RVCT) (102201) selected for this algorithm?:</span></label></div>
+                                    <div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label"><span>Would you like to check for condition(s) in addition to the condition selected for this algorithm?:</span></label></div>
                                     <span class="col-7 text-start answer ps-2">No</span>
                                 </div>
-                                <div class="row m-0"><div class="col-12 static-text"><i>(If No is selected, investigation logic will <b>ONLY</b> apply to Tuberculosis (2020 RVCT) (102201).<br>If Yes is selected, investigation logic will apply to <b>ALL</b> selected conditions in addition to Tuberculosis (2020 RVCT) (102201).)</i></div></div>
+                                <div class="row m-0"><div class="col-12 static-text"><i>(If No is selected, investigation logic will <b>ONLY</b> apply to the condition selected for this algorithm.<br>If Yes is selected, investigation logic will apply to <b>ALL</b> selected conditions in addition to the condition selected for this algorithm.)</i></div></div>
                                 <div class="row py-2">
                                     <div class="col-5 d-flex align-items-center justify-content-end text-end"><label class="form-label"><span>Select additional conditions for investigation logic:</span></label></div>
-                                    <span class="col-7 text-start answer ps-2"><span class="text-body-secondary">None selected</span></span>
+                                    <span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span>
                                 </div>
                                     </div></div>
                                 </div>
@@ -301,9 +314,13 @@
                                     <h3 class="accordion-header"><button aria-expanded="true" aria-controls="advInvIfBody" class="accordion-button" data-bs-target="#advInvIfBody" data-bs-toggle="collapse" type="button"><span class="accordion-title fs-5">Advanced Investigation Criteria [IF Logic]</span></button></h3>
                                     <div class="accordion-collapse collapse show" id="advInvIfBody"><div class="accordion-body">
                                 <div class="ds-table-scroll" tabindex="0" role="group" aria-label="Advanced investigation criteria, scrolls horizontally when zoomed">
-                                <table class="pbpBatchEntryTable batchEntry table table-sm table-hover table-css mb-0"><caption class="visually-hidden">Advanced investigation criteria</caption><thead><tr><th scope="col" aria-label="Actions"><span class="visually-hidden">Actions</span></th><th scope="col"><span>Question</span></th><th scope="col"><span>Logic</span></th><th scope="col"><span>Value</span></th></tr></thead><tbody><tr><td><button aria-label="View row" class="btn btn-light rounded-circle btn-sm" data-bs-custom-class="custom-tooltip" data-bs-title="View" data-bs-toggle="tooltip" type="button" aria-expanded="false" aria-controls="advInvIfDetail" data-detail='[[&quot;Question&quot;, &quot;Investigation Case Status (INV163)&quot;], [&quot;Logic&quot;, &quot;Equal&quot;], [&quot;Value&quot;, &quot;Confirmed&quot;]]'><span aria-hidden="true" class="material-symbols-rounded">description</span></button></td><td><span>Investigation Case Status (INV163)</span></td><td><span>Equal</span></td><td><span>Confirmed</span></td></tr></tbody></table>
+                                <table class="pbpBatchEntryTable batchEntry table table-sm table-hover table-css mb-0"><caption class="visually-hidden">Advanced investigation criteria</caption><thead><tr><th scope="col" aria-label="Actions"><span class="visually-hidden">Actions</span></th><th scope="col"><span>Question</span></th><th scope="col"><span>Logic</span></th><th scope="col"><span>Value</span></th></tr></thead><tbody><tr><td><button aria-label="View row" class="btn btn-light rounded-circle btn-sm" data-bs-custom-class="custom-tooltip" data-bs-title="View" data-bs-toggle="tooltip" type="button" aria-controls="advInvIfDetail" data-detail='[[&quot;Question&quot;, &quot;Investigation Case Status (INV163)&quot;], [&quot;Logic&quot;, &quot;Equal&quot;], [&quot;Value&quot;, &quot;Confirmed&quot;]]'><span aria-hidden="true" class="material-symbols-rounded">description</span></button></td><td><span>Investigation Case Status (INV163)</span></td><td><span>Equal</span></td><td><span>Confirmed</span></td></tr></tbody></table>
                                 </div>
-                                <div class="inputFields batchEntryDetailsDiv" id="advInvIfDetail" tabindex="-1" role="region" aria-label="Advanced investigation criteria details" hidden></div>
+                                <div class="inputFields batchEntryDetailsDiv" id="advInvIfDetail" tabindex="-1" role="region" aria-label="Advanced investigation criteria details">
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Question:</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Logic:</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                    <div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">Value:</span></div><span class="col-7 text-start answer ps-2"><span class="visually-hidden">None</span></span></div>
+                                </div>
                                     </div></div>
                                 </div>
                             </div>
@@ -350,6 +367,7 @@
 <script src="../../js/ds-toast.js"></script>
 <script src="../../js/ds-status.js"></script>
 <script src="../../js/ds-modal-nav.js"></script>
+<script src="../../js/ds-sum-collapse.js"></script>
 <script>
 /* View Algorithm. In the app and in the Phase 2 layout, Phase 2's scripts drive this markup: Bootstrap's collapse
    (sections, nav groups, the nav toggle), expand-all.js (Collapse All), sec-nav-collapse.js (the section in view is
@@ -406,24 +424,24 @@
      the page scrolls as one, so nothing is cut off (1.4.10). */
   function fit() {
     var wrap = $('.content-wrap', page);
-    wrap.style.height = '';
-    if (window.innerWidth < 768) return;
+    /* the height is replaced, not cleared first: clearing it for a moment resets the scroll position */
+    if (window.innerWidth < 768) { wrap.style.height = ''; return; }
     var top = wrap.getBoundingClientRect().top, sc = page.closest('main');
     if (sc) top += sc.scrollTop;
     wrap.style.height = Math.max(240, window.innerHeight - top) + 'px';
   }
   fit(); window.addEventListener('resize', fit);
-  /* a row's View fills the panel under its table with the row's details; again on the same row closes it */
+  /* the header changes height when the summary collapses, and in the dark theme (its border) */
+  if (window.ResizeObserver) new ResizeObserver(fit).observe($('header', page), { box: 'border-box' });
+  /* a row's View fills the fields under its table with that row's details; they stay, and another View replaces them */
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   $$('[data-detail]').forEach(function (b) {
     b.addEventListener('click', function () {
-      var panel = document.getElementById(b.getAttribute('aria-controls')), open = b.getAttribute('aria-expanded') === 'true';
-      $$('[aria-controls="' + panel.id + '"]').forEach(function (x) { x.setAttribute('aria-expanded', 'false'); });
-      if (open) { panel.hidden = true; return; }
+      var panel = document.getElementById(b.getAttribute('aria-controls'));
       panel.innerHTML = JSON.parse(b.getAttribute('data-detail')).map(function (d) {
         return '<div class="row py-2"><div class="col-5 d-flex align-items-center justify-content-end text-end"><span class="form-label">' + esc(d[0]) + ':</span></div><span class="col-7 text-start answer ps-2">' + (d[1] ? esc(d[1]) : '<span class="visually-hidden">None</span>') + '</span></div>';
       }).join('');
-      panel.hidden = false; b.setAttribute('aria-expanded', 'true'); panel.focus();
+      panel.focus();
     });
   });
   /* After Add or Edit Algorithm saves (?saved=added or ?saved=updated): legacy's message, in a toast (js/ds-toast.js) */

@@ -1,6 +1,8 @@
-/* Type-ahead single select: <select data-ds-typeahead> becomes Phase 2's Tom Select combobox, so typing filters the
+/* Type-ahead select: <select data-ds-typeahead> becomes Phase 2's Tom Select combobox, so typing filters the
    options to those that contain the text (PI planning: a high-priority "should have" for Phase 3, deferred from
-   Epic 39). The options, the value, and the submitted name stay on the <select>.
+   Epic 39). The options, the value, and the submitted name stay on the <select>. With `multiple` it is Phase 2's
+   multi-select: each choice is a chip with a named remove button, and the list stays open for the next choice (Add
+   Algorithm's Sending System(s) and additional conditions, Team A slides 8 and 9: lists that grow, so not checkboxes).
 
    In the app, and in the workbench's Phase 2 layout, Phase 2's own makeTomSelect(id, 1) (js/components/dropdowns.js)
    builds it, with Phase 2's settings and accessibility fixes. In the design system templates, where Phase 2's
@@ -40,13 +42,13 @@
       });
     });
   }
-  function build(sel) {
+  function build(sel, multi) {
     if (!sel.getAttribute('aria-label') && !sel.getAttribute('aria-labelledby')) {
       var name = labelOf(sel);
       if (name) sel.setAttribute('aria-label', name);
     }
     new TomSelect(sel, {
-      maxItems: 1,
+      maxItems: multi ? null : 1,
       openOnFocus: false,
       maxOptions: null,
       dropdownParent: 'body',
@@ -132,10 +134,13 @@
   }
 
   function init(root) {
-    (root || document).querySelectorAll('select[data-ds-typeahead]:not([multiple])').forEach(function (sel) {
+    (root || document).querySelectorAll('select[data-ds-typeahead]').forEach(function (sel) {
+      var multi = sel.multiple;
       if (!sel.tomselect) {
-        if (typeof window.makeTomSelect === 'function' && sel.id) window.makeTomSelect(sel.id, 1);
-        else if (typeof window.TomSelect === 'function') build(sel);
+        /* Phase 2's makeTomSelect(id, 1) for a single choice, makeTomSelect(id, null) for several (its multi-selects) */
+        if (typeof window.makeTomSelect === 'function' && sel.id) window.makeTomSelect(sel.id, multi ? null : 1);
+        else if (typeof window.TomSelect === 'function') build(sel, multi);
+        if (sel.disabled && sel.tomselect) sel.tomselect.disable();
       }
       announce(sel);
     });
